@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import {
   MapPin, Heart, Share2, X, Maximize, Bed, Bath, Home,
@@ -7,7 +7,7 @@ import {
   TreePine, Info, FileText, Calculator,
   Landmark, Percent, Briefcase
 } from 'lucide-react'
-import { properties as allProperties } from '@/data/properties'
+import { getPropertyBySlug, getSimilarProperties } from '@/services/property.service'
 import { useFavorites } from '@/hooks/useFavorites'
 import { useCurrency } from '@/hooks/useCurrency'
 import PropertyCard from '@/components/PropertyCard'
@@ -337,10 +337,35 @@ export default function PropertyDetail() {
   const { toggleFavorite, isFavorite } = useFavorites()
   const { formatPrice } = useCurrency()
 
-  const property = useMemo(() => allProperties.find(p => p.slug === slug), [slug])
+  const [property, setProperty] = useState<Property | undefined>(undefined)
+  const [similarProperties, setSimilarProperties] = useState<Property[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!slug) return
+    setLoading(true)
+    getPropertyBySlug(slug).then((p) => {
+      setProperty(p || undefined)
+      if (p) {
+        getSimilarProperties(p, 3).then(setSimilarProperties)
+      } else {
+        setSimilarProperties([])
+      }
+      setLoading(false)
+    })
+  }, [slug])
+
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
   const [descriptionExpanded, setDescriptionExpanded] = useState(false)
+
+  if (loading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="w-10 h-10 border-4 border-terracotta border-t-transparent rounded-full animate-spin" />
+      </div>
+    )
+  }
 
   if (!property) {
     return (
@@ -360,13 +385,6 @@ export default function PropertyDetail() {
   const thumbImages = images.slice(1, 5)
   const hasMoreImages = images.length > 5
   const remainingCount = Math.max(0, images.length - 5)
-
-  // Similar properties
-  const similarProperties = useMemo(() => {
-    return allProperties
-      .filter(p => p.slug !== property.slug && (p.type === property.type || p.neighborhood === property.neighborhood))
-      .slice(0, 3)
-  }, [property])
 
   // Price per m²
   const pricePerM2 = property.surface > 0 ? Math.round(property.priceEUR / property.surface) : 0

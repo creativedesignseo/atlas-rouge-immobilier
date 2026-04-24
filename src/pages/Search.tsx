@@ -5,7 +5,7 @@ import {
   Bed, Bath, Maximize, Home, Heart, Check,
   Camera, Sliders, Bell
 } from 'lucide-react'
-import { properties as allProperties } from '@/data/properties'
+import { getProperties } from '@/services/property.service'
 
 import { useFavorites } from '@/hooks/useFavorites'
 import { useCurrency } from '@/hooks/useCurrency'
@@ -133,63 +133,6 @@ const defaultFilters: Filters = {
 const nbhdList = ['Guéliz', 'Hivernage', 'Palmeraie', 'Médina', 'Agdal', 'Targa', 'Amelkis', 'Route de l\'Ourika', 'Route de Fès', 'Route d\'Amizmiz', 'M Avenue']
 
 /* ───────────────────── helper functions ───────────────────── */
-
-function sortProperties(properties: Property[], sort: string): Property[] {
-  const sorted = [...properties]
-  switch (sort) {
-    case 'price-asc': return sorted.sort((a, b) => a.priceEUR - b.priceEUR)
-    case 'price-desc': return sorted.sort((a, b) => b.priceEUR - a.priceEUR)
-    case 'surface-asc': return sorted.sort((a, b) => a.surface - b.surface)
-    case 'surface-desc': return sorted.sort((a, b) => b.surface - a.surface)
-    case 'prix-m2-asc': return sorted.sort((a, b) => a.pricePerSqm - b.pricePerSqm)
-    case 'prix-m2-desc': return sorted.sort((a, b) => b.pricePerSqm - a.pricePerSqm)
-    case 'recent': return sorted.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-    default: return sorted
-  }
-}
-
-function filterProperties(properties: Property[], filters: Filters): Property[] {
-  return properties.filter((p) => {
-    if (p.transaction !== filters.transaction) return false
-    if (filters.searchQuery && !p.title.toLowerCase().includes(filters.searchQuery.toLowerCase()) && !p.neighborhood.toLowerCase().includes(filters.searchQuery.toLowerCase())) return false
-    if (filters.neighborhoods.length > 0 && !filters.neighborhoods.includes(p.neighborhood)) return false
-    if (filters.types.length > 0) {
-      const typeMap: Record<string, string> = { 'Villa': 'villa', 'Appartement': 'apartment', 'Riad': 'riad', 'Maison de prestige': 'prestige', 'Terrain': 'land', 'Rooftop': 'rooftop' }
-      const pTypes = filters.types.map(t => typeMap[t]).filter(Boolean)
-      if (!pTypes.includes(p.type)) return false
-    }
-    if (filters.priceMin && p.priceEUR < Number(filters.priceMin)) return false
-    if (filters.priceMax && p.priceEUR > Number(filters.priceMax)) return false
-    if (filters.surfaceMin && p.surface < Number(filters.surfaceMin)) return false
-    if (filters.surfaceMax && p.surface > Number(filters.surfaceMax)) return false
-    if (filters.landMin && (p.landSurface ?? 0) < Number(filters.landMin)) return false
-    if (filters.landMax && (p.landSurface ?? 0) > Number(filters.landMax)) return false
-    if (filters.roomsMin && p.rooms < Number(filters.roomsMin)) return false
-    if (filters.roomsMax && p.rooms > Number(filters.roomsMax)) return false
-    if (filters.bedroomsMin && p.bedrooms < Number(filters.bedroomsMin)) return false
-    if (filters.bedroomsMax && p.bedrooms > Number(filters.bedroomsMax)) return false
-    if (filters.statuses.length > 0) {
-      const s = filters.statuses
-      if (s.includes('neuf') && !p.description.toLowerCase().includes('neuf') && !p.highlights.some(h => h.toLowerCase().includes('neuf'))) return false
-      if (s.includes('ancien') && (p.description.toLowerCase().includes('neuf') || p.highlights.some(h => h.toLowerCase().includes('neuf')))) return false
-      if (s.includes('exclusivite') && !p.isExclusive) return false
-      if (s.includes('recent')) {
-        const daysSince = (Date.now() - new Date(p.createdAt).getTime()) / (1000 * 60 * 60 * 24)
-        if (daysSince > 30) return false
-      }
-    }
-    if (filters.amenities.length > 0) {
-      const hasAll = filters.amenities.every(a => p.amenities.includes(a))
-      if (!hasAll) return false
-    }
-    if (filters.media.length > 0) {
-      if (filters.media.includes('photos') && p.images.length === 0) return false
-      if (filters.media.includes('video') && !p.hasVideo) return false
-      if (filters.media.includes('3d') && !p.has3DTour) return false
-    }
-    return true
-  })
-}
 
 function getActiveFilterChips(filters: Filters): { key: string; label: string; onRemove: () => void }[] {
   const chips: { key: string; label: string; onRemove: () => void }[] = []
@@ -594,16 +537,43 @@ export default function SearchPage() {
   const [mapVisible, setMapVisible] = useState(true)
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const [hoveredMapSlug, setHoveredMapSlug] = useState<string | null>(null)
+  const [allProperties, setAllProperties] = useState<Property[]>([])
+  const [loading, setLoading] = useState(true)
 
   // Update transaction when route changes
   useEffect(() => {
     setFilters(f => ({ ...f, transaction: isRentRoute ? 'rent' : 'sale' }))
   }, [isRentRoute])
 
-  const filtered = useMemo(() => {
-    const f = filterProperties(allProperties, filters)
-    return sortProperties(f, sort)
+  useEffect(() => {
+    setLoading(true)
+    const typesMapped = filters.types.map(t => {
+      const map: Record<string, string> = {
+        'Villa': 'villa', 'Appartement': 'apartment', 'Riad': 'riad',
+        'Maison de prestige': 'prestige', 'Terrain': 'land', 'Rooftop': 'rooftop'
+      }
+      return map[t]
+    }).filter(Boolean) as string[]
+
+    getProperties({
+      transaction: filters.transaction,
+      types: typesMapped,
+      neighborhoods: filters.neighborhoods,
+      priceMin: filters.priceMin ? Number(filters.priceMin) : undefined,
+      priceMax: filters.priceMax ? Number(filters.priceMax) : undefined,
+      surfaceMin: filters.surfaceMin ? Number(filters.surfaceMin) : undefined,
+      surfaceMax: filters.surfaceMax ? Number(filters.surfaceMax) : undefined,
+      bedroomsMin: filters.bedroomsMin ? Number(filters.bedroomsMin) : undefined,
+      bedroomsMax: filters.bedroomsMax ? Number(filters.bedroomsMax) : undefined,
+      searchQuery: filters.searchQuery,
+      sort,
+    }).then((data) => {
+      setAllProperties(data)
+      setLoading(false)
+    })
   }, [filters, sort])
+
+  const filtered = allProperties
 
   const activeChips = useMemo(() => getActiveFilterChips(filters), [filters])
 
@@ -914,7 +884,12 @@ export default function SearchPage() {
 
         {/* Center: Results */}
         <main className="flex-1 min-w-0 p-4 lg:p-6">
-          {filtered.length === 0 ? (
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-20">
+              <div className="w-10 h-10 border-4 border-terracotta border-t-transparent rounded-full animate-spin" />
+              <p className="text-text-secondary mt-4">Chargement des annonces...</p>
+            </div>
+          ) : filtered.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <MapPin size={64} className="text-sand/60 mb-4" />
               <h3 className="font-playfair text-[22px] font-semibold text-midnight mb-2">Aucun bien ne correspond à vos critères</h3>

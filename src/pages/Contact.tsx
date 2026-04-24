@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { submitContactForm } from '@/services/contact.service'
 import { Link } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
@@ -93,15 +94,27 @@ export default function Contact() {
     consent: false,
   })
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
 
   const formRef = useRef<HTMLDivElement>(null)
   const infoRef = useRef<HTMLDivElement>(null)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!formState.consent) return
-    setSubmitted(true)
+    setSubmitting(true)
+    const result = await submitContactForm({
+      name: formState.name,
+      email: formState.email,
+      phone: formState.phone,
+      subject: formState.subject,
+      message: formState.message,
+    })
+    setSubmitting(false)
+    if (result.success) {
+      setSubmitted(true)
+    }
   }
 
   /* Form field stagger animation */
@@ -309,10 +322,10 @@ export default function Contact() {
 
                   <button
                     type="submit"
-                    disabled={!formState.consent}
+                    disabled={!formState.consent || submitting}
                     className="form-field w-full h-12 bg-terracotta text-white font-inter text-[14px] font-semibold rounded-lg hover:scale-[1.01] active:scale-[0.99] transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Envoyer mon message
+                    {submitting ? 'Envoi en cours...' : 'Envoyer mon message'}
                   </button>
                 </form>
               )}

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
@@ -21,8 +21,10 @@ import {
   Users,
   ArrowRight,
 } from 'lucide-react'
-import { properties } from '@/data/properties'
-import { neighborhoods } from '@/data/neighborhoods'
+import { getFeaturedProperties } from '@/services/property.service'
+import { getNeighborhoods } from '@/services/neighborhood.service'
+import type { Property } from '@/data/properties'
+import type { Neighborhood } from '@/data/neighborhoods'
 import PropertyCard from '@/components/PropertyCard'
 import NeighborhoodCard from '@/components/NeighborhoodCard'
 import ServiceCard from '@/components/ServiceCard'
@@ -154,7 +156,13 @@ export default function Home() {
   const ctaRef = useRef<HTMLElement>(null)
   const blogRef = useRef<HTMLElement>(null)
 
-  const featuredProperties = properties.filter((p) => p.isFeatured).slice(0, 3)
+  const [featuredProperties, setFeaturedProperties] = useState<Property[]>([])
+  const [neighborhoodsList, setNeighborhoodsList] = useState<Neighborhood[]>([])
+
+  useEffect(() => {
+    getFeaturedProperties(3).then(setFeaturedProperties)
+    getNeighborhoods().then(setNeighborhoodsList)
+  }, [])
 
   // Hero entrance animations
   useGSAP(
@@ -366,7 +374,7 @@ export default function Home() {
             </p>
           </div>
           <div className="section-content grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {neighborhoods.map((n) => (
+            {neighborhoodsList.map((n) => (
               <NeighborhoodCard key={n.slug} neighborhood={n} />
             ))}
           </div>
