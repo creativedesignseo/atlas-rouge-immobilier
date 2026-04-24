@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 
 const navLinks = [
@@ -12,6 +12,14 @@ const navLinks = [
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const { pathname } = useLocation()
+
+  const isActive = (href: string) => {
+    if (href === '/acheter' || href === '/louer') {
+      return pathname === href
+    }
+    return pathname === href
+  }
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-border-warm">
@@ -33,7 +41,12 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 to={link.href}
-                className="text-text-primary font-inter text-[15px] font-medium hover:text-terracotta transition-colors"
+                className={`font-inter text-[15px] font-medium transition-colors ${
+                  isActive(link.href)
+                    ? 'text-terracotta'
+                    : 'text-text-primary hover:text-terracotta'
+                }`}
+                aria-current={isActive(link.href) ? 'page' : undefined}
               >
                 {link.label}
               </Link>
