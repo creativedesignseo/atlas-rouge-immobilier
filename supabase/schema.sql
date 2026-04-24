@@ -77,6 +77,16 @@ CREATE TABLE IF NOT EXISTS favorites (
 );
 
 -- ============================================
+-- Table: site_settings
+-- ============================================
+CREATE TABLE IF NOT EXISTS site_settings (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  key TEXT NOT NULL UNIQUE,
+  value TEXT NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- ============================================
 -- Indexes
 -- ============================================
 CREATE INDEX IF NOT EXISTS idx_properties_slug ON properties(slug);
@@ -88,6 +98,7 @@ CREATE INDEX IF NOT EXISTS idx_properties_featured ON properties(is_featured);
 CREATE INDEX IF NOT EXISTS idx_properties_created ON properties(created_at);
 CREATE INDEX IF NOT EXISTS idx_neighborhoods_slug ON neighborhoods(slug);
 CREATE INDEX IF NOT EXISTS idx_favorites_user ON favorites(user_id);
+CREATE INDEX IF NOT EXISTS idx_site_settings_key ON site_settings(key);
 
 -- ============================================
 -- Row Level Security (RLS)
@@ -96,6 +107,7 @@ ALTER TABLE neighborhoods ENABLE ROW LEVEL SECURITY;
 ALTER TABLE properties ENABLE ROW LEVEL SECURITY;
 ALTER TABLE contact_submissions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE favorites ENABLE ROW LEVEL SECURITY;
+ALTER TABLE site_settings ENABLE ROW LEVEL SECURITY;
 
 -- Public read access on neighborhoods
 CREATE POLICY "Allow public read on neighborhoods"
@@ -109,7 +121,7 @@ CREATE POLICY "Allow public read on properties"
   TO anon, authenticated
   USING (true);
 
--- Only authenticated users can create contact submissions
+-- Public insert/read on contact_submissions
 CREATE POLICY "Allow public insert on contact_submissions"
   ON contact_submissions FOR INSERT
   TO anon, authenticated
@@ -126,3 +138,9 @@ CREATE POLICY "Allow users to manage own favorites"
   TO authenticated
   USING (user_id = auth.uid())
   WITH CHECK (user_id = auth.uid());
+
+-- Site settings: public read
+CREATE POLICY "Allow public read on site_settings"
+  ON site_settings FOR SELECT
+  TO anon, authenticated
+  USING (true);

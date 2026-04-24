@@ -17,6 +17,7 @@ import {
   Facebook,
 } from 'lucide-react'
 import SectionReveal from '@/components/SectionReveal'
+import { useSiteSettings } from '@/hooks/useSiteSettings'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -60,11 +61,11 @@ function AccordionItem({
   )
 }
 
-const faqItems = [
+const faqItems = (settings: Record<string, string> | null) => [
   {
     question: 'Comment prendre rendez-vous ?',
     answer:
-      'Vous pouvez prendre rendez-vous par t\u00E9l\u00E9phone au +212 524 00 00 00, par WhatsApp au +212 600 00 00 00, ou en remplissant le formulaire de contact ci-dessus. Notre \u00E9quipe vous r\u00E9pond sous 24h.',
+      `Vous pouvez prendre rendez-vous par téléphone au ${settings?.phone || '+212 524 00 00 00'}, par WhatsApp au ${settings?.whatsapp || '+212 600 00 00 00'}, ou en remplissant le formulaire de contact ci-dessus. Notre équipe vous répond sous 24h.`,
   },
   {
     question: 'Est-ce que vous parlez fran\u00E7ais ?',
@@ -85,6 +86,8 @@ const faqItems = [
 
 /* ═══════════════════════════════════════════ */
 export default function Contact() {
+  const { settings } = useSiteSettings()
+
   const [formState, setFormState] = useState({
     name: '',
     email: '',
@@ -347,9 +350,9 @@ export default function Contact() {
                       Adresse
                     </p>
                     <p className="font-inter text-[15px] text-text-primary">
-                      123 Boulevard Mohamed VI, Guéliz
+                      {settings?.address || '123 Boulevard Mohamed VI, Guéliz'}
                       <br />
-                      40000 Marrakech, Maroc
+                      {settings?.city_postal || '40000 Marrakech, Maroc'}
                     </p>
                   </div>
                 </div>
@@ -363,10 +366,10 @@ export default function Contact() {
                       Téléphone
                     </p>
                     <a
-                      href="tel:+212524000000"
+                      href={`tel:${(settings?.phone || '+212524000000').replace(/\s/g, '')}`}
                       className="font-inter text-[15px] text-text-primary hover:text-terracotta transition-colors"
                     >
-                      +212 524 00 00 00
+                      {settings?.phone || '+212 524 00 00 00'}
                     </a>
                   </div>
                 </div>
@@ -380,12 +383,12 @@ export default function Contact() {
                       WhatsApp
                     </p>
                     <a
-                      href="https://wa.me/212600000000"
+                      href={`https://wa.me/${(settings?.whatsapp || '+212600000000').replace(/\D/g, '')}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="font-inter text-[15px] text-text-primary hover:text-terracotta transition-colors"
                     >
-                      +212 600 00 00 00
+                      {settings?.whatsapp || '+212 600 00 00 00'}
                     </a>
                   </div>
                 </div>
@@ -399,10 +402,10 @@ export default function Contact() {
                       Email
                     </p>
                     <a
-                      href="mailto:contact@atlasrouge.immo"
+                      href={`mailto:${settings?.email || 'contact@atlasrouge.immo'}`}
                       className="font-inter text-[15px] text-text-primary hover:text-terracotta transition-colors"
                     >
-                      contact@atlasrouge.immo
+                      {settings?.email || 'contact@atlasrouge.immo'}
                     </a>
                   </div>
                 </div>
@@ -416,9 +419,9 @@ export default function Contact() {
                       Horaires
                     </p>
                     <p className="font-inter text-[15px] text-text-primary">
-                      Lun – Ven : 9h – 18h
+                      {settings?.hours_weekday || 'Lun – Ven : 9h – 18h'}
                       <br />
-                      Sam : 10h – 14h
+                      {settings?.hours_saturday || 'Sam : 10h – 14h'}
                     </p>
                   </div>
                 </div>
@@ -430,14 +433,14 @@ export default function Contact() {
                   </p>
                   <div className="flex items-center gap-3">
                     <a
-                      href="#"
+                      href={settings?.instagram_url || '#'}
                       className="w-10 h-10 rounded-lg bg-cream-warm flex items-center justify-center hover:bg-terracotta hover:text-white text-text-secondary transition-colors"
                       aria-label="Instagram"
                     >
                       <Instagram size={18} />
                     </a>
                     <a
-                      href="#"
+                      href={settings?.facebook_url || '#'}
                       className="w-10 h-10 rounded-lg bg-cream-warm flex items-center justify-center hover:bg-terracotta hover:text-white text-text-secondary transition-colors"
                       aria-label="Facebook"
                     >
@@ -488,10 +491,10 @@ export default function Contact() {
             <MapPin size={24} className="text-white" />
           </div>
           <p className="font-playfair text-[18px] text-white mb-1">
-            Atlas Rouge Immobilier
+            {settings?.company_name || 'Atlas Rouge Immobilier'}
           </p>
           <p className="font-inter text-[13px] text-white/60">
-            123 Boulevard Mohamed VI, Marrakech
+            {settings?.address || '123 Boulevard Mohamed VI, Marrakech'}
           </p>
         </div>
       </section>
@@ -506,7 +509,7 @@ export default function Contact() {
           </SectionReveal>
 
           <SectionReveal className="space-y-3" stagger={0.06} y={15}>
-            {faqItems.map((item, i) => (
+            {faqItems(settings).map((item, i) => (
               <AccordionItem
                 key={i}
                 question={item.question}
