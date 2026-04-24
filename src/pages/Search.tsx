@@ -690,7 +690,7 @@ export default function SearchPage() {
                 <button onClick={() => setView('map')} className={cn('w-9 h-9 flex items-center justify-center lg:hidden', view === 'map' ? 'bg-terracotta text-white' : 'bg-white text-text-secondary hover:bg-cream')} title="Carte">
                   <Map size={16} />
                 </button>
-                <button onClick={() => setMapVisible(!mapVisible)} className={cn('hidden lg:flex w-9 h-9 items-center justify-center', mapVisible ? 'bg-terracotta text-white' : 'bg-white text-text-secondary hover:bg-cream')} title="Carte">
+                <button onClick={() => { setMapVisible(!mapVisible); if (!mapVisible) setView('list'); else setView('grid'); }} className={cn('hidden lg:flex w-9 h-9 items-center justify-center', mapVisible ? 'bg-terracotta text-white' : 'bg-white text-text-secondary hover:bg-cream')} title="Carte">
                   <Map size={16} />
                 </button>
               </div>
@@ -962,7 +962,7 @@ export default function SearchPage() {
 
               {/* Grid view */}
               {view === 'grid' && (
-                <div className={cn("grid grid-cols-1 md:grid-cols-2 gap-6", mapVisible && "lg:hidden")}>
+                <div className={cn("grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6", mapVisible && "lg:hidden")}>
                   {filtered.map(p => (
                     <div key={p.slug} onMouseEnter={() => handleMapHover(p.slug)} onMouseLeave={() => handleMapHover(null)}>
                       <PropertyCardGrid property={p} isHovered={hoveredMapSlug === p.slug} />
