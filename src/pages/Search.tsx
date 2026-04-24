@@ -224,7 +224,7 @@ function PropertyCardList({ property }: { property: Property }) {
    streets style + popup interactivo
    ════════════════════════════════════════ */
 
-function MapView({ properties, hoveredId, onHover }: { properties: Property[]; hoveredId: string | null; onHover: (id: string | null) => void }) {
+function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Property[]; hoveredId: string | null; onHover: (id: string | null) => void; onSelect?: (slug: string) => void }) {
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<maplibregl.Map | null>(null)
   const markersRef = useRef<maplibregl.Marker[]>([])
@@ -361,15 +361,24 @@ function MapView({ properties, hoveredId, onHover }: { properties: Property[]; h
 
       el.addEventListener('mouseenter', () => {
         onHover(p.slug)
-        // Close other popups first
-        popupsRef.current.forEach(pop => pop.remove())
-        popup.setLngLat([p.longitude, p.latitude]).addTo(map.current!)
+        if (!onSelect) {
+          // Desktop: show popup on hover
+          popupsRef.current.forEach(pop => pop.remove())
+          popup.setLngLat([p.longitude, p.latitude]).addTo(map.current!)
+        }
       })
-      // No mouseleave — popup persists until user clicks X or another marker
       el.addEventListener('click', (e: Event) => {
         e.stopPropagation()
-        popupsRef.current.forEach(pop => pop.remove())
-        popup.setLngLat([p.longitude, p.latitude]).addTo(map.current!)
+        if (onSelect) {
+          // Mobile: call onSelect instead of showing popup
+          onSelect(p.slug)
+          // Center map on selected property
+          map.current?.easeTo({ center: [p.longitude, p.latitude], zoom: Math.max(map.current.getZoom(), 14), duration: 300 })
+        } else {
+          // Desktop: show popup on click
+          popupsRef.current.forEach(pop => pop.remove())
+          popup.setLngLat([p.longitude, p.latitude]).addTo(map.current!)
+        }
       })
 
       markersRef.current.push(marker)
@@ -654,6 +663,7 @@ export default function SearchPage() {
   const [mapVisible, setMapVisible] = useState(true)
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const [hoveredMapSlug, setHoveredMapSlug] = useState<string | null>(null)
+  const [selectedMapSlug, setSelectedMapSlug] = useState<string | null>(null)
   const [allProperties, setAllProperties] = useState<Property[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -719,6 +729,11 @@ export default function SearchPage() {
   // Handle map pin hover syncing
   const handleMapHover = useCallback((slug: string | null) => {
     setHoveredMapSlug(slug)
+  }, [])
+
+  // Handle map pin select (mobile)
+  const handleMapSelect = useCallback((slug: string) => {
+    setSelectedMapSlug(slug)
   }, [])
 
   return (
@@ -1055,20 +1070,45 @@ export default function SearchPage() {
               {/* Map view (mobile) */}
               {view === 'map' && (
                 <div className="lg:hidden fixed inset-0 top-[136px] z-20 bg-midnight">
-                  <button onClick={() => setView('grid')} className="absolute top-4 right-4 z-30 w-10 h-10 bg-white rounded-full shadow flex items-center justify-center">
+                  <button onClick={() => { setView('grid'); setSelectedMapSlug(null) }} className="absolute top-4 right-4 z-30 w-10 h-10 bg-white rounded-full shadow flex items-center justify-center">
                     <X size={20} />
                   </button>
-                  <MapView properties={filtered} hoveredId={hoveredMapSlug} onHover={handleMapHover} />
-                  {/* Bottom sheet with cards */}
-                  <div className="absolute bottom-0 left-0 right-0 z-30 bg-white rounded-t-2xl max-h-[35vh] overflow-y-auto p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.15)]">
-                    <div className="w-10 h-1 bg-border-warm rounded-full mx-auto mb-3" />
-                    <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2">
-                      {filtered.map(p => (
-                        <div key={p.slug} className="snap-start flex-shrink-0 w-[280px]">
-                          <PropertyCardCompact property={p} isHovered={hoveredMapSlug === p.slug} />
+                  <MapView properties={filtered} hoveredId={hoveredMapSlug} onHover={handleMapHover} onSelect={handleMapSelect} />
+                  {/* Bottom sheet — Green Acres style */}
+                  <div className="absolute bottom-0 left-0 right-0 z-30 bg-white rounded-t-2xl shadow-[0_-4px_20px_rgba(0,0,0,0.15)]">
+                    <div className="w-10 h-1 bg-border-warm rounded-full mx-auto mt-3 mb-1" />
+                    {selectedMapSlug ? (
+                      /* Selected property card */
+                      <div className="p-4">
+                        <button
+                          onClick={() => setSelectedMapSlug(null)}
+                          className="mb-2 text-[13px] text-text-secondary font-inter flex items-center gap-1 hover:text-terracotta"
+                        >
+                          <ChevronDown size={14} className="rotate-90" /> Retour à la liste
+                        </button>
+                        {(() => {
+                          const p = filtered.find(x => x.slug === selectedMapSlug)
+                          if (!p) return null
+                          return <PropertyCardCompact property={p} isHovered={true} />
+                        })()}
+                      </div>
+                    ) : (
+                      /* Horizontal carousel of all properties */
+                      <div className="p-4">
+                        <p className="text-[12px] text-text-secondary font-inter mb-2 uppercase tracking-wide">{filtered.length} bien{filtered.length > 1 ? 's' : ''}</p>
+                        <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                          {filtered.map(p => (
+                            <div
+                              key={p.slug}
+                              className="snap-start flex-shrink-0 w-[260px]"
+                              onClick={() => setSelectedMapSlug(p.slug)}
+                            >
+                              <PropertyCardCompact property={p} isHovered={hoveredMapSlug === p.slug} />
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
