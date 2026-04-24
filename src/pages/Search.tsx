@@ -229,7 +229,6 @@ function MapView({ properties, hoveredId, onHover }: { properties: Property[]; h
   const map = useRef<maplibregl.Map | null>(null)
   const markersRef = useRef<maplibregl.Marker[]>([])
   const popupsRef = useRef<maplibregl.Popup[]>([])
-  const navigate = useNavigate()
   const { formatPrice } = useCurrency()
 
   useEffect(() => {
@@ -271,6 +270,12 @@ function MapView({ properties, hoveredId, onHover }: { properties: Property[]; h
     markersRef.current = []
     popupsRef.current = []
 
+    // Close any open popup when clicking on map background
+    const closeAllPopups = () => {
+      popupsRef.current.forEach(p => p.remove())
+    }
+    map.current.on('click', closeAllPopups)
+
     properties.forEach(p => {
       const isHovered = hoveredId === p.slug
       const priceLabel = (p.priceEUR / 1000).toFixed(0) + 'k €'
@@ -292,23 +297,88 @@ function MapView({ properties, hoveredId, onHover }: { properties: Property[]; h
         .setLngLat([p.longitude, p.latitude])
         .addTo(map.current!)
 
-      const popup = new maplibregl.Popup({ closeButton: false, closeOnClick: false, offset: 18, maxWidth: '280px' })
-        .setHTML(`<div style="font-family:Inter,sans-serif;cursor:pointer;" onclick="window.location.href='/property/${p.slug}'">
-          <img src="${p.images[0]}" style="width:100%;height:120px;object-fit:cover;border-radius:10px 10px 0 0;display:block;" />
-          <div style="padding:12px;background:white;border-radius:0 0 10px 10px;">
-            <p style="color:#B5533A;font-size:15px;font-weight:700;margin:0 0 4px 0;">${formatPrice(p.priceEUR)}</p>
-            <p style="color:#1E1E1E;font-size:13px;font-weight:600;margin:0 0 2px 0;">${p.neighborhood}, Marrakech</p>
-            <p style="color:#6E6259;font-size:12px;margin:0 0 6px 0;">${p.surface} m² · ${p.rooms} pièces · ${p.bedrooms} chambres</p>
-          </div>
-        </div>`)
+      // Build rich popup with image carousel
+      const popupContainer = document.createElement('div')
+      popupContainer.style.fontFamily = 'Inter, sans-serif'
+      popupContainer.style.width = '280px'
+      popupContainer.style.cursor = 'default'
 
-      el.addEventListener('mouseenter', () => { onHover(p.slug); popup.setLngLat([p.longitude, p.latitude]).addTo(map.current!) })
-      el.addEventListener('mouseleave', () => { onHover(null); popup.remove() })
-      el.addEventListener('click', (e: Event) => { e.stopPropagation(); navigate(`/property/${p.slug}`) })
+      const imgs = p.images.length > 0 ? p.images : ['/property-01.jpg']
+      let currentImg = 0
+
+      const renderPopup = () => {
+        const hasMultiple = imgs.length > 1
+        popupContainer.innerHTML = `
+          <div style="position:relative;border-radius:10px 10px 0 0;overflow:hidden;height:160px;background:#f5f5f5;">
+            <img src="${imgs[currentImg]}" style="width:100%;height:100%;object-fit:cover;display:block;" />
+            ${hasMultiple ? `
+              <button class="popup-prev" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:28px;height:28px;background:rgba(255,255,255,0.9);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:#333;box-shadow:0 2px 6px rgba(0,0,0,0.15);">&#8249;</button>
+              <button class="popup-next" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:28px;height:28px;background:rgba(255,255,255,0.9);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:#333;box-shadow:0 2px 6px rgba(0,0,0,0.15);">&#8250;</button>
+              <div style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:4px;">
+                ${imgs.map((_, i) => `<div style="width:6px;height:6px;border-radius:50%;background:${i === currentImg ? 'white' : 'rgba(255,255,255,0.5)'};"></div>`).join('')}
+              </div>
+            ` : ''}
+            <div style="position:absolute;top:8px;left:8px;background:rgba(0,0,0,0.6);color:white;font-size:11px;font-weight:600;padding:3px 8px;border-radius:4px;display:flex;align-items:center;gap:4px;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              ${imgs.length}
+            </div>
+          </div>
+          <div style="padding:12px;background:white;border-radius:0 0 10px 10px;">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+              <p style="color:#B5533A;font-size:16px;font-weight:700;margin:0;flex:1;">${formatPrice(p.priceEUR)}</p>
+              ${p.isExclusive ? '<span style="background:#315C45;color:white;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;">Exclusivité</span>' : ''}
+            </div>
+            <p style="color:#1E1E1E;font-size:14px;font-weight:600;margin:0 0 2px 0;">${p.title}</p>
+            <p style="color:#6E6259;font-size:12px;margin:0 0 8px 0;">${p.neighborhood}, Marrakech</p>
+            <p style="color:#6E6259;font-size:12px;margin:0 0 12px 0;">${p.surface} m² · ${p.rooms} pièces · ${p.bedrooms} chambres</p>
+            <a href="/property/${p.slug}" style="display:block;width:100%;text-align:center;background:#B5533A;color:white;font-size:13px;font-weight:600;padding:8px 0;border-radius:8px;text-decoration:none;">Voir le bien</a>
+          </div>
+        `
+
+        // Attach carousel listeners
+        const prevBtn = popupContainer.querySelector('.popup-prev')
+        const nextBtn = popupContainer.querySelector('.popup-next')
+        if (prevBtn) {
+          prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation()
+            currentImg = (currentImg - 1 + imgs.length) % imgs.length
+            renderPopup()
+          })
+        }
+        if (nextBtn) {
+          nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation()
+            currentImg = (currentImg + 1) % imgs.length
+            renderPopup()
+          })
+        }
+      }
+
+      renderPopup()
+
+      const popup = new maplibregl.Popup({ closeButton: true, closeOnClick: false, offset: 18, maxWidth: '300px' })
+        .setDOMContent(popupContainer)
+
+      el.addEventListener('mouseenter', () => {
+        onHover(p.slug)
+        // Close other popups first
+        popupsRef.current.forEach(pop => pop.remove())
+        popup.setLngLat([p.longitude, p.latitude]).addTo(map.current!)
+      })
+      // No mouseleave — popup persists until user clicks X or another marker
+      el.addEventListener('click', (e: Event) => {
+        e.stopPropagation()
+        popupsRef.current.forEach(pop => pop.remove())
+        popup.setLngLat([p.longitude, p.latitude]).addTo(map.current!)
+      })
 
       markersRef.current.push(marker)
       popupsRef.current.push(popup)
     })
+
+    return () => {
+      map.current?.off('click', closeAllPopups)
+    }
   }, [properties, hoveredId])
 
   useEffect(() => {
