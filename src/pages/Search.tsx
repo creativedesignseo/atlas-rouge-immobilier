@@ -733,8 +733,8 @@ export default function SearchPage() {
 
       {/* ─── Main Content Area ─── */}
       <div className={cn("mx-auto flex", mapVisible ? "max-w-none" : "max-w-[1600px]")}>
-        {/* Filter Sidebar — desktop only */}
-        <aside className="hidden lg:block w-[300px] flex-shrink-0 bg-white border-r border-border-warm sticky top-[calc(72px+80px)] h-[calc(100dvh-152px)] overflow-y-auto">
+        {/* Filter Sidebar — desktop only, hidden when map is active */}
+        <aside className={cn("hidden lg:block w-[300px] flex-shrink-0 bg-white border-r border-border-warm sticky top-[calc(72px+80px)] h-[calc(100dvh-152px)] overflow-y-auto", mapVisible && "lg:hidden")}>
           <div className="p-5">
             {/* Transaction toggle */}
             <div className="mb-5">
