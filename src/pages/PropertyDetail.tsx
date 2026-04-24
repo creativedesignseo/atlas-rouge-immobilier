@@ -377,10 +377,14 @@ function ContactPanel({ property }: { property: Property }) {
 
 function SpecCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
-    <div className="flex flex-col items-center text-center min-w-[90px] flex-1">
-      <span className="text-text-secondary mb-1">{icon}</span>
-      <span className="text-[12px] text-text-secondary font-inter">{label}</span>
-      <span className="text-[16px] font-semibold text-midnight font-inter">{value}</span>
+    <div className="flex flex-col items-center text-center gap-2">
+      <div className="w-14 h-14 rounded-full bg-cream-warm flex items-center justify-center text-terracotta">
+        {icon}
+      </div>
+      <div>
+        <p className="text-[11px] text-text-secondary font-inter uppercase tracking-wide">{label}</p>
+        <p className="text-[18px] font-bold text-midnight font-inter">{value}</p>
+      </div>
     </div>
   )
 }
@@ -468,8 +472,8 @@ export default function PropertyDetail() {
         {/* Desktop gallery */}
         <div className="hidden md:flex h-[500px] gap-1">
           {/* Main image (60%) */}
-          <div className="relative w-[60%] overflow-hidden">
-            <img src={mainImage} alt={property.title} className="w-full h-full object-cover" />
+          <div className="relative w-[60%] overflow-hidden cursor-pointer" onClick={() => { setLightboxIndex(0); setLightboxOpen(true) }}>
+            <img src={mainImage} alt={property.title} className="w-full h-full object-cover hover:brightness-105 transition-all" />
             {/* Badges */}
             <div className="absolute top-4 left-4 flex gap-2">
               <span className="bg-palm text-white text-[11px] font-semibold px-2.5 py-1 rounded">
@@ -526,7 +530,7 @@ export default function PropertyDetail() {
         </div>
 
         {/* Mobile gallery */}
-        <div className="md:hidden relative aspect-[4/3] overflow-hidden">
+        <div className="md:hidden relative aspect-[4/3] overflow-hidden cursor-pointer" onClick={() => { setLightboxIndex(0); setLightboxOpen(true) }}>
           <img src={mainImage} alt={property.title} className="w-full h-full object-cover" />
           <div className="absolute top-3 left-3 flex gap-2">
             <span className="bg-palm text-white text-[11px] font-semibold px-2 py-1 rounded">
