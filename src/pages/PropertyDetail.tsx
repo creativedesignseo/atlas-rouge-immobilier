@@ -175,19 +175,37 @@ function GateIcon() {
 
 function Lightbox({ images, startIndex, onClose }: { images: string[]; startIndex: number; onClose: () => void }) {
   const [current, setCurrent] = useState(startIndex)
+  const touchStartX = useRef(0)
+  const touchEndX = useRef(0)
+
+  const goPrev = () => setCurrent(c => (c - 1 + images.length) % images.length)
+  const goNext = () => setCurrent(c => (c + 1) % images.length)
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.changedTouches[0].screenX
+  }
+  const onTouchEnd = (e: React.TouchEvent) => {
+    touchEndX.current = e.changedTouches[0].screenX
+    const diff = touchStartX.current - touchEndX.current
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) goNext()
+      else goPrev()
+    }
+  }
+
   return (
-    <div className="fixed inset-0 z-[70] bg-black/95 flex items-center justify-center">
+    <div className="fixed inset-0 z-[70] bg-black/95 flex items-center justify-center" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
       <button onClick={onClose} className="absolute top-4 right-4 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-colors z-10">
         <X size={20} />
       </button>
-      <button onClick={() => setCurrent(c => (c - 1 + images.length) % images.length)} className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-colors z-10">
+      <button onClick={goPrev} className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 rounded-full items-center justify-center text-white hover:bg-white/20 transition-colors z-10">
         <ChevronUp size={20} className="-rotate-90" />
       </button>
-      <button onClick={() => setCurrent(c => (c + 1) % images.length)} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-colors z-10">
+      <button onClick={goNext} className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 rounded-full items-center justify-center text-white hover:bg-white/20 transition-colors z-10">
         <ChevronUp size={20} className="rotate-90" />
       </button>
-      <div className="text-center">
-        <img src={images[current]} alt={`Photo ${current + 1}`} className="max-w-[95vw] max-h-[80vh] object-contain rounded-lg" />
+      <div className="text-center w-full px-4">
+        <img src={images[current]} alt={`Photo ${current + 1}`} className="max-w-[95vw] max-h-[80vh] object-contain rounded-lg mx-auto" draggable={false} />
         <p className="text-white/60 text-[14px] mt-3 font-inter">{current + 1} / {images.length}</p>
       </div>
     </div>
@@ -536,26 +554,51 @@ export default function PropertyDetail() {
           )}
         </div>
 
-        {/* Mobile gallery */}
-        <div className="md:hidden relative aspect-[4/3] overflow-hidden cursor-pointer" onClick={() => { setLightboxIndex(0); setLightboxOpen(true) }}>
-          <img src={mainImage} alt={property.title} className="w-full h-full object-cover" />
-          <div className="absolute top-3 left-3 flex gap-2">
-            <span className="bg-palm text-white text-[11px] font-semibold px-2 py-1 rounded">
-              {property.transaction === 'sale' ? 'À vendre' : 'À louer'}
-            </span>
-            {property.isExclusive && <span className="bg-gold text-midnight text-[11px] font-semibold px-2 py-1 rounded">Exclusivité</span>}
+        {/* Mobile gallery — horizontal swipeable carousel */}
+        <div className="md:hidden relative">
+          <div
+            className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {images.map((img, i) => (
+              <div
+                key={i}
+                className="snap-start shrink-0 w-full aspect-[4/3] relative cursor-pointer"
+                onClick={() => { setLightboxIndex(i); setLightboxOpen(true) }}
+              >
+                <img src={img} alt={`${property.title} ${i + 1}`} className="w-full h-full object-cover" draggable={false} />
+                {i === 0 && (
+                  <>
+                    <div className="absolute top-3 left-3 flex gap-2">
+                      <span className="bg-palm text-white text-[11px] font-semibold px-2 py-1 rounded">
+                        {property.transaction === 'sale' ? 'À vendre' : 'À louer'}
+                      </span>
+                      {property.isExclusive && <span className="bg-gold text-midnight text-[11px] font-semibold px-2 py-1 rounded">Exclusivité</span>}
+                    </div>
+                    <div className="absolute top-3 right-3 flex gap-2">
+                      <button onClick={(e) => { e.stopPropagation(); toggleFavorite(property.slug) }} className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md">
+                        <Heart size={18} className={isFavorite(property.slug) ? 'fill-terracotta text-terracotta' : 'text-text-secondary'} />
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            ))}
           </div>
-          <div className="absolute top-3 right-3 flex gap-2">
-            <button onClick={() => toggleFavorite(property.slug)} className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md">
-              <Heart size={18} className={isFavorite(property.slug) ? 'fill-terracotta text-terracotta' : 'text-text-secondary'} />
-            </button>
-          </div>
+          {/* Pagination dots */}
+          {images.length > 1 && (
+            <div className="flex justify-center gap-1.5 mt-2">
+              {images.map((_, i) => (
+                <div key={i} className="w-1.5 h-1.5 rounded-full bg-text-secondary/30" />
+              ))}
+            </div>
+          )}
           {images.length > 1 && (
             <button
               onClick={() => { setLightboxIndex(0); setLightboxOpen(true) }}
-              className="absolute bottom-3 left-3 bg-white/90 text-midnight text-[12px] font-medium px-3 py-1.5 rounded-lg flex items-center gap-1"
+              className="absolute bottom-6 left-3 bg-white/90 text-midnight text-[12px] font-medium px-3 py-1.5 rounded-lg flex items-center gap-1"
             >
-              <Camera size={12} /> Voir les {images.length} photos
+              <Camera size={12} /> {images.length} photos
             </button>
           )}
         </div>
