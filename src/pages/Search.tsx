@@ -1,17 +1,15 @@
-import { useState, useMemo, useCallback, useRef, useEffect } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
 import {
-  MapPin, X, ChevronDown, Grid3X3, List, Map, SlidersHorizontal,
-  Bed, Bath, Maximize, Home, Waves, Car, Heart, Search, Check,
-  Camera, Play, Box, Phone, MessageCircle, Mail, User, ArrowRight,
-  Sliders, Share2, CheckCircle2, Clock, TrendingDown, Star, Eye,
-  Bell, Info
+  MapPin, X, ChevronDown, Grid3X3, List, Map,
+  Bed, Bath, Maximize, Home, Heart, Check,
+  Camera, Sliders, Bell
 } from 'lucide-react'
 import { properties as allProperties } from '@/data/properties'
-import { neighborhoods as neighborhoodsData } from '@/data/neighborhoods'
+
 import { useFavorites } from '@/hooks/useFavorites'
 import { useCurrency } from '@/hooks/useCurrency'
-import { cn, formatPrice } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 import type { Property } from '@/data/properties'
 
 /* ───────────────────── types ───────────────────── */

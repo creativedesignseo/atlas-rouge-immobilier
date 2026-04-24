@@ -1,17 +1,17 @@
 import { useState, useMemo } from 'react'
-import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import {
   MapPin, Heart, Share2, X, Maximize, Bed, Bath, Home,
-  Waves, Car, Check, Phone, MessageCircle, Mail, User,
-  ChevronDown, ChevronUp, ArrowRight, Camera, Box, Play,
-  TreePine, Info, ExternalLink, FileText, Calculator,
-  Landmark, Percent, Briefcase, Clock
+  Waves, Car, Check, Phone, MessageCircle, User,
+  ChevronDown, ChevronUp, ArrowRight, Camera, Box,
+  TreePine, Info, FileText, Calculator,
+  Landmark, Percent, Briefcase
 } from 'lucide-react'
 import { properties as allProperties } from '@/data/properties'
 import { useFavorites } from '@/hooks/useFavorites'
 import { useCurrency } from '@/hooks/useCurrency'
 import PropertyCard from '@/components/PropertyCard'
-import { cn, formatPrice } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 import type { Property } from '@/data/properties'
 
 /* ───────────────────── constants ───────────────────── */
@@ -334,7 +334,6 @@ function AmenityItem({ label }: { label: string }) {
 
 export default function PropertyDetail() {
   const { slug } = useParams<{ slug: string }>()
-  const navigate = useNavigate()
   const { toggleFavorite, isFavorite } = useFavorites()
   const { formatPrice } = useCurrency()
 

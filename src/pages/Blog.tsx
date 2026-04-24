@@ -324,7 +324,7 @@ export default function Blog() {
       <section className="bg-white py-12 px-6">
         <div ref={gridRef} className="max-w-[1100px] mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredArticles.map((article, index) => (
+            {filteredArticles.map((article) => (
               <Link
                 key={article.title}
                 to="/conseils-immobiliers"

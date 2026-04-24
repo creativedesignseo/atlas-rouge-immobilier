@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Menu, X, MapPin, ChevronDown } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { Menu, X } from 'lucide-react'
 
 const navLinks = [
   { label: 'Acheter', href: '/acheter' },
