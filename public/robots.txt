@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://atlas-rouge-immobilier.netlify.app/sitemap.xml

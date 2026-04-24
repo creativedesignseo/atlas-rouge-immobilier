@@ -12,6 +12,7 @@ import Favorites from './pages/Favorites'
 import Sell from './pages/Sell'
 import BuyerGuide from './pages/BuyerGuide'
 import Blog from './pages/Blog'
+import NotFound from './pages/NotFound'
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
         <Route path="/estimation" element={<Estimation />} />
         <Route path="/gestion-locative" element={<GestionLocative />} />
         <Route path="/estimer" element={<Estimer />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Layout>
   )
