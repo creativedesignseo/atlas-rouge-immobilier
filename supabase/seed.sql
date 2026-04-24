@@ -60,21 +60,3 @@ INSERT INTO properties (slug, title, transaction, type, city, price_eur, price_m
   'villa-familiale-targa', 'Villa familiale à Targa', 'sale', 'villa', 'Marrakech', 520000, 5720000, 260, 800, 6, 4, 3, 2000, 'Belle villa familiale dans le quartier résidentiel de Targa. Idéale pour une famille, elle dispose d’un jardin arboré, d’une piscine, de 4 chambres avec dressing et d’un grand salon marocain.', ARRAY['Idéale famille', 'Jardin arboré', 'Salon marocain'], ARRAY['Piscine', 'Jardin', 'Terrasse', 'Parking', 'Climatisation'], ARRAY['/villa-palmeraie-1.jpg', '/villa-palmeraie-2.jpg', '/property-04.jpg', '/villa-golf-1.jpg', '/villa-palmeraie-3.jpg'], 31.66, -8.01, false, false, false, false, '2024-01-01'
 ) ON CONFLICT (slug) DO NOTHING;
 
-
--- ============================================
--- Seed: site_settings
--- ============================================
-INSERT INTO site_settings (key, value) VALUES
-  ('company_name', 'Atlas Rouge Immobilier'),
-  ('agent_name', 'Sophie Martin'),
-  ('agent_title', 'Conseillère immobilière'),
-  ('phone', '+212 524 00 00 00'),
-  ('whatsapp', '+212 600 00 00 00'),
-  ('email', 'contact@atlasrouge.immo'),
-  ('address', '123 Boulevard Mohamed VI, Guéliz'),
-  ('city_postal', '40000 Marrakech, Maroc'),
-  ('hours_weekday', 'Lun – Ven : 9h – 18h'),
-  ('hours_saturday', 'Sam : 10h – 14h'),
-  ('instagram_url', '#'),
-  ('facebook_url', '#')
-ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;

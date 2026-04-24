@@ -25,12 +25,6 @@ export type Database = {
         Update: FavoriteUpdate
         Relationships: []
       }
-      site_settings: {
-        Row: SiteSettingRow
-        Insert: SiteSettingInsert
-        Update: SiteSettingUpdate
-        Relationships: []
-      }
     }
     Views: {}
     Functions: {}
@@ -109,13 +103,3 @@ export type FavoriteRow = {
 
 export type FavoriteInsert = Omit<FavoriteRow, 'id' | 'created_at'>
 export type FavoriteUpdate = Partial<FavoriteInsert>
-
-export type SiteSettingRow = {
-  id: string
-  key: string
-  value: string
-  updated_at: string
-}
-
-export type SiteSettingInsert = Omit<SiteSettingRow, 'id' | 'updated_at'>
-export type SiteSettingUpdate = Partial<SiteSettingInsert>

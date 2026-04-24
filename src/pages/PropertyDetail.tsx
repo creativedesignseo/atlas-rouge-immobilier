@@ -13,7 +13,6 @@ import { getPropertyBySlug, getSimilarProperties } from '@/services/property.ser
 import { submitContactForm } from '@/services/contact.service'
 import { useFavorites } from '@/hooks/useFavorites'
 import { useCurrency } from '@/hooks/useCurrency'
-import { useSiteSettings } from '@/hooks/useSiteSettings'
 import PropertyCard from '@/components/PropertyCard'
 import { cn } from '@/lib/utils'
 import type { Property } from '@/data/properties'
@@ -252,12 +251,7 @@ function LocationMap({ property }: { property: Property }) {
 
 /* ───────────────────── Contact Panel ───────────────────── */
 
-function ContactPanel({ property, settings }: { property: Property; settings: Record<string, string> | null }) {
-  const agentName = settings?.agent_name || 'Sophie Martin'
-  const agentTitle = settings?.agent_title || 'Conseillère immobilière'
-  const phone = settings?.phone || '+212 524 00 00 00'
-  const whatsapp = settings?.whatsapp || '+212 600 00 00 00'
-
+function ContactPanel({ property }: { property: Property }) {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: `Bonjour, je suis intéressé(e) par ce bien (${property.title}). Pourriez-vous me contacter pour plus d'informations ?` })
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [submitting, setSubmitting] = useState(false)
@@ -308,8 +302,8 @@ function ContactPanel({ property, settings }: { property: Property; settings: Re
           <User size={22} className="text-text-secondary" />
         </div>
         <div>
-          <p className="font-inter text-[14px] font-semibold text-text-primary">{agentName}</p>
-          <p className="font-inter text-[13px] text-text-secondary">{agentTitle}</p>
+          <p className="font-inter text-[14px] font-semibold text-text-primary">Sophie Martin</p>
+          <p className="font-inter text-[13px] text-text-secondary">Conseillère immobilière</p>
         </div>
       </div>
 
@@ -368,10 +362,10 @@ function ContactPanel({ property, settings }: { property: Property; settings: Re
       </div>
 
       <div className="flex gap-2 mt-4">
-        <a href={`https://wa.me/${whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center gap-2 h-10 bg-[#25D366] text-white font-inter text-[13px] font-medium rounded-lg hover:opacity-90 transition-opacity">
+        <a href="https://wa.me/212612345678" target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center gap-2 h-10 bg-[#25D366] text-white font-inter text-[13px] font-medium rounded-lg hover:opacity-90 transition-opacity">
           <MessageCircle size={16} /> WhatsApp
         </a>
-        <a href={`tel:${phone.replace(/\s/g, '')}`} className="flex-1 flex items-center justify-center gap-2 h-10 border border-border-warm text-text-primary font-inter text-[13px] font-medium rounded-lg hover:bg-cream transition-colors">
+        <a href="tel:+212612345678" className="flex-1 flex items-center justify-center gap-2 h-10 border border-border-warm text-text-primary font-inter text-[13px] font-medium rounded-lg hover:bg-cream transition-colors">
           <Phone size={16} /> Téléphoner
         </a>
       </div>
@@ -413,7 +407,6 @@ export default function PropertyDetail() {
   const { slug } = useParams<{ slug: string }>()
   const { toggleFavorite, isFavorite } = useFavorites()
   const { formatPrice } = useCurrency()
-  const { settings } = useSiteSettings()
 
   const [property, setProperty] = useState<Property | undefined>(undefined)
   const [similarProperties, setSimilarProperties] = useState<Property[]>([])
@@ -658,7 +651,7 @@ export default function PropertyDetail() {
           {/* Right column — Contact Panel (desktop sticky) */}
           <div className="lg:w-[35%]">
             <div className="lg:sticky lg:top-[calc(72px+24px)]">
-              <ContactPanel property={property} settings={settings} />
+              <ContactPanel property={property} />
             </div>
           </div>
         </div>
@@ -706,10 +699,10 @@ export default function PropertyDetail() {
 
       {/* Mobile Sticky Bottom Bar */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-border-warm flex">
-        <a href={`tel:${(settings?.phone || '+212524000000').replace(/\s/g, '')}`} className="flex-1 flex items-center justify-center gap-2 h-14 text-[14px] font-medium text-text-primary border-r border-border-warm">
+        <a href="tel:+212612345678" className="flex-1 flex items-center justify-center gap-2 h-14 text-[14px] font-medium text-text-primary border-r border-border-warm">
           <Phone size={18} /> Appeler
         </a>
-        <a href={`https://wa.me/${(settings?.whatsapp || '+212600000000').replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center gap-2 h-14 text-[14px] font-medium text-[#25D366] border-r border-border-warm">
+        <a href="https://wa.me/212612345678" target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center gap-2 h-14 text-[14px] font-medium text-[#25D366] border-r border-border-warm">
           <MessageCircle size={18} /> WhatsApp
         </a>
         <button className="flex-[1.3] flex items-center justify-center gap-2 h-14 bg-terracotta text-white text-[14px] font-semibold">
