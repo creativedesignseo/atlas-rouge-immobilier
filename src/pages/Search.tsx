@@ -732,9 +732,9 @@ export default function SearchPage() {
       </div>
 
       {/* ─── Main Content Area ─── */}
-      <div className="max-w-[1600px] mx-auto flex">
-        {/* Filter Sidebar — desktop only */}
-        <aside className="hidden lg:block w-[300px] flex-shrink-0 bg-white border-r border-border-warm sticky top-[calc(72px+80px)] h-[calc(100dvh-152px)] overflow-y-auto">
+      <div className={cn("mx-auto flex", mapVisible ? "max-w-none" : "max-w-[1600px]")}>
+        {/* Filter Sidebar — desktop only, hidden when map is visible */}
+        <aside className={cn("hidden lg:block w-[300px] flex-shrink-0 bg-white border-r border-border-warm sticky top-[calc(72px+80px)] h-[calc(100dvh-152px)] overflow-y-auto transition-all duration-300", mapVisible && "lg:hidden")}>
           <div className="p-5">
             {/* Transaction toggle */}
             <div className="mb-5">
@@ -930,7 +930,7 @@ export default function SearchPage() {
         </aside>
 
         {/* Center: Results */}
-        <main className="flex-1 min-w-0 p-4 lg:p-6">
+        <main className={cn("min-w-0 p-4 lg:p-6", mapVisible ? "lg:w-[420px] lg:flex-shrink-0" : "flex-1")}>
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20">
               <div className="w-10 h-10 border-4 border-terracotta border-t-transparent rounded-full animate-spin" />
@@ -949,9 +949,20 @@ export default function SearchPage() {
             </div>
           ) : (
             <>
+              {/* Desktop map mode — compact list alongside big map */}
+              {mapVisible && (
+                <div className="hidden lg:block space-y-3">
+                  {filtered.map(p => (
+                    <div key={p.slug} onMouseEnter={() => handleMapHover(p.slug)} onMouseLeave={() => handleMapHover(null)}>
+                      <PropertyCardCompact property={p} isHovered={hoveredMapSlug === p.slug} />
+                    </div>
+                  ))}
+                </div>
+              )}
+
               {/* Grid view */}
               {view === 'grid' && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className={cn("grid grid-cols-1 md:grid-cols-2 gap-6", mapVisible && "lg:hidden")}>
                   {filtered.map(p => (
                     <div key={p.slug} onMouseEnter={() => handleMapHover(p.slug)} onMouseLeave={() => handleMapHover(null)}>
                       <PropertyCardGrid property={p} isHovered={hoveredMapSlug === p.slug} />
@@ -962,7 +973,7 @@ export default function SearchPage() {
 
               {/* List view */}
               {view === 'list' && (
-                <div className="space-y-4">
+                <div className={cn("space-y-4", mapVisible && "lg:hidden")}>
                   {filtered.map(p => (
                     <div key={p.slug} onMouseEnter={() => handleMapHover(p.slug)} onMouseLeave={() => handleMapHover(null)}>
                       <PropertyCardList property={p} />
@@ -997,7 +1008,7 @@ export default function SearchPage() {
 
         {/* Right: Map (desktop) */}
         {mapVisible && (
-          <aside className="hidden lg:block w-[400px] flex-shrink-0 sticky top-[calc(72px+80px)] h-[calc(100dvh-152px)] border-l border-border-warm">
+          <aside className="hidden lg:block flex-1 sticky top-[calc(72px+80px)] h-[calc(100dvh-152px)] border-l border-border-warm">
             <MapView properties={filtered} hoveredId={hoveredMapSlug} onHover={handleMapHover} />
           </aside>
         )}
