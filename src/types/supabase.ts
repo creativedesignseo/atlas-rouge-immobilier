@@ -97,6 +97,7 @@ export type FavoriteRow = {
   id: string
   user_id: string
   property_slug: string
+  anonymous_id: string | null
   created_at: string
 }
 

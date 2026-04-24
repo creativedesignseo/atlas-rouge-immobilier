@@ -10,6 +10,7 @@ import {
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { getPropertyBySlug, getSimilarProperties } from '@/services/property.service'
+import { submitContactForm } from '@/services/contact.service'
 import { useFavorites } from '@/hooks/useFavorites'
 import { useCurrency } from '@/hooks/useCurrency'
 import PropertyCard from '@/components/PropertyCard'
@@ -253,6 +254,45 @@ function LocationMap({ property }: { property: Property }) {
 function ContactPanel({ property }: { property: Property }) {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: `Bonjour, je suis intéressé(e) par ce bien (${property.title}). Pourriez-vous me contacter pour plus d'informations ?` })
   const [acceptedTerms, setAcceptedTerms] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState('')
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!formData.name || !formData.email || !formData.message || !acceptedTerms) return
+    setSubmitting(true)
+    setError('')
+    const result = await submitContactForm({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      subject: 'Demande info bien',
+      message: formData.message,
+      propertySlug: property.slug,
+    })
+    setSubmitting(false)
+    if (result.success) {
+      setSubmitted(true)
+    } else {
+      setError(result.error || "Une erreur s'est produite. Veuillez réessayer.")
+    }
+  }
+
+  if (submitted) {
+    return (
+      <div className="bg-white rounded-card border border-border-warm shadow-[0_4px_24px_rgba(0,0,0,0.06)] p-6">
+        <h3 className="font-playfair text-[18px] font-semibold text-midnight mb-1">Atlas Rouge Immobilier</h3>
+        <div className="flex items-start gap-3 bg-green-50 border border-green-200 rounded-lg p-5 mt-4">
+          <Check size={22} className="text-green-600 shrink-0 mt-0.5" />
+          <div>
+            <p className="font-inter text-[15px] font-medium text-green-800 mb-1">Message envoyé !</p>
+            <p className="font-inter text-[14px] text-green-700">Votre demande a bien été transmise. Nous vous répondrons sous 24h.</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="bg-white rounded-card border border-border-warm shadow-[0_4px_24px_rgba(0,0,0,0.06)] p-6">
@@ -267,14 +307,14 @@ function ContactPanel({ property }: { property: Property }) {
         </div>
       </div>
 
-      <form className="space-y-3" onSubmit={e => e.preventDefault()}>
+      <form className="space-y-3" onSubmit={handleSubmit}>
         <input
-          type="text" placeholder="Nom complet" value={formData.name}
+          type="text" placeholder="Nom complet *" required value={formData.name}
           onChange={e => setFormData(f => ({ ...f, name: e.target.value }))}
           className="w-full h-11 border border-border-warm rounded-lg px-4 text-[14px] focus:border-terracotta focus:outline-none"
         />
         <input
-          type="email" placeholder="Email" value={formData.email}
+          type="email" placeholder="Email *" required value={formData.email}
           onChange={e => setFormData(f => ({ ...f, email: e.target.value }))}
           className="w-full h-11 border border-border-warm rounded-lg px-4 text-[14px] focus:border-terracotta focus:outline-none"
         />
@@ -284,10 +324,14 @@ function ContactPanel({ property }: { property: Property }) {
           className="w-full h-11 border border-border-warm rounded-lg px-4 text-[14px] focus:border-terracotta focus:outline-none"
         />
         <textarea
-          placeholder="Message" rows={4} value={formData.message}
+          placeholder="Message *" required rows={4} value={formData.message}
           onChange={e => setFormData(f => ({ ...f, message: e.target.value }))}
           className="w-full border border-border-warm rounded-lg px-4 py-3 text-[14px] focus:border-terracotta focus:outline-none resize-none"
         />
+
+        {error && (
+          <p className="text-red-600 text-[13px] font-inter">{error}</p>
+        )}
 
         <label className="flex items-start gap-2 cursor-pointer">
           <div
@@ -296,11 +340,15 @@ function ContactPanel({ property }: { property: Property }) {
           >
             {acceptedTerms && <Check size={10} className="text-white" />}
           </div>
-          <span className="text-[12px] text-text-secondary font-inter leading-tight">J'accepte les conditions d'utilisation</span>
+          <span className="text-[12px] text-text-secondary font-inter leading-tight">J'accepte les conditions d'utilisation *</span>
         </label>
 
-        <button className="w-full h-12 bg-terracotta text-white font-inter text-[14px] font-semibold rounded-lg hover:scale-[1.02] transition-transform">
-          Envoyer ma demande
+        <button
+          type="submit"
+          disabled={!acceptedTerms || submitting}
+          className="w-full h-12 bg-terracotta text-white font-inter text-[14px] font-semibold rounded-lg hover:scale-[1.02] transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {submitting ? 'Envoi en cours...' : 'Envoyer ma demande'}
         </button>
       </form>
 
