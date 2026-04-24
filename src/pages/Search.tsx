@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
 import {
   MapPin, X, ChevronDown, Grid3X3, List, Map,
@@ -11,6 +11,9 @@ import { useFavorites } from '@/hooks/useFavorites'
 import { useCurrency } from '@/hooks/useCurrency'
 import { cn } from '@/lib/utils'
 import type { Property } from '@/data/properties'
+
+import maplibregl from 'maplibre-gl'
+import 'maplibre-gl/dist/maplibre-gl.css'
 
 /* ───────────────────── types ───────────────────── */
 
@@ -216,112 +219,156 @@ function PropertyCardList({ property }: { property: Property }) {
   )
 }
 
-/* ───────────────────── Property card (compact for map popup) ───────────────────── */
+/* ════════════════════════════════════════
+   MapView — MapLibre GL con tiles OSM reales
+   streets style + popup interactivo
+   ════════════════════════════════════════ */
 
-function MapPropertyPopup({ property }: { property: Property }) {
+function MapView({ properties, hoveredId, onHover }: { properties: Property[]; hoveredId: string | null; onHover: (id: string | null) => void }) {
+  const mapContainer = useRef<HTMLDivElement>(null)
+  const map = useRef<maplibregl.Map | null>(null)
+  const markersRef = useRef<maplibregl.Marker[]>([])
+  const popupsRef = useRef<maplibregl.Popup[]>([])
+  const navigate = useNavigate()
   const { formatPrice } = useCurrency()
-  const image = property.images[0] || '/property-01.jpg'
-  return (
-    <Link to={`/property/${property.slug}`} className="block w-[220px] bg-white rounded-xl shadow-lg overflow-hidden">
-      <img src={image} alt={property.title} className="w-full h-[100px] object-cover" />
-      <div className="p-3">
-        <p className="text-terracotta font-inter text-[14px] font-semibold">{formatPrice(property.priceEUR)}</p>
-        <p className="text-midnight text-[13px] font-medium truncate">{property.title}</p>
-        <p className="text-text-secondary text-[12px]">{property.neighborhood}</p>
-      </div>
-    </Link>
-  )
+
+  useEffect(() => {
+    if (!mapContainer.current) return
+
+    map.current = new maplibregl.Map({
+      container: mapContainer.current,
+      style: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
+      center: [-7.98, 31.62],
+      zoom: 11.5,
+      interactive: true,
+      attributionControl: false,
+    })
+
+    map.current.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right')
+    map.current.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right')
+
+    return () => {
+      markersRef.current.forEach(m => m.remove())
+      popupsRef.current.forEach(p => p.remove())
+      map.current?.remove()
+      map.current = null
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!map.current || properties.length === 0) return
+    const bounds = new maplibregl.LngLatBounds()
+    properties.forEach(p => bounds.extend([p.longitude, p.latitude]))
+    if (!bounds.isEmpty()) {
+      map.current.fitBounds(bounds, { padding: 60, maxZoom: 14, duration: 600 })
+    }
+  }, [properties.length === 0 ? 0 : properties[0].slug])
+
+  useEffect(() => {
+    if (!map.current) return
+    markersRef.current.forEach(m => m.remove())
+    popupsRef.current.forEach(p => p.remove())
+    markersRef.current = []
+    popupsRef.current = []
+
+    properties.forEach(p => {
+      const isHovered = hoveredId === p.slug
+      const priceLabel = (p.priceEUR / 1000).toFixed(0) + 'k €'
+
+      const el = document.createElement('div')
+      el.style.cursor = 'pointer'
+      el.innerHTML = `<div style="
+        background: ${isHovered ? '#315C45' : '#B5533A'};
+        color: white; padding: 5px 12px; border-radius: 20px;
+        font-size: 12px; font-weight: 700; white-space: nowrap;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+        font-family: Inter, sans-serif; letter-spacing: -0.2px;
+        border: 2px solid white;
+        transform: ${isHovered ? 'scale(1.15) translateY(-2px)' : 'scale(1)'}
+        transition: all 0.2s ease;
+      ">${priceLabel}</div>`
+
+      const marker = new maplibregl.Marker({ element: el, anchor: 'bottom', offset: [0, 4] })
+        .setLngLat([p.longitude, p.latitude])
+        .addTo(map.current!)
+
+      const popup = new maplibregl.Popup({ closeButton: false, closeOnClick: false, offset: 18, maxWidth: '280px' })
+        .setHTML(`<div style="font-family:Inter,sans-serif;cursor:pointer;" onclick="window.location.href='/property/${p.slug}'">
+          <img src="${p.images[0]}" style="width:100%;height:120px;object-fit:cover;border-radius:10px 10px 0 0;display:block;" />
+          <div style="padding:12px;background:white;border-radius:0 0 10px 10px;">
+            <p style="color:#B5533A;font-size:15px;font-weight:700;margin:0 0 4px 0;">${formatPrice(p.priceEUR)}</p>
+            <p style="color:#1E1E1E;font-size:13px;font-weight:600;margin:0 0 2px 0;">${p.neighborhood}, Marrakech</p>
+            <p style="color:#6E6259;font-size:12px;margin:0 0 6px 0;">${p.surface} m² · ${p.rooms} pièces · ${p.bedrooms} chambres</p>
+          </div>
+        </div>`)
+
+      el.addEventListener('mouseenter', () => { onHover(p.slug); popup.setLngLat([p.longitude, p.latitude]).addTo(map.current!) })
+      el.addEventListener('mouseleave', () => { onHover(null); popup.remove() })
+      el.addEventListener('click', (e: Event) => { e.stopPropagation(); navigate(`/property/${p.slug}`) })
+
+      markersRef.current.push(marker)
+      popupsRef.current.push(popup)
+    })
+  }, [properties, hoveredId])
+
+  useEffect(() => {
+    if (!map.current || !hoveredId) return
+    const target = properties.find(p => p.slug === hoveredId)
+    if (target) map.current.easeTo({ center: [target.longitude, target.latitude], zoom: Math.max(map.current.getZoom(), 13), duration: 400 })
+  }, [hoveredId])
+
+  return <div ref={mapContainer} className="w-full h-full" />
 }
 
-/* ───────────────────── Map Placeholder ───────────────────── */
+/* ════════════════════════════════════════
+   PropertyCardCompact — para modo Carte
+   ════════════════════════════════════════ */
 
-function MapPlaceholder({ properties, hoveredId, onHover }: { properties: Property[]; hoveredId: string | null; onHover: (id: string | null) => void }) {
-  const [selectedId, setSelectedId] = useState<string | null>(null)
-  const selectedProperty = properties.find(p => p.slug === selectedId)
-
-  // Map Marrakech area bounds (approx)
-  const latMin = 31.45, latMax = 31.72
-  const lngMin = -8.18, lngMax = -7.88
-
-  const toPosition = (lat: number, lng: number) => ({
-    top: `${((latMax - lat) / (latMax - latMin)) * 100}%`,
-    left: `${((lng - lngMin) / (lngMax - lngMin)) * 100}%`,
-  })
+function PropertyCardCompact({ property, isHovered = false }: { property: Property; isHovered?: boolean }) {
+  const { toggleFavorite, isFavorite } = useFavorites()
+  const { formatPrice } = useCurrency()
+  const image = property.images[0] || '/property-01.jpg'
 
   return (
-    <div className="relative w-full h-full bg-[#1a2332] overflow-hidden">
-      {/* Map background grid pattern */}
-      <div className="absolute inset-0 opacity-20" style={{
-        backgroundImage: `repeating-linear-gradient(#315C45 0 1px, transparent 1px 100%), repeating-linear-gradient(90deg, #315C45 0 1px, transparent 1px 100%)`,
-        backgroundSize: '40px 40px',
-      }} />
-      {/* Street-like patterns */}
-      <svg className="absolute inset-0 w-full h-full opacity-15" viewBox="0 0 100 100" preserveAspectRatio="none">
-        <line x1="20" y1="0" x2="25" y2="100" stroke="#D8C3A5" strokeWidth="0.3" />
-        <line x1="60" y1="0" x2="55" y2="100" stroke="#D8C3A5" strokeWidth="0.3" />
-        <line x1="0" y1="30" x2="100" y2="35" stroke="#D8C3A5" strokeWidth="0.3" />
-        <line x1="0" y1="70" x2="100" y2="68" stroke="#D8C3A5" strokeWidth="0.3" />
-        <line x1="80" y1="0" x2="78" y2="100" stroke="#D8C3A5" strokeWidth="0.3" />
-        <line x1="0" y1="50" x2="100" y2="52" stroke="#D8C3A5" strokeWidth="0.5" />
-      </svg>
-      {/* Neighborhood labels */}
-      <span className="absolute top-[20%] left-[35%] text-white/30 text-[10px] font-inter">Palmeraie</span>
-      <span className="absolute top-[45%] left-[55%] text-white/30 text-[10px] font-inter">Médina</span>
-      <span className="absolute top-[35%] left-[25%] text-white/30 text-[10px] font-inter">Gueliz</span>
-      <span className="absolute top-[55%] left-[65%] text-white/30 text-[10px] font-inter">Hivernage</span>
-      <span className="absolute top-[65%] left-[45%] text-white/30 text-[10px] font-inter">Agdal</span>
-
-      {/* Property pins */}
-      {properties.map((p) => {
-        const pos = toPosition(p.latitude, p.longitude)
-        const isActive = hoveredId === p.slug || selectedId === p.slug
-        return (
-          <div
-            key={p.slug}
-            className="absolute z-10 -translate-x-1/2 -translate-y-1/2"
-            style={{ top: pos.top, left: pos.left }}
-            onMouseEnter={() => onHover(p.slug)}
-            onMouseLeave={() => onHover(null)}
-            onClick={() => setSelectedId(selectedId === p.slug ? null : p.slug)}
-          >
-            <div className={cn(
-              'px-2 py-1 rounded-full text-[11px] font-semibold whitespace-nowrap cursor-pointer transition-all shadow-md',
-              isActive ? 'bg-palm text-white scale-110' : 'bg-terracotta text-white hover:scale-105'
-            )}>
-              {(p.priceEUR / 1000).toFixed(0)}k €
-            </div>
-          </div>
-        )
-      })}
-
-      {/* Popup card */}
-      {selectedProperty && (
-        <div className="absolute bottom-4 left-4 z-20" onClick={(e) => e.stopPropagation()}>
-          <div className="relative">
-            <MapPropertyPopup property={selectedProperty} />
-            <button
-              onClick={() => setSelectedId(null)}
-              className="absolute -top-2 -right-2 w-6 h-6 bg-white rounded-full shadow flex items-center justify-center"
-            >
-              <X size={12} />
-            </button>
-          </div>
+    <Link to={`/property/${property.slug}`} className={cn(
+      "flex gap-3 bg-white rounded-xl border border-border-warm p-2 hover:shadow-md transition-all duration-200 cursor-pointer",
+      isHovered && "border-terracotta shadow-md ring-1 ring-terracotta/20"
+    )}>
+      <div className="relative w-[100px] h-[80px] flex-shrink-0 rounded-lg overflow-hidden">
+        <img src={image} alt={property.title} className="w-full h-full object-cover" loading="lazy" />
+        <span className="absolute top-1 left-1 bg-palm text-white text-[9px] font-semibold px-1.5 py-0.5 rounded">{property.transaction === 'sale' ? 'À vendre' : 'À louer'}</span>
+        {property.isExclusive && <span className="absolute top-5 left-1 bg-gold text-midnight text-[9px] font-semibold px-1.5 py-0.5 rounded">Excl.</span>}
+      </div>
+      <div className="flex-1 min-w-0 py-0.5">
+        <p className="text-terracotta font-inter text-[14px] font-bold leading-tight">{formatPrice(property.priceEUR)}</p>
+        <p className="text-text-primary text-[12px] font-medium truncate mt-0.5">{property.title}</p>
+        <p className="text-text-secondary text-[11px] mt-0.5">{property.neighborhood}, Marrakech</p>
+        <div className="flex items-center gap-2 text-text-secondary text-[11px] mt-1">
+          <span className="flex items-center gap-0.5"><Maximize size={11} />{property.surface} m²</span>
+          {property.bedrooms > 0 && <span className="flex items-center gap-0.5"><Bed size={11} />{property.bedrooms}</span>}
+          {property.bathrooms > 0 && <span className="flex items-center gap-0.5"><Bath size={11} />{property.bathrooms}</span>}
         </div>
-      )}
-    </div>
+      </div>
+      <button onClick={e => { e.preventDefault(); e.stopPropagation(); toggleFavorite(property.slug) }} className="self-start mt-1 w-7 h-7 flex items-center justify-center rounded-full hover:bg-cream transition-colors flex-shrink-0">
+        <Heart size={14} className={isFavorite(property.slug) ? 'fill-terracotta text-terracotta' : 'text-text-secondary'} />
+      </button>
+    </Link>
   )
 }
 
 /* ───────────────────── Property Card (grid) ───────────────────── */
 
-function PropertyCardGrid({ property }: { property: Property }) {
+function PropertyCardGrid({ property, isHovered = false }: { property: Property; isHovered?: boolean }) {
   const { toggleFavorite, isFavorite } = useFavorites()
   const { formatPrice } = useCurrency()
   const priceDisplay = formatPrice(property.priceEUR)
   const image = property.images[0] || '/property-01.jpg'
 
   return (
-    <div className="bg-white rounded-card border border-border-warm shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-250 overflow-hidden group">
+    <div className={cn(
+      "bg-white rounded-card border border-border-warm shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-250 overflow-hidden group",
+      isHovered && "border-terracotta shadow-card-hover -translate-y-1"
+    )}>
       <div className="relative aspect-[4/3] overflow-hidden">
         <Link to={`/property/${property.slug}`}>
           <img src={image} alt={property.title} className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-400" loading="lazy" />
@@ -907,7 +954,7 @@ export default function SearchPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {filtered.map(p => (
                     <div key={p.slug} onMouseEnter={() => handleMapHover(p.slug)} onMouseLeave={() => handleMapHover(null)}>
-                      <PropertyCardGrid property={p} />
+                      <PropertyCardGrid property={p} isHovered={hoveredMapSlug === p.slug} />
                     </div>
                   ))}
                 </div>
@@ -930,14 +977,14 @@ export default function SearchPage() {
                   <button onClick={() => setView('grid')} className="absolute top-4 right-4 z-30 w-10 h-10 bg-white rounded-full shadow flex items-center justify-center">
                     <X size={20} />
                   </button>
-                  <MapPlaceholder properties={filtered} hoveredId={hoveredMapSlug} onHover={handleMapHover} />
+                  <MapView properties={filtered} hoveredId={hoveredMapSlug} onHover={handleMapHover} />
                   {/* Bottom sheet with cards */}
                   <div className="absolute bottom-0 left-0 right-0 z-30 bg-white rounded-t-2xl max-h-[35vh] overflow-y-auto p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.15)]">
                     <div className="w-10 h-1 bg-border-warm rounded-full mx-auto mb-3" />
                     <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2">
                       {filtered.map(p => (
                         <div key={p.slug} className="snap-start flex-shrink-0 w-[280px]">
-                          <PropertyCardGrid property={p} />
+                          <PropertyCardCompact property={p} isHovered={hoveredMapSlug === p.slug} />
                         </div>
                       ))}
                     </div>
@@ -951,7 +998,7 @@ export default function SearchPage() {
         {/* Right: Map (desktop) */}
         {mapVisible && (
           <aside className="hidden lg:block w-[400px] flex-shrink-0 sticky top-[calc(72px+80px)] h-[calc(100dvh-152px)] border-l border-border-warm">
-            <MapPlaceholder properties={filtered} hoveredId={hoveredMapSlug} onHover={handleMapHover} />
+            <MapView properties={filtered} hoveredId={hoveredMapSlug} onHover={handleMapHover} />
           </aside>
         )}
       </div>

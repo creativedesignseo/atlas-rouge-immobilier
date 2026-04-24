@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import {
   MapPin, Heart, Share2, X, Maximize, Bed, Bath, Home,
@@ -7,6 +7,8 @@ import {
   TreePine, Info, FileText, Calculator,
   Landmark, Percent, Briefcase
 } from 'lucide-react'
+import maplibregl from 'maplibre-gl'
+import 'maplibre-gl/dist/maplibre-gl.css'
 import { getPropertyBySlug, getSimilarProperties } from '@/services/property.service'
 import { useFavorites } from '@/hooks/useFavorites'
 import { useCurrency } from '@/hooks/useCurrency'
@@ -190,38 +192,55 @@ function Lightbox({ images, startIndex, onClose }: { images: string[]; startInde
   )
 }
 
-/* ───────────────────── Location Map Placeholder ───────────────────── */
+/* ───────────────────── Location Map (MapLibre GL) ───────────────────── */
 
 function LocationMap({ property }: { property: Property }) {
+  const mapContainer = useRef<HTMLDivElement>(null)
+  const map = useRef<maplibregl.Map | null>(null)
+
+  useEffect(() => {
+    if (!mapContainer.current) return
+
+    map.current = new maplibregl.Map({
+      container: mapContainer.current,
+      style: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
+      center: [property.longitude, property.latitude],
+      zoom: 14,
+      interactive: true,
+      attributionControl: false,
+    })
+
+    map.current.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right')
+    map.current.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right')
+
+    const el = document.createElement('div')
+    el.innerHTML = `<div style="
+      width: 80px; height: 80px;
+      background: rgba(181,83,58,0.2);
+      border: 2px solid #B5533A;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    "><div style="width: 12px; height: 12px; background: #B5533A; border-radius: 50%;"></div></div>`
+
+    new maplibregl.Marker({ element: el, anchor: 'center' })
+      .setLngLat([property.longitude, property.latitude])
+      .addTo(map.current)
+
+    return () => {
+      map.current?.remove()
+      map.current = null
+    }
+  }, [property.latitude, property.longitude])
+
   return (
-    <div className="relative w-full h-[400px] rounded-xl overflow-hidden bg-[#1a2332]">
-      <div className="absolute inset-0 opacity-20" style={{
-        backgroundImage: `repeating-linear-gradient(#315C45 0 1px, transparent 1px 100%), repeating-linear-gradient(90deg, #315C45 0 1px, transparent 1px 100%)`,
-        backgroundSize: '40px 40px',
-      }} />
-      <svg className="absolute inset-0 w-full h-full opacity-15" viewBox="0 0 100 100" preserveAspectRatio="none">
-        <line x1="20" y1="0" x2="25" y2="100" stroke="#D8C3A5" strokeWidth="0.3" />
-        <line x1="60" y1="0" x2="55" y2="100" stroke="#D8C3A5" strokeWidth="0.3" />
-        <line x1="0" y1="30" x2="100" y2="35" stroke="#D8C3A5" strokeWidth="0.3" />
-        <line x1="0" y1="70" x2="100" y2="68" stroke="#D8C3A5" strokeWidth="0.3" />
-        <line x1="0" y1="50" x2="100" y2="52" stroke="#D8C3A5" strokeWidth="0.5" />
-      </svg>
-      {/* Neighborhood labels */}
-      <span className="absolute top-[20%] left-[35%] text-white/30 text-[10px] font-inter">{property.neighborhood}</span>
-      {/* Central pin with pulse */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <div className="w-20 h-20 rounded-full bg-terracotta/20 animate-ping absolute" />
-        <div className="relative z-10 w-12 h-12 rounded-full bg-terracotta flex items-center justify-center shadow-lg">
-          <MapPin size={24} className="text-white" />
+    <div className="relative w-full h-[400px] rounded-xl overflow-hidden">
+      <div ref={mapContainer} className="w-full h-full" />
+      <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between pointer-events-none">
+        <div className="bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-md">
+          <p className="text-midnight font-inter text-[14px] font-medium">{property.neighborhood}, Marrakech</p>
+          <p className="text-text-secondary text-[12px] font-inter mt-1">Adresse exacte communiquée sur rendez-vous</p>
         </div>
-      </div>
-      {/* Bottom info */}
-      <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
-        <div>
-          <p className="text-white font-inter text-[14px] font-medium">{property.neighborhood}, Marrakech</p>
-          <p className="text-gold text-[12px] font-inter mt-1">Adresse exacte communiquée sur rendez-vous</p>
-        </div>
-        <button className="bg-white text-midnight text-[13px] font-medium px-4 py-2 rounded-lg hover:bg-cream transition-colors">
+        <button className="bg-terracotta text-white text-[13px] font-medium px-4 py-2 rounded-lg hover:bg-terracotta/90 transition-colors pointer-events-auto shadow-md">
           Obtenir l'adresse exacte
         </button>
       </div>
