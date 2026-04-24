@@ -733,8 +733,8 @@ export default function SearchPage() {
 
       {/* ─── Main Content Area ─── */}
       <div className={cn("mx-auto flex", mapVisible ? "max-w-none" : "max-w-[1600px]")}>
-        {/* Filter Sidebar — desktop only, hidden when map is visible */}
-        <aside className={cn("hidden lg:block w-[300px] flex-shrink-0 bg-white border-r border-border-warm sticky top-[calc(72px+80px)] h-[calc(100dvh-152px)] overflow-y-auto transition-all duration-300", mapVisible && "lg:hidden")}>
+        {/* Filter Sidebar — desktop only */}
+        <aside className="hidden lg:block w-[300px] flex-shrink-0 bg-white border-r border-border-warm sticky top-[calc(72px+80px)] h-[calc(100dvh-152px)] overflow-y-auto">
           <div className="p-5">
             {/* Transaction toggle */}
             <div className="mb-5">
@@ -930,7 +930,7 @@ export default function SearchPage() {
         </aside>
 
         {/* Center: Results */}
-        <main className={cn("min-w-0 p-4 lg:p-6", mapVisible ? "lg:w-[420px] lg:flex-shrink-0" : "flex-1")}>
+        <main className={cn("min-w-0 p-4 lg:p-6 transition-all duration-300", mapVisible ? "lg:w-1/2 lg:flex-shrink-0" : "flex-1")}>
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20">
               <div className="w-10 h-10 border-4 border-terracotta border-t-transparent rounded-full animate-spin" />
@@ -949,12 +949,12 @@ export default function SearchPage() {
             </div>
           ) : (
             <>
-              {/* Desktop map mode — compact list alongside big map */}
+              {/* Desktop map mode — list view alongside map (50/50) */}
               {mapVisible && (
-                <div className="hidden lg:block space-y-3">
+                <div className="hidden lg:block space-y-4">
                   {filtered.map(p => (
                     <div key={p.slug} onMouseEnter={() => handleMapHover(p.slug)} onMouseLeave={() => handleMapHover(null)}>
-                      <PropertyCardCompact property={p} isHovered={hoveredMapSlug === p.slug} />
+                      <PropertyCardList property={p} />
                     </div>
                   ))}
                 </div>
@@ -1008,7 +1008,7 @@ export default function SearchPage() {
 
         {/* Right: Map (desktop) */}
         {mapVisible && (
-          <aside className="hidden lg:block flex-1 sticky top-[calc(72px+80px)] h-[calc(100dvh-152px)] border-l border-border-warm">
+          <aside className="hidden lg:block lg:w-1/2 flex-shrink-0 sticky top-[calc(72px+80px)] h-[calc(100dvh-152px)] border-l border-border-warm transition-all duration-300">
             <MapView properties={filtered} hoveredId={hoveredMapSlug} onHover={handleMapHover} />
           </aside>
         )}
