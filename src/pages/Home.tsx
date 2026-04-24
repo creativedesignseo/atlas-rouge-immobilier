@@ -1,0 +1,609 @@
+import { useRef, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import {
+  MapPin,
+  ChevronDown,
+  Search,
+  Home as HomeIcon,
+  Building,
+  Landmark,
+  Star,
+  TreePine,
+  Maximize,
+  KeyRound,
+  Tag,
+  FileText,
+  Calculator,
+  ShieldCheck,
+  Users,
+  ArrowRight,
+} from 'lucide-react'
+import { properties } from '@/data/properties'
+import { neighborhoods } from '@/data/neighborhoods'
+import PropertyCard from '@/components/PropertyCard'
+import NeighborhoodCard from '@/components/NeighborhoodCard'
+import ServiceCard from '@/components/ServiceCard'
+
+gsap.registerPlugin(ScrollTrigger)
+
+const filterChips = [
+  'Villa avec piscine',
+  'Riad m\u00E9dina',
+  'Appartement neuf',
+  'Palmeraie',
+  'Route de l\u2019Ourika',
+  'Investissement locatif',
+]
+
+const categories = [
+  { icon: <HomeIcon size={32} />, label: 'Villas', href: '/acheter?type=villa' },
+  { icon: <Building size={32} />, label: 'Appartements', href: '/acheter?type=appartement' },
+  { icon: <Landmark size={32} />, label: 'Riads', href: '/acheter?type=riad' },
+  { icon: <Star size={32} />, label: 'Maisons de prestige', href: '/acheter?type=prestige' },
+  { icon: <TreePine size={32} />, label: 'Terrains', href: '/acheter?type=terrain' },
+  { icon: <Maximize size={32} />, label: 'Rooftops', href: '/acheter?type=rooftop' },
+]
+
+const services = [
+  {
+    icon: <KeyRound size={40} />,
+    title: 'Acheter',
+    description:
+      'Trouvez votre villa, riad ou appartement \u00E0 Marrakech avec l\u2019aide de nos conseillers locaux.',
+  },
+  {
+    icon: <Tag size={40} />,
+    title: 'Vendre',
+    description:
+      'Estimez et vendez votre bien au meilleur prix gr\u00E2ce \u00E0 notre r\u00E9seau d\u2019acheteurs fran\u00E7ais.',
+  },
+  {
+    icon: <FileText size={40} />,
+    title: 'Louer',
+    description:
+      'Locations saisonni\u00E8res et longue dur\u00E9e \u2014 r\u00E9sidences meubl\u00E9es et services conciergerie.',
+  },
+  {
+    icon: <Calculator size={40} />,
+    title: 'Estimation',
+    description:
+      '\u00C9valuation gratuite de votre bien par des experts du march\u00E9 immobilier marocain.',
+  },
+  {
+    icon: <ShieldCheck size={40} />,
+    title: 'Gestion locative',
+    description:
+      'Nous g\u00E9rons votre propri\u00E9t\u00E9 : entretien, location, conciergerie et rapport complet.',
+  },
+  {
+    icon: <Users size={40} />,
+    title: 'Accompagnement',
+    description:
+      'Assistance administrative, notaire, banque et fiscalit\u00E9 pour les acheteurs \u00E9trangers.',
+  },
+]
+
+const blogArticles = [
+  {
+    image: '/blog-pricing.jpg',
+    category: 'March\u00E9',
+    title: 'Prix de l\u2019immobilier \u00E0 Marrakech : tendances 2024',
+    date: '15 Jan 2024',
+  },
+  {
+    image: '/blog-neighborhood.jpg',
+    category: 'Quartiers',
+    title: 'Choisir son quartier : Gu\u00E9liz vs Hivernage',
+    date: '8 Jan 2024',
+  },
+  {
+    image: '/guide-buyer.jpg',
+    category: 'Achat',
+    title: 'Notaire ou Adoul : qui choisir pour votre acte ?',
+    date: '2 Jan 2024',
+  },
+]
+
+function AnimatedCounter({ target, suffix = '', duration = 1.5 }: { target: number; suffix?: string; duration?: number }) {
+  const ref = useRef<HTMLSpanElement>(null)
+  const [hasTriggered, setHasTriggered] = useState(false)
+
+  useGSAP(
+    () => {
+      if (!ref.current || hasTriggered) return
+      ScrollTrigger.create({
+        trigger: ref.current,
+        start: 'top 85%',
+        once: true,
+        onEnter: () => {
+          setHasTriggered(true)
+          const obj = { val: 0 }
+          gsap.to(obj, {
+            val: target,
+            duration,
+            ease: 'power2.out',
+            onUpdate: () => {
+              if (ref.current) {
+                ref.current.textContent = Math.round(obj.val).toLocaleString('fr-FR') + suffix
+              }
+            },
+          })
+        },
+      })
+    },
+    { scope: ref }
+  )
+
+  return <span ref={ref}>0{suffix}</span>
+}
+
+export default function Home() {
+  const heroRef = useRef<HTMLDivElement>(null)
+  const heroTitleRef = useRef<HTMLHeadingElement>(null)
+  const heroSubtitleRef = useRef<HTMLParagraphElement>(null)
+  const heroSearchRef = useRef<HTMLDivElement>(null)
+  const heroChipsRef = useRef<HTMLDivElement>(null)
+  const exploreRef = useRef<HTMLElement>(null)
+  const featuredRef = useRef<HTMLElement>(null)
+  const categoriesRef = useRef<HTMLElement>(null)
+  const servicesRef = useRef<HTMLElement>(null)
+  const trustRef = useRef<HTMLElement>(null)
+  const ctaRef = useRef<HTMLElement>(null)
+  const blogRef = useRef<HTMLElement>(null)
+
+  const featuredProperties = properties.filter((p) => p.isFeatured).slice(0, 3)
+
+  // Hero entrance animations
+  useGSAP(
+    () => {
+      if (!heroTitleRef.current) return
+      gsap.from(heroTitleRef.current, {
+        y: 40,
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+        delay: 0.2,
+      })
+      gsap.from(heroSubtitleRef.current, {
+        y: 30,
+        opacity: 0,
+        duration: 0.7,
+        ease: 'power3.out',
+        delay: 0.4,
+      })
+      gsap.from(heroSearchRef.current, {
+        y: 20,
+        opacity: 0,
+        duration: 0.6,
+        ease: 'power3.out',
+        delay: 0.6,
+      })
+      if (heroChipsRef.current) {
+        gsap.from(heroChipsRef.current.children, {
+          y: 15,
+          opacity: 0,
+          duration: 0.5,
+          ease: 'power3.out',
+          stagger: 0.08,
+          delay: 0.8,
+        })
+      }
+    },
+    { scope: heroRef }
+  )
+
+  // Section reveal animations
+  useGSAP(
+    () => {
+      const sections = [
+        exploreRef.current,
+        featuredRef.current,
+        categoriesRef.current,
+        servicesRef.current,
+        trustRef.current,
+        ctaRef.current,
+        blogRef.current,
+      ]
+      sections.forEach((section) => {
+        if (!section) return
+        const header = section.querySelector('.section-header')
+        const content = section.querySelector('.section-content')
+        if (header) {
+          gsap.from(header.children, {
+            y: 30,
+            opacity: 0,
+            duration: 0.7,
+            ease: 'power3.out',
+            stagger: 0.1,
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 85%',
+              once: true,
+            },
+          })
+        }
+        if (content) {
+          gsap.from(content.children, {
+            y: 40,
+            opacity: 0,
+            duration: 0.7,
+            ease: 'power3.out',
+            stagger: 0.12,
+            scrollTrigger: {
+              trigger: content,
+              start: 'top 85%',
+              once: true,
+            },
+          })
+        }
+      })
+    },
+    { scope: heroRef }
+  )
+
+  // Trust section image
+  useGSAP(
+    () => {
+      if (!trustRef.current) return
+      const img = trustRef.current.querySelector('.trust-image')
+      if (img) {
+        gsap.from(img, {
+          x: 40,
+          opacity: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: trustRef.current,
+            start: 'top 85%',
+            once: true,
+          },
+        })
+      }
+    },
+    { scope: trustRef }
+  )
+
+  return (
+    <div>
+      {/* ====== HERO ====== */}
+      <section
+        ref={heroRef}
+        className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden"
+      >
+        {/* Background with Ken Burns */}
+        <div className="absolute inset-0">
+          <div
+            className="absolute inset-0 bg-cover bg-center animate-ken-burns"
+            style={{ backgroundImage: 'url(/hero-marrakech.jpg)' }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[rgba(23,32,51,0.55)] to-[rgba(23,32,51,0.75)]" />
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10 text-center px-6 max-w-[800px] mx-auto pt-20 pb-12">
+          <h1
+            ref={heroTitleRef}
+            className="font-playfair text-[36px] md:text-[56px] font-medium text-white leading-[1.1] tracking-[-0.5px] mb-6"
+          >
+            Villas, riads &amp; appartements &agrave; Marrakech
+          </h1>
+          <p
+            ref={heroSubtitleRef}
+            className="text-white/85 text-[16px] md:text-[18px] font-inter font-normal mb-10"
+          >
+            D&eacute;couvrez plus de 3 500 annonces &mdash; villas avec piscine,
+            riads r&eacute;nov&eacute;s, appartements neufs
+          </p>
+
+          {/* Search bar */}
+          <div
+            ref={heroSearchRef}
+            className="bg-white rounded-card shadow-search p-2 max-w-[720px] mx-auto"
+          >
+            <div className="flex flex-col md:flex-row items-stretch gap-2">
+              {/* Location */}
+              <div className="flex-1 flex items-center gap-2 px-4 py-2 bg-cream rounded-lg min-h-[48px]">
+                <MapPin size={18} className="text-text-secondary shrink-0" />
+                <input
+                  type="text"
+                  placeholder="O&ugrave; cherchez-vous ?"
+                  className="bg-transparent text-text-primary text-[14px] font-inter w-full outline-none placeholder:text-text-secondary/60"
+                />
+              </div>
+              {/* Property type */}
+              <div className="flex items-center gap-2 px-4 py-2 bg-cream rounded-lg min-h-[48px] cursor-pointer">
+                <HomeIcon size={18} className="text-text-secondary shrink-0" />
+                <span className="text-text-secondary text-[14px] font-inter">
+                  Type de bien
+                </span>
+                <ChevronDown size={16} className="text-text-secondary ml-auto" />
+              </div>
+              {/* Button */}
+              <Link
+                to="/acheter"
+                className="bg-terracotta text-white font-inter text-[14px] font-semibold px-6 py-3 rounded-lg flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform min-h-[48px]"
+              >
+                <Search size={16} />
+                Rechercher
+              </Link>
+            </div>
+          </div>
+
+          {/* Filter chips */}
+          <div
+            ref={heroChipsRef}
+            className="flex flex-wrap justify-center gap-2 mt-8"
+          >
+            {filterChips.map((chip) => (
+              <Link
+                key={chip}
+                to="/acheter"
+                className="bg-[rgba(216,195,165,0.3)] text-white text-[12px] font-medium font-inter px-4 py-1.5 rounded-pill hover:bg-[rgba(216,195,165,0.5)] transition-colors"
+              >
+                {chip}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ====== EXPLORE MARRAKECH ====== */}
+      <section ref={exploreRef} className="bg-white py-16 md:py-24">
+        <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
+          <div className="section-header text-center mb-12">
+            <span className="text-terracotta text-[12px] font-inter font-medium uppercase tracking-[2px]">
+              Explorer Marrakech
+            </span>
+            <h2 className="font-playfair text-[32px] md:text-[40px] font-medium text-midnight mt-3 mb-4">
+              Les quartiers les plus pris&eacute;s
+            </h2>
+            <p className="text-text-secondary text-[16px] font-inter max-w-[600px] mx-auto">
+              De la M&eacute;dina historique &agrave; la Palmeraie luxueuse,
+              trouvez le quartier qui vous correspond
+            </p>
+          </div>
+          <div className="section-content grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {neighborhoods.map((n) => (
+              <NeighborhoodCard key={n.slug} neighborhood={n} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ====== FEATURED PROPERTIES ====== */}
+      <section ref={featuredRef} className="bg-cream-warm py-16 md:py-24">
+        <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
+          <div className="section-header text-center mb-12">
+            <span className="text-palm text-[12px] font-inter font-medium uppercase tracking-[2px]">
+              Annonces en vedette
+            </span>
+            <h2 className="font-playfair text-[32px] md:text-[40px] font-medium text-midnight mt-3 mb-4">
+              Propri&eacute;t&eacute;s s&eacute;lectionn&eacute;es pour vous
+            </h2>
+            <p className="text-text-secondary text-[16px] font-inter max-w-[600px] mx-auto">
+              Une s&eacute;lection de biens d&apos;exception, du riad traditionnel
+              &agrave; la villa contemporaine
+            </p>
+          </div>
+          <div className="section-content grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featuredProperties.map((p) => (
+              <PropertyCard key={p.id} property={p} />
+            ))}
+          </div>
+          <div className="text-center mt-10">
+            <Link
+              to="/acheter"
+              className="inline-flex items-center gap-2 text-terracotta text-[16px] font-inter font-medium hover:underline"
+            >
+              Voir toutes les annonces
+              <ArrowRight size={18} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ====== PROPERTY CATEGORIES ====== */}
+      <section ref={categoriesRef} className="bg-white py-16 md:py-24">
+        <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
+          <div className="section-header text-center mb-10">
+            <h2 className="font-playfair text-[32px] md:text-[40px] font-medium text-midnight">
+              Trouvez votre bien id&eacute;al
+            </h2>
+          </div>
+          <div className="section-content flex gap-4 overflow-x-auto pb-4 justify-start md:justify-center">
+            {categories.map((cat) => (
+              <Link
+                key={cat.label}
+                to={cat.href}
+                className="flex flex-col items-center justify-center w-[160px] min-w-[160px] h-[120px] bg-cream-warm rounded-xl hover:bg-[rgba(216,195,165,0.4)] transition-colors group"
+              >
+                <span className="text-text-secondary group-hover:text-terracotta transition-colors mb-2">
+                  {cat.icon}
+                </span>
+                <span className="text-text-primary text-[14px] font-inter font-medium text-center px-2">
+                  {cat.label}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ====== SERVICES ====== */}
+      <section ref={servicesRef} className="bg-cream-warm py-16 md:py-24">
+        <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
+          <div className="section-header text-center mb-12">
+            <span className="text-terracotta text-[12px] font-inter font-medium uppercase tracking-[2px]">
+              Nos services
+            </span>
+            <h2 className="font-playfair text-[32px] md:text-[40px] font-medium text-midnight mt-3 mb-4">
+              De l&apos;achat &agrave; la gestion, nous vous accompagnons
+            </h2>
+          </div>
+          <div className="section-content grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {services.map((s) => (
+              <ServiceCard
+                key={s.title}
+                icon={s.icon}
+                title={s.title}
+                description={s.description}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ====== TRUST ====== */}
+      <section ref={trustRef} className="bg-white py-16 md:py-24">
+        <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
+            {/* Left content */}
+            <div className="lg:col-span-3 section-header">
+              <span className="text-palm text-[12px] font-inter font-medium uppercase tracking-[2px]">
+                Pourquoi nous faire confiance
+              </span>
+              <h2 className="font-playfair text-[32px] md:text-[40px] font-medium text-midnight mt-3 mb-6">
+                Une expertise locale, une exp&eacute;rience pour les acheteurs
+                fran&ccedil;ais
+              </h2>
+              <p className="text-text-primary text-[16px] font-inter leading-[1.7] mb-8">
+                Atlas Rouge Immobilier est n&eacute; d&apos;une conviction :
+                acheter au Maroc m&eacute;rite un accompagnement de qualit&eacute;,
+                transparent et humain. Nos conseillers connaissent Marrakech
+                quartier par quartier. Ils vous guident de la premi&egrave;re
+                visite jusqu&apos;&agrave; la signature chez le notaire.
+              </p>
+
+              {/* Stats */}
+              <div className="flex flex-wrap gap-8 md:gap-12">
+                <div>
+                  <span className="font-playfair text-[32px] font-medium text-terracotta">
+                    <AnimatedCounter target={3500} suffix="+" />
+                  </span>
+                  <p className="text-text-secondary text-[14px] font-inter mt-1">
+                    Annonces
+                  </p>
+                </div>
+                <div>
+                  <span className="font-playfair text-[32px] font-medium text-terracotta">
+                    <AnimatedCounter target={12} />
+                  </span>
+                  <p className="text-text-secondary text-[14px] font-inter mt-1">
+                    Ann&eacute;es d&apos;exp&eacute;rience
+                  </p>
+                </div>
+                <div>
+                  <span className="font-playfair text-[32px] font-medium text-terracotta">
+                    <AnimatedCounter target={98} suffix="%" />
+                  </span>
+                  <p className="text-text-secondary text-[14px] font-inter mt-1">
+                    Clients satisfaits
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Right image */}
+            <div className="lg:col-span-2">
+              <div className="trust-image rounded-card overflow-hidden shadow-card">
+                <img
+                  src="/property-01.jpg"
+                  alt="Villa de prestige &agrave; Marrakech"
+                  className="w-full h-auto object-cover"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ====== CTA BANNER ====== */}
+      <section
+        ref={ctaRef}
+        className="bg-midnight py-16 md:py-24 flex items-center justify-center"
+      >
+        <div className="max-w-[700px] mx-auto px-6 text-center section-header">
+          <h2 className="font-playfair text-[32px] md:text-[40px] font-medium text-white mb-4">
+            D&eacute;crivez-nous votre bien id&eacute;al
+          </h2>
+          <p className="text-white/75 text-[16px] font-inter mb-8">
+            Nous s&eacute;lectionnons pour vous les meilleures propri&eacute;t&eacute;s
+            correspondant &agrave; vos crit&egrave;res.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              to="/acheter"
+              className="bg-terracotta text-white font-inter text-[14px] font-semibold px-8 py-3.5 rounded-lg hover:scale-[1.02] transition-transform"
+            >
+              Commencer ma recherche
+            </Link>
+            <Link
+              to="/contact"
+              className="border border-terracotta text-terracotta font-inter text-[14px] font-semibold px-8 py-3.5 rounded-lg hover:bg-terracotta/10 transition-colors"
+            >
+              Ou cr&eacute;er une alerte
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ====== BLOG TEASER ====== */}
+      <section ref={blogRef} className="bg-cream-warm py-16 md:py-24">
+        <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
+          <div className="section-header text-center mb-12">
+            <span className="text-terracotta text-[12px] font-inter font-medium uppercase tracking-[2px]">
+              Conseils immobiliers
+            </span>
+            <h2 className="font-playfair text-[32px] md:text-[40px] font-medium text-midnight mt-3 mb-4">
+              Guides et actualit&eacute;s du march&eacute;
+            </h2>
+          </div>
+          <div className="section-content grid grid-cols-1 md:grid-cols-3 gap-6">
+            {blogArticles.map((article, idx) => (
+              <Link
+                key={idx}
+                to="/conseils-immobiliers"
+                className="bg-white rounded-card overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-250 group"
+              >
+                <div className="aspect-video overflow-hidden">
+                  <img
+                    src={article.image}
+                    alt={article.title}
+                    className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-400"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="p-4">
+                  <span className="text-terracotta text-[11px] font-inter font-medium uppercase">
+                    {article.category}
+                  </span>
+                  <h3 className="font-playfair text-[18px] font-medium text-text-primary mt-2 mb-2 line-clamp-2 group-hover:text-terracotta transition-colors">
+                    {article.title}
+                  </h3>
+                  <p className="text-text-secondary text-[12px] font-inter">
+                    {article.date}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Ken Burns animation style */}
+      <style>{`
+        @keyframes ken-burns {
+          0% { transform: scale(1); }
+          100% { transform: scale(1.05); }
+        }
+        .animate-ken-burns {
+          animation: ken-burns 20s ease-in-out infinite alternate;
+        }
+      `}</style>
+    </div>
+  )
+}
