@@ -1,5 +1,3 @@
-import { isSupabaseConfigured } from './supabase'
-
 const BUCKET_NAME = 'property-images'
 
 export interface ImageTransformOptions {
@@ -11,17 +9,11 @@ export interface ImageTransformOptions {
 
 /**
  * Genera una URL de Supabase Storage para una imagen.
- * Si Supabase no está configurado (modo offline), devuelve la ruta local.
  */
 export function getImageUrl(
   filename: string,
   options?: ImageTransformOptions
 ): string {
-  // Fallback a public/ si Supabase no está configurado (dev offline)
-  if (!isSupabaseConfigured) {
-    return `/${filename}`
-  }
-
   const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 
   // Remove leading slash if present (database stores bare filenames)
