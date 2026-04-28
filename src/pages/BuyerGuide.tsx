@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { getImageUrl } from '@/lib/storage'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -117,19 +118,19 @@ const precautionsList = [
 /* ── Related articles ── */
 const relatedArticles = [
   {
-    image: '/blog-pricing.jpg',
+    image: 'blog-pricing.jpg',
     category: 'March\u00E9',
     title: 'Prix de l\u2019immobilier \u00E0 Marrakech : tendances 2024',
     date: '15 Jan 2024',
   },
   {
-    image: '/blog-neighborhood.jpg',
+    image: 'blog-neighborhood.jpg',
     category: 'Quartiers',
     title: 'Choisir son quartier \u00E0 Marrakech : le guide complet',
     date: '8 Jan 2024',
   },
   {
-    image: '/property-01.jpg',
+    image: 'property-01.jpg',
     category: 'Achat',
     title: 'Riad ou villa : quel bien choisir \u00E0 Marrakech ?',
     date: '2 Jan 2024',
@@ -889,7 +890,7 @@ export default function BuyerGuide() {
               >
                 <div className="aspect-[16/10] overflow-hidden">
                   <img
-                    src={article.image}
+                    src={getImageUrl(article.image, { width: 600, height: 375, resize: 'cover' })}
                     alt={article.title}
                     className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-400"
                     loading="lazy"

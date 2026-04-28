@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { Heart, Bed, Bath, Maximize, Camera } from 'lucide-react'
 import { useFavorites } from '@/hooks/useFavorites'
 import { useCurrency } from '@/hooks/useCurrency'
+import { getImageUrl } from '@/lib/storage'
 import type { Property } from '@/data/properties'
 
 interface PropertyCardProps {
@@ -12,7 +13,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
   const { toggleFavorite, isFavorite } = useFavorites()
   const { formatPrice } = useCurrency()
 
-  const image = property.images[0] || '/property-01.jpg'
+  const image = getImageUrl(property.images[0] || 'property-01.jpg', { width: 600, height: 450, resize: 'cover' })
   const priceDisplay = formatPrice(property.priceEUR)
 
   return (

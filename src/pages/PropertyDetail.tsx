@@ -16,6 +16,7 @@ import { useCurrency } from '@/hooks/useCurrency'
 import { useSiteSettings } from '@/hooks/useSiteSettings'
 import PropertyCard from '@/components/PropertyCard'
 import { cn } from '@/lib/utils'
+import { getImageUrl } from '@/lib/storage'
 import type { Property } from '@/data/properties'
 
 /* ───────────────────── constants ───────────────────── */
@@ -476,9 +477,10 @@ export default function PropertyDetail() {
     )
   }
 
-  const images = property.images.length > 0 ? property.images : ['/property-01.jpg']
-  const mainImage = images[0]
-  const thumbImages = images.slice(1, 5)
+  const rawImages = property.images.length > 0 ? property.images : ['property-01.jpg']
+  const images = rawImages.map(img => getImageUrl(img, { width: 1200 }))
+  const mainImage = getImageUrl(rawImages[0], { width: 900, height: 600, resize: 'cover' })
+  const thumbImages = rawImages.slice(1, 5)
   const hasMoreImages = images.length > 5
   const remainingCount = Math.max(0, images.length - 5)
 
@@ -542,7 +544,7 @@ export default function PropertyDetail() {
             <div className="w-[40%] grid grid-cols-2 grid-rows-2 gap-1">
               {thumbImages.map((img, i) => (
                 <div key={i} className="relative overflow-hidden cursor-pointer" onClick={() => { setLightboxIndex(i + 1); setLightboxOpen(true) }}>
-                  <img src={img} alt={`${property.title} ${i + 2}`} className="w-full h-full object-cover hover:brightness-110 transition-all" />
+                  <img src={getImageUrl(img, { width: 600, height: 450, resize: 'cover' })} alt={`${property.title} ${i + 2}`} className="w-full h-full object-cover hover:brightness-110 transition-all" />
                   {i === 3 && hasMoreImages && (
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white font-inter text-[16px] font-medium">
                       +{remainingCount} photos

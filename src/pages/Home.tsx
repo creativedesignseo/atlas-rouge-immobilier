@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { getImageUrl } from '@/lib/storage'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -90,19 +91,19 @@ const services = [
 
 const blogArticles = [
   {
-    image: '/blog-pricing.jpg',
+    image: 'blog-pricing.jpg',
     category: 'March\u00E9',
     title: 'Prix de l\u2019immobilier \u00E0 Marrakech : tendances 2024',
     date: '15 Jan 2024',
   },
   {
-    image: '/blog-neighborhood.jpg',
+    image: 'blog-neighborhood.jpg',
     category: 'Quartiers',
     title: 'Choisir son quartier : Gu\u00E9liz vs Hivernage',
     date: '8 Jan 2024',
   },
   {
-    image: '/guide-buyer.jpg',
+    image: 'guide-buyer.jpg',
     category: 'Achat',
     title: 'Notaire ou Adoul : qui choisir pour votre acte ?',
     date: '2 Jan 2024',
@@ -285,7 +286,7 @@ export default function Home() {
         <div className="absolute inset-0">
           <div
             className="absolute inset-0 bg-cover bg-center animate-ken-burns"
-            style={{ backgroundImage: 'url(/marraketch-banner-1.jpg)' }}
+            style={{ backgroundImage: `url(${getImageUrl('marraketch-banner-1.jpg', { width: 1920, height: 800, resize: 'cover' })})` }}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[rgba(23,32,51,0.55)] to-[rgba(23,32,51,0.75)]" />
         </div>
@@ -518,7 +519,7 @@ export default function Home() {
             <div className="lg:col-span-2">
               <div className="trust-image rounded-card overflow-hidden shadow-card">
                 <img
-                  src="/property-01.jpg"
+                  src={getImageUrl('property-01.jpg', { width: 800, height: 600, resize: 'cover' })}
                   alt="Villa de prestige &agrave; Marrakech"
                   className="w-full h-auto object-cover"
                   loading="lazy"
@@ -579,7 +580,7 @@ export default function Home() {
               >
                 <div className="aspect-video overflow-hidden">
                   <img
-                    src={article.image}
+                    src={getImageUrl(article.image, { width: 600, height: 400, resize: 'cover' })}
                     alt={article.title}
                     className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-400"
                     loading="lazy"

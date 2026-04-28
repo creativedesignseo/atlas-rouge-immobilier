@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { getImageUrl } from '@/lib/storage'
 import { Link } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
@@ -21,7 +22,7 @@ const categories = [
 /* ── Articles data ── */
 const articles = [
   {
-    image: '/blog-pricing.jpg',
+    image: 'blog-pricing.jpg',
     category: 'Quartiers',
     title: 'Prix de l\u2019immobilier \u00E0 Marrakech : tendances et pr\u00E9visions 2025',
     excerpt:
@@ -30,7 +31,7 @@ const articles = [
     readTime: '8 min',
   },
   {
-    image: '/blog-neighborhood.jpg',
+    image: 'blog-neighborhood.jpg',
     category: 'Quartiers',
     title: 'Choisir son quartier \u00E0 Marrakech : Gu\u00E9liz vs Hivernage',
     excerpt:
@@ -39,7 +40,7 @@ const articles = [
     readTime: '6 min',
   },
   {
-    image: '/guide-buyer.jpg',
+    image: 'guide-buyer.jpg',
     category: 'Achat',
     title: 'Acheter au Maroc en tant qu\u2019\u00E9tranger : le guide complet',
     excerpt:
@@ -48,7 +49,7 @@ const articles = [
     readTime: '7 min',
   },
   {
-    image: '/property-01.jpg',
+    image: 'property-01.jpg',
     category: 'Achat',
     title: 'Riad ou villa : quel bien choisir \u00E0 Marrakech ?',
     excerpt:
@@ -57,7 +58,7 @@ const articles = [
     readTime: '6 min',
   },
   {
-    image: '/property-02.jpg',
+    image: 'property-02.jpg',
     category: 'Investissement',
     title: 'Investissement locatif \u00E0 Marrakech : les meilleurs rendements',
     excerpt:
@@ -66,7 +67,7 @@ const articles = [
     readTime: '7 min',
   },
   {
-    image: '/neighborhood-palmeraie.jpg',
+    image: 'neighborhood-palmeraie.jpg',
     category: 'Quartiers',
     title: 'Palmeraie : le quartier des villas de luxe',
     excerpt:
@@ -75,7 +76,7 @@ const articles = [
     readTime: '5 min',
   },
   {
-    image: '/neighborhood-medina.jpg',
+    image: 'neighborhood-medina.jpg',
     category: 'D\u00E9coration',
     title: 'D\u00E9coration marocaine moderne : tendances et inspirations',
     excerpt:
@@ -84,7 +85,7 @@ const articles = [
     readTime: '5 min',
   },
   {
-    image: '/neighborhood-ourika.jpg',
+    image: 'neighborhood-ourika.jpg',
     category: 'Quartiers',
     title: 'La Palmeraie vs l\u2019Hivernage : o\u00F9 investir en 2025 ?',
     excerpt:
@@ -93,7 +94,7 @@ const articles = [
     readTime: '6 min',
   },
   {
-    image: '/neighborhood-amelkis.jpg',
+    image: 'neighborhood-amelkis.jpg',
     category: 'Investissement',
     title: 'Maisons \u00E9cologiques \u00E0 Marrakech : le nouveau march\u00E9',
     excerpt:
@@ -105,7 +106,7 @@ const articles = [
 
 /* ── Featured article ── */
 const featuredArticle = {
-  image: '/blog-pricing.jpg',
+  image: 'blog-pricing.jpg',
   category: 'March\u00E9',
   title:
     'Prix de l\u2019immobilier \u00E0 Marrakech : tendances et pr\u00E9visions 2024',
@@ -286,7 +287,7 @@ export default function Blog() {
                 {/* Image */}
                 <div className="featured-image aspect-video lg:aspect-auto overflow-hidden">
                   <img
-                    src={featuredArticle.image}
+                    src={getImageUrl(featuredArticle.image, { width: 800, height: 500, resize: 'cover' })}
                     alt={featuredArticle.title}
                     className="w-full h-full object-cover hover:scale-[1.03] transition-transform duration-400"
                   />
@@ -333,7 +334,7 @@ export default function Blog() {
                 {/* Image */}
                 <div className="aspect-[16/10] overflow-hidden">
                   <img
-                    src={article.image}
+                    src={getImageUrl(article.image, { width: 600, height: 375, resize: 'cover' })}
                     alt={article.title}
                     className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-400"
                     loading="lazy"

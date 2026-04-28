@@ -9,6 +9,7 @@ import { getProperties } from '@/services/property.service'
 
 import { useFavorites } from '@/hooks/useFavorites'
 import { useCurrency } from '@/hooks/useCurrency'
+import { getImageUrl } from '@/lib/storage'
 import { cn } from '@/lib/utils'
 import type { Property } from '@/data/properties'
 
@@ -173,7 +174,7 @@ function PropertyCardList({ property }: { property: Property }) {
   const { toggleFavorite, isFavorite } = useFavorites()
   const { formatPrice } = useCurrency()
   const priceDisplay = formatPrice(property.priceEUR)
-  const image = property.images[0] || '/property-01.jpg'
+  const image = getImageUrl(property.images[0] || 'property-01.jpg', { width: 400, height: 300, resize: 'cover' })
 
   return (
     <div className="bg-white rounded-card border border-border-warm shadow-card hover:shadow-card-hover transition-all duration-250 overflow-hidden group flex flex-col sm:flex-row">
@@ -303,14 +304,14 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
       popupContainer.style.width = '280px'
       popupContainer.style.cursor = 'default'
 
-      const imgs = p.images.length > 0 ? p.images : ['/property-01.jpg']
+      const imgs = p.images.length > 0 ? p.images : ['property-01.jpg']
       let currentImg = 0
 
       const renderPopup = () => {
         const hasMultiple = imgs.length > 1
         popupContainer.innerHTML = `
           <div style="position:relative;border-radius:10px 10px 0 0;overflow:hidden;height:160px;background:#f5f5f5;">
-            <img src="${imgs[currentImg]}" style="width:100%;height:100%;object-fit:cover;display:block;" />
+            <img src="${getImageUrl(imgs[currentImg], { width: 560, height: 320, resize: 'cover' })}" style="width:100%;height:100%;object-fit:cover;display:block;" />
             ${hasMultiple ? `
               <button class="popup-prev" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:28px;height:28px;background:rgba(255,255,255,0.9);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:#333;box-shadow:0 2px 6px rgba(0,0,0,0.15);">&#8249;</button>
               <button class="popup-next" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:28px;height:28px;background:rgba(255,255,255,0.9);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:#333;box-shadow:0 2px 6px rgba(0,0,0,0.15);">&#8250;</button>
@@ -406,7 +407,7 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
 function PropertyCardCompact({ property, isHovered = false }: { property: Property; isHovered?: boolean }) {
   const { toggleFavorite, isFavorite } = useFavorites()
   const { formatPrice } = useCurrency()
-  const image = property.images[0] || '/property-01.jpg'
+  const image = getImageUrl(property.images[0] || 'property-01.jpg', { width: 400, height: 300, resize: 'cover' })
 
   return (
     <Link to={`/property/${property.slug}`} className={cn(
@@ -441,7 +442,7 @@ function PropertyCardGrid({ property, isHovered = false }: { property: Property;
   const { toggleFavorite, isFavorite } = useFavorites()
   const { formatPrice } = useCurrency()
   const priceDisplay = formatPrice(property.priceEUR)
-  const image = property.images[0] || '/property-01.jpg'
+  const image = getImageUrl(property.images[0] || 'property-01.jpg', { width: 400, height: 300, resize: 'cover' })
 
   return (
     <div className={cn(

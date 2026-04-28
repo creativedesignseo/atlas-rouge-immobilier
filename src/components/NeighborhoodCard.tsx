@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { getImageUrl } from '@/lib/storage'
 import type { Neighborhood } from '@/data/neighborhoods'
 
 interface NeighborhoodCardProps {
@@ -12,7 +13,7 @@ export default function NeighborhoodCard({ neighborhood }: NeighborhoodCardProps
       className="relative aspect-[3/2] rounded-card overflow-hidden group block"
     >
       <img
-        src={neighborhood.image}
+        src={getImageUrl(neighborhood.image, { width: 600, height: 400, resize: 'cover' })}
         alt={neighborhood.name}
         className="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-400"
         loading="lazy"
