@@ -285,7 +285,7 @@ export default function Home() {
         <div className="absolute inset-0">
           <div
             className="absolute inset-0 bg-cover bg-center animate-ken-burns"
-            style={{ backgroundImage: 'url(/hero-marrakech.jpg)' }}
+            style={{ backgroundImage: 'url(/marraketch-banner-1.jpg)' }}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[rgba(23,32,51,0.55)] to-[rgba(23,32,51,0.75)]" />
         </div>
