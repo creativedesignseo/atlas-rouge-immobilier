@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Shield, LogOut, User } from 'lucide-react'
+import { useAuth } from '@/hooks/useAuth'
 
 const navLinks = [
   { label: 'Acheter', href: '/acheter' },
@@ -13,12 +14,18 @@ const navLinks = [
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const { pathname } = useLocation()
+  const { agent, signOut } = useAuth()
 
   const isActive = (href: string) => {
     if (href === '/acheter' || href === '/louer') {
       return pathname === href
     }
     return pathname === href
+  }
+
+  const handleSignOut = async () => {
+    await signOut()
+    setMobileOpen(false)
   }
 
   return (
@@ -62,12 +69,35 @@ export default function Navbar() {
               <span className="text-border-warm">|</span>
               <span className="cursor-pointer hover:text-terracotta">MAD</span>
             </div>
-            <Link
-              to="/contact"
-              className="text-text-primary font-inter text-[14px] font-medium hover:text-terracotta transition-colors"
-            >
-              Se connecter
-            </Link>
+
+            {/* Admin/Agent access */}
+            {agent ? (
+              <div className="flex items-center gap-3">
+                <Link
+                  to="/admin"
+                  className="flex items-center gap-1.5 text-text-primary font-inter text-[14px] font-medium hover:text-terracotta transition-colors"
+                >
+                  <Shield size={16} />
+                  <span>Admin</span>
+                </Link>
+                <button
+                  onClick={handleSignOut}
+                  className="flex items-center gap-1.5 text-text-secondary font-inter text-[14px] hover:text-red-600 transition-colors"
+                  title="Déconnexion"
+                >
+                  <LogOut size={16} />
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/admin/login"
+                className="flex items-center gap-1.5 text-text-primary font-inter text-[14px] font-medium hover:text-terracotta transition-colors"
+              >
+                <User size={16} />
+                Se connecter
+              </Link>
+            )}
+
             <Link
               to="/vendre"
               className="bg-terracotta text-white font-inter text-[14px] font-semibold px-5 py-2.5 rounded-lg hover:scale-[1.02] transition-transform"
@@ -108,13 +138,37 @@ export default function Navbar() {
               <span>|</span>
               <span className="cursor-pointer">MAD</span>
             </div>
-            <Link
-              to="/contact"
-              className="text-text-primary font-inter text-[14px] font-medium py-3"
-              onClick={() => setMobileOpen(false)}
-            >
-              Se connecter
-            </Link>
+
+            {/* Mobile: Admin/Agent access */}
+            {agent ? (
+              <>
+                <Link
+                  to="/admin"
+                  className="flex items-center gap-2 text-terracotta font-inter text-[14px] font-medium py-3"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  <Shield size={18} />
+                  Panneau d'administration
+                </Link>
+                <button
+                  onClick={handleSignOut}
+                  className="flex items-center gap-2 text-red-600 font-inter text-[14px] font-medium py-3 text-left"
+                >
+                  <LogOut size={18} />
+                  Déconnexion
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/admin/login"
+                className="flex items-center gap-2 text-text-primary font-inter text-[14px] font-medium py-3"
+                onClick={() => setMobileOpen(false)}
+              >
+                <User size={18} />
+                Se connecter
+              </Link>
+            )}
+
             <Link
               to="/vendre"
               className="bg-terracotta text-white font-inter text-[14px] font-semibold px-5 py-3 rounded-lg text-center mt-2"

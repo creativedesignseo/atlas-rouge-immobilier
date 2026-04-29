@@ -7,7 +7,15 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey)
 
 export const supabase = isSupabaseConfigured
-  ? createClient<Database>(supabaseUrl, supabaseAnonKey)
+  ? createClient<Database>(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        persistSession: true,
+        storageKey: 'atlas-rouge-auth-token',
+        storage: localStorage,
+        autoRefreshToken: true,
+        detectSessionInUrl: true,
+      },
+    })
   : (null as unknown as ReturnType<typeof createClient<Database>>)
 
 const ANON_ID_KEY = 'atlas-rouge-anon-id'

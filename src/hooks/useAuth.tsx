@@ -34,8 +34,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return
     }
 
-    const agentData = await getAgent(currentUser.id)
-    setAgent(agentData)
+    try {
+      const agentData = await getAgent(currentUser.id)
+      setAgent(agentData)
+    } catch {
+      setAgent(null)
+    }
   }, [])
 
   const checkAuth = useCallback(async () => {
@@ -58,8 +62,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [loadAgentData])
 
   useEffect(() => {
+    // Check auth on mount
     checkAuth()
 
+    // Listen for auth state changes (login, logout, token refresh)
     const { data } = onAuthStateChange(async (_event, session) => {
       if (session?.user) {
         setUser(session.user)
