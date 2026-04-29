@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Eye, EyeOff, Lock, Mail } from 'lucide-react'
 import { signIn } from '@/services/auth.service'
@@ -12,14 +12,23 @@ export default function AdminLogin() {
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const submitStarted = useRef(false)
 
-  // Redirect when agent is loaded after login
+  // If already logged in (agent exists), redirect immediately
   useEffect(() => {
-    if (agent && !isLoading && isSubmitting) {
+    if (agent && !isLoading && !submitStarted.current) {
+      navigate('/admin')
+    }
+  }, [agent, isLoading, navigate])
+
+  // After submitting, watch for agent to appear
+  useEffect(() => {
+    if (!submitStarted.current) return
+    if (agent && !isLoading) {
       toast.success('Connexion réussie')
       navigate('/admin')
     }
-  }, [agent, isLoading, isSubmitting, navigate])
+  }, [agent, isLoading, navigate])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -28,10 +37,12 @@ export default function AdminLogin() {
       return
     }
 
+    submitStarted.current = true
     setIsSubmitting(true)
     const { error } = await signIn({ email, password })
 
     if (error) {
+      submitStarted.current = false
       setIsSubmitting(false)
       toast.error(error.message === 'Invalid login credentials'
         ? 'Email ou mot de passe incorrect'
@@ -40,8 +51,16 @@ export default function AdminLogin() {
       return
     }
 
-    // Wait for auth state to update via onAuthStateChange in useAuth
-    // The useEffect above will handle navigation when agent is loaded
+    // Auth state will update via onAuthStateChange in useAuth
+    // The useEffect above will navigate when agent is loaded
+    // Fallback: if nothing happens in 5s, show error
+    setTimeout(() => {
+      if (submitStarted.current) {
+        setIsSubmitting(false)
+        submitStarted.current = false
+        toast.error('Erreur de connexion. Veuillez réessayer.')
+      }
+    }, 5000)
   }
 
   return (
