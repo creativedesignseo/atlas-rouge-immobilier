@@ -1,0 +1,15 @@
+{
+  "buy": "Buy",
+  "rent": "Rent",
+  "sell": "Sell",
+  "estimate": "Estimate",
+  "guides": "Guides",
+  "listProperty": "List a property",
+  "signIn": "Sign in",
+  "admin": "Admin",
+  "adminPanel": "Admin panel",
+  "signOut": "Sign out",
+  "openMenu": "Open menu",
+  "closeMenu": "Close menu",
+  "tagline": "Real Estate Marrakech"
+}

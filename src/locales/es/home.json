@@ -1,0 +1,85 @@
+{
+  "hero": {
+    "title": "Encuentra tu propiedad en Marrakech",
+    "subtitle": "Villas, riads, apartamentos — las mejores propiedades de Marrakech seleccionadas por expertos locales",
+    "searchPlaceholder": "Barrio, tipo, precio...",
+    "filters": {
+      "all": "Todo",
+      "buy": "Comprar",
+      "rent": "Alquilar"
+    },
+    "chips": {
+      "villaPool": "Villa con piscina",
+      "riadMedina": "Riad medina",
+      "newApartment": "Apartamento nuevo",
+      "palmeraie": "Palmeraie",
+      "ourika": "Carretera de Ourika",
+      "investment": "Inversión de alquiler"
+    }
+  },
+  "categories": {
+    "title": "Buscar por tipo",
+    "villas": "Villas",
+    "apartments": "Apartamentos",
+    "riads": "Riads",
+    "prestige": "Casas de prestigio",
+    "land": "Terrenos",
+    "rooftops": "Áticos"
+  },
+  "featured": {
+    "title": "Propiedades destacadas",
+    "subtitle": "Una selección de propiedades de excepción",
+    "seeAll": "Ver todas las propiedades"
+  },
+  "neighborhoods": {
+    "title": "Explorar barrios",
+    "subtitle": "Descubre las zonas más demandadas de Marrakech",
+    "seeAll": "Ver todos los barrios"
+  },
+  "services": {
+    "title": "Nuestros servicios",
+    "subtitle": "Acompañamiento completo para su proyecto inmobiliario en Marrakech",
+    "buy": {
+      "title": "Comprar",
+      "description": "Encuentre su villa, riad o apartamento en Marrakech con la ayuda de nuestros asesores locales."
+    },
+    "sell": {
+      "title": "Vender",
+      "description": "Estime y venda su propiedad al mejor precio gracias a nuestra red de compradores internacionales."
+    },
+    "rent": {
+      "title": "Alquilar",
+      "description": "Alquileres de temporada y larga duración — residencias amuebladas y servicios de conserjería."
+    },
+    "estimate": {
+      "title": "Estimación",
+      "description": "Valoración gratuita de su propiedad por expertos del mercado inmobiliario marroquí."
+    },
+    "management": {
+      "title": "Gestión de alquileres",
+      "description": "Gestionamos su propiedad: mantenimiento, alquiler, conserjería e informe completo."
+    },
+    "support": {
+      "title": "Acompañamiento",
+      "description": "Asistencia administrativa, notarial, bancaria y fiscal para compradores extranjeros."
+    }
+  },
+  "blog": {
+    "title": "Consejos inmobiliarios",
+    "subtitle": "Guías y tendencias del mercado para orientar sus decisiones",
+    "readMore": "Leer artículo",
+    "seeAll": "Ver todos los artículos"
+  },
+  "cta": {
+    "title": "¿Listo para encontrar su propiedad en Marrakech?",
+    "subtitle": "Nuestros expertos locales le acompañan en cada etapa de su proyecto",
+    "contact": "Contactar un asesor",
+    "search": "Buscar propiedades"
+  },
+  "stats": {
+    "properties": "Propiedades",
+    "clients": "Clientes satisfechos",
+    "years": "Años de experiencia",
+    "agents": "Agentes locales"
+  }
+}

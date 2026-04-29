@@ -1,0 +1,52 @@
+{
+  "title": "Contact us",
+  "subtitle": "Our team is available 6 days a week to answer all your questions",
+  "form": {
+    "title": "Send us a message",
+    "name": "Full name",
+    "namePlaceholder": "John Smith",
+    "email": "Email",
+    "emailPlaceholder": "john@example.com",
+    "phone": "Phone",
+    "phonePlaceholder": "+44 7700 000000",
+    "subject": "Subject",
+    "subjectPlaceholder": "Purchase, rental, estimate...",
+    "message": "Message",
+    "messagePlaceholder": "Tell us about your project...",
+    "send": "Send message",
+    "sending": "Sending...",
+    "successTitle": "Message sent!",
+    "successText": "Thank you. We will get back to you within 24 hours.",
+    "errorText": "An error occurred. Please try again."
+  },
+  "info": {
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "hours": "Opening hours",
+    "hoursValue": "Monday to Saturday, 9am – 7pm"
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "appointment": {
+      "question": "How do I schedule an appointment?",
+      "answer": "You can schedule an appointment by phone, WhatsApp, or by filling in the contact form above. Our team responds within 24 hours."
+    },
+    "languages": {
+      "question": "What languages do you speak?",
+      "answer": "Our team speaks English, French and Spanish. We specialize in assisting international buyers and know the Moroccan real estate market perfectly."
+    },
+    "virtualVisit": {
+      "question": "Can I visit a property without traveling?",
+      "answer": "Absolutely. We offer live video virtual tours for most of our properties. You can visit in real time from anywhere, with one of our advisors on site."
+    },
+    "foreignBuyer": {
+      "question": "Can foreigners buy in Morocco?",
+      "answer": "Yes, foreigners can freely purchase real estate in Morocco. We guide you through all the administrative and legal steps: notary, bank transfer, land registry."
+    },
+    "fees": {
+      "question": "What are the agency fees?",
+      "answer": "Our fees are transparent and competitive. They are included in the displayed price for all our listings. We will explain everything before any commitment."
+    }
+  }
+}

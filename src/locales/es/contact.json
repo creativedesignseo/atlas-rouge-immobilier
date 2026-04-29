@@ -1,0 +1,52 @@
+{
+  "title": "Contáctenos",
+  "subtitle": "Nuestro equipo está disponible 6 días a la semana para responder todas sus preguntas",
+  "form": {
+    "title": "Envíenos un mensaje",
+    "name": "Nombre completo",
+    "namePlaceholder": "Juan García",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "juan@ejemplo.com",
+    "phone": "Teléfono",
+    "phonePlaceholder": "+34 600 000 000",
+    "subject": "Asunto",
+    "subjectPlaceholder": "Compra, alquiler, estimación...",
+    "message": "Mensaje",
+    "messagePlaceholder": "Cuéntenos su proyecto...",
+    "send": "Enviar mensaje",
+    "sending": "Enviando...",
+    "successTitle": "¡Mensaje enviado!",
+    "successText": "Gracias. Le responderemos en las próximas 24 horas.",
+    "errorText": "Ha ocurrido un error. Por favor, inténtelo de nuevo."
+  },
+  "info": {
+    "address": "Dirección",
+    "phone": "Teléfono",
+    "email": "Correo electrónico",
+    "hours": "Horario de atención",
+    "hoursValue": "Lunes a sábado, 9h – 19h"
+  },
+  "faq": {
+    "title": "Preguntas frecuentes",
+    "appointment": {
+      "question": "¿Cómo puedo solicitar una cita?",
+      "answer": "Puede solicitar una cita por teléfono, WhatsApp o rellenando el formulario de contacto. Nuestro equipo responde en menos de 24 horas."
+    },
+    "languages": {
+      "question": "¿Hablan español?",
+      "answer": "Sí, nuestro equipo habla español, francés e inglés. Estamos especializados en la atención a compradores internacionales y conocemos perfectamente el mercado inmobiliario marroquí."
+    },
+    "virtualVisit": {
+      "question": "¿Puedo visitar un inmueble sin desplazarme?",
+      "answer": "Por supuesto. Ofrecemos visitas virtuales en vídeo en directo para la mayoría de nuestros inmuebles. Puede visitar en tiempo real desde cualquier lugar con uno de nuestros asesores in situ."
+    },
+    "foreignBuyer": {
+      "question": "¿Pueden los extranjeros comprar en Marruecos?",
+      "answer": "Sí, los extranjeros pueden adquirir libremente bienes inmuebles en Marruecos. Le guiamos en todos los trámites administrativos y legales: notario, transferencia bancaria, registro de la propiedad."
+    },
+    "fees": {
+      "question": "¿Cuáles son los honorarios de la agencia?",
+      "answer": "Nuestros honorarios son transparentes y competitivos. Están incluidos en el precio mostrado para todos nuestros inmuebles. Le explicaremos todo antes de cualquier compromiso."
+    }
+  }
+}

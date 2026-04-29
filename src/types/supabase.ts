@@ -87,6 +87,16 @@ export type PropertyRow = {
   has_3d_tour: boolean
   agent_id: string | null
   created_at: string
+  // Multilingual fields
+  title_en: string | null
+  title_fr: string | null
+  title_es: string | null
+  description_en: string | null
+  description_fr: string | null
+  description_es: string | null
+  highlights_en: string[]
+  highlights_fr: string[]
+  highlights_es: string[]
 }
 
 export type PropertyInsert = Omit<PropertyRow, 'id' | 'created_at'>

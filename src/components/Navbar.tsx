@@ -1,27 +1,26 @@
 import { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import { Menu, X, Shield, LogOut, User } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '@/hooks/useAuth'
-
-const navLinks = [
-  { label: 'Acheter', href: '/acheter' },
-  { label: 'Louer', href: '/louer' },
-  { label: 'Vendre', href: '/vendre' },
-  { label: 'Estimer', href: '/estimation' },
-  { label: 'Guides', href: '/conseils-immobiliers' },
-]
+import LanguageSwitcher from './LanguageSwitcher'
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const { pathname } = useLocation()
+  const { lang = 'en' } = useParams<{ lang: string }>()
   const { agent, signOut } = useAuth()
+  const { t } = useTranslation('nav')
 
-  const isActive = (href: string) => {
-    if (href === '/acheter' || href === '/louer') {
-      return pathname === href
-    }
-    return pathname === href
-  }
+  const navLinks = [
+    { key: 'buy', href: `/${lang}/acheter` },
+    { key: 'rent', href: `/${lang}/louer` },
+    { key: 'sell', href: `/${lang}/vendre` },
+    { key: 'estimate', href: `/${lang}/estimation` },
+    { key: 'guides', href: `/${lang}/conseils-immobiliers` },
+  ]
+
+  const isActive = (href: string) => pathname === href
 
   const handleSignOut = async () => {
     await signOut()
@@ -31,14 +30,14 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-border-warm">
       <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
-        <div className="flex items-center justify-between h-[72px] md:h-[72px]">
+        <div className="flex items-center justify-between h-[72px]">
           {/* Logo */}
-          <Link to="/" className="flex flex-col shrink-0">
+          <Link to={`/${lang}/`} className="flex flex-col shrink-0">
             <span className="font-playfair text-[22px] font-semibold text-terracotta leading-tight">
               Atlas Rouge Immobilier
             </span>
             <span className="text-text-secondary text-[12px] font-inter">
-              Immobilier Marrakech
+              {t('tagline')}
             </span>
           </Link>
 
@@ -46,7 +45,7 @@ export default function Navbar() {
           <nav className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
               <Link
-                key={link.href}
+                key={link.key}
                 to={link.href}
                 className={`font-inter text-[15px] font-medium transition-colors ${
                   isActive(link.href)
@@ -55,22 +54,15 @@ export default function Navbar() {
                 }`}
                 aria-current={isActive(link.href) ? 'page' : undefined}
               >
-                {link.label}
+                {t(link.key)}
               </Link>
             ))}
           </nav>
 
           {/* Right Side */}
           <div className="hidden lg:flex items-center gap-4">
-            <div className="flex items-center gap-2 text-[13px] text-text-secondary mr-2">
-              <span className="cursor-pointer hover:text-terracotta">FR</span>
-              <span className="text-border-warm">|</span>
-              <span className="cursor-pointer hover:text-terracotta">EUR</span>
-              <span className="text-border-warm">|</span>
-              <span className="cursor-pointer hover:text-terracotta">MAD</span>
-            </div>
+            <LanguageSwitcher variant="navbar" />
 
-            {/* Admin/Agent access */}
             {agent ? (
               <div className="flex items-center gap-3">
                 <Link
@@ -78,12 +70,12 @@ export default function Navbar() {
                   className="flex items-center gap-1.5 text-text-primary font-inter text-[14px] font-medium hover:text-terracotta transition-colors"
                 >
                   <Shield size={16} />
-                  <span>Admin</span>
+                  <span>{t('admin')}</span>
                 </Link>
                 <button
                   onClick={handleSignOut}
                   className="flex items-center gap-1.5 text-text-secondary font-inter text-[14px] hover:text-red-600 transition-colors"
-                  title="Déconnexion"
+                  title={t('signOut')}
                 >
                   <LogOut size={16} />
                 </button>
@@ -94,15 +86,15 @@ export default function Navbar() {
                 className="flex items-center gap-1.5 text-text-primary font-inter text-[14px] font-medium hover:text-terracotta transition-colors"
               >
                 <User size={16} />
-                Se connecter
+                {t('signIn')}
               </Link>
             )}
 
             <Link
-              to="/vendre"
+              to={`/${lang}/vendre`}
               className="bg-terracotta text-white font-inter text-[14px] font-semibold px-5 py-2.5 rounded-lg hover:scale-[1.02] transition-transform"
             >
-              D&eacute;poser une annonce
+              {t('listProperty')}
             </Link>
           </div>
 
@@ -110,7 +102,7 @@ export default function Navbar() {
           <button
             className="lg:hidden p-2"
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label={mobileOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+            aria-label={mobileOpen ? t('closeMenu') : t('openMenu')}
           >
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -123,23 +115,17 @@ export default function Navbar() {
           <div className="flex flex-col p-6 gap-4">
             {navLinks.map((link) => (
               <Link
-                key={link.href}
+                key={link.key}
                 to={link.href}
                 className="text-text-primary font-inter text-[16px] font-medium py-3 border-b border-border-warm"
                 onClick={() => setMobileOpen(false)}
               >
-                {link.label}
+                {t(link.key)}
               </Link>
             ))}
-            <div className="flex items-center gap-3 text-[14px] text-text-secondary pt-4">
-              <span className="cursor-pointer">FR</span>
-              <span>|</span>
-              <span className="cursor-pointer">EUR</span>
-              <span>|</span>
-              <span className="cursor-pointer">MAD</span>
-            </div>
 
-            {/* Mobile: Admin/Agent access */}
+            <LanguageSwitcher variant="mobile" />
+
             {agent ? (
               <>
                 <Link
@@ -148,14 +134,14 @@ export default function Navbar() {
                   onClick={() => setMobileOpen(false)}
                 >
                   <Shield size={18} />
-                  Panneau d'administration
+                  {t('adminPanel')}
                 </Link>
                 <button
                   onClick={handleSignOut}
                   className="flex items-center gap-2 text-red-600 font-inter text-[14px] font-medium py-3 text-left"
                 >
                   <LogOut size={18} />
-                  Déconnexion
+                  {t('signOut')}
                 </button>
               </>
             ) : (
@@ -165,16 +151,16 @@ export default function Navbar() {
                 onClick={() => setMobileOpen(false)}
               >
                 <User size={18} />
-                Se connecter
+                {t('signIn')}
               </Link>
             )}
 
             <Link
-              to="/vendre"
+              to={`/${lang}/vendre`}
               className="bg-terracotta text-white font-inter text-[14px] font-semibold px-5 py-3 rounded-lg text-center mt-2"
               onClick={() => setMobileOpen(false)}
             >
-              D&eacute;poser une annonce
+              {t('listProperty')}
             </Link>
           </div>
         </div>

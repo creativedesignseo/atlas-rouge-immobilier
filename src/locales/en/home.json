@@ -1,0 +1,85 @@
+{
+  "hero": {
+    "title": "Find your property in Marrakech",
+    "subtitle": "Villas, riads, apartments — the best properties in Marrakech selected by local experts",
+    "searchPlaceholder": "Neighborhood, type, price...",
+    "filters": {
+      "all": "All",
+      "buy": "Buy",
+      "rent": "Rent"
+    },
+    "chips": {
+      "villaPool": "Villa with pool",
+      "riadMedina": "Medina riad",
+      "newApartment": "New apartment",
+      "palmeraie": "Palmeraie",
+      "ourika": "Ourika Road",
+      "investment": "Rental investment"
+    }
+  },
+  "categories": {
+    "title": "Browse by type",
+    "villas": "Villas",
+    "apartments": "Apartments",
+    "riads": "Riads",
+    "prestige": "Prestige homes",
+    "land": "Land",
+    "rooftops": "Rooftops"
+  },
+  "featured": {
+    "title": "Featured properties",
+    "subtitle": "A selection of exceptional properties",
+    "seeAll": "See all properties"
+  },
+  "neighborhoods": {
+    "title": "Explore neighborhoods",
+    "subtitle": "Discover the most sought-after areas of Marrakech",
+    "seeAll": "See all neighborhoods"
+  },
+  "services": {
+    "title": "Our services",
+    "subtitle": "Full support for your real estate project in Marrakech",
+    "buy": {
+      "title": "Buy",
+      "description": "Find your villa, riad or apartment in Marrakech with the help of our local advisors."
+    },
+    "sell": {
+      "title": "Sell",
+      "description": "Estimate and sell your property at the best price through our network of international buyers."
+    },
+    "rent": {
+      "title": "Rent",
+      "description": "Seasonal and long-term rentals — furnished residences and concierge services."
+    },
+    "estimate": {
+      "title": "Estimate",
+      "description": "Free valuation of your property by Moroccan real estate market experts."
+    },
+    "management": {
+      "title": "Property management",
+      "description": "We manage your property: maintenance, rental, concierge and full reporting."
+    },
+    "support": {
+      "title": "Full support",
+      "description": "Administrative, notary, banking and tax assistance for foreign buyers."
+    }
+  },
+  "blog": {
+    "title": "Real estate advice",
+    "subtitle": "Guides and market trends to help your decisions",
+    "readMore": "Read article",
+    "seeAll": "See all articles"
+  },
+  "cta": {
+    "title": "Ready to find your property in Marrakech?",
+    "subtitle": "Our local experts guide you at every step of your project",
+    "contact": "Contact an advisor",
+    "search": "Search properties"
+  },
+  "stats": {
+    "properties": "Properties",
+    "clients": "Satisfied clients",
+    "years": "Years of experience",
+    "agents": "Local agents"
+  }
+}

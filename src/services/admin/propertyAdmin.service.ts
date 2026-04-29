@@ -26,6 +26,16 @@ export interface PropertyFormData {
   is_exclusive: boolean
   has_video: boolean
   has_3d_tour: boolean
+  // Multilingual fields (optional)
+  title_en?: string | null
+  title_fr?: string | null
+  title_es?: string | null
+  description_en?: string | null
+  description_fr?: string | null
+  description_es?: string | null
+  highlights_en?: string[]
+  highlights_fr?: string[]
+  highlights_es?: string[]
 }
 
 function toDbInsert(data: PropertyFormData, agentId?: string): PropertyInsert {
@@ -55,6 +65,15 @@ function toDbInsert(data: PropertyFormData, agentId?: string): PropertyInsert {
     has_video: data.has_video,
     has_3d_tour: data.has_3d_tour,
     agent_id: agentId || null,
+    title_en: data.title_en ?? null,
+    title_fr: data.title_fr ?? null,
+    title_es: data.title_es ?? null,
+    description_en: data.description_en ?? null,
+    description_fr: data.description_fr ?? null,
+    description_es: data.description_es ?? null,
+    highlights_en: data.highlights_en ?? [],
+    highlights_fr: data.highlights_fr ?? [],
+    highlights_es: data.highlights_es ?? [],
   }
 }
 
@@ -184,5 +203,14 @@ export async function getPropertyForEdit(slug: string): Promise<PropertyFormData
     is_exclusive: row.is_exclusive,
     has_video: row.has_video,
     has_3d_tour: row.has_3d_tour,
+    title_en: row.title_en ?? null,
+    title_fr: row.title_fr ?? null,
+    title_es: row.title_es ?? null,
+    description_en: row.description_en ?? null,
+    description_fr: row.description_fr ?? null,
+    description_es: row.description_es ?? null,
+    highlights_en: row.highlights_en ?? [],
+    highlights_fr: row.highlights_fr ?? [],
+    highlights_es: row.highlights_es ?? [],
   }
 }

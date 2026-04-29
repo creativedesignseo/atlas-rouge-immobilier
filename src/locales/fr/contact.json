@@ -1,0 +1,52 @@
+{
+  "title": "Nous contacter",
+  "subtitle": "Notre équipe est disponible 6 jours sur 7 pour répondre à toutes vos questions",
+  "form": {
+    "title": "Envoyez-nous un message",
+    "name": "Nom complet",
+    "namePlaceholder": "Jean Dupont",
+    "email": "E-mail",
+    "emailPlaceholder": "jean@exemple.com",
+    "phone": "Téléphone",
+    "phonePlaceholder": "+33 6 00 00 00 00",
+    "subject": "Sujet",
+    "subjectPlaceholder": "Achat, location, estimation...",
+    "message": "Message",
+    "messagePlaceholder": "Parlez-nous de votre projet...",
+    "send": "Envoyer le message",
+    "sending": "Envoi en cours...",
+    "successTitle": "Message envoyé !",
+    "successText": "Merci. Nous vous répondrons dans les 24 heures.",
+    "errorText": "Une erreur est survenue. Veuillez réessayer."
+  },
+  "info": {
+    "address": "Adresse",
+    "phone": "Téléphone",
+    "email": "E-mail",
+    "hours": "Horaires d'ouverture",
+    "hoursValue": "Lundi au samedi, 9h – 19h"
+  },
+  "faq": {
+    "title": "Questions fréquentes",
+    "appointment": {
+      "question": "Comment prendre rendez-vous ?",
+      "answer": "Vous pouvez prendre rendez-vous par téléphone, WhatsApp ou en remplissant le formulaire de contact ci-dessus. Notre équipe vous répond sous 24h."
+    },
+    "languages": {
+      "question": "Est-ce que vous parlez français ?",
+      "answer": "Oui, toute notre équipe est francophone. Nous sommes spécialisés dans l'accompagnement des acheteurs français et connaissons parfaitement le marché immobilier marocain."
+    },
+    "virtualVisit": {
+      "question": "Puis-je visiter un bien sans me déplacer ?",
+      "answer": "Absolument. Nous proposons des visites virtuelles en vidéo live pour la plupart de nos biens. Vous pouvez visiter en temps réel depuis la France avec un conseiller sur place."
+    },
+    "foreignBuyer": {
+      "question": "Les étrangers peuvent-ils acheter au Maroc ?",
+      "answer": "Oui, les étrangers peuvent librement acquérir un bien immobilier au Maroc. Nous vous guidons dans toutes les démarches administratives et juridiques : notaire, virement bancaire, registre foncier."
+    },
+    "fees": {
+      "question": "Quels sont les frais d'agence ?",
+      "answer": "Nos honoraires sont transparents et compétitifs. Ils sont inclus dans le prix affiché pour tous nos biens. Nous vous expliquerons tout avant tout engagement."
+    }
+  }
+}

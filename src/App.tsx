@@ -1,5 +1,6 @@
-import { Suspense, lazy } from 'react'
-import { Routes, Route, Outlet, Navigate } from 'react-router-dom'
+import { Suspense, lazy, useEffect } from 'react'
+import { Routes, Route, Outlet, Navigate, useParams, useNavigate, useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { Toaster } from '@/components/ui/sonner'
 import Layout from './components/Layout'
 import Home from './pages/Home'
@@ -7,6 +8,7 @@ import NotFound from './pages/NotFound'
 import ProtectedRoute from './components/admin/ProtectedRoute'
 import AdminLayout from './components/admin/AdminLayout'
 import AdminLogin from './pages/admin/AdminLogin'
+import { SUPPORTED_LANGUAGES, type SupportedLanguage } from './i18n'
 
 const SearchPage = lazy(() => import('./pages/Search'))
 const PropertyDetailPage = lazy(() => import('./pages/PropertyDetail'))
@@ -20,7 +22,6 @@ const Sell = lazy(() => import('./pages/Sell'))
 const BuyerGuide = lazy(() => import('./pages/BuyerGuide'))
 const Blog = lazy(() => import('./pages/Blog'))
 
-// Admin pages
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'))
 const AdminProperties = lazy(() => import('./pages/admin/AdminProperties'))
 const AdminPropertyNew = lazy(() => import('./pages/admin/AdminPropertyNew'))
@@ -48,12 +49,47 @@ function AdminLayoutWrapper() {
   )
 }
 
+// Sets the i18n language based on the :lang URL param
+function LangWrapper() {
+  const { lang } = useParams<{ lang: string }>()
+  const { i18n } = useTranslation()
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    if (!lang || !SUPPORTED_LANGUAGES.includes(lang as SupportedLanguage)) {
+      // Invalid lang segment — redirect to English version
+      const withoutLang = pathname.replace(/^\/[^/]+/, '')
+      navigate(`/en${withoutLang || '/'}`, { replace: true })
+      return
+    }
+    if (i18n.language !== lang) {
+      i18n.changeLanguage(lang)
+    }
+    // Update <html lang=""> for SEO
+    document.documentElement.lang = lang
+  }, [lang, i18n, navigate, pathname])
+
+  return <Outlet />
+}
+
+// Detects browser language and redirects to /:lang/
+function LangDetector() {
+  const { i18n } = useTranslation()
+  const detected = i18n.language?.slice(0, 2) as SupportedLanguage
+  const lang = SUPPORTED_LANGUAGES.includes(detected) ? detected : 'en'
+  return <Navigate to={`/${lang}/`} replace />
+}
+
 export default function App() {
   return (
     <>
       <Toaster position="top-right" richColors />
       <Routes>
-        {/* Admin routes - MUST come before public wildcard */}
+        {/* Root: detect language and redirect */}
+        <Route path="/" element={<LangDetector />} />
+
+        {/* Admin routes — no lang prefix, outside public layout */}
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminLayoutWrapper />}>
           <Route index element={<AdminDashboard />} />
@@ -63,26 +99,30 @@ export default function App() {
           <Route path="contacts" element={<AdminContacts />} />
           <Route path="profile" element={<AgentProfile />} />
         </Route>
-        {/* Redirect /admin/ (with trailing slash) to /admin */}
         <Route path="/admin/" element={<Navigate to="/admin" replace />} />
 
-        {/* Public routes */}
-        <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/acheter" element={<SearchPage />} />
-          <Route path="/louer" element={<SearchPage />} />
-          <Route path="/property/:slug" element={<PropertyDetailPage />} />
-          <Route path="/vendre" element={<Sell />} />
-          <Route path="/guide-achat-maroc" element={<BuyerGuide />} />
-          <Route path="/conseils-immobiliers" element={<Blog />} />
-          <Route path="/a-propos" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/favoris" element={<Favorites />} />
-          <Route path="/estimation" element={<Estimation />} />
-          <Route path="/gestion-locative" element={<GestionLocative />} />
-          <Route path="/estimer" element={<Estimer />} />
-          <Route path="*" element={<NotFound />} />
+        {/* Public routes with lang prefix */}
+        <Route path="/:lang" element={<LangWrapper />}>
+          <Route element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="acheter" element={<SearchPage />} />
+            <Route path="louer" element={<SearchPage />} />
+            <Route path="property/:slug" element={<PropertyDetailPage />} />
+            <Route path="vendre" element={<Sell />} />
+            <Route path="guide-achat-maroc" element={<BuyerGuide />} />
+            <Route path="conseils-immobiliers" element={<Blog />} />
+            <Route path="a-propos" element={<About />} />
+            <Route path="contact" element={<Contact />} />
+            <Route path="favoris" element={<Favorites />} />
+            <Route path="estimation" element={<Estimation />} />
+            <Route path="gestion-locative" element={<GestionLocative />} />
+            <Route path="estimer" element={<Estimer />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
         </Route>
+
+        {/* Catch-all: redirect to language detection */}
+        <Route path="*" element={<LangDetector />} />
       </Routes>
     </>
   )

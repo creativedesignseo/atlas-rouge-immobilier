@@ -1,0 +1,15 @@
+{
+  "buy": "Comprar",
+  "rent": "Alquilar",
+  "sell": "Vender",
+  "estimate": "Estimar",
+  "guides": "Guías",
+  "listProperty": "Publicar anuncio",
+  "signIn": "Iniciar sesión",
+  "admin": "Admin",
+  "adminPanel": "Panel de administración",
+  "signOut": "Cerrar sesión",
+  "openMenu": "Abrir menú",
+  "closeMenu": "Cerrar menú",
+  "tagline": "Inmobiliaria Marrakech"
+}

@@ -3,11 +3,17 @@ import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useNavigate } from 'react-router-dom'
-import { Save, ArrowLeft, Plus, X } from 'lucide-react'
+import { Save, ArrowLeft, Plus, X, Wand2 } from 'lucide-react'
 import { toast } from 'sonner'
+import { useTranslation } from 'react-i18next'
 import ImageUploader from './ImageUploader'
 import { getNeighborhoods } from '@/services/neighborhood.service'
 import type { Neighborhood } from '@/data/neighborhoods'
+import { autoTranslateProperty } from '@/services/translation.service'
+import type { SupportedLanguage } from '@/i18n'
+
+const LANGS: SupportedLanguage[] = ['en', 'fr', 'es']
+const LANG_LABELS: Record<SupportedLanguage, string> = { en: '🇬🇧 EN', fr: '🇫🇷 FR', es: '🇪🇸 ES' }
 
 const propertySchema = z.object({
   title: z.string().min(5, 'Le titre doit faire au moins 5 caractères').max(100),
@@ -34,6 +40,16 @@ const propertySchema = z.object({
   is_exclusive: z.boolean(),
   has_video: z.boolean(),
   has_3d_tour: z.boolean(),
+  // Multilingual fields (optional — filled via translation tabs)
+  title_en: z.string().nullable().optional(),
+  title_fr: z.string().nullable().optional(),
+  title_es: z.string().nullable().optional(),
+  description_en: z.string().nullable().optional(),
+  description_fr: z.string().nullable().optional(),
+  description_es: z.string().nullable().optional(),
+  highlights_en: z.array(z.string()).optional(),
+  highlights_fr: z.array(z.string()).optional(),
+  highlights_es: z.array(z.string()).optional(),
 })
 
 type PropertyFormValues = z.infer<typeof propertySchema>
@@ -80,8 +96,12 @@ function slugify(text: string): string {
 
 export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode }: PropertyFormProps) {
   const navigate = useNavigate()
+  const { t } = useTranslation('admin')
   const [neighborhoods, setNeighborhoods] = useState<Neighborhood[]>([])
   const [highlightInput, setHighlightInput] = useState('')
+  const [activeLangTab, setActiveLangTab] = useState<SupportedLanguage>('fr')
+  const [isTranslating, setIsTranslating] = useState(false)
+  const [highlightInputs, setHighlightInputs] = useState<Record<SupportedLanguage, string>>({ en: '', fr: '', es: '' })
 
   const {
     register,
@@ -165,6 +185,52 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
       toast.error(error instanceof Error ? error.message : 'Erreur lors de la sauvegarde')
     }
   })
+
+  const handleAutoTranslate = async () => {
+    const title = watch(`title_${activeLangTab}` as keyof PropertyFormValues) as string
+    const description = watch(`description_${activeLangTab}` as keyof PropertyFormValues) as string
+    const highlights = (watch(`highlights_${activeLangTab}` as keyof PropertyFormValues) as string[]) || []
+
+    if (!title || !description) {
+      toast.error(`Remplissez d'abord le titre et la description en ${activeLangTab.toUpperCase()}`)
+      return
+    }
+
+    setIsTranslating(true)
+    try {
+      const result = await autoTranslateProperty({ title, description, highlights }, activeLangTab)
+      for (const [lang, content] of Object.entries(result)) {
+        const l = lang as SupportedLanguage
+        const c = content as { title: string; description: string; highlights: string[] }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        setValue(`title_${l}` as any, c.title)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        setValue(`description_${l}` as any, c.description)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        setValue(`highlights_${l}` as any, c.highlights)
+      }
+      toast.success(t('propertyForm.autoTranslateSuccess'))
+    } catch {
+      toast.error(t('propertyForm.autoTranslateError'))
+    } finally {
+      setIsTranslating(false)
+    }
+  }
+
+  const addLangHighlight = (lang: SupportedLanguage) => {
+    const val = highlightInputs[lang].trim()
+    if (!val) return
+    const current = (watch(`highlights_${lang}` as keyof PropertyFormValues) as string[]) || []
+    if (!current.includes(val)) {
+      setValue(`highlights_${lang}` as keyof PropertyFormValues, [...current, val] as never)
+      setHighlightInputs((prev) => ({ ...prev, [lang]: '' }))
+    }
+  }
+
+  const removeLangHighlight = (lang: SupportedLanguage, index: number) => {
+    const current = (watch(`highlights_${lang}` as keyof PropertyFormValues) as string[]) || []
+    setValue(`highlights_${lang}` as keyof PropertyFormValues, current.filter((_, i) => i !== index) as never)
+  }
 
   return (
     <form onSubmit={handleFormSubmit} className="space-y-8">
@@ -554,8 +620,108 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
           </div>
         </div>
 
-        {/* Right column - images */}
-        <div className="lg:col-span-2">
+        {/* Right column - images + translations */}
+        <div className="lg:col-span-2 space-y-6">
+
+          {/* Translation tabs */}
+          <div className="bg-white rounded-2xl p-6 shadow-card border border-border-warm">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-semibold text-text-primary">{t('propertyForm.translations')}</h3>
+              <button
+                type="button"
+                onClick={handleAutoTranslate}
+                disabled={isTranslating}
+                className="flex items-center gap-2 px-3 py-1.5 bg-midnight text-white text-xs font-medium rounded-lg hover:bg-midnight/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                {isTranslating ? (
+                  <span className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <Wand2 size={13} />
+                )}
+                {isTranslating ? t('propertyForm.autoTranslating') : t('propertyForm.autoTranslate')}
+              </button>
+            </div>
+
+            {/* Lang tabs */}
+            <div className="flex gap-1 mb-4 bg-gray-100 rounded-lg p-1">
+              {LANGS.map((lang) => (
+                <button
+                  key={lang}
+                  type="button"
+                  onClick={() => setActiveLangTab(lang)}
+                  className={`flex-1 py-1.5 text-xs font-medium rounded-md transition-colors ${
+                    activeLangTab === lang
+                      ? 'bg-white text-midnight shadow-sm'
+                      : 'text-text-secondary hover:text-text-primary'
+                  }`}
+                >
+                  {LANG_LABELS[lang]}
+                </button>
+              ))}
+            </div>
+
+            {/* Active lang fields */}
+            {LANGS.map((lang) => (
+              <div key={lang} className={`space-y-4 ${activeLangTab === lang ? '' : 'hidden'}`}>
+                <div>
+                  <label className="block text-xs font-medium text-text-secondary mb-1">
+                    {t('propertyForm.titleLang', { lang: lang.toUpperCase() })}
+                  </label>
+                  <input
+                    {...register(`title_${lang}` as keyof PropertyFormValues)}
+                    placeholder={`Title in ${lang.toUpperCase()}...`}
+                    className="w-full px-3 py-2 text-sm border border-border-warm rounded-lg focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-text-secondary mb-1">
+                    {t('propertyForm.descriptionLang', { lang: lang.toUpperCase() })}
+                  </label>
+                  <textarea
+                    {...register(`description_${lang}` as keyof PropertyFormValues)}
+                    rows={6}
+                    placeholder={`Description in ${lang.toUpperCase()}...`}
+                    className="w-full px-3 py-2 text-sm border border-border-warm rounded-lg focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta resize-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-text-secondary mb-1">
+                    {t('propertyForm.highlightsLang', { lang: lang.toUpperCase() })}
+                  </label>
+                  <div className="flex gap-2 mb-2">
+                    <input
+                      value={highlightInputs[lang]}
+                      onChange={(e) => setHighlightInputs((p) => ({ ...p, [lang]: e.target.value }))}
+                      onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addLangHighlight(lang) } }}
+                      placeholder="Add feature..."
+                      className="flex-1 px-3 py-1.5 text-sm border border-border-warm rounded-lg focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => addLangHighlight(lang)}
+                      className="p-1.5 bg-terracotta text-white rounded-lg hover:bg-terracotta/90"
+                    >
+                      <Plus size={14} />
+                    </button>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {((watch(`highlights_${lang}` as keyof PropertyFormValues) as string[]) || []).map((h, i) => (
+                      <span key={i} className="flex items-center gap-1 bg-gray-100 text-text-primary text-xs px-2 py-1 rounded-full">
+                        {h}
+                        <button type="button" onClick={() => removeLangHighlight(lang, i)}>
+                          <X size={10} />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Images */}
           <div className="bg-white rounded-2xl p-6 shadow-card border border-border-warm sticky top-6">
             <h3 className="font-semibold text-text-primary mb-4">
               Images <span className="text-red-500">*</span>
@@ -573,6 +739,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
             {errors.images && <p className="text-red-500 text-xs mt-2">{errors.images.message}</p>}
           </div>
         </div>
+
       </div>
     </form>
   )
