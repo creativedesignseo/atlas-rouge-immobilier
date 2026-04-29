@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react'
-import { Routes, Route, Outlet } from 'react-router-dom'
+import { Routes, Route, Outlet, Navigate } from 'react-router-dom'
 import { Toaster } from '@/components/ui/sonner'
 import Layout from './components/Layout'
 import Home from './pages/Home'
@@ -52,7 +52,7 @@ export default function App() {
     <>
       <Toaster position="top-right" richColors />
       <Routes>
-        {/* Admin routes */}
+        {/* Admin routes - MUST come before public wildcard */}
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminLayoutWrapper />}>
           <Route index element={<AdminDashboard />} />
@@ -61,6 +61,8 @@ export default function App() {
           <Route path="properties/:slug/edit" element={<AdminPropertyEdit />} />
           <Route path="contacts" element={<AdminContacts />} />
         </Route>
+        {/* Redirect /admin/ (with trailing slash) to /admin */}
+        <Route path="/admin/" element={<Navigate to="/admin" replace />} />
 
         {/* Public routes */}
         <Route element={<Layout />}>
