@@ -1,15 +1,25 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Eye, EyeOff, Lock, Mail } from 'lucide-react'
 import { signIn } from '@/services/auth.service'
+import { useAuth } from '@/hooks/useAuth'
 import { toast } from 'sonner'
 
 export default function AdminLogin() {
   const navigate = useNavigate()
+  const { agent, isLoading } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  // Redirect when agent is loaded after login
+  useEffect(() => {
+    if (agent && !isLoading && isSubmitting) {
+      toast.success('Connexion réussie')
+      navigate('/admin')
+    }
+  }, [agent, isLoading, isSubmitting, navigate])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -18,11 +28,11 @@ export default function AdminLogin() {
       return
     }
 
-    setIsLoading(true)
+    setIsSubmitting(true)
     const { error } = await signIn({ email, password })
-    setIsLoading(false)
 
     if (error) {
+      setIsSubmitting(false)
       toast.error(error.message === 'Invalid login credentials'
         ? 'Email ou mot de passe incorrect'
         : 'Erreur de connexion: ' + error.message
@@ -30,8 +40,8 @@ export default function AdminLogin() {
       return
     }
 
-    toast.success('Connexion réussie')
-    navigate('/admin')
+    // Wait for auth state to update via onAuthStateChange in useAuth
+    // The useEffect above will handle navigation when agent is loaded
   }
 
   return (
@@ -89,10 +99,10 @@ export default function AdminLogin() {
 
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isSubmitting}
               className="w-full py-3 bg-terracotta text-white font-medium rounded-xl hover:bg-terracotta/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              {isLoading ? (
+              {isSubmitting ? (
                 <span className="flex items-center justify-center gap-2">
                   <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                   Connexion...
