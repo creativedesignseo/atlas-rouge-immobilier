@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
+import { useAuth } from '@/hooks/useAuth'
 import PropertyForm from '@/components/admin/PropertyForm'
 import { getPropertyForEdit, updateProperty } from '@/services/admin/propertyAdmin.service'
 import type { PropertyFormData } from '@/services/admin/propertyAdmin.service'
@@ -8,6 +9,7 @@ import type { PropertyFormData } from '@/services/admin/propertyAdmin.service'
 export default function AdminPropertyEdit() {
   const navigate = useNavigate()
   const { slug } = useParams<{ slug: string }>()
+  const { agent } = useAuth()
   const [defaultValues, setDefaultValues] = useState<Partial<PropertyFormData>>()
   const [isLoading, setIsLoading] = useState(false)
   const [isFetching, setIsFetching] = useState(true)
@@ -29,7 +31,7 @@ export default function AdminPropertyEdit() {
     if (!slug) return
     setIsLoading(true)
     try {
-      await updateProperty(slug, data)
+      await updateProperty(slug, data, agent?.id)
       toast.success('Propriété mise à jour avec succès')
       navigate('/admin/properties')
     } catch (error) {

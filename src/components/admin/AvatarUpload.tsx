@@ -5,11 +5,13 @@ import { toast } from 'sonner'
 
 interface AvatarUploadProps {
   userId: string
+  name: string | null
+  email: string
   currentUrl: string | null
   onUpload: (url: string) => void
 }
 
-export default function AvatarUpload({ userId, currentUrl, onUpload }: AvatarUploadProps) {
+export default function AvatarUpload({ userId, name, email, currentUrl, onUpload }: AvatarUploadProps) {
   const [isUploading, setIsUploading] = useState(false)
   const [preview, setPreview] = useState<string | null>(currentUrl)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -18,7 +20,6 @@ export default function AvatarUpload({ userId, currentUrl, onUpload }: AvatarUpl
     const file = e.target.files?.[0]
     if (!file) return
 
-    // Validaciones
     if (!file.type.startsWith('image/')) {
       toast.error('Veuillez sélectionner une image')
       return
@@ -28,7 +29,6 @@ export default function AvatarUpload({ userId, currentUrl, onUpload }: AvatarUpl
       return
     }
 
-    // Preview local
     const objectUrl = URL.createObjectURL(file)
     setPreview(objectUrl)
 
@@ -36,7 +36,6 @@ export default function AvatarUpload({ userId, currentUrl, onUpload }: AvatarUpl
     const { url, error } = await uploadAvatar(file, userId)
     setIsUploading(false)
 
-    // Limpiar preview local
     URL.revokeObjectURL(objectUrl)
 
     if (error || !url) {
@@ -50,7 +49,9 @@ export default function AvatarUpload({ userId, currentUrl, onUpload }: AvatarUpl
     toast.success('Photo de profil mise à jour')
   }
 
-  const initials = userId.slice(0, 2).toUpperCase()
+  const initials = name
+    ? name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
+    : email.slice(0, 2).toUpperCase()
 
   return (
     <div className="flex flex-col items-center gap-3">
@@ -70,7 +71,6 @@ export default function AvatarUpload({ userId, currentUrl, onUpload }: AvatarUpl
           </div>
         )}
 
-        {/* Overlay hover */}
         <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
           {isUploading ? (
             <Loader2 className="w-6 h-6 text-white animate-spin" />

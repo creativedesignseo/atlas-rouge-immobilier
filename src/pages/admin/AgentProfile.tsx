@@ -49,6 +49,8 @@ export default function AgentProfile() {
       <div className="text-center mb-8">
         <AvatarUpload
           userId={user.id}
+          name={agent.name}
+          email={agent.email}
           currentUrl={agent.photo_url}
           onUpload={handlePhotoUpload}
         />

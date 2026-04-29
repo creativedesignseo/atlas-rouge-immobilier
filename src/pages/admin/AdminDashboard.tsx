@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Building2, Euro, Mail, Star, Home } from 'lucide-react'
 import StatCard from '@/components/admin/StatCard'
+import { useAuth } from '@/hooks/useAuth'
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 import type { PropertyRow, ContactSubmissionRow } from '@/types/supabase'
 import { format } from 'date-fns'
@@ -9,6 +10,7 @@ import { fr } from 'date-fns/locale'
 
 export default function AdminDashboard() {
   const navigate = useNavigate()
+  const { agent, isAdmin } = useAuth()
   const [stats, setStats] = useState({
     totalProperties: 0,
     saleProperties: 0,
@@ -22,21 +24,39 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     async function loadStats() {
-      if (!isSupabaseConfigured) return
+      if (!isSupabaseConfigured || !agent) return
 
       try {
-        // Properties counts
-        const { count: total } = await supabase.from('properties').select('*', { count: 'exact', head: true })
-        const { count: sale } = await supabase.from('properties').select('*', { count: 'exact', head: true }).eq('transaction', 'sale')
-        const { count: rent } = await supabase.from('properties').select('*', { count: 'exact', head: true }).eq('transaction', 'rent')
-        const { count: featured } = await supabase.from('properties').select('*', { count: 'exact', head: true }).eq('is_featured', true)
+        // Build property queries with agent filter if not admin
+        let propertiesQuery = supabase.from('properties').select('*', { count: 'exact', head: true })
+        let saleQuery = supabase.from('properties').select('*', { count: 'exact', head: true }).eq('transaction', 'sale')
+        let rentQuery = supabase.from('properties').select('*', { count: 'exact', head: true }).eq('transaction', 'rent')
+        let featuredQuery = supabase.from('properties').select('*', { count: 'exact', head: true }).eq('is_featured', true)
+
+        if (!isAdmin) {
+          propertiesQuery = propertiesQuery.eq('agent_id', agent.id)
+          saleQuery = saleQuery.eq('agent_id', agent.id)
+          rentQuery = rentQuery.eq('agent_id', agent.id)
+          featuredQuery = featuredQuery.eq('agent_id', agent.id)
+        }
+
+        const { count: total } = await propertiesQuery
+        const { count: sale } = await saleQuery
+        const { count: rent } = await rentQuery
+        const { count: featured } = await featuredQuery
 
         // Contacts in last 7 days
         const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
-        const { count: contacts } = await supabase
+        let contactsQuery = supabase
           .from('contact_submissions')
           .select('*', { count: 'exact', head: true })
           .gte('created_at', sevenDaysAgo)
+
+        if (!isAdmin) {
+          contactsQuery = contactsQuery.eq('assigned_to_agent_id', agent.id)
+        }
+
+        const { count: contacts } = await contactsQuery
 
         setStats({
           totalProperties: total || 0,
@@ -47,19 +67,31 @@ export default function AdminDashboard() {
         })
 
         // Recent properties
-        const { data: propsData } = await supabase
+        let recentPropsQuery = supabase
           .from('properties')
           .select('*')
           .order('created_at', { ascending: false })
           .limit(5)
+
+        if (!isAdmin) {
+          recentPropsQuery = recentPropsQuery.eq('agent_id', agent.id)
+        }
+
+        const { data: propsData } = await recentPropsQuery
         setRecentProperties((propsData || []) as PropertyRow[])
 
         // Recent contacts
-        const { data: contactsData } = await supabase
+        let recentContactsQuery = supabase
           .from('contact_submissions')
           .select('*')
           .order('created_at', { ascending: false })
           .limit(5)
+
+        if (!isAdmin) {
+          recentContactsQuery = recentContactsQuery.eq('assigned_to_agent_id', agent.id)
+        }
+
+        const { data: contactsData } = await recentContactsQuery
         setRecentContacts((contactsData || []) as ContactSubmissionRow[])
       } catch {
         // Silently fail
@@ -69,7 +101,7 @@ export default function AdminDashboard() {
     }
 
     loadStats()
-  }, [])
+  }, [agent, isAdmin])
 
   if (loading) {
     return (

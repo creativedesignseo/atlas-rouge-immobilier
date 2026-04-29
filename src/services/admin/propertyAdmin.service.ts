@@ -96,12 +96,12 @@ export async function createProperty(data: PropertyFormData, agentId?: string): 
   return result as PropertyRow
 }
 
-export async function updateProperty(slug: string, data: PropertyFormData): Promise<PropertyRow> {
+export async function updateProperty(slug: string, data: PropertyFormData, agentId?: string): Promise<PropertyRow> {
   if (!isSupabaseConfigured) throw new Error('Supabase not configured')
   
   const { data: result, error } = await supabase
     .from('properties')
-    .update(toDbInsert(data))
+    .update(toDbInsert(data, agentId))
     .eq('slug', slug)
     .select()
     .single()
