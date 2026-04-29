@@ -67,6 +67,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Listen for auth state changes (login, logout, token refresh)
     const { data } = onAuthStateChange(async (_event, session) => {
+      setIsLoading(true)
       if (session?.user) {
         setUser(session.user)
         await loadAgentData(session.user)

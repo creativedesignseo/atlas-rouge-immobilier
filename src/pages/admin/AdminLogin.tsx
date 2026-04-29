@@ -1,15 +1,24 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Eye, EyeOff, Lock, Mail } from 'lucide-react'
 import { signIn } from '@/services/auth.service'
+import { useAuth } from '@/hooks/useAuth'
 import { toast } from 'sonner'
 
 export default function AdminLogin() {
   const navigate = useNavigate()
+  const { user, agent, isLoading: authLoading } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+
+  // Navigate to admin once auth state is fully resolved after login
+  useEffect(() => {
+    if (!authLoading && user && agent) {
+      navigate('/admin', { replace: true })
+    }
+  }, [authLoading, user, agent, navigate])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -27,14 +36,8 @@ export default function AdminLogin() {
           ? 'Email ou mot de passe incorrect'
           : 'Erreur de connexion: ' + error.message
         )
-        return
       }
-
-      // Give Supabase a moment to update auth state, then navigate
-      // The ProtectedRoute will handle the redirect if not authenticated
-      setTimeout(() => {
-        navigate('/admin')
-      }, 500)
+      // Navigation is handled by the useEffect above once agent data loads
     } finally {
       setIsLoading(false)
     }
