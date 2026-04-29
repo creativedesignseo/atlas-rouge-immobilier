@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import { updateAgent } from '@/services/auth.service'
 import { toast } from 'sonner'
@@ -12,11 +12,18 @@ import type { Agent } from '@/hooks/useAuth'
 type Tab = 'profile' | 'credential' | 'security'
 
 export default function AgentProfile() {
-  const { agent: currentAgent, user } = useAuth()
+  const { agent: currentAgent, user, isLoading } = useAuth()
   const [agent, setAgent] = useState<Agent | null>(currentAgent)
   const [activeTab, setActiveTab] = useState<Tab>('credential')
 
-  if (!agent || !user) {
+  // Sync local state with auth context when it updates
+  useEffect(() => {
+    if (currentAgent) {
+      setAgent(currentAgent)
+    }
+  }, [currentAgent])
+
+  if (isLoading || !agent || !user) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
         <div className="w-10 h-10 border-4 border-terracotta border-t-transparent rounded-full animate-spin" />
