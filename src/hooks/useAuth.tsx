@@ -47,12 +47,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data } = onAuthStateChange((_event, session) => {
       if (session?.user) {
         setUser(session.user)
-        isAdmin().then(setIsAdminUser)
+        isAdmin().then((admin) => {
+          setIsAdminUser(admin)
+          setIsLoading(false)
+        })
       } else {
         setUser(null)
         setIsAdminUser(false)
+        setIsLoading(false)
       }
-      setIsLoading(false)
     })
 
     return () => {
