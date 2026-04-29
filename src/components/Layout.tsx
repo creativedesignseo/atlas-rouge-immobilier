@@ -1,14 +1,9 @@
 import { useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
 import Footer from './Footer'
-import type { ReactNode } from 'react'
 
-interface LayoutProps {
-  children: ReactNode
-}
-
-export default function Layout({ children }: LayoutProps) {
+export default function Layout() {
   const { pathname } = useLocation()
 
   useEffect(() => {
@@ -18,7 +13,9 @@ export default function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-[100dvh] flex flex-col">
       <Navbar />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1">
+        <Outlet />
+      </main>
       <Footer />
     </div>
   )
