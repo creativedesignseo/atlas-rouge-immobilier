@@ -2,7 +2,7 @@ import { Navigate } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
 
 export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { user, isAdmin, isLoading } = useAuth()
+  const { user, agent, isLoading } = useAuth()
 
   if (isLoading) {
     return (
@@ -16,7 +16,9 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
     return <Navigate to="/admin/login" replace />
   }
 
-  if (!isAdmin) {
+  // Cualquier usuario en la tabla agents (activo) puede acceder al panel
+  // No importa si es admin o agente
+  if (!agent) {
     return <Navigate to="/" replace />
   }
 
