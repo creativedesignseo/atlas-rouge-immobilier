@@ -183,7 +183,7 @@ export default function AdminProperties() {
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-end gap-1">
                         <button
-                          onClick={() => window.open(`/property/${property.slug}`, '_blank')}
+                          onClick={() => window.open(`/en/property/${property.slug}`, '_blank')}
                           className="p-2 text-text-secondary hover:text-terracotta hover:bg-terracotta/5 rounded-lg transition-colors"
                           title="Voir sur le site"
                         >

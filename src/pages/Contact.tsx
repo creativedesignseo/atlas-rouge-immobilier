@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { submitContactForm } from '@/services/contact.service'
 import { Link } from 'react-router-dom'
+import { useLang } from '@/hooks/useLang'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -86,6 +87,7 @@ const faqItems = (settings: Record<string, string> | null) => [
 
 /* ═══════════════════════════════════════════ */
 export default function Contact() {
+  const { path } = useLang()
   const { settings } = useSiteSettings()
 
   const [formState, setFormState] = useState({
@@ -166,7 +168,7 @@ export default function Contact() {
       <section className="bg-cream-warm pt-16 md:pt-20 pb-12 md:pb-12">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-12 text-center">
           <nav className="flex items-center justify-center gap-2 mb-6 text-text-secondary font-inter text-[13px]">
-            <Link to="/" className="hover:text-terracotta transition-colors">
+            <Link to={path('/')} className="hover:text-terracotta transition-colors">
               Accueil
             </Link>
             <ChevronRight size={14} />
@@ -522,7 +524,7 @@ export default function Contact() {
 
           <p className="text-center mt-8">
             <Link
-              to="/vendre#faq"
+              to={path('/vendre#faq')}
               className="font-inter text-[16px] text-terracotta hover:underline"
             >
               Voir toutes les questions →

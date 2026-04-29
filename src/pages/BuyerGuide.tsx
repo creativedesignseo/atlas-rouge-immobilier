@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useLang } from '@/hooks/useLang'
 import { getImageUrl } from '@/lib/storage'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
@@ -138,6 +139,7 @@ const relatedArticles = [
 ]
 
 export default function BuyerGuide() {
+  const { path } = useLang()
   const [activeSection, setActiveSection] = useState('')
   const [email, setEmail] = useState('')
 
@@ -283,12 +285,12 @@ export default function BuyerGuide() {
         <div className="max-w-[1100px] mx-auto text-center">
           {/* Breadcrumb */}
           <p className="text-white/60 text-[13px] font-inter mb-6">
-            <Link to="/" className="hover:text-white transition-colors">
+            <Link to={path('/')} className="hover:text-white transition-colors">
               Accueil
             </Link>
             <span className="mx-2">&gt;</span>
             <Link
-              to="/conseils-immobiliers"
+              to={path('/conseils-immobiliers')}
               className="hover:text-white transition-colors"
             >
               Guides
@@ -831,7 +833,7 @@ export default function BuyerGuide() {
 
                 {/* CTA */}
                 <Link
-                  to="/gestion-locative"
+                  to={path('/gestion-locative')}
                   className="gsap-fade inline-block bg-palm text-white font-inter text-[14px] font-semibold px-6 py-3 rounded-lg hover:scale-[1.02] transition-transform"
                 >
                   D&eacute;couvrir nos services de gestion
@@ -885,7 +887,7 @@ export default function BuyerGuide() {
             {relatedArticles.map((article) => (
               <Link
                 key={article.title}
-                to="/conseils-immobiliers"
+                to={path('/conseils-immobiliers')}
                 className="related-card group bg-white rounded-card border border-border-warm overflow-hidden shadow-card hover:shadow-card-hover transition-all"
               >
                 <div className="aspect-[16/10] overflow-hidden">

@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useLang } from '@/hooks/useLang'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -128,6 +129,7 @@ const values = [
 
 /* ═══════════════════════════════════════════ */
 export default function About() {
+  const { path } = useLang()
   const heroRef = useRef<HTMLDivElement>(null)
   const heroBgRef = useRef<HTMLDivElement>(null)
   const statsSectionRef = useRef<HTMLElement>(null)
@@ -254,7 +256,7 @@ export default function About() {
         <div className="relative z-10 max-w-[1280px] mx-auto px-6 lg:px-12 pb-16 pt-32 w-full">
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 mb-6 text-white/60 font-inter text-[13px]">
-            <Link to="/" className="hover:text-white transition-colors">
+            <Link to={path('/')} className="hover:text-white transition-colors">
               Accueil
             </Link>
             <ChevronRight size={14} />
@@ -430,7 +432,7 @@ export default function About() {
                   {member.bio}
                 </p>
                 <Link
-                  to="/contact"
+                  to={path('/contact')}
                   className="inline-block font-inter text-[14px] text-terracotta font-medium hover:underline"
                 >
                   Contacter
@@ -453,7 +455,7 @@ export default function About() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              to="/contact"
+              to={path('/contact')}
               className="inline-block bg-white text-terracotta font-inter text-[14px] font-semibold px-8 py-3.5 rounded-lg hover:scale-[1.02] transition-transform"
             >
               Prendre rendez-vous

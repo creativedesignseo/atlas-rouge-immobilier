@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { getImageUrl } from '@/lib/storage'
+import { useLang } from '@/hooks/useLang'
 import type { Neighborhood } from '@/data/neighborhoods'
 
 interface NeighborhoodCardProps {
@@ -7,9 +8,10 @@ interface NeighborhoodCardProps {
 }
 
 export default function NeighborhoodCard({ neighborhood }: NeighborhoodCardProps) {
+  const { path } = useLang()
   return (
     <Link
-      to={`/acheter?quartier=${neighborhood.slug}`}
+      to={path(`/acheter?quartier=${neighborhood.slug}`)}
       className="relative aspect-[3/2] rounded-card overflow-hidden group block"
     >
       <img

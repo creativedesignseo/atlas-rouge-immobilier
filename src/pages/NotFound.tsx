@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom'
 import { Home, ArrowRight, MapPin } from 'lucide-react'
+import { useLang } from '@/hooks/useLang'
 
 export default function NotFound() {
+  const { path } = useLang()
   return (
     <div className="min-h-[70vh] bg-cream flex items-center justify-center px-6">
       <div className="text-center max-w-md">
@@ -17,14 +19,14 @@ export default function NotFound() {
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
-            to="/"
+            to={path('/')}
             className="inline-flex items-center gap-2 bg-terracotta text-white font-inter text-[14px] font-semibold px-6 py-3 rounded-lg hover:scale-[1.02] transition-transform"
           >
             <Home size={18} />
             Retour à l&apos;accueil
           </Link>
           <Link
-            to="/acheter"
+            to={path('/acheter')}
             className="inline-flex items-center gap-2 text-terracotta font-inter text-[14px] font-medium hover:underline"
           >
             Voir les annonces

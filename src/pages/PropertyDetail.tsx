@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import { useLang } from '@/hooks/useLang'
 import {
   MapPin, Heart, Share2, X, Maximize, Bed, Bath, Home,
   Waves, Car, Check, Phone, MessageCircle, User,
@@ -433,6 +434,7 @@ export default function PropertyDetail() {
   const { toggleFavorite, isFavorite } = useFavorites()
   const { formatPrice } = useCurrency()
   const { settings } = useSiteSettings()
+  const { path } = useLang()
 
   const [property, setProperty] = useState<Property | undefined>(undefined)
   const [similarProperties, setSimilarProperties] = useState<Property[]>([])
@@ -470,7 +472,7 @@ export default function PropertyDetail() {
         <Info size={64} className="text-sand/60 mb-4" />
         <h1 className="font-playfair text-[32px] font-semibold text-midnight mb-3">Bien introuvable</h1>
         <p className="text-text-secondary text-[16px] font-inter mb-6">Ce bien n'existe pas ou n'est plus disponible.</p>
-        <Link to="/acheter" className="h-12 px-6 bg-terracotta text-white font-inter text-[14px] font-semibold rounded-lg hover:scale-[1.02] transition-transform flex items-center gap-2">
+        <Link to={path('/acheter')} className="h-12 px-6 bg-terracotta text-white font-inter text-[14px] font-semibold rounded-lg hover:scale-[1.02] transition-transform flex items-center gap-2">
           <ArrowRight size={18} /> Retour à la recherche
         </Link>
       </div>
@@ -721,7 +723,7 @@ export default function PropertyDetail() {
               ))}
             </div>
             <div className="text-center mt-8">
-              <Link to="/acheter" className="inline-flex items-center gap-2 text-terracotta text-[16px] font-medium font-inter hover:underline">
+              <Link to={path('/acheter')} className="inline-flex items-center gap-2 text-terracotta text-[16px] font-medium font-inter hover:underline">
                 Voir plus d'annonces <ArrowRight size={18} />
               </Link>
             </div>
@@ -738,7 +740,7 @@ export default function PropertyDetail() {
             {guideLinks.map(link => (
               <Link
                 key={link.href}
-                to={link.href}
+                to={path(link.href)}
                 className="flex items-center gap-2 bg-white border border-border-warm rounded-lg px-4 py-3 text-terracotta text-[14px] font-medium font-inter hover:border-terracotta hover:shadow-sm transition-all"
               >
                 {link.icon}

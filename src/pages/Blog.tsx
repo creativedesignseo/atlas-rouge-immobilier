@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { getImageUrl } from '@/lib/storage'
 import { Link } from 'react-router-dom'
+import { useLang } from '@/hooks/useLang'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -117,6 +118,7 @@ const featuredArticle = {
 }
 
 export default function Blog() {
+  const { path } = useLang()
   const [activeCategory, setActiveCategory] = useState('Tous')
   const [email, setEmail] = useState('')
 
@@ -243,7 +245,7 @@ export default function Blog() {
         <div className="max-w-[1100px] mx-auto text-center">
           {/* Breadcrumb */}
           <p className="text-text-secondary text-[13px] font-inter mb-6">
-            <Link to="/" className="hover:text-terracotta transition-colors">
+            <Link to={path('/')} className="hover:text-terracotta transition-colors">
               Accueil
             </Link>
             <span className="mx-2">&gt;</span>
@@ -309,7 +311,7 @@ export default function Blog() {
                     lecture
                   </p>
                   <Link
-                    to="/conseils-immobiliers"
+                    to={path('/conseils-immobiliers')}
                     className="text-terracotta text-[16px] font-inter font-medium hover:underline self-start"
                   >
                     Lire l&rsquo;article &rarr;
@@ -328,7 +330,7 @@ export default function Blog() {
             {filteredArticles.map((article) => (
               <Link
                 key={article.title}
-                to="/conseils-immobiliers"
+                to={path('/conseils-immobiliers')}
                 className="article-card group bg-white rounded-card border border-border-warm overflow-hidden shadow-card hover:shadow-card-hover transition-all"
               >
                 {/* Image */}

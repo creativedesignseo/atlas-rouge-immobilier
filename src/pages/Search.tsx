@@ -9,6 +9,7 @@ import { getProperties } from '@/services/property.service'
 
 import { useFavorites } from '@/hooks/useFavorites'
 import { useCurrency } from '@/hooks/useCurrency'
+import { useLang } from '@/hooks/useLang'
 import { getImageUrl } from '@/lib/storage'
 import { cn } from '@/lib/utils'
 import type { Property } from '@/data/properties'
@@ -173,12 +174,13 @@ function FilterSection({ title, children, defaultOpen = true }: { title: string;
 function PropertyCardList({ property }: { property: Property }) {
   const { toggleFavorite, isFavorite } = useFavorites()
   const { formatPrice } = useCurrency()
+  const { path } = useLang()
   const priceDisplay = formatPrice(property.priceEUR)
   const image = getImageUrl(property.images[0] || 'property-01.jpg', { width: 400, height: 300, resize: 'cover' })
 
   return (
     <div className="bg-white rounded-card border border-border-warm shadow-card hover:shadow-card-hover transition-all duration-250 overflow-hidden group flex flex-col sm:flex-row">
-      <Link to={`/property/${property.slug}`} className="relative sm:w-[40%] aspect-[3/2] sm:aspect-auto overflow-hidden flex-shrink-0">
+      <Link to={path(`/property/${property.slug}`)} className="relative sm:w-[40%] aspect-[3/2] sm:aspect-auto overflow-hidden flex-shrink-0">
         <img src={image} alt={property.title} className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-400" loading="lazy" />
         <span className="absolute top-3 left-3 bg-palm text-white text-[11px] font-semibold px-2 py-1 rounded">
           {property.transaction === 'sale' ? 'À vendre' : 'À louer'}
@@ -199,7 +201,7 @@ function PropertyCardList({ property }: { property: Property }) {
             </button>
           </div>
           <p className="text-text-secondary text-[13px] font-inter">{property.neighborhood}, {property.city}</p>
-          <Link to={`/property/${property.slug}`}>
+          <Link to={path(`/property/${property.slug}`)}>
             <h3 className="font-playfair text-[18px] font-medium text-midnight mt-1 mb-2 hover:text-terracotta transition-colors">{property.title}</h3>
           </Link>
           <p className="text-text-secondary text-[14px] font-inter line-clamp-2 mb-3">{property.description}</p>
@@ -231,6 +233,7 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
   const markersRef = useRef<maplibregl.Marker[]>([])
   const popupsRef = useRef<maplibregl.Popup[]>([])
   const { formatPrice } = useCurrency()
+  const { path } = useLang()
 
   useEffect(() => {
     if (!mapContainer.current) return
@@ -332,7 +335,7 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
             <p style="color:#1E1E1E;font-size:14px;font-weight:600;margin:0 0 2px 0;">${p.title}</p>
             <p style="color:#6E6259;font-size:12px;margin:0 0 8px 0;">${p.neighborhood}, Marrakech</p>
             <p style="color:#6E6259;font-size:12px;margin:0 0 12px 0;">${p.surface} m² · ${p.rooms} pièces · ${p.bedrooms} chambres</p>
-            <a href="/property/${p.slug}" style="display:block;width:100%;text-align:center;background:#B5533A;color:white;font-size:13px;font-weight:600;padding:8px 0;border-radius:8px;text-decoration:none;">Voir le bien</a>
+            <a href="${path(`/property/${p.slug}`)}" style="display:block;width:100%;text-align:center;background:#B5533A;color:white;font-size:13px;font-weight:600;padding:8px 0;border-radius:8px;text-decoration:none;">Voir le bien</a>
           </div>
         `
 
@@ -407,10 +410,11 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
 function PropertyCardCompact({ property, isHovered = false }: { property: Property; isHovered?: boolean }) {
   const { toggleFavorite, isFavorite } = useFavorites()
   const { formatPrice } = useCurrency()
+  const { path } = useLang()
   const image = getImageUrl(property.images[0] || 'property-01.jpg', { width: 400, height: 300, resize: 'cover' })
 
   return (
-    <Link to={`/property/${property.slug}`} className={cn(
+    <Link to={path(`/property/${property.slug}`)} className={cn(
       "flex gap-3 bg-white rounded-xl border border-border-warm p-2 hover:shadow-md transition-all duration-200 cursor-pointer",
       isHovered && "border-terracotta shadow-md ring-1 ring-terracotta/20"
     )}>
@@ -441,6 +445,7 @@ function PropertyCardCompact({ property, isHovered = false }: { property: Proper
 function PropertyCardGrid({ property, isHovered = false }: { property: Property; isHovered?: boolean }) {
   const { toggleFavorite, isFavorite } = useFavorites()
   const { formatPrice } = useCurrency()
+  const { path } = useLang()
   const priceDisplay = formatPrice(property.priceEUR)
   const image = getImageUrl(property.images[0] || 'property-01.jpg', { width: 400, height: 300, resize: 'cover' })
 
@@ -450,7 +455,7 @@ function PropertyCardGrid({ property, isHovered = false }: { property: Property;
       isHovered && "border-terracotta shadow-card-hover -translate-y-1"
     )}>
       <div className="relative aspect-[4/3] overflow-hidden">
-        <Link to={`/property/${property.slug}`}>
+        <Link to={path(`/property/${property.slug}`)}>
           <img src={image} alt={property.title} className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-400" loading="lazy" />
         </Link>
         <span className="absolute top-3 left-3 bg-palm text-white text-[11px] font-semibold px-2 py-1 rounded">
@@ -472,7 +477,7 @@ function PropertyCardGrid({ property, isHovered = false }: { property: Property;
       <div className="p-4">
         <p className="text-terracotta font-inter text-[18px] font-semibold mb-1">{priceDisplay}</p>
         <p className="text-text-secondary text-[13px] font-inter mb-1">{property.neighborhood}, {property.city}</p>
-        <Link to={`/property/${property.slug}`}>
+        <Link to={path(`/property/${property.slug}`)}>
           <h3 className="font-playfair text-[16px] font-medium text-text-primary truncate mb-3 hover:text-terracotta transition-colors">{property.title}</h3>
         </Link>
         <div className="flex items-center gap-4 text-text-secondary text-[13px] font-inter">
@@ -490,7 +495,7 @@ function PropertyCardGrid({ property, isHovered = false }: { property: Property;
             {new Intl.NumberFormat('fr-FR').format(property.pricePerSqm)} €/m²
           </p>
         )}
-        <Link to={`/property/${property.slug}`} className="inline-block mt-3 text-terracotta text-[14px] font-inter font-medium hover:underline">
+        <Link to={path(`/property/${property.slug}`)} className="inline-block mt-3 text-terracotta text-[14px] font-inter font-medium hover:underline">
           Voir le bien →
         </Link>
       </div>
@@ -653,7 +658,8 @@ function MobileFilterDrawer({ filters, setFilters, onApply, onReset, resultCount
 export default function SearchPage() {
   const location = useLocation()
   const navigate = useNavigate()
-  const isRentRoute = location.pathname === '/louer'
+  const { path } = useLang()
+  const isRentRoute = location.pathname.endsWith('/louer')
 
   const [filters, setFilters] = useState<Filters>(() => ({
     ...defaultFilters,
@@ -826,11 +832,11 @@ export default function SearchPage() {
             <div className="mb-5">
               <div className="flex border border-border-warm rounded-lg overflow-hidden">
                 <button
-                  onClick={() => { updateFilter('transaction', 'sale'); navigate('/acheter') }}
+                  onClick={() => { updateFilter('transaction', 'sale'); navigate(path('/acheter')) }}
                   className={cn('flex-1 py-2 text-[14px] font-medium transition-colors', filters.transaction === 'sale' ? 'bg-terracotta text-white' : 'bg-white text-text-primary')}
                 >Acheter</button>
                 <button
-                  onClick={() => { updateFilter('transaction', 'rent'); navigate('/louer') }}
+                  onClick={() => { updateFilter('transaction', 'rent'); navigate(path('/louer')) }}
                   className={cn('flex-1 py-2 text-[14px] font-medium transition-colors', filters.transaction === 'rent' ? 'bg-terracotta text-white' : 'bg-white text-text-primary')}
                 >Louer</button>
               </div>

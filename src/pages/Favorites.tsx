@@ -3,10 +3,12 @@ import { Heart, ArrowRight } from 'lucide-react'
 import SectionReveal from '@/components/SectionReveal'
 import PropertyCard from '@/components/PropertyCard'
 import { useFavorites } from '@/hooks/useFavorites'
+import { useLang } from '@/hooks/useLang'
 import { properties } from '@/data/properties'
 
 export default function Favorites() {
   const { favorites } = useFavorites()
+  const { path } = useLang()
 
   const favoriteProperties = properties.filter((p) =>
     favorites.includes(p.slug)
@@ -20,7 +22,7 @@ export default function Favorites() {
       <section className="bg-cream-warm pt-16 md:pt-20 pb-8 md:pb-10">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
           <nav className="flex items-center gap-2 mb-6 text-text-secondary font-inter text-[13px]">
-            <Link to="/" className="hover:text-terracotta transition-colors">
+            <Link to={path('/')} className="hover:text-terracotta transition-colors">
               Accueil
             </Link>
             <span className="text-border-warm">/</span>
@@ -75,7 +77,7 @@ export default function Favorites() {
                 pour les retrouver ici.
               </p>
               <Link
-                to="/acheter"
+                to={path('/acheter')}
                 className="inline-flex items-center gap-2 bg-terracotta text-white font-inter text-[14px] font-semibold px-8 py-3.5 rounded-lg hover:scale-[1.02] transition-transform"
               >
                 Explorer les biens

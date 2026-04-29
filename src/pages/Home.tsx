@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useLang } from '@/hooks/useLang'
 import { getImageUrl } from '@/lib/storage'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
@@ -144,6 +145,7 @@ function AnimatedCounter({ target, suffix = '', duration = 1.5 }: { target: numb
 }
 
 export default function Home() {
+  const { path } = useLang()
   const heroRef = useRef<HTMLDivElement>(null)
   const heroTitleRef = useRef<HTMLHeadingElement>(null)
   const heroSubtitleRef = useRef<HTMLParagraphElement>(null)
@@ -332,7 +334,7 @@ export default function Home() {
               </div>
               {/* Button */}
               <Link
-                to="/acheter"
+                to={path('/acheter')}
                 className="bg-terracotta text-white font-inter text-[14px] font-semibold px-6 py-3 rounded-lg flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform min-h-[48px]"
               >
                 <Search size={16} />
@@ -349,7 +351,7 @@ export default function Home() {
             {filterChips.map((chip) => (
               <Link
                 key={chip}
-                to="/acheter"
+                to={path('/acheter')}
                 className="bg-[rgba(216,195,165,0.3)] text-white text-[12px] font-medium font-inter px-4 py-1.5 rounded-pill hover:bg-[rgba(216,195,165,0.5)] transition-colors"
               >
                 {chip}
@@ -404,7 +406,7 @@ export default function Home() {
           </div>
           <div className="text-center mt-10">
             <Link
-              to="/acheter"
+              to={path('/acheter')}
               className="inline-flex items-center gap-2 text-terracotta text-[16px] font-inter font-medium hover:underline"
             >
               Voir toutes les annonces
@@ -426,7 +428,7 @@ export default function Home() {
             {categories.map((cat) => (
               <Link
                 key={cat.label}
-                to={cat.href}
+                to={path(cat.href)}
                 className="flex flex-col items-center justify-center w-[160px] min-w-[160px] h-[120px] bg-cream-warm rounded-xl hover:bg-[rgba(216,195,165,0.4)] transition-colors group"
               >
                 <span className="text-text-secondary group-hover:text-terracotta transition-colors mb-2">
@@ -545,13 +547,13 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              to="/acheter"
+              to={path('/acheter')}
               className="bg-terracotta text-white font-inter text-[14px] font-semibold px-8 py-3.5 rounded-lg hover:scale-[1.02] transition-transform"
             >
               Commencer ma recherche
             </Link>
             <Link
-              to="/contact"
+              to={path('/contact')}
               className="border border-terracotta text-terracotta font-inter text-[14px] font-semibold px-8 py-3.5 rounded-lg hover:bg-terracotta/10 transition-colors"
             >
               Ou cr&eacute;er une alerte
@@ -575,7 +577,7 @@ export default function Home() {
             {blogArticles.map((article, idx) => (
               <Link
                 key={idx}
-                to="/conseils-immobiliers"
+                to={path('/conseils-immobiliers')}
                 className="bg-white rounded-card overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-250 group"
               >
                 <div className="aspect-video overflow-hidden">

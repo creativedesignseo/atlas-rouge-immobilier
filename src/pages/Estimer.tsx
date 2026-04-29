@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight, Calculator } from 'lucide-react'
 import SectionReveal from '@/components/SectionReveal'
+import { useLang } from '@/hooks/useLang'
 
 export default function Estimer() {
+  const { path } = useLang()
   return (
     <div>
       {/* ═══════ HERO ═══════ */}
@@ -27,7 +29,7 @@ export default function Estimer() {
 
           <SectionReveal delay={0.3}>
             <Link
-              to="/estimation"
+              to={path('/estimation')}
               className="inline-flex items-center gap-2 bg-terracotta text-white font-inter text-[14px] font-semibold px-8 py-4 rounded-lg hover:scale-[1.02] transition-transform"
             >
               Commencer l&#8217;estimation
@@ -89,7 +91,7 @@ export default function Estimer() {
           <SectionReveal delay={0.2}>
             <div className="text-center mt-12">
               <Link
-                to="/estimation"
+                to={path('/estimation')}
                 className="inline-flex items-center gap-2 text-terracotta font-inter text-[16px] font-medium hover:underline"
               >
                 Accéder à l&#8217;estimation en ligne

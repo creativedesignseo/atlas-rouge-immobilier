@@ -57,16 +57,14 @@ function LangWrapper() {
   const { pathname } = useLocation()
 
   useEffect(() => {
+    // Safety guard: never treat "admin" or other reserved words as a lang code
     if (!lang || !SUPPORTED_LANGUAGES.includes(lang as SupportedLanguage)) {
-      // Invalid lang segment — redirect to English version
-      const withoutLang = pathname.replace(/^\/[^/]+/, '')
-      navigate(`/en${withoutLang || '/'}`, { replace: true })
+      navigate(`/en/`, { replace: true })
       return
     }
     if (i18n.language !== lang) {
       i18n.changeLanguage(lang)
     }
-    // Update <html lang=""> for SEO
     document.documentElement.lang = lang
   }, [lang, i18n, navigate, pathname])
 

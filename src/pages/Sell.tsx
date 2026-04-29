@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useLang } from '@/hooks/useLang'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -175,6 +176,7 @@ function FaqItem({
 
 /* ── Main Component ── */
 export default function Sell() {
+  const { path } = useLang()
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [specialtyFilter, setSpecialtyFilter] = useState('')
@@ -362,7 +364,7 @@ export default function Sell() {
         <div className="max-w-[1100px] mx-auto text-center">
           {/* Breadcrumb */}
           <p className="text-text-secondary text-[13px] font-inter mb-6">
-            <Link to="/" className="hover:text-terracotta transition-colors">
+            <Link to={path('/')} className="hover:text-terracotta transition-colors">
               Accueil
             </Link>
             <span className="mx-2">&gt;</span>
@@ -378,7 +380,7 @@ export default function Sell() {
           </p>
           <div className="hero-buttons flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              to="/estimation"
+              to={path('/estimation')}
               className="bg-terracotta text-white font-inter text-[14px] font-semibold px-6 py-3 rounded-lg hover:scale-[1.02] transition-transform"
             >
               Estimer mon bien
@@ -437,7 +439,7 @@ export default function Sell() {
             </ul>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <Link
-                to="/vendre#depot"
+                to={path('/vendre#depot')}
                 className="bg-terracotta text-white font-inter text-[14px] font-semibold px-6 py-3 rounded-lg hover:scale-[1.02] transition-transform"
               >
                 D&eacute;poser mon annonce

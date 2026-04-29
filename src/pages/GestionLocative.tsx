@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { useLang } from '@/hooks/useLang'
 import {
   Users,
   ClipboardCheck,
@@ -84,6 +85,7 @@ const pricingTiers = [
 ]
 
 export default function GestionLocative() {
+  const { path } = useLang()
   return (
     <div>
       {/* ═══════ HERO ═══════ */}
@@ -220,7 +222,7 @@ export default function GestionLocative() {
                 </ul>
 
                 <Link
-                  to="/contact"
+                  to={path('/contact')}
                   className={`flex items-center justify-center gap-2 w-full h-12 rounded-lg font-inter text-[14px] font-semibold transition-transform hover:scale-[1.02] ${
                     tier.highlighted
                       ? 'bg-terracotta text-white'
@@ -249,7 +251,7 @@ export default function GestionLocative() {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
-                to="/contact"
+                to={path('/contact')}
                 className="inline-block bg-terracotta text-white font-inter text-[14px] font-semibold px-8 py-3.5 rounded-lg hover:scale-[1.02] transition-transform"
               >
                 Prendre rendez-vous
