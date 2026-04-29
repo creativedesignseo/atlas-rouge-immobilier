@@ -101,6 +101,36 @@ CREATE INDEX IF NOT EXISTS idx_favorites_user ON favorites(user_id);
 CREATE INDEX IF NOT EXISTS idx_site_settings_key ON site_settings(key);
 
 -- ============================================
+-- Table: admins (for admin panel access control)
+-- ============================================
+CREATE TABLE IF NOT EXISTS admins (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  email TEXT NOT NULL,
+  name TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(user_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_admins_user_id ON admins(user_id);
+
+-- Enable RLS on admins
+ALTER TABLE admins ENABLE ROW LEVEL SECURITY;
+
+-- ============================================
+-- Helper function: is_admin()
+-- ============================================
+CREATE OR REPLACE FUNCTION public.is_admin()
+RETURNS BOOLEAN AS $$
+BEGIN
+  RETURN EXISTS (
+    SELECT 1 FROM public.admins 
+    WHERE user_id = auth.uid()
+  );
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- ============================================
 -- Row Level Security (RLS)
 -- ============================================
 ALTER TABLE neighborhoods ENABLE ROW LEVEL SECURITY;
@@ -144,3 +174,66 @@ CREATE POLICY "Allow public read on site_settings"
   ON site_settings FOR SELECT
   TO anon, authenticated
   USING (true);
+
+-- ============================================
+-- Admin RLS Policies
+-- ============================================
+
+-- Admins: self-read
+CREATE POLICY "Allow admins to read admins"
+  ON admins FOR SELECT
+  TO authenticated
+  USING (user_id = auth.uid());
+
+-- Properties: admin write
+CREATE POLICY "Allow admin insert on properties"
+  ON properties FOR INSERT
+  TO authenticated
+  WITH CHECK (public.is_admin());
+
+CREATE POLICY "Allow admin update on properties"
+  ON properties FOR UPDATE
+  TO authenticated
+  USING (public.is_admin())
+  WITH CHECK (public.is_admin());
+
+CREATE POLICY "Allow admin delete on properties"
+  ON properties FOR DELETE
+  TO authenticated
+  USING (public.is_admin());
+
+-- Neighborhoods: admin write
+CREATE POLICY "Allow admin insert on neighborhoods"
+  ON neighborhoods FOR INSERT
+  TO authenticated
+  WITH CHECK (public.is_admin());
+
+CREATE POLICY "Allow admin update on neighborhoods"
+  ON neighborhoods FOR UPDATE
+  TO authenticated
+  USING (public.is_admin())
+  WITH CHECK (public.is_admin());
+
+CREATE POLICY "Allow admin delete on neighborhoods"
+  ON neighborhoods FOR DELETE
+  TO authenticated
+  USING (public.is_admin());
+
+-- Contact submissions: admin read/update/delete
+CREATE POLICY "Allow admin all on contact_submissions"
+  ON contact_submissions FOR ALL
+  TO authenticated
+  USING (public.is_admin())
+  WITH CHECK (public.is_admin());
+
+-- Site settings: admin update
+CREATE POLICY "Allow admin update on site_settings"
+  ON site_settings FOR UPDATE
+  TO authenticated
+  USING (public.is_admin())
+  WITH CHECK (public.is_admin());
+
+CREATE POLICY "Allow admin insert on site_settings"
+  ON site_settings FOR INSERT
+  TO authenticated
+  WITH CHECK (public.is_admin());

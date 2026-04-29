@@ -31,6 +31,12 @@ export type Database = {
         Update: SiteSettingUpdate
         Relationships: []
       }
+      admins: {
+        Row: AdminRow
+        Insert: AdminInsert
+        Update: AdminUpdate
+        Relationships: []
+      }
     }
     Views: {}
     Functions: {}
@@ -119,3 +125,14 @@ export type SiteSettingRow = {
 
 export type SiteSettingInsert = Omit<SiteSettingRow, 'id' | 'updated_at'>
 export type SiteSettingUpdate = Partial<SiteSettingInsert>
+
+export type AdminRow = {
+  id: string
+  user_id: string
+  email: string
+  name: string | null
+  created_at: string
+}
+
+export type AdminInsert = Omit<AdminRow, 'id' | 'created_at'>
+export type AdminUpdate = Partial<AdminInsert>
