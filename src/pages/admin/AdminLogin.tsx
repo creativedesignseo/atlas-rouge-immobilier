@@ -1,34 +1,15 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Eye, EyeOff, Lock, Mail } from 'lucide-react'
 import { signIn } from '@/services/auth.service'
-import { useAuth } from '@/hooks/useAuth'
 import { toast } from 'sonner'
 
 export default function AdminLogin() {
   const navigate = useNavigate()
-  const { agent, isLoading } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const submitStarted = useRef(false)
-
-  // If already logged in (agent exists), redirect immediately
-  useEffect(() => {
-    if (agent && !isLoading && !submitStarted.current) {
-      navigate('/admin')
-    }
-  }, [agent, isLoading, navigate])
-
-  // After submitting, watch for agent to appear
-  useEffect(() => {
-    if (!submitStarted.current) return
-    if (agent && !isLoading) {
-      toast.success('Connexion réussie')
-      navigate('/admin')
-    }
-  }, [agent, isLoading, navigate])
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -37,30 +18,26 @@ export default function AdminLogin() {
       return
     }
 
-    submitStarted.current = true
-    setIsSubmitting(true)
-    const { error } = await signIn({ email, password })
+    setIsLoading(true)
+    try {
+      const { error } = await signIn({ email, password })
 
-    if (error) {
-      submitStarted.current = false
-      setIsSubmitting(false)
-      toast.error(error.message === 'Invalid login credentials'
-        ? 'Email ou mot de passe incorrect'
-        : 'Erreur de connexion: ' + error.message
-      )
-      return
-    }
-
-    // Auth state will update via onAuthStateChange in useAuth
-    // The useEffect above will navigate when agent is loaded
-    // Fallback: if nothing happens in 5s, show error
-    setTimeout(() => {
-      if (submitStarted.current) {
-        setIsSubmitting(false)
-        submitStarted.current = false
-        toast.error('Erreur de connexion. Veuillez réessayer.')
+      if (error) {
+        toast.error(error.message === 'Invalid login credentials'
+          ? 'Email ou mot de passe incorrect'
+          : 'Erreur de connexion: ' + error.message
+        )
+        return
       }
-    }, 5000)
+
+      // Give Supabase a moment to update auth state, then navigate
+      // The ProtectedRoute will handle the redirect if not authenticated
+      setTimeout(() => {
+        navigate('/admin')
+      }, 500)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -118,10 +95,10 @@ export default function AdminLogin() {
 
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isLoading}
               className="w-full py-3 bg-terracotta text-white font-medium rounded-xl hover:bg-terracotta/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              {isSubmitting ? (
+              {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
                   <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                   Connexion...
