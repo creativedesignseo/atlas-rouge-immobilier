@@ -1,9 +1,13 @@
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react'
 import type { User } from '@supabase/supabase-js'
-import { getSession, isAdmin, onAuthStateChange, signOut as authSignOut } from '@/services/auth.service'
+import { getSession, getAgent, onAuthStateChange, signOut as authSignOut } from '@/services/auth.service'
+import type { AgentRow } from '@/types/supabase'
+
+export interface Agent extends AgentRow {}
 
 interface AuthContextType {
   user: User | null
+  agent: Agent | null
   isAdmin: boolean
   isLoading: boolean
   signOut: () => Promise<void>
@@ -11,6 +15,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
+  agent: null,
   isAdmin: false,
   isLoading: true,
   signOut: async () => {},
@@ -18,8 +23,20 @@ const AuthContext = createContext<AuthContextType>({
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
-  const [isAdminUser, setIsAdminUser] = useState(false)
+  const [agent, setAgent] = useState<Agent | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+
+  const isAdmin = agent?.role === 'admin'
+
+  const loadAgentData = useCallback(async (currentUser: User | null) => {
+    if (!currentUser) {
+      setAgent(null)
+      return
+    }
+
+    const agentData = await getAgent(currentUser.id)
+    setAgent(agentData)
+  }, [])
 
   const checkAuth = useCallback(async () => {
     setIsLoading(true)
@@ -27,50 +44,46 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const session = await getSession()
       if (session?.user) {
         setUser(session.user)
-        const admin = await isAdmin()
-        setIsAdminUser(admin)
+        await loadAgentData(session.user)
       } else {
         setUser(null)
-        setIsAdminUser(false)
+        setAgent(null)
       }
     } catch {
       setUser(null)
-      setIsAdminUser(false)
+      setAgent(null)
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }, [loadAgentData])
 
   useEffect(() => {
     checkAuth()
 
-    const { data } = onAuthStateChange((_event, session) => {
+    const { data } = onAuthStateChange(async (_event, session) => {
       if (session?.user) {
         setUser(session.user)
-        isAdmin().then((admin) => {
-          setIsAdminUser(admin)
-          setIsLoading(false)
-        })
+        await loadAgentData(session.user)
       } else {
         setUser(null)
-        setIsAdminUser(false)
-        setIsLoading(false)
+        setAgent(null)
       }
+      setIsLoading(false)
     })
 
     return () => {
       data.subscription.unsubscribe()
     }
-  }, [checkAuth])
+  }, [checkAuth, loadAgentData])
 
   const handleSignOut = useCallback(async () => {
     await authSignOut()
     setUser(null)
-    setIsAdminUser(false)
+    setAgent(null)
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, isAdmin: isAdminUser, isLoading, signOut: handleSignOut }}>
+    <AuthContext.Provider value={{ user, agent, isAdmin, isLoading, signOut: handleSignOut }}>
       {children}
     </AuthContext.Provider>
   )

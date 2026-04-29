@@ -1,11 +1,12 @@
 import { NavLink, useLocation } from 'react-router-dom'
-import { LayoutDashboard, Home, Mail, ArrowLeft, Menu, X } from 'lucide-react'
+import { LayoutDashboard, Home, Mail, ArrowLeft, Menu, X, UserCircle } from 'lucide-react'
 import { useState } from 'react'
 
 const navItems = [
   { path: '/admin', label: 'Tableau de bord', icon: LayoutDashboard },
   { path: '/admin/properties', label: 'Propriétés', icon: Home },
   { path: '/admin/contacts', label: 'Contacts', icon: Mail },
+  { path: '/admin/profile', label: 'Mon profil', icon: UserCircle },
 ]
 
 export default function AdminSidebar() {

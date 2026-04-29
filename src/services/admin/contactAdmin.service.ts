@@ -26,6 +26,8 @@ function mapRow(row: ContactSubmissionRow): ContactSubmission {
 }
 
 export async function getContactSubmissions(
+  agentId: string,
+  isAdmin: boolean,
   limit = 50,
   offset = 0
 ): Promise<{ contacts: ContactSubmission[]; count: number }> {
@@ -33,11 +35,17 @@ export async function getContactSubmissions(
     return { contacts: [], count: 0 }
   }
 
-  const { data, error, count } = await supabase
+  let query = supabase
     .from('contact_submissions')
     .select('*', { count: 'exact' })
     .order('created_at', { ascending: false })
     .range(offset, offset + limit - 1)
+
+  if (!isAdmin) {
+    query = query.eq('assigned_to_agent_id', agentId)
+  }
+
+  const { data, error, count } = await query
 
   if (error) throw error
 

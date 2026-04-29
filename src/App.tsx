@@ -26,6 +26,7 @@ const AdminProperties = lazy(() => import('./pages/admin/AdminProperties'))
 const AdminPropertyNew = lazy(() => import('./pages/admin/AdminPropertyNew'))
 const AdminPropertyEdit = lazy(() => import('./pages/admin/AdminPropertyEdit'))
 const AdminContacts = lazy(() => import('./pages/admin/AdminContacts'))
+const AgentProfile = lazy(() => import('./pages/admin/AgentProfile'))
 
 function AdminLoader() {
   return (
@@ -60,6 +61,7 @@ export default function App() {
           <Route path="properties/new" element={<AdminPropertyNew />} />
           <Route path="properties/:slug/edit" element={<AdminPropertyEdit />} />
           <Route path="contacts" element={<AdminContacts />} />
+          <Route path="profile" element={<AgentProfile />} />
         </Route>
         {/* Redirect /admin/ (with trailing slash) to /admin */}
         <Route path="/admin/" element={<Navigate to="/admin" replace />} />

@@ -31,10 +31,10 @@ export type Database = {
         Update: SiteSettingUpdate
         Relationships: []
       }
-      admins: {
-        Row: AdminRow
-        Insert: AdminInsert
-        Update: AdminUpdate
+      agents: {
+        Row: AgentRow
+        Insert: AgentInsert
+        Update: AgentUpdate
         Relationships: []
       }
     }
@@ -85,6 +85,7 @@ export type PropertyRow = {
   is_exclusive: boolean
   has_video: boolean
   has_3d_tour: boolean
+  agent_id: string | null
   created_at: string
 }
 
@@ -99,6 +100,8 @@ export type ContactSubmissionRow = {
   subject: string
   message: string
   property_slug: string | null
+  assigned_to_agent_id: string | null
+  status: 'new' | 'in_progress' | 'closed'
   created_at: string
 }
 
@@ -126,13 +129,18 @@ export type SiteSettingRow = {
 export type SiteSettingInsert = Omit<SiteSettingRow, 'id' | 'updated_at'>
 export type SiteSettingUpdate = Partial<SiteSettingInsert>
 
-export type AdminRow = {
+export type AgentRow = {
   id: string
   user_id: string
   email: string
   name: string | null
+  phone: string | null
+  photo_url: string | null
+  bio: string | null
+  role: 'admin' | 'agent'
+  is_active: boolean
   created_at: string
 }
 
-export type AdminInsert = Omit<AdminRow, 'id' | 'created_at'>
-export type AdminUpdate = Partial<AdminInsert>
+export type AgentInsert = Omit<AgentRow, 'id' | 'created_at'>
+export type AgentUpdate = Partial<AgentInsert>

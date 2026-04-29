@@ -28,7 +28,7 @@ export interface PropertyFormData {
   has_3d_tour: boolean
 }
 
-function toDbInsert(data: PropertyFormData): PropertyInsert {
+function toDbInsert(data: PropertyFormData, agentId?: string): PropertyInsert {
   return {
     slug: data.slug,
     title: data.title,
@@ -54,15 +54,41 @@ function toDbInsert(data: PropertyFormData): PropertyInsert {
     is_exclusive: data.is_exclusive,
     has_video: data.has_video,
     has_3d_tour: data.has_3d_tour,
+    agent_id: agentId || null,
   }
 }
 
-export async function createProperty(data: PropertyFormData): Promise<PropertyRow> {
+export async function getAdminProperties(
+  agentId: string,
+  isAdmin: boolean
+): Promise<PropertyRow[]> {
+  if (!isSupabaseConfigured) return []
+
+  let query = supabase
+    .from('properties')
+    .select('*')
+    .order('created_at', { ascending: false })
+
+  if (!isAdmin) {
+    query = query.eq('agent_id', agentId)
+  }
+
+  const { data, error } = await query
+
+  if (error) {
+    console.error('getAdminProperties error:', error)
+    throw error
+  }
+
+  return (data || []) as PropertyRow[]
+}
+
+export async function createProperty(data: PropertyFormData, agentId?: string): Promise<PropertyRow> {
   if (!isSupabaseConfigured) throw new Error('Supabase not configured')
   
   const { data: result, error } = await supabase
     .from('properties')
-    .insert(toDbInsert(data))
+    .insert(toDbInsert(data, agentId))
     .select()
     .single()
 

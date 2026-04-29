@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Mail, Trash2, Home, Search } from 'lucide-react'
 import { toast } from 'sonner'
+import { useAuth } from '@/hooks/useAuth'
 import { getContactSubmissions, deleteContact, type ContactSubmission } from '@/services/admin/contactAdmin.service'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 
 export default function AdminContacts() {
+  const { agent, isAdmin } = useAuth()
   const [contacts, setContacts] = useState<ContactSubmission[]>([])
   const [filtered, setFiltered] = useState<ContactSubmission[]>([])
   const [search, setSearch] = useState('')
@@ -15,7 +17,7 @@ export default function AdminContacts() {
 
   useEffect(() => {
     loadContacts()
-  }, [])
+  }, [agent, isAdmin])
 
   useEffect(() => {
     if (!search.trim()) {
@@ -34,9 +36,13 @@ export default function AdminContacts() {
   }, [search, contacts])
 
   async function loadContacts() {
+    if (!agent) {
+      setLoading(false)
+      return
+    }
     setLoading(true)
     try {
-      const { contacts: data } = await getContactSubmissions(100)
+      const { contacts: data } = await getContactSubmissions(agent.id, isAdmin, 100)
       setContacts(data)
       setFiltered(data)
     } catch {

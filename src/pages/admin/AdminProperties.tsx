@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Plus, Pencil, Trash2, ExternalLink, Search, Home, Star } from 'lucide-react'
 import { toast } from 'sonner'
-import { supabase, isSupabaseConfigured } from '@/lib/supabase'
-import { deleteProperty } from '@/services/admin/propertyAdmin.service'
+import { useAuth } from '@/hooks/useAuth'
+import { getAdminProperties, deleteProperty } from '@/services/admin/propertyAdmin.service'
 import { getImageUrl } from '@/lib/storage'
 import type { PropertyRow } from '@/types/supabase'
 
@@ -18,6 +18,7 @@ const typeLabels: Record<string, string> = {
 
 export default function AdminProperties() {
   const navigate = useNavigate()
+  const { agent, isAdmin } = useAuth()
   const [properties, setProperties] = useState<PropertyRow[]>([])
   const [filtered, setFiltered] = useState<PropertyRow[]>([])
   const [search, setSearch] = useState('')
@@ -26,7 +27,7 @@ export default function AdminProperties() {
 
   useEffect(() => {
     loadProperties()
-  }, [])
+  }, [agent, isAdmin])
 
   useEffect(() => {
     if (!search.trim()) {
@@ -45,19 +46,14 @@ export default function AdminProperties() {
   }, [search, properties])
 
   async function loadProperties() {
-    if (!isSupabaseConfigured) {
+    if (!agent) {
       setLoading(false)
       return
     }
     try {
-      const { data, error } = await supabase
-        .from('properties')
-        .select('*')
-        .order('created_at', { ascending: false })
-
-      if (error) throw error
-      setProperties((data || []) as PropertyRow[])
-      setFiltered((data || []) as PropertyRow[])
+      const data = await getAdminProperties(agent.id, isAdmin)
+      setProperties(data)
+      setFiltered(data)
     } catch {
       toast.error('Erreur lors du chargement des propriétés')
     } finally {

@@ -1,18 +1,20 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
+import { useAuth } from '@/hooks/useAuth'
 import PropertyForm from '@/components/admin/PropertyForm'
 import { createProperty } from '@/services/admin/propertyAdmin.service'
 import type { PropertyFormData } from '@/services/admin/propertyAdmin.service'
 
 export default function AdminPropertyNew() {
   const navigate = useNavigate()
+  const { agent } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async (data: PropertyFormData) => {
     setIsLoading(true)
     try {
-      await createProperty(data)
+      await createProperty(data, agent?.id)
       toast.success('Propriété créée avec succès')
       navigate('/admin/properties')
     } catch (error) {
