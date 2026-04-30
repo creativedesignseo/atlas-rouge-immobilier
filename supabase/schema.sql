@@ -1,6 +1,8 @@
 -- ============================================
 -- Atlas Rouge Immobilier - Database Schema
 -- ============================================
+-- Estado actual: incluye agents, campos multilingües y RLS actualizadas
+-- Fecha última revisión: 2026-04-30
 
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -20,7 +22,23 @@ CREATE TABLE IF NOT EXISTS neighborhoods (
 );
 
 -- ============================================
--- Table: properties
+-- Table: agents (reemplaza admins)
+-- ============================================
+CREATE TABLE IF NOT EXISTS agents (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+  email TEXT NOT NULL,
+  name TEXT,
+  phone TEXT,
+  photo_url TEXT,
+  bio TEXT,
+  role TEXT CHECK (role IN ('admin', 'agent')) DEFAULT 'agent',
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- ============================================
+-- Table: properties (con campos multilingües)
 -- ============================================
 CREATE TABLE IF NOT EXISTS properties (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -48,11 +66,23 @@ CREATE TABLE IF NOT EXISTS properties (
   is_exclusive BOOLEAN NOT NULL DEFAULT FALSE,
   has_video BOOLEAN NOT NULL DEFAULT FALSE,
   has_3d_tour BOOLEAN NOT NULL DEFAULT FALSE,
-  created_at TIMESTAMPTZ DEFAULT NOW()
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  -- Campos multilingües
+  title_en TEXT,
+  title_fr TEXT,
+  title_es TEXT,
+  description_en TEXT,
+  description_fr TEXT,
+  description_es TEXT,
+  highlights_en TEXT[] DEFAULT '{}',
+  highlights_fr TEXT[] DEFAULT '{}',
+  highlights_es TEXT[] DEFAULT '{}',
+  -- Relación con agente
+  agent_id UUID REFERENCES agents(id)
 );
 
 -- ============================================
--- Table: contact_submissions
+-- Table: contact_submissions (con asignación a agente)
 -- ============================================
 CREATE TABLE IF NOT EXISTS contact_submissions (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -62,11 +92,13 @@ CREATE TABLE IF NOT EXISTS contact_submissions (
   subject TEXT NOT NULL,
   message TEXT NOT NULL,
   property_slug TEXT,
-  created_at TIMESTAMPTZ DEFAULT NOW()
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  assigned_to_agent_id UUID REFERENCES agents(id),
+  status TEXT DEFAULT 'new' CHECK (status IN ('new', 'in_progress', 'closed'))
 );
 
 -- ============================================
--- Table: favorites (authenticated or anonymous browser scope)
+-- Table: favorites (authenticated or anonymous)
 -- ============================================
 CREATE TABLE IF NOT EXISTS favorites (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -97,6 +129,7 @@ CREATE INDEX IF NOT EXISTS idx_properties_neighborhood ON properties(neighborhoo
 CREATE INDEX IF NOT EXISTS idx_properties_price ON properties(price_eur);
 CREATE INDEX IF NOT EXISTS idx_properties_featured ON properties(is_featured);
 CREATE INDEX IF NOT EXISTS idx_properties_created ON properties(created_at);
+CREATE INDEX IF NOT EXISTS idx_properties_agent_id ON properties(agent_id);
 CREATE INDEX IF NOT EXISTS idx_neighborhoods_slug ON neighborhoods(slug);
 CREATE INDEX IF NOT EXISTS idx_favorites_user ON favorites(user_id);
 CREATE INDEX IF NOT EXISTS idx_favorites_anonymous ON favorites(anonymous_id);
@@ -107,143 +140,195 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_favorites_anonymous_property
   ON favorites(anonymous_id, property_slug)
   WHERE anonymous_id IS NOT NULL;
 CREATE INDEX IF NOT EXISTS idx_site_settings_key ON site_settings(key);
+CREATE UNIQUE INDEX IF NOT EXISTS agents_user_id_idx ON agents(user_id);
+CREATE INDEX IF NOT EXISTS agents_role_idx ON agents(role);
+CREATE INDEX IF NOT EXISTS agents_is_active_idx ON agents(is_active);
+CREATE INDEX IF NOT EXISTS contact_submissions_agent_id_idx ON contact_submissions(assigned_to_agent_id);
+CREATE INDEX IF NOT EXISTS contact_submissions_status_idx ON contact_submissions(status);
 
 -- ============================================
--- Table: admins (for admin panel access control)
+-- Helper functions
 -- ============================================
-CREATE TABLE IF NOT EXISTS admins (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  email TEXT NOT NULL,
-  name TEXT,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE(user_id)
-);
-
-CREATE INDEX IF NOT EXISTS idx_admins_user_id ON admins(user_id);
-
--- Enable RLS on admins
-ALTER TABLE admins ENABLE ROW LEVEL SECURITY;
-
--- ============================================
--- Helper function: is_admin()
--- ============================================
-CREATE OR REPLACE FUNCTION public.is_admin()
+CREATE OR REPLACE FUNCTION public.is_agent()
 RETURNS BOOLEAN AS $$
 BEGIN
   RETURN EXISTS (
-    SELECT 1 FROM public.admins 
+    SELECT 1 FROM public.agents
     WHERE user_id = auth.uid()
+    AND is_active = true
+  );
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION public.is_admin_role()
+RETURNS BOOLEAN AS $$
+BEGIN
+  RETURN EXISTS (
+    SELECT 1 FROM public.agents
+    WHERE user_id = auth.uid()
+    AND role = 'admin'
+    AND is_active = true
   );
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- ============================================
--- Row Level Security (RLS)
+-- Row Level Security (RLS) - Enable
 -- ============================================
 ALTER TABLE neighborhoods ENABLE ROW LEVEL SECURITY;
 ALTER TABLE properties ENABLE ROW LEVEL SECURITY;
 ALTER TABLE contact_submissions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE favorites ENABLE ROW LEVEL SECURITY;
 ALTER TABLE site_settings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE agents ENABLE ROW LEVEL SECURITY;
 
--- Public read access on neighborhoods
+-- ============================================
+-- RLS Policies: neighborhoods
+-- ============================================
 CREATE POLICY "Allow public read on neighborhoods"
   ON neighborhoods FOR SELECT
   TO anon, authenticated
   USING (true);
 
--- Public read access on properties
-CREATE POLICY "Allow public read on properties"
+CREATE POLICY "Allow admin insert on neighborhoods"
+  ON neighborhoods FOR INSERT
+  TO authenticated
+  WITH CHECK (public.is_admin_role());
+
+CREATE POLICY "Allow admin update on neighborhoods"
+  ON neighborhoods FOR UPDATE
+  TO authenticated
+  USING (public.is_admin_role())
+  WITH CHECK (public.is_admin_role());
+
+CREATE POLICY "Allow admin delete on neighborhoods"
+  ON neighborhoods FOR DELETE
+  TO authenticated
+  USING (public.is_admin_role());
+
+-- ============================================
+-- RLS Policies: properties
+-- ============================================
+CREATE POLICY "Anyone can read properties"
   ON properties FOR SELECT
   TO anon, authenticated
   USING (true);
 
--- Public insert on contact_submissions
-CREATE POLICY "Allow public insert on contact_submissions"
+CREATE POLICY "Admin can manage all properties"
+  ON properties FOR ALL
+  TO authenticated
+  USING (public.is_admin_role());
+
+CREATE POLICY "Agent can insert own properties"
+  ON properties FOR INSERT
+  TO authenticated
+  WITH CHECK (EXISTS (
+    SELECT 1 FROM agents
+    WHERE user_id = auth.uid()
+    AND is_active = true
+  ));
+
+CREATE POLICY "Agent can update own properties"
+  ON properties FOR UPDATE
+  TO authenticated
+  USING (agent_id IN (SELECT id FROM agents WHERE user_id = auth.uid()));
+
+CREATE POLICY "Agent can delete own properties"
+  ON properties FOR DELETE
+  TO authenticated
+  USING (agent_id IN (SELECT id FROM agents WHERE user_id = auth.uid()));
+
+-- ============================================
+-- RLS Policies: contact_submissions
+-- ============================================
+CREATE POLICY "Anyone can insert contacts"
   ON contact_submissions FOR INSERT
   TO anon, authenticated
   WITH CHECK (true);
 
--- Favorites: authenticated users can only manage their own
+CREATE POLICY "Admin can read all contacts"
+  ON contact_submissions FOR SELECT
+  TO authenticated
+  USING (public.is_admin_role());
+
+CREATE POLICY "Agent can read assigned contacts"
+  ON contact_submissions FOR SELECT
+  TO authenticated
+  USING (assigned_to_agent_id IN (SELECT id FROM agents WHERE user_id = auth.uid()));
+
+CREATE POLICY "Admin can update all contacts"
+  ON contact_submissions FOR UPDATE
+  TO authenticated
+  USING (public.is_admin_role());
+
+CREATE POLICY "Agent can update assigned contacts"
+  ON contact_submissions FOR UPDATE
+  TO authenticated
+  USING (assigned_to_agent_id IN (SELECT id FROM agents WHERE user_id = auth.uid()));
+
+CREATE POLICY "Admin can delete contacts"
+  ON contact_submissions FOR DELETE
+  TO authenticated
+  USING (public.is_admin_role());
+
+-- ============================================
+-- RLS Policies: favorites
+-- ============================================
 CREATE POLICY "Allow authenticated users to manage own favorites"
   ON favorites FOR ALL
   TO authenticated
   USING (user_id = auth.uid())
   WITH CHECK (user_id = auth.uid());
 
--- Favorites: anonymous browser favorites. These are scoped by anonymous_id in the client.
 CREATE POLICY "Allow anonymous favorites"
   ON favorites FOR ALL
   TO anon
   USING (anonymous_id IS NOT NULL)
   WITH CHECK (user_id IS NULL AND anonymous_id IS NOT NULL);
 
--- Site settings: public read
+-- ============================================
+-- RLS Policies: site_settings
+-- ============================================
 CREATE POLICY "Allow public read on site_settings"
   ON site_settings FOR SELECT
   TO anon, authenticated
   USING (true);
 
--- ============================================
--- Admin RLS Policies
--- ============================================
-
--- Admins: self-read
-CREATE POLICY "Allow admins to read admins"
-  ON admins FOR SELECT
-  TO authenticated
-  USING (user_id = auth.uid());
-
--- Properties: admin write
-CREATE POLICY "Allow admin insert on properties"
-  ON properties FOR INSERT
-  TO authenticated
-  WITH CHECK (public.is_admin());
-
-CREATE POLICY "Allow admin update on properties"
-  ON properties FOR UPDATE
-  TO authenticated
-  USING (public.is_admin())
-  WITH CHECK (public.is_admin());
-
-CREATE POLICY "Allow admin delete on properties"
-  ON properties FOR DELETE
-  TO authenticated
-  USING (public.is_admin());
-
--- Neighborhoods: admin write
-CREATE POLICY "Allow admin insert on neighborhoods"
-  ON neighborhoods FOR INSERT
-  TO authenticated
-  WITH CHECK (public.is_admin());
-
-CREATE POLICY "Allow admin update on neighborhoods"
-  ON neighborhoods FOR UPDATE
-  TO authenticated
-  USING (public.is_admin())
-  WITH CHECK (public.is_admin());
-
-CREATE POLICY "Allow admin delete on neighborhoods"
-  ON neighborhoods FOR DELETE
-  TO authenticated
-  USING (public.is_admin());
-
--- Contact submissions: admin read/update/delete
-CREATE POLICY "Allow admin all on contact_submissions"
-  ON contact_submissions FOR ALL
-  TO authenticated
-  USING (public.is_admin())
-  WITH CHECK (public.is_admin());
-
--- Site settings: admin update
 CREATE POLICY "Allow admin update on site_settings"
   ON site_settings FOR UPDATE
   TO authenticated
-  USING (public.is_admin())
-  WITH CHECK (public.is_admin());
+  USING (public.is_admin_role())
+  WITH CHECK (public.is_admin_role());
 
 CREATE POLICY "Allow admin insert on site_settings"
   ON site_settings FOR INSERT
   TO authenticated
-  WITH CHECK (public.is_admin());
+  WITH CHECK (public.is_admin_role());
+
+-- ============================================
+-- RLS Policies: agents
+-- ============================================
+CREATE POLICY "Admin can read all agents"
+  ON agents FOR SELECT
+  TO authenticated
+  USING (public.is_admin_role());
+
+CREATE POLICY "Agent can read own row"
+  ON agents FOR SELECT
+  TO authenticated
+  USING (user_id = auth.uid());
+
+CREATE POLICY "Admin can insert agents"
+  ON agents FOR INSERT
+  TO authenticated
+  WITH CHECK (public.is_admin_role());
+
+CREATE POLICY "Admin can update any agent"
+  ON agents FOR UPDATE
+  TO authenticated
+  USING (public.is_admin_role());
+
+CREATE POLICY "Agent can update own row"
+  ON agents FOR UPDATE
+  TO authenticated
+  USING (user_id = auth.uid());

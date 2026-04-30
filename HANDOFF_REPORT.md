@@ -33,6 +33,41 @@ Autor: Claude Sonnet 4.6 (claude-sonnet-4-6), invocado por el propietario del pr
 
 ---
 
+## Intervención: Kimi (Moonshot AI) — 2026-04-30
+
+Autor: Kimi (Kimi Code CLI), invocado por el propietario del proyecto tras el rate-limit de Claude Sonnet 4.6.
+
+### Acciones realizadas
+
+- **Commit de optimización de bundle**: `vite.config.ts` con `manualChunks` (react-vendor, supabase-vendor, i18n-vendor, radix-vendor) ya commiteado en `1f40bf1d`.
+- **Configurar DEEPSEEK_API_KEY en Netlify**: Variable `DEEPSEEK_API_KEY` (server-side, sin prefijo `VITE_`) configurada en el sitio `7af94674-6d3f-4258-94bf-4776f8a7e9c6` usando Netlify CLI con token personal. La funcion `netlify/functions/translate-property.js` ahora puede usar la key secreta del servidor.
+- **Verificación de API key**: Peticion directa a DeepSeek API confirmada exitosa (`deepseek-v4-flash` responde OK).
+- **Actualizar schema.sql**: Reemplazado el schema base antiguo (`admins`, sin multilingüe) por el estado actual real:
+  - Tabla `agents` con campos `role`, `is_active`, `photo_url`, `bio`.
+  - Tabla `properties` con columnas multilingües (`title_en/fr/es`, `description_en/fr/es`, `highlights_en/fr/es`) y `agent_id`.
+  - Tabla `contact_submissions` con `assigned_to_agent_id` y `status`.
+  - Funciones helper `is_agent()` e `is_admin_role()`.
+  - Políticas RLS actualizadas para agents, properties y contact_submissions.
+- **QA manual de rutas**: `/en/`, `/fr/`, `/es/`, `/admin/login`, `/en/acheter`, `/fr/acheter`, `/en/louer`, `/en/contact` — todas responden 200 en dev server (puerto 3000).
+- **Build y lint**: 0 errores, 0 warnings confirmados tras todos los cambios.
+
+### Estado al entregar
+
+- Build: OK
+- Lint: OK (0 errores, 0 warnings)
+- Repo limpio: solo `supabase/schema.sql` modificado sin commitear + `HANDOFF_REPORT.md` por actualizar.
+- Netlify: `DEEPSEEK_API_KEY` configurada en production. Requiere **redeploy** para que la funcion serverless la recoja.
+- Dev server: corriendo en `localhost:3000`.
+
+### Pendiente tras esta intervención
+
+1. **Aplicar migración Supabase en base remota**: Si la base de datos Supabase ya existe y tiene datos, ejecutar `supabase/migrations/002_multilingual.sql` (y `001_agents.sql` si aún no se aplicó) en el SQL Editor de Supabase para añadir las columnas multilingües y la tabla agents sin perder datos. Si es un deploy desde cero, el `schema.sql` actualizado ya es suficiente.
+2. **Redeploy en Netlify**: Hacer un nuevo deploy de `main` en Netlify para que la funcion `translate-property.js` recoja la variable `DEEPSEEK_API_KEY` recién configurada.
+3. **QA visual completo del backoffice**: Probar login, flujo de creación/edición de propiedades, y botón "Traducir con IA" en `/admin/properties/new` una vez hecho el redeploy.
+4. **Revisar `.env`**: Considerar eliminar `VITE_DEEPSEEK_API_KEY` de `.env` y `.env.example` ya que la traducción ahora es 100% server-side.
+
+---
+
 ## Intervención anterior: Codex — 2026-04-30
 
 Fecha original: 2026-04-30  
