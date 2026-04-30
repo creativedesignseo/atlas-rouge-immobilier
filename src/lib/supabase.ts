@@ -14,6 +14,11 @@ export const supabase = isSupabaseConfigured
         storage: localStorage,
         autoRefreshToken: true,
         detectSessionInUrl: true,
+        // Disable the navigator.locks-based lock to avoid orphaned locks
+        // that delay every auth call by 5 seconds. The lock is meant to
+        // sync auth across tabs but causes "lock not released within 5000ms"
+        // warnings on this app's navigation pattern.
+        lock: async (_name, _acquireTimeout, fn) => fn(),
       },
     })
   : (null as unknown as ReturnType<typeof createClient<Database>>)

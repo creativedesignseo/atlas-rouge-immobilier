@@ -366,11 +366,28 @@ export default function PropertyDetail() {
   useEffect(() => {
     if (!slug) return
     setLoading(true)
-    getPropertyBySlug(slug).then((p) => {
-      setProperty(p || undefined)
-      if (p) { getSimilarProperties(p, 3).then(setSimilarProperties) } else { setSimilarProperties([]) }
-      setLoading(false)
-    })
+    getPropertyBySlug(slug)
+      .then((p) => {
+        setProperty(p || undefined)
+        if (p) {
+          getSimilarProperties(p, 3)
+            .then(setSimilarProperties)
+            .catch((err) => {
+              console.error('Failed to load similar properties:', err)
+              setSimilarProperties([])
+            })
+        } else {
+          setSimilarProperties([])
+        }
+      })
+      .catch((err) => {
+        console.error('Failed to load property:', err)
+        setProperty(undefined)
+        setSimilarProperties([])
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }, [slug])
 
   const [lightboxOpen, setLightboxOpen] = useState(false)
