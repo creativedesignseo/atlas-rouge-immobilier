@@ -4,6 +4,33 @@
 
 ---
 
+## Intervención: Claude Sonnet 4.6 — 2026-04-30 (segunda sesión — deploy + diagnóstico)
+
+Autor: Claude Sonnet 4.6.
+
+### Acciones realizadas
+
+- **Diagnóstico de propiedades no visibles**: Verificado Supabase (12 propiedades OK, anon puede leer, Storage con imágenes OK). El problema era que los 10 commits locales nunca se habían hecho push a GitHub — Netlify corría código de `5cc3093e` (anterior a todos los fixes).
+- **`git push origin main`**: Subidos los 10 commits a GitHub (`5cc3093e..d2e9d46d`).
+- **Deploy a Netlify** (`69f3d01715f8b0122bfcb758`): Build completo, bundle nuevo `index-DXYyaT55.js`, todas las rutas responden 200.
+- Verificado: `VITE_SUPABASE_URL` bakeado en el bundle del deploy.
+
+### Estado al entregar
+
+- Producción: `https://immobilier.freecoche.com` — deploy `69f3d01715f8b0122bfcb758` con código hasta `d2e9d46d`
+- Todas las rutas: 200 OK
+- Supabase: 12 propiedades, anon puede leer, Storage con imágenes
+- GitHub `origin/main`: sincronizado con local
+
+### Pendiente
+
+1. **QA visual** en producción — comprobar que las propiedades aparecen en la web ahora.
+2. Si aún no aparecen: abrir DevTools → Console y compartir errores rojos (no los de GSAP).
+3. QA del backoffice: login, crear/editar propiedad, botón "Traducir con IA".
+4. Crear primer admin/agente si la tabla `agents` está vacía.
+
+---
+
 ## Intervención: Claude Sonnet 4.6 — 2026-04-30 (sesión completa)
 
 Autor: Claude Sonnet 4.6 (claude-sonnet-4-6).
