@@ -12,6 +12,12 @@
     "invalidCredentials": "E-mail ou mot de passe incorrect",
     "error": "Erreur de connexion : {{message}}"
   },
+  "header": {
+    "newProperty": "Nouvelle propriété",
+    "editProperty": "Modifier la propriété",
+    "administration": "Administration",
+    "signOut": "Déconnexion"
+  },
   "sidebar": {
     "dashboard": "Tableau de bord",
     "properties": "Biens",
@@ -72,6 +78,10 @@
     "autoTranslateError": "Erreur de traduction. Veuillez réessayer.",
     "autoTranslateHint": "Écrivez la fiche dans la langue source, puis l'IA adapte le titre, la description et les points forts aux autres marchés.",
     "autoTranslateMissingSource": "Remplissez d'abord le titre et la description en {{lang}}.",
+    "translationsHint": "Remplissez la fiche dans la langue principale ({{lang}}). En un clic, l'IA générera les versions dans les deux autres langues.",
+    "translateAll": "Traduire dans les 3 langues avec l'IA",
+    "sourceLanguage": "source",
+    "filled": "rempli",
     "autoTranslateFrom": "Traduire depuis le {{lang}}",
     "titleLang": "Titre ({{lang}})",
     "descriptionLang": "Description ({{lang}})",

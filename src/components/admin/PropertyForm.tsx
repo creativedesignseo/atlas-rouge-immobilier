@@ -3,7 +3,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useNavigate } from 'react-router-dom'
-import { Save, ArrowLeft, Plus, X, Wand2 } from 'lucide-react'
+import { Save, ArrowLeft, Plus, X, Wand2, ChevronDown } from 'lucide-react'
 import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
 import ImageUploader from './ImageUploader'
@@ -96,12 +96,20 @@ function slugify(text: string): string {
 
 export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode }: PropertyFormProps) {
   const navigate = useNavigate()
-  const { t } = useTranslation('admin')
+  const { t, i18n } = useTranslation('admin')
   const [neighborhoods, setNeighborhoods] = useState<Neighborhood[]>([])
   const [highlightInput, setHighlightInput] = useState('')
-  const [activeLangTab, setActiveLangTab] = useState<SupportedLanguage>('fr')
+  const [expandedLang, setExpandedLang] = useState<SupportedLanguage | null>(null)
   const [isTranslating, setIsTranslating] = useState(false)
   const [highlightInputs, setHighlightInputs] = useState<Record<SupportedLanguage, string>>({ en: '', fr: '', es: '' })
+
+  // Source language for AI translation = admin's current UI language.
+  // Falls back to 'fr' (the historical primary content language) if the admin
+  // is using a language that's not in our supported set.
+  const sourceLang: SupportedLanguage = (() => {
+    const ui = i18n.language?.slice(0, 2) as SupportedLanguage
+    return LANGS.includes(ui) ? ui : 'fr'
+  })()
 
   const {
     register,
@@ -189,15 +197,12 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
 
   const handleAutoTranslate = async () => {
     const values = getValues()
-    const langTitle = values[`title_${activeLangTab}` as keyof PropertyFormValues] as string | null | undefined
-    const langDescription = values[`description_${activeLangTab}` as keyof PropertyFormValues] as string | null | undefined
-    const langHighlights = (values[`highlights_${activeLangTab}` as keyof PropertyFormValues] as string[] | undefined) || []
-    const title = (langTitle || (activeLangTab === 'fr' ? values.title : '') || '').trim()
-    const description = (langDescription || (activeLangTab === 'fr' ? values.description : '') || '').trim()
-    const sourceHighlights = langHighlights.length > 0 ? langHighlights : activeLangTab === 'fr' ? values.highlights : []
+    const title = (values.title || '').trim()
+    const description = (values.description || '').trim()
+    const sourceHighlights = values.highlights || []
 
     if (!title || !description) {
-      toast.error(t('propertyForm.autoTranslateMissingSource', { lang: activeLangTab.toUpperCase() }))
+      toast.error(t('propertyForm.autoTranslateMissingSource', { lang: sourceLang.toUpperCase() }))
       return
     }
 
@@ -220,12 +225,14 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
         rooms: values.rooms,
         bedrooms: values.bedrooms,
         bathrooms: values.bathrooms,
-      }, activeLangTab)
+      }, sourceLang)
 
-      setValue(`title_${activeLangTab}` as keyof PropertyFormValues, title as never)
-      setValue(`description_${activeLangTab}` as keyof PropertyFormValues, description as never)
-      setValue(`highlights_${activeLangTab}` as keyof PropertyFormValues, sourceHighlights as never)
+      // Source language gets the original content as-is.
+      setValue(`title_${sourceLang}` as keyof PropertyFormValues, title as never)
+      setValue(`description_${sourceLang}` as keyof PropertyFormValues, description as never)
+      setValue(`highlights_${sourceLang}` as keyof PropertyFormValues, sourceHighlights as never)
 
+      // Other languages get AI translations.
       for (const [lang, content] of Object.entries(result)) {
         const l = lang as SupportedLanguage
         setValue(`title_${l}` as keyof PropertyFormValues, content.title as never)
@@ -646,105 +653,124 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
         {/* Right column - images + translations */}
         <div className="lg:col-span-2 space-y-6">
 
-          {/* Translation tabs */}
+          {/* Translations: one big AI button + 3 collapsible cards (one per language) */}
           <div className="bg-white rounded-2xl p-6 shadow-card border border-border-warm">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h3 className="font-semibold text-text-primary">{t('propertyForm.translations')}</h3>
-                <p className="text-xs text-text-secondary mt-1">{t('propertyForm.autoTranslateHint')}</p>
-              </div>
-              <button
-                type="button"
-                onClick={handleAutoTranslate}
-                disabled={isTranslating}
-                className="flex items-center gap-2 px-3 py-1.5 bg-midnight text-white text-xs font-medium rounded-lg hover:bg-midnight/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                {isTranslating ? (
-                  <span className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                ) : (
-                  <Wand2 size={13} />
-                )}
-                {isTranslating ? t('propertyForm.autoTranslating') : t('propertyForm.autoTranslate')}
-              </button>
+            <div className="mb-4">
+              <h3 className="font-semibold text-text-primary">{t('propertyForm.translations')}</h3>
+              <p className="text-xs text-text-secondary mt-1">
+                {t('propertyForm.translationsHint', { lang: LANG_LABELS[sourceLang] })}
+              </p>
             </div>
 
-            {/* Lang tabs */}
-            <div className="flex gap-1 mb-4 bg-gray-100 rounded-lg p-1">
-              {LANGS.map((lang) => (
-                <button
-                  key={lang}
-                  type="button"
-                  onClick={() => setActiveLangTab(lang)}
-                  className={`flex-1 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                    activeLangTab === lang
-                      ? 'bg-white text-midnight shadow-sm'
-                      : 'text-text-secondary hover:text-text-primary'
-                  }`}
-                >
-                  {LANG_LABELS[lang]}
-                </button>
-              ))}
-            </div>
+            <button
+              type="button"
+              onClick={handleAutoTranslate}
+              disabled={isTranslating}
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-terracotta text-white text-sm font-semibold rounded-xl hover:bg-terracotta/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors mb-4"
+            >
+              {isTranslating ? (
+                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <Wand2 size={16} />
+              )}
+              {isTranslating ? t('propertyForm.autoTranslating') : t('propertyForm.translateAll')}
+            </button>
 
-            {/* Active lang fields */}
-            {LANGS.map((lang) => (
-              <div key={lang} className={`space-y-4 ${activeLangTab === lang ? '' : 'hidden'}`}>
-                <div>
-                  <label className="block text-xs font-medium text-text-secondary mb-1">
-                    {t('propertyForm.titleLang', { lang: lang.toUpperCase() })}
-                  </label>
-                  <input
-                    {...register(`title_${lang}` as keyof PropertyFormValues)}
-                    placeholder={`Title in ${lang.toUpperCase()}...`}
-                    className="w-full px-3 py-2 text-sm border border-border-warm rounded-lg focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-text-secondary mb-1">
-                    {t('propertyForm.descriptionLang', { lang: lang.toUpperCase() })}
-                  </label>
-                  <textarea
-                    {...register(`description_${lang}` as keyof PropertyFormValues)}
-                    rows={6}
-                    placeholder={`Description in ${lang.toUpperCase()}...`}
-                    className="w-full px-3 py-2 text-sm border border-border-warm rounded-lg focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta resize-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-text-secondary mb-1">
-                    {t('propertyForm.highlightsLang', { lang: lang.toUpperCase() })}
-                  </label>
-                  <div className="flex gap-2 mb-2">
-                    <input
-                      value={highlightInputs[lang]}
-                      onChange={(e) => setHighlightInputs((p) => ({ ...p, [lang]: e.target.value }))}
-                      onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addLangHighlight(lang) } }}
-                      placeholder="Add feature..."
-                      className="flex-1 px-3 py-1.5 text-sm border border-border-warm rounded-lg focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta"
-                    />
+            <div className="space-y-2">
+              {LANGS.map((lang) => {
+                const isOpen = expandedLang === lang
+                const hasContent = Boolean(
+                  (watch(`title_${lang}` as keyof PropertyFormValues) as string | null) ||
+                  (watch(`description_${lang}` as keyof PropertyFormValues) as string | null)
+                )
+                return (
+                  <div key={lang} className="border border-border-warm rounded-xl overflow-hidden">
                     <button
                       type="button"
-                      onClick={() => addLangHighlight(lang)}
-                      className="p-1.5 bg-terracotta text-white rounded-lg hover:bg-terracotta/90"
+                      onClick={() => setExpandedLang(isOpen ? null : lang)}
+                      className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors"
                     >
-                      <Plus size={14} />
+                      <div className="flex items-center gap-3">
+                        <span className="text-xs font-bold uppercase text-text-primary">{LANG_LABELS[lang]}</span>
+                        {lang === sourceLang && (
+                          <span className="text-[10px] uppercase tracking-wide bg-midnight/10 text-midnight px-1.5 py-0.5 rounded">
+                            {t('propertyForm.sourceLanguage')}
+                          </span>
+                        )}
+                        {hasContent && (
+                          <span className="text-[10px] text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">
+                            {t('propertyForm.filled')}
+                          </span>
+                        )}
+                      </div>
+                      <ChevronDown
+                        size={16}
+                        className={`text-text-secondary transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                      />
                     </button>
+
+                    {isOpen && (
+                      <div className="px-4 pb-4 pt-2 space-y-3 border-t border-border-warm bg-gray-50/50">
+                        <div>
+                          <label className="block text-xs font-medium text-text-secondary mb-1">
+                            {t('propertyForm.titleLang', { lang: lang.toUpperCase() })}
+                          </label>
+                          <input
+                            {...register(`title_${lang}` as keyof PropertyFormValues)}
+                            placeholder={`Title in ${lang.toUpperCase()}...`}
+                            className="w-full px-3 py-2 text-sm border border-border-warm rounded-lg focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-medium text-text-secondary mb-1">
+                            {t('propertyForm.descriptionLang', { lang: lang.toUpperCase() })}
+                          </label>
+                          <textarea
+                            {...register(`description_${lang}` as keyof PropertyFormValues)}
+                            rows={5}
+                            placeholder={`Description in ${lang.toUpperCase()}...`}
+                            className="w-full px-3 py-2 text-sm border border-border-warm rounded-lg focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta resize-none"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-medium text-text-secondary mb-1">
+                            {t('propertyForm.highlightsLang', { lang: lang.toUpperCase() })}
+                          </label>
+                          <div className="flex gap-2 mb-2">
+                            <input
+                              value={highlightInputs[lang]}
+                              onChange={(e) => setHighlightInputs((p) => ({ ...p, [lang]: e.target.value }))}
+                              onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addLangHighlight(lang) } }}
+                              placeholder="Add feature..."
+                              className="flex-1 px-3 py-1.5 text-sm border border-border-warm rounded-lg focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => addLangHighlight(lang)}
+                              className="p-1.5 bg-terracotta text-white rounded-lg hover:bg-terracotta/90"
+                            >
+                              <Plus size={14} />
+                            </button>
+                          </div>
+                          <div className="flex flex-wrap gap-1.5">
+                            {((watch(`highlights_${lang}` as keyof PropertyFormValues) as string[]) || []).map((h, i) => (
+                              <span key={i} className="flex items-center gap-1 bg-white border border-border-warm text-text-primary text-xs px-2 py-1 rounded-full">
+                                {h}
+                                <button type="button" onClick={() => removeLangHighlight(lang, i)}>
+                                  <X size={10} />
+                                </button>
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {((watch(`highlights_${lang}` as keyof PropertyFormValues) as string[]) || []).map((h, i) => (
-                      <span key={i} className="flex items-center gap-1 bg-gray-100 text-text-primary text-xs px-2 py-1 rounded-full">
-                        {h}
-                        <button type="button" onClick={() => removeLangHighlight(lang, i)}>
-                          <X size={10} />
-                        </button>
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
+                )
+              })}
+            </div>
           </div>
 
           {/* Images */}

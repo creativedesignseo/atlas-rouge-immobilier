@@ -12,6 +12,12 @@
     "invalidCredentials": "Correo o contraseña incorrectos",
     "error": "Error de inicio de sesión: {{message}}"
   },
+  "header": {
+    "newProperty": "Nueva propiedad",
+    "editProperty": "Editar propiedad",
+    "administration": "Administración",
+    "signOut": "Cerrar sesión"
+  },
   "sidebar": {
     "dashboard": "Panel",
     "properties": "Inmuebles",
@@ -72,6 +78,10 @@
     "autoTranslateError": "Error de traducción. Inténtelo de nuevo.",
     "autoTranslateHint": "Escriba la ficha en el idioma fuente y la IA adaptará el título, la descripción y los puntos destacados para los otros mercados.",
     "autoTranslateMissingSource": "Complete primero el título y la descripción en {{lang}}.",
+    "translationsHint": "Rellene el inmueble en su idioma principal ({{lang}}). Con un clic, la IA generará las versiones en los otros dos idiomas.",
+    "translateAll": "Traducir a los 3 idiomas con IA",
+    "sourceLanguage": "fuente",
+    "filled": "rellenado",
     "autoTranslateFrom": "Traducir desde {{lang}}",
     "titleLang": "Título ({{lang}})",
     "descriptionLang": "Descripción ({{lang}})",

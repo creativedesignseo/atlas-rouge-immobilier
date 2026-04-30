@@ -12,6 +12,12 @@
     "invalidCredentials": "Incorrect email or password",
     "error": "Login error: {{message}}"
   },
+  "header": {
+    "newProperty": "New property",
+    "editProperty": "Edit property",
+    "administration": "Administration",
+    "signOut": "Sign out"
+  },
   "sidebar": {
     "dashboard": "Dashboard",
     "properties": "Properties",
@@ -72,6 +78,10 @@
     "autoTranslateError": "Translation error. Please try again.",
     "autoTranslateHint": "Write the listing in the source language, then AI adapts the title, description and key features for the other markets.",
     "autoTranslateMissingSource": "Please fill in the title and description in {{lang}} first.",
+    "translationsHint": "Fill in the property in your main language ({{lang}}). With one click, AI will generate versions in the other two languages.",
+    "translateAll": "Translate to 3 languages with AI",
+    "sourceLanguage": "source",
+    "filled": "filled",
     "autoTranslateFrom": "Translate from {{lang}}",
     "titleLang": "Title ({{lang}})",
     "descriptionLang": "Description ({{lang}})",

@@ -1,22 +1,25 @@
 import { LogOut } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 
-function getPageTitle(path: string): string {
-  if (path === '/admin') return 'Tableau de bord'
-  if (path === '/admin/properties') return 'Propriétés'
-  if (path === '/admin/properties/new') return 'Nouvelle propriété'
-  if (path.startsWith('/admin/properties/') && path.endsWith('/edit')) return 'Modifier la propriété'
-  if (path === '/admin/contacts') return 'Contacts reçus'
-  if (path === '/admin/profile') return 'Mon profil'
-  return 'Administration'
+function getPageTitle(path: string, t: (key: string) => string): string {
+  if (path === '/admin') return t('admin:sidebar.dashboard')
+  if (path === '/admin/properties') return t('admin:sidebar.properties')
+  if (path === '/admin/properties/new') return t('admin:header.newProperty')
+  if (path.startsWith('/admin/properties/') && path.endsWith('/edit')) return t('admin:header.editProperty')
+  if (path === '/admin/contacts') return t('admin:sidebar.contacts')
+  if (path === '/admin/profile') return t('admin:sidebar.profile')
+  return t('admin:header.administration')
 }
 
 export default function AdminHeader() {
   const { agent, signOut } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
-  const title = getPageTitle(location.pathname)
+  const { t } = useTranslation()
+  const title = getPageTitle(location.pathname, t)
 
   const displayName = agent?.name || agent?.email?.split('@')[0] || 'Agent'
   const initials = agent?.name
@@ -28,6 +31,8 @@ export default function AdminHeader() {
       <h2 className="text-lg font-semibold text-text-primary">{title}</h2>
 
       <div className="flex items-center gap-4">
+        <LanguageSwitcher variant="admin" />
+
         {/* Profile button */}
         <button
           onClick={() => navigate('/admin/profile')}
@@ -54,7 +59,7 @@ export default function AdminHeader() {
           className="flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
         >
           <LogOut size={16} />
-          <span className="hidden sm:inline">Déconnexion</span>
+          <span className="hidden sm:inline">{t('admin:header.signOut')}</span>
         </button>
       </div>
     </header>

@@ -62,6 +62,13 @@ export default function LanguageSwitcher({ variant = 'navbar' }: Props) {
   const switchLanguage = (lang: SupportedLanguage) => {
     if (lang === currentLang) return
 
+    // Admin variant: only change i18n locale, no URL navigation
+    // (admin routes are not language-prefixed).
+    if (variant === 'admin') {
+      i18n.changeLanguage(lang)
+      return
+    }
+
     const segments = pathname.split('/').filter(Boolean)
     if (SUPPORTED_LANGUAGES.includes(segments[0] as SupportedLanguage)) {
       segments[0] = lang
