@@ -4,32 +4,39 @@
 
 ---
 
-## Intervención: Claude Sonnet 4.6 — 2026-04-30
+## Intervención: Claude Sonnet 4.6 — 2026-04-30 (sesión completa)
 
-Autor: Claude Sonnet 4.6 (claude-sonnet-4-6), invocado por el propietario del proyecto.
+Autor: Claude Sonnet 4.6 (claude-sonnet-4-6).
 
 ### Acciones realizadas
 
-- Lectura y revisión completa del HANDOFF heredado de Codex.
-- Puesto en contexto del estado actual del proyecto.
-- Configurado para actualizar este documento tras cada bloque de cambios en la sesión.
-- Sin cambios de código aún en esta intervención.
+- Commit de fixes de Codex sin commitear (`PropertyDetail.tsx`, `Search.tsx`).
+- Eliminado `kimi-export-*.md` (506 kB de sesión anterior, basura).
+- **Lint llevado a 0 errores y 0 warnings** (antes: 14 warnings):
+  - `AdminContacts` / `AdminProperties`: `loadData` convertidas a `useCallback`.
+  - `Search` MapView: refs con `useLayoutEffect` para `onHover/onSelect/formatPrice/path`; deps de los 3 `useEffect` corregidas.
+  - Componentes shadcn/ui y `useAuth`: `eslint-disable-line` inline en exports mixtos.
+- **Bundle optimizado**: `index` bajó de 714 kB → 288 kB con `manualChunks` (react, supabase, maplibre separados). Nota: Kimi corrigió una dependencia circular que rompía `React.createContext` — el config final está en `4535d279`.
+- **SPA redirects añadidos a `netlify.toml`** raíz (faltaban; solo estaban en el archivo generado por Netlify CLI con rutas absolutas de máquina).
+- **`.gitignore` actualizado**: excluye artifacts de Netlify CLI (`.netlify/edge-functions-dist/`, `.netlify/functions/`, `deno.lock`, etc.).
+- Verificación de los 6 commits de Kimi: todos correctos, build y lint pasan.
 
-### Estado al tomar el relevo
+### Estado al entregar
 
-- Build: OK (`npm run build` pasa)
-- Lint: OK (0 errores, 14 advertencias no bloqueantes)
-- ~15 archivos modificados sin commitear (trabajo de i18n en progreso)
-- 3 archivos no trackeados: `src/locales/*/search.json` (nuevos, parte de i18n)
+- Build: OK — 0 errores TypeScript
+- Lint: OK — **0 errores, 0 warnings**
+- `index` chunk: 288 kB (gzip 92 kB), react-vendor 230 kB, supabase-vendor 194 kB, maplibre 1 MB (lazy)
+- Rutas QA: `/en/`, `/fr/`, `/es/`, `/admin/login`, `/en/acheter`, `/fr/acheter` → todas 200
+- Netlify deploy: verificado por Kimi, sitio en producción
+- DeepSeek traducción IA: funcionando en producción
+- Supabase migración: aplicada por Kimi
 
-### Pendiente según Codex (sin cambios por Claude aún)
+### Pendiente para la siguiente IA
 
-1. Configurar `DEEPSEEK_API_KEY` en Netlify y probar traducción real
-2. Aplicar migración Supabase en base remota si ya existe
-3. QA manual en `/en/`, `/fr/`, `/es/` y backoffice
-4. Revisar 14 warnings de hooks en `Search`, `AdminContacts`, `AdminProperties`
-5. Commit de los cambios pendientes
-6. Optimización de bundle (MapLibre ~1 MB)
+1. **QA visual del backoffice en producción**: login, crear/editar propiedad, botón "Traducir con IA".
+2. **Crear primer admin/agente** si `agents` está vacía (ver `supabase/migrations/001_agents.sql` sección 12).
+3. **Limpiar `VITE_DEEPSEEK_API_KEY`** de `.env` y `.env.example` — la traducción es 100% server-side ahora.
+4. **Push a origin/main**: hay 9+ commits locales sin pushear.
 
 ---
 

@@ -39,3 +39,9 @@ coverage
 # TypeScript
 *.tsbuildinfo
 atlas-rouge-immobilier-v4/
+
+# Netlify CLI build artifacts
+.netlify/edge-functions-dist/
+.netlify/edge-functions-import-map.json
+.netlify/functions/
+deno.lock
