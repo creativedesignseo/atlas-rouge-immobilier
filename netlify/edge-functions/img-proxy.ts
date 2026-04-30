@@ -1,9 +1,9 @@
-import type { Config, Context } from '@netlify/edge-functions'
+import type { Config } from '@netlify/edge-functions'
 
 const SUPABASE_URL = 'https://slxlkbrqcjabsfuhlwdf.supabase.co'
 const BUCKET_NAME = 'property-images'
 
-export default async function handler(request: Request, context: Context) {
+export default async function handler(request: Request) {
   const url = new URL(request.url)
   const pathname = url.pathname
 

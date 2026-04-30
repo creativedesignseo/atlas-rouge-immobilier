@@ -51,5 +51,19 @@
   "allResults": "All results",
   "noResults": "No results found",
   "results": "result",
-  "results_plural": "results"
+  "results_plural": "results",
+  "home": "Home",
+  "myFavorites": "My favorites",
+  "favoritesSubtitle": "Find all your saved properties here.",
+  "noFavorites": "You don't have any favorites yet",
+  "noFavoritesDesc": "Browse our properties in Marrakech and add them to your favorites to find them here.",
+  "exploreProperties": "Explore properties",
+  "pageNotFound": "Page not found",
+  "pageNotFoundDesc": "The page you are looking for does not exist or has been moved.",
+  "backToHome": "Back to home",
+  "viewListings": "View listings",
+  "saved": "saved",
+  "saved_plural": "saved",
+  "listProperty": "List a property",
+  "tagline": "Real Estate Marrakech"
 }

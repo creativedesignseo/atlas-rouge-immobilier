@@ -459,7 +459,7 @@ VITE_SUPABASE_ANON_KEY=<tu-anon-key>
 ```
 
 ```bash
-npm run dev  # http://localhost:5173
+npm run dev  # http://localhost:3000
 ```
 
 ### 10.2 Comandos útiles

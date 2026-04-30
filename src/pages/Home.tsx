@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useLang } from '@/hooks/useLang'
 import { getImageUrl } from '@/lib/storage'
 import { useGSAP } from '@gsap/react'
@@ -33,62 +34,18 @@ import ServiceCard from '@/components/ServiceCard'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const filterChips = [
-  'Villa avec piscine',
-  'Riad m\u00E9dina',
-  'Appartement neuf',
-  'Palmeraie',
-  'Route de l\u2019Ourika',
-  'Investissement locatif',
-]
+const chipKeys = ['villaPool', 'riadMedina', 'newApartment', 'palmeraie', 'ourika', 'investment'] as const
 
 const categories = [
-  { icon: <HomeIcon size={32} />, label: 'Villas', href: '/acheter?type=villa' },
-  { icon: <Building size={32} />, label: 'Appartements', href: '/acheter?type=appartement' },
-  { icon: <Landmark size={32} />, label: 'Riads', href: '/acheter?type=riad' },
-  { icon: <Star size={32} />, label: 'Maisons de prestige', href: '/acheter?type=prestige' },
-  { icon: <TreePine size={32} />, label: 'Terrains', href: '/acheter?type=terrain' },
-  { icon: <Maximize size={32} />, label: 'Rooftops', href: '/acheter?type=rooftop' },
+  { icon: <HomeIcon size={32} />, labelKey: 'villas', typeParam: 'villa' },
+  { icon: <Building size={32} />, labelKey: 'apartments', typeParam: 'appartement' },
+  { icon: <Landmark size={32} />, labelKey: 'riads', typeParam: 'riad' },
+  { icon: <Star size={32} />, labelKey: 'prestige', typeParam: 'prestige' },
+  { icon: <TreePine size={32} />, labelKey: 'land', typeParam: 'terrain' },
+  { icon: <Maximize size={32} />, labelKey: 'rooftops', typeParam: 'rooftop' },
 ]
 
-const services = [
-  {
-    icon: <KeyRound size={40} />,
-    title: 'Acheter',
-    description:
-      'Trouvez votre villa, riad ou appartement \u00E0 Marrakech avec l\u2019aide de nos conseillers locaux.',
-  },
-  {
-    icon: <Tag size={40} />,
-    title: 'Vendre',
-    description:
-      'Estimez et vendez votre bien au meilleur prix gr\u00E2ce \u00E0 notre r\u00E9seau d\u2019acheteurs fran\u00E7ais.',
-  },
-  {
-    icon: <FileText size={40} />,
-    title: 'Louer',
-    description:
-      'Locations saisonni\u00E8res et longue dur\u00E9e \u2014 r\u00E9sidences meubl\u00E9es et services conciergerie.',
-  },
-  {
-    icon: <Calculator size={40} />,
-    title: 'Estimation',
-    description:
-      '\u00C9valuation gratuite de votre bien par des experts du march\u00E9 immobilier marocain.',
-  },
-  {
-    icon: <ShieldCheck size={40} />,
-    title: 'Gestion locative',
-    description:
-      'Nous g\u00E9rons votre propri\u00E9t\u00E9 : entretien, location, conciergerie et rapport complet.',
-  },
-  {
-    icon: <Users size={40} />,
-    title: 'Accompagnement',
-    description:
-      'Assistance administrative, notaire, banque et fiscalit\u00E9 pour les acheteurs \u00E9trangers.',
-  },
-]
+const serviceKeys = ['buy', 'sell', 'rent', 'estimate', 'management', 'support'] as const
 
 const blogArticles = [
   {
@@ -110,6 +67,15 @@ const blogArticles = [
     date: '2 Jan 2024',
   },
 ]
+
+const serviceIcons: Record<string, React.ReactNode> = {
+  buy: <KeyRound size={40} />,
+  sell: <Tag size={40} />,
+  rent: <FileText size={40} />,
+  estimate: <Calculator size={40} />,
+  management: <ShieldCheck size={40} />,
+  support: <Users size={40} />,
+}
 
 function AnimatedCounter({ target, suffix = '', duration = 1.5 }: { target: number; suffix?: string; duration?: number }) {
   const ref = useRef<HTMLSpanElement>(null)
@@ -145,6 +111,8 @@ function AnimatedCounter({ target, suffix = '', duration = 1.5 }: { target: numb
 }
 
 export default function Home() {
+  const { t } = useTranslation('home')
+  const { t: tc } = useTranslation('common')
   const { path } = useLang()
   const heroRef = useRef<HTMLDivElement>(null)
   const heroTitleRef = useRef<HTMLHeadingElement>(null)
@@ -299,14 +267,13 @@ export default function Home() {
             ref={heroTitleRef}
             className="font-playfair text-[36px] md:text-[56px] font-medium text-white leading-[1.1] tracking-[-0.5px] mb-6"
           >
-            Villas, riads &amp; appartements &agrave; Marrakech
+            {t('hero.title')}
           </h1>
           <p
             ref={heroSubtitleRef}
             className="text-white/85 text-[16px] md:text-[18px] font-inter font-normal mb-10"
           >
-            D&eacute;couvrez plus de 3 500 annonces &mdash; villas avec piscine,
-            riads r&eacute;nov&eacute;s, appartements neufs
+            {t('hero.subtitle')}
           </p>
 
           {/* Search bar */}
@@ -320,7 +287,7 @@ export default function Home() {
                 <MapPin size={18} className="text-text-secondary shrink-0" />
                 <input
                   type="text"
-                  placeholder="O&ugrave; cherchez-vous ?"
+                  placeholder={t('hero.searchPlaceholder')}
                   className="bg-transparent text-text-primary text-[14px] font-inter w-full outline-none placeholder:text-text-secondary/60"
                 />
               </div>
@@ -328,7 +295,7 @@ export default function Home() {
               <div className="flex items-center gap-2 px-4 py-2 bg-cream rounded-lg min-h-[48px] cursor-pointer">
                 <HomeIcon size={18} className="text-text-secondary shrink-0" />
                 <span className="text-text-secondary text-[14px] font-inter">
-                  Type de bien
+                  {tc('filter')}
                 </span>
                 <ChevronDown size={16} className="text-text-secondary ml-auto" />
               </div>
@@ -338,7 +305,7 @@ export default function Home() {
                 className="bg-terracotta text-white font-inter text-[14px] font-semibold px-6 py-3 rounded-lg flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform min-h-[48px]"
               >
                 <Search size={16} />
-                Rechercher
+                {tc('search')}
               </Link>
             </div>
           </div>
@@ -348,13 +315,13 @@ export default function Home() {
             ref={heroChipsRef}
             className="flex flex-wrap justify-center gap-2 mt-8"
           >
-            {filterChips.map((chip) => (
+            {chipKeys.map((chipKey) => (
               <Link
-                key={chip}
+                key={chipKey}
                 to={path('/acheter')}
                 className="bg-[rgba(216,195,165,0.3)] text-white text-[12px] font-medium font-inter px-4 py-1.5 rounded-pill hover:bg-[rgba(216,195,165,0.5)] transition-colors"
               >
-                {chip}
+                {t(`hero.chips.${chipKey}`)}
               </Link>
             ))}
           </div>
@@ -366,14 +333,13 @@ export default function Home() {
         <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
           <div className="section-header text-center mb-12">
             <span className="text-terracotta text-[12px] font-inter font-medium uppercase tracking-[2px]">
-              Explorer Marrakech
+              {t('neighborhoods.tagline')}
             </span>
             <h2 className="font-playfair text-[32px] md:text-[40px] font-medium text-midnight mt-3 mb-4">
-              Les quartiers les plus pris&eacute;s
+              {t('neighborhoods.title')}
             </h2>
             <p className="text-text-secondary text-[16px] font-inter max-w-[600px] mx-auto">
-              De la M&eacute;dina historique &agrave; la Palmeraie luxueuse,
-              trouvez le quartier qui vous correspond
+              {t('neighborhoods.subtitle')}
             </p>
           </div>
           <div className="section-content grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -389,14 +355,13 @@ export default function Home() {
         <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
           <div className="section-header text-center mb-12">
             <span className="text-palm text-[12px] font-inter font-medium uppercase tracking-[2px]">
-              Annonces en vedette
+              {t('featured.tagline')}
             </span>
             <h2 className="font-playfair text-[32px] md:text-[40px] font-medium text-midnight mt-3 mb-4">
-              Propri&eacute;t&eacute;s s&eacute;lectionn&eacute;es pour vous
+              {t('featured.title')}
             </h2>
             <p className="text-text-secondary text-[16px] font-inter max-w-[600px] mx-auto">
-              Une s&eacute;lection de biens d&apos;exception, du riad traditionnel
-              &agrave; la villa contemporaine
+              {t('featured.subtitle')}
             </p>
           </div>
           <div className="section-content grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -409,7 +374,7 @@ export default function Home() {
               to={path('/acheter')}
               className="inline-flex items-center gap-2 text-terracotta text-[16px] font-inter font-medium hover:underline"
             >
-              Voir toutes les annonces
+              {t('featured.seeAll')}
               <ArrowRight size={18} />
             </Link>
           </div>
@@ -421,21 +386,21 @@ export default function Home() {
         <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
           <div className="section-header text-center mb-10">
             <h2 className="font-playfair text-[32px] md:text-[40px] font-medium text-midnight">
-              Trouvez votre bien id&eacute;al
+              {t('categories.subtitle')}
             </h2>
           </div>
           <div className="section-content flex gap-4 overflow-x-auto pb-4 justify-start md:justify-center">
             {categories.map((cat) => (
               <Link
-                key={cat.label}
-                to={path(cat.href)}
+                key={cat.labelKey}
+                to={path(`/acheter?type=${cat.typeParam}`)}
                 className="flex flex-col items-center justify-center w-[160px] min-w-[160px] h-[120px] bg-cream-warm rounded-xl hover:bg-[rgba(216,195,165,0.4)] transition-colors group"
               >
                 <span className="text-text-secondary group-hover:text-terracotta transition-colors mb-2">
                   {cat.icon}
                 </span>
                 <span className="text-text-primary text-[14px] font-inter font-medium text-center px-2">
-                  {cat.label}
+                  {t(`categories.${cat.labelKey}`)}
                 </span>
               </Link>
             ))}
@@ -448,19 +413,19 @@ export default function Home() {
         <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
           <div className="section-header text-center mb-12">
             <span className="text-terracotta text-[12px] font-inter font-medium uppercase tracking-[2px]">
-              Nos services
+              {t('services.title')}
             </span>
             <h2 className="font-playfair text-[32px] md:text-[40px] font-medium text-midnight mt-3 mb-4">
-              De l&apos;achat &agrave; la gestion, nous vous accompagnons
+              {t('services.subtitle')}
             </h2>
           </div>
           <div className="section-content grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((s) => (
+            {serviceKeys.map((key) => (
               <ServiceCard
-                key={s.title}
-                icon={s.icon}
-                title={s.title}
-                description={s.description}
+                key={key}
+                icon={serviceIcons[key]}
+                title={t(`services.${key}.title`)}
+                description={t(`services.${key}.description`)}
               />
             ))}
           </div>
@@ -474,18 +439,13 @@ export default function Home() {
             {/* Left content */}
             <div className="lg:col-span-3 section-header">
               <span className="text-palm text-[12px] font-inter font-medium uppercase tracking-[2px]">
-                Pourquoi nous faire confiance
+                {t('trust.tagline')}
               </span>
               <h2 className="font-playfair text-[32px] md:text-[40px] font-medium text-midnight mt-3 mb-6">
-                Une expertise locale, une exp&eacute;rience pour les acheteurs
-                fran&ccedil;ais
+                {t('trust.title')}
               </h2>
               <p className="text-text-primary text-[16px] font-inter leading-[1.7] mb-8">
-                Atlas Rouge Immobilier est n&eacute; d&apos;une conviction :
-                acheter au Maroc m&eacute;rite un accompagnement de qualit&eacute;,
-                transparent et humain. Nos conseillers connaissent Marrakech
-                quartier par quartier. Ils vous guident de la premi&egrave;re
-                visite jusqu&apos;&agrave; la signature chez le notaire.
+                {t('trust.description')}
               </p>
 
               {/* Stats */}
@@ -495,7 +455,7 @@ export default function Home() {
                     <AnimatedCounter target={3500} suffix="+" />
                   </span>
                   <p className="text-text-secondary text-[14px] font-inter mt-1">
-                    Annonces
+                    {t('stats.properties')}
                   </p>
                 </div>
                 <div>
@@ -503,7 +463,7 @@ export default function Home() {
                     <AnimatedCounter target={12} />
                   </span>
                   <p className="text-text-secondary text-[14px] font-inter mt-1">
-                    Ann&eacute;es d&apos;exp&eacute;rience
+                    {t('stats.years')}
                   </p>
                 </div>
                 <div>
@@ -511,7 +471,7 @@ export default function Home() {
                     <AnimatedCounter target={98} suffix="%" />
                   </span>
                   <p className="text-text-secondary text-[14px] font-inter mt-1">
-                    Clients satisfaits
+                    {t('stats.clients')}
                   </p>
                 </div>
               </div>
@@ -522,7 +482,7 @@ export default function Home() {
               <div className="trust-image rounded-card overflow-hidden shadow-card">
                 <img
                   src={getImageUrl('property-01.jpg', { width: 800, height: 600, resize: 'cover' })}
-                  alt="Villa de prestige &agrave; Marrakech"
+                  alt={t('trust.title')}
                   className="w-full h-auto object-cover"
                   loading="lazy"
                 />
@@ -539,24 +499,23 @@ export default function Home() {
       >
         <div className="max-w-[700px] mx-auto px-6 text-center section-header">
           <h2 className="font-playfair text-[32px] md:text-[40px] font-medium text-white mb-4">
-            D&eacute;crivez-nous votre bien id&eacute;al
+            {t('cta.title')}
           </h2>
           <p className="text-white/75 text-[16px] font-inter mb-8">
-            Nous s&eacute;lectionnons pour vous les meilleures propri&eacute;t&eacute;s
-            correspondant &agrave; vos crit&egrave;res.
+            {t('cta.subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               to={path('/acheter')}
               className="bg-terracotta text-white font-inter text-[14px] font-semibold px-8 py-3.5 rounded-lg hover:scale-[1.02] transition-transform"
             >
-              Commencer ma recherche
+              {t('cta.startSearch')}
             </Link>
             <Link
               to={path('/contact')}
               className="border border-terracotta text-terracotta font-inter text-[14px] font-semibold px-8 py-3.5 rounded-lg hover:bg-terracotta/10 transition-colors"
             >
-              Ou cr&eacute;er une alerte
+              {t('cta.createAlert')}
             </Link>
           </div>
         </div>
@@ -567,10 +526,10 @@ export default function Home() {
         <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
           <div className="section-header text-center mb-12">
             <span className="text-terracotta text-[12px] font-inter font-medium uppercase tracking-[2px]">
-              Conseils immobiliers
+              {t('blog.title')}
             </span>
             <h2 className="font-playfair text-[32px] md:text-[40px] font-medium text-midnight mt-3 mb-4">
-              Guides et actualit&eacute;s du march&eacute;
+              {t('blog.subtitle')}
             </h2>
           </div>
           <div className="section-content grid grid-cols-1 md:grid-cols-3 gap-6">

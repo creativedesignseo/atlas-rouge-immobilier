@@ -7,7 +7,7 @@ export interface AuthCredentials {
   password: string
 }
 
-export interface Agent extends AgentRow {}
+export type Agent = AgentRow
 
 export async function signIn({ email, password }: AuthCredentials): Promise<{ error: AuthError | null }> {
   if (!isSupabaseConfigured) {

@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { submitContactForm } from '@/services/contact.service'
 import { Link } from 'react-router-dom'
 import { useLang } from '@/hooks/useLang'
@@ -62,31 +63,10 @@ function AccordionItem({
   )
 }
 
-const faqItems = (settings: Record<string, string> | null) => [
-  {
-    question: 'Comment prendre rendez-vous ?',
-    answer:
-      `Vous pouvez prendre rendez-vous par téléphone au ${settings?.phone || '+212 524 00 00 00'}, par WhatsApp au ${settings?.whatsapp || '+212 600 00 00 00'}, ou en remplissant le formulaire de contact ci-dessus. Notre équipe vous répond sous 24h.`,
-  },
-  {
-    question: 'Est-ce que vous parlez fran\u00E7ais ?',
-    answer:
-      'Oui, toute notre \u00E9quipe est francophone. Nous sommes sp\u00E9cialis\u00E9s dans l\u2019accompagnement des acheteurs fran\u00E7ais et nous connaissons parfaitement les sp\u00E9cificit\u00E9s du march\u00E9 immobilier marocain.',
-  },
-  {
-    question: 'Puis-je visiter un bien sans me d\u00E9placer ?',
-    answer:
-      'Absolument. Nous proposons des visites virtuelles en vid\u00E9o live pour la plupart de nos biens. Vous pouvez ainsi visiter en temps r\u00E9el depuis la France, avec un de nos conseillers qui se d\u00E9place sur place.',
-  },
-  {
-    question: 'Quels sont les d\u00E9lais pour acheter ?',
-    answer:
-      'Le d\u00E9lai moyen entre la premi\u00E8re visite et la signature chez le notaire est de 2 \u00E0 3 mois. Cela d\u00E9pend du type de bien et de la rapidit\u00E9 d\u2019obtention du financement si besoin.',
-  },
-]
-
 /* ═══════════════════════════════════════════ */
 export default function Contact() {
+  const { t } = useTranslation('contact')
+  const { t: tc } = useTranslation('common')
   const { path } = useLang()
   const { settings } = useSiteSettings()
 
@@ -169,22 +149,21 @@ export default function Contact() {
         <div className="max-w-[1280px] mx-auto px-6 lg:px-12 text-center">
           <nav className="flex items-center justify-center gap-2 mb-6 text-text-secondary font-inter text-[13px]">
             <Link to={path('/')} className="hover:text-terracotta transition-colors">
-              Accueil
+              {tc('home')}
             </Link>
             <ChevronRight size={14} />
-            <span>Contact</span>
+            <span>{t('title')}</span>
           </nav>
 
           <SectionReveal y={40}>
             <h1 className="font-playfair text-[36px] md:text-[48px] font-medium text-midnight leading-[1.1] tracking-[-0.3px] mb-4">
-              Contactez-nous
+              {t('title')}
             </h1>
           </SectionReveal>
 
           <SectionReveal y={30} delay={0.15}>
             <p className="font-inter text-[16px] text-text-secondary max-w-[560px] mx-auto">
-              Notre équipe vous répond sous 24h. Pour une réponse immédiate,
-              contactez-nous par téléphone ou WhatsApp.
+              {t('subtitle')}
             </p>
           </SectionReveal>
         </div>
@@ -197,7 +176,7 @@ export default function Contact() {
             {/* ── Left: Form ── */}
             <div ref={formRef} className="md:w-[60%]">
               <h3 className="font-playfair text-[24px] font-medium text-midnight mb-6">
-                Envoyez-nous un message
+                {t('form.title')}
               </h3>
 
               {submitted ? (
@@ -205,11 +184,10 @@ export default function Contact() {
                   <Check size={22} className="text-green-600 shrink-0 mt-0.5" />
                   <div>
                     <p className="font-inter text-[15px] font-medium text-green-800 mb-1">
-                      Message envoyé !
+                      {t('form.successTitle')}
                     </p>
                     <p className="font-inter text-[14px] text-green-700">
-                      Votre message a bien été envoyé. Nous vous répondrons sous
-                      24h.
+                      {t('form.successText')}
                     </p>
                   </div>
                 </div>
@@ -217,7 +195,7 @@ export default function Contact() {
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="form-field">
                     <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
-                      Nom complet *
+                      {t('form.name')} *
                     </label>
                     <input
                       type="text"
@@ -227,13 +205,13 @@ export default function Contact() {
                         setFormState((s) => ({ ...s, name: e.target.value }))
                       }
                       className="w-full h-12 px-4 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors"
-                      placeholder="Votre nom"
+                      placeholder={t('form.namePlaceholder')}
                     />
                   </div>
 
                   <div className="form-field">
                     <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
-                      Email *
+                      {t('form.email')} *
                     </label>
                     <input
                       type="email"
@@ -243,13 +221,13 @@ export default function Contact() {
                         setFormState((s) => ({ ...s, email: e.target.value }))
                       }
                       className="w-full h-12 px-4 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors"
-                      placeholder="votre@email.com"
+                      placeholder={t('form.emailPlaceholder')}
                     />
                   </div>
 
                   <div className="form-field">
                     <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
-                      Téléphone
+                      {t('form.phone')}
                     </label>
                     <input
                       type="tel"
@@ -258,13 +236,13 @@ export default function Contact() {
                         setFormState((s) => ({ ...s, phone: e.target.value }))
                       }
                       className="w-full h-12 px-4 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors"
-                      placeholder="+33 6 12 34 56 78"
+                      placeholder={t('form.phonePlaceholder')}
                     />
                   </div>
 
                   <div className="form-field">
                     <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
-                      Sujet *
+                      {t('form.subject')} *
                     </label>
                     <select
                       value={formState.subject}
@@ -276,17 +254,17 @@ export default function Contact() {
                       }
                       className="w-full h-12 px-4 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors bg-white"
                     >
-                      <option>Achat</option>
-                      <option>Vente</option>
-                      <option>Location</option>
-                      <option>Estimation</option>
-                      <option>Autre</option>
+                      <option value="buy">{t('form.subject')}</option>
+                      <option value="sell">Vente</option>
+                      <option value="rent">Location</option>
+                      <option value="estimate">Estimation</option>
+                      <option value="other">Autre</option>
                     </select>
                   </div>
 
                   <div className="form-field">
                     <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
-                      Message *
+                      {t('form.message')} *
                     </label>
                     <textarea
                       required
@@ -299,7 +277,7 @@ export default function Contact() {
                         }))
                       }
                       className="w-full px-4 py-3 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors resize-none"
-                      placeholder="Décrivez votre projet..."
+                      placeholder={t('form.messagePlaceholder')}
                     />
                   </div>
 
@@ -320,8 +298,7 @@ export default function Contact() {
                       htmlFor="consent"
                       className="font-inter text-[13px] text-text-secondary leading-[1.5]"
                     >
-                      J&#8217;accepte que mes données soient traitées pour être
-                      contacté *
+                      {t('form.consent')}
                     </label>
                   </div>
 
@@ -330,7 +307,7 @@ export default function Contact() {
                     disabled={!formState.consent || submitting}
                     className="form-field w-full h-12 bg-terracotta text-white font-inter text-[14px] font-semibold rounded-lg hover:scale-[1.01] active:scale-[0.99] transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {submitting ? 'Envoi en cours...' : 'Envoyer mon message'}
+                    {submitting ? t('form.sending') : t('form.send')}
                   </button>
                 </form>
               )}
@@ -339,7 +316,7 @@ export default function Contact() {
             {/* ── Right: Contact Info ── */}
             <div ref={infoRef} className="md:w-[40%]">
               <h3 className="font-playfair text-[24px] font-medium text-midnight mb-8">
-                Nos coordonnées
+                {t('info.title') || 'Nos coordonnées'}
               </h3>
 
               <div className="space-y-6">
@@ -349,7 +326,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <p className="font-inter text-[12px] font-medium text-text-secondary uppercase tracking-[0.3px] mb-0.5">
-                      Adresse
+                      {t('info.address')}
                     </p>
                     <p className="font-inter text-[15px] text-text-primary">
                       {settings?.address || '123 Boulevard Mohamed VI, Guéliz'}
@@ -365,7 +342,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <p className="font-inter text-[12px] font-medium text-text-secondary uppercase tracking-[0.3px] mb-0.5">
-                      Téléphone
+                      {t('info.phone')}
                     </p>
                     <a
                       href={`tel:${(settings?.phone || '+212524000000').replace(/\s/g, '')}`}
@@ -401,7 +378,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <p className="font-inter text-[12px] font-medium text-text-secondary uppercase tracking-[0.3px] mb-0.5">
-                      Email
+                      {t('info.email')}
                     </p>
                     <a
                       href={`mailto:${settings?.email || 'contact@atlasrouge.immo'}`}
@@ -418,12 +395,12 @@ export default function Contact() {
                   </div>
                   <div>
                     <p className="font-inter text-[12px] font-medium text-text-secondary uppercase tracking-[0.3px] mb-0.5">
-                      Horaires
+                      {t('info.hours')}
                     </p>
                     <p className="font-inter text-[15px] text-text-primary">
-                      {settings?.hours_weekday || 'Lun – Ven : 9h – 18h'}
+                      {settings?.hours_weekday || t('info.hoursValue')}
                       <br />
-                      {settings?.hours_saturday || 'Sam : 10h – 14h'}
+                      {settings?.hours_saturday || ''}
                     </p>
                   </div>
                 </div>
@@ -431,7 +408,7 @@ export default function Contact() {
                 {/* Social links */}
                 <div className="info-block pt-4 border-t border-border-warm">
                   <p className="font-inter text-[12px] font-medium text-text-secondary uppercase tracking-[0.3px] mb-3">
-                    Suivez-nous
+                    {t('info.followUs') || 'Suivez-nous'}
                   </p>
                   <div className="flex items-center gap-3">
                     <a
@@ -506,20 +483,35 @@ export default function Contact() {
         <div className="max-w-[720px] mx-auto px-6 lg:px-12">
           <SectionReveal y={30}>
             <h3 className="font-playfair text-[28px] font-medium text-midnight text-center mb-8">
-              Questions fréquentes
+              {t('faq.title')}
             </h3>
           </SectionReveal>
 
           <SectionReveal className="space-y-3" stagger={0.06} y={15}>
-            {faqItems(settings).map((item, i) => (
-              <AccordionItem
-                key={i}
-                question={item.question}
-                answer={item.answer}
-                isOpen={openFaq === i}
-                onToggle={() => setOpenFaq(openFaq === i ? null : i)}
-              />
-            ))}
+            <AccordionItem
+              question={t('faq.appointment.question')}
+              answer={t('faq.appointment.answer', { phone: settings?.phone || '+212 524 00 00 00', whatsapp: settings?.whatsapp || '+212 600 00 00 00' })}
+              isOpen={openFaq === 0}
+              onToggle={() => setOpenFaq(openFaq === 0 ? null : 0)}
+            />
+            <AccordionItem
+              question={t('faq.languages.question')}
+              answer={t('faq.languages.answer')}
+              isOpen={openFaq === 1}
+              onToggle={() => setOpenFaq(openFaq === 1 ? null : 1)}
+            />
+            <AccordionItem
+              question={t('faq.virtualVisit.question')}
+              answer={t('faq.virtualVisit.answer')}
+              isOpen={openFaq === 2}
+              onToggle={() => setOpenFaq(openFaq === 2 ? null : 2)}
+            />
+            <AccordionItem
+              question={t('faq.foreignBuyer.question')}
+              answer={t('faq.foreignBuyer.answer')}
+              isOpen={openFaq === 3}
+              onToggle={() => setOpenFaq(openFaq === 3 ? null : 3)}
+            />
           </SectionReveal>
 
           <p className="text-center mt-8">
@@ -527,7 +519,7 @@ export default function Contact() {
               to={path('/vendre#faq')}
               className="font-inter text-[16px] text-terracotta hover:underline"
             >
-              Voir toutes les questions →
+              {t('faq.title')} →
             </Link>
           </p>
         </div>

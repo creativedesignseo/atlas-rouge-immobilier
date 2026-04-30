@@ -19,6 +19,7 @@
   },
   "categories": {
     "title": "Buscar por tipo",
+    "subtitle": "Encuentre su propiedad ideal",
     "villas": "Villas",
     "apartments": "Apartamentos",
     "riads": "Riads",
@@ -27,13 +28,15 @@
     "rooftops": "Áticos"
   },
   "featured": {
+    "tagline": "Anuncios destacados",
     "title": "Propiedades destacadas",
     "subtitle": "Una selección de propiedades de excepción",
     "seeAll": "Ver todas las propiedades"
   },
   "neighborhoods": {
-    "title": "Explorar barrios",
-    "subtitle": "Descubre las zonas más demandadas de Marrakech",
+    "tagline": "Explorar Marrakech",
+    "title": "Los barrios más demandados",
+    "subtitle": "Desde la histórica Medina hasta la lujosa Palmeraie, encuentre el barrio que le conviene",
     "seeAll": "Ver todos los barrios"
   },
   "services": {
@@ -64,6 +67,11 @@
       "description": "Asistencia administrativa, notarial, bancaria y fiscal para compradores extranjeros."
     }
   },
+  "trust": {
+    "tagline": "Por qué confiar en nosotros",
+    "title": "Expertise local, experiencia para compradores internacionales",
+    "description": "Atlas Rouge Inmobiliaria nació de una convicción: comprar en Marruecos merece un acompañamiento de calidad, transparente y humano. Nuestros asesores conocen Marrakech barrio por barrio. Le guían desde la primera visita hasta la firma ante notario."
+  },
   "blog": {
     "title": "Consejos inmobiliarios",
     "subtitle": "Guías y tendencias del mercado para orientar sus decisiones",
@@ -71,10 +79,12 @@
     "seeAll": "Ver todos los artículos"
   },
   "cta": {
-    "title": "¿Listo para encontrar su propiedad en Marrakech?",
-    "subtitle": "Nuestros expertos locales le acompañan en cada etapa de su proyecto",
+    "title": "Describa su propiedad ideal",
+    "subtitle": "Seleccionamos para usted las mejores propiedades que coinciden con sus criterios.",
     "contact": "Contactar un asesor",
-    "search": "Buscar propiedades"
+    "search": "Buscar propiedades",
+    "startSearch": "Empezar mi búsqueda",
+    "createAlert": "O crear una alerta"
   },
   "stats": {
     "properties": "Propiedades",

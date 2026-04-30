@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { Heart, ArrowRight } from 'lucide-react'
 import SectionReveal from '@/components/SectionReveal'
 import PropertyCard from '@/components/PropertyCard'
@@ -7,6 +8,7 @@ import { useLang } from '@/hooks/useLang'
 import { properties } from '@/data/properties'
 
 export default function Favorites() {
+  const { t } = useTranslation('common')
   const { favorites } = useFavorites()
   const { path } = useLang()
 
@@ -23,24 +25,24 @@ export default function Favorites() {
         <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
           <nav className="flex items-center gap-2 mb-6 text-text-secondary font-inter text-[13px]">
             <Link to={path('/')} className="hover:text-terracotta transition-colors">
-              Accueil
+              {t('home')}
             </Link>
             <span className="text-border-warm">/</span>
-            <span>Mes favoris</span>
+            <span>{t('myFavorites')}</span>
           </nav>
 
           <SectionReveal y={30}>
             <div className="flex items-center gap-3 mb-3">
               <Heart size={28} className="text-terracotta" />
               <h1 className="font-playfair text-[32px] md:text-[40px] font-medium text-midnight leading-[1.1]">
-                Mes favoris
+                {t('myFavorites')}
               </h1>
             </div>
           </SectionReveal>
 
           <SectionReveal y={20} delay={0.1}>
             <p className="font-inter text-[15px] text-text-secondary max-w-[560px]">
-              Retrouvez ici tous les biens que vous avez sauvegardés.
+              {t('favoritesSubtitle')}
             </p>
           </SectionReveal>
         </div>
@@ -52,9 +54,7 @@ export default function Favorites() {
           {hasFavorites ? (
             <>
               <p className="font-inter text-[14px] text-text-secondary mb-6">
-                {favoriteProperties.length} bien
-                {favoriteProperties.length > 1 ? 's' : ''} sauvegardé
-                {favoriteProperties.length > 1 ? 's' : ''}
+                {favoriteProperties.length} {t(favoriteProperties.length > 1 ? 'saved_plural' : 'saved')}
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -70,17 +70,16 @@ export default function Favorites() {
                 <Heart size={36} className="text-border-warm" />
               </div>
               <h2 className="font-playfair text-[24px] font-medium text-midnight mb-3">
-                Vous n&#8217;avez pas encore de favoris
+                {t('noFavorites')}
               </h2>
               <p className="font-inter text-[15px] text-text-secondary mb-8 max-w-[400px]">
-                Parcourez nos biens à Marrakech et ajoutez-les à vos favoris
-                pour les retrouver ici.
+                {t('noFavoritesDesc')}
               </p>
               <Link
                 to={path('/acheter')}
                 className="inline-flex items-center gap-2 bg-terracotta text-white font-inter text-[14px] font-semibold px-8 py-3.5 rounded-lg hover:scale-[1.02] transition-transform"
               >
-                Explorer les biens
+                {t('exploreProperties')}
                 <ArrowRight size={18} />
               </Link>
             </SectionReveal>

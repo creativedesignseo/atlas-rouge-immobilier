@@ -55,9 +55,10 @@ export function useFavorites() {
         const anonId = getAnonymousId()
         if (isAdding) {
           const { error } = await supabase.from('favorites').insert({
+            user_id: null,
             anonymous_id: anonId,
             property_slug: slug,
-          } as never)
+          })
           if (error) {
             console.error('Failed to add favorite:', error)
             // Revert on error

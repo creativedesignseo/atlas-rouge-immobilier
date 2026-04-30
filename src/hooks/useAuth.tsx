@@ -3,7 +3,7 @@ import type { User } from '@supabase/supabase-js'
 import { getSession, getAgent, onAuthStateChange, signOut as authSignOut } from '@/services/auth.service'
 import type { AgentRow } from '@/types/supabase'
 
-export interface Agent extends AgentRow {}
+export type Agent = AgentRow
 
 interface AuthContextType {
   user: User | null

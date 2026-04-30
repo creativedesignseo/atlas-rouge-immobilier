@@ -102,7 +102,7 @@ export default function Footer() {
               </span>
               <span className="text-white/40 text-[12px]">|</span>
               <span className="text-white/40 text-[13px] font-inter">
-                {lang === 'es' ? 'Inmobiliaria Marrakech' : lang === 'en' ? 'Real Estate Marrakech' : 'Immobilier Marrakech'}
+                {tc('tagline')}
               </span>
             </div>
             <p className="text-white/40 text-[13px] font-inter text-center">

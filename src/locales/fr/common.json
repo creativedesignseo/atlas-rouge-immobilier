@@ -51,5 +51,19 @@
   "allResults": "Tous les résultats",
   "noResults": "Aucun résultat trouvé",
   "results": "résultat",
-  "results_plural": "résultats"
+  "results_plural": "résultats",
+  "home": "Accueil",
+  "myFavorites": "Mes favoris",
+  "favoritesSubtitle": "Retrouvez ici tous les biens que vous avez sauvegardés.",
+  "noFavorites": "Vous n'avez pas encore de favoris",
+  "noFavoritesDesc": "Parcourez nos biens à Marrakech et ajoutez-les à vos favoris pour les retrouver ici.",
+  "exploreProperties": "Explorer les biens",
+  "pageNotFound": "Page introuvable",
+  "pageNotFoundDesc": "La page que vous recherchez n'existe pas ou a été déplacée.",
+  "backToHome": "Retour à l'accueil",
+  "viewListings": "Voir les annonces",
+  "saved": "sauvegardé",
+  "saved_plural": "sauvegardés",
+  "listProperty": "Publier un bien",
+  "tagline": "Immobilier Marrakech"
 }

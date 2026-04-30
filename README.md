@@ -93,7 +93,7 @@ cp .env.example .env
 npm run dev
 ```
 
-El servidor corre en `http://localhost:5173`
+El servidor corre en `http://localhost:3000`
 
 ---
 
@@ -104,6 +104,10 @@ Crear un archivo `.env` en la raíz del proyecto:
 ```bash
 VITE_SUPABASE_URL=https://tu-proyecto.supabase.co
 VITE_SUPABASE_ANON_KEY=tu-anon-key
+
+# Solo servidor / Netlify Functions
+DEEPSEEK_API_KEY=tu-deepseek-api-key
+DEEPSEEK_MODEL=deepseek-chat
 ```
 
 > **Nota:** No usar la Service Role Key en el frontend. La Anon Key es suficiente porque todas las tablas tienen políticas RLS configuradas.
@@ -203,7 +207,7 @@ Los scripts de creación y seed están en `/supabase/`:
 |---|---|
 | `neighborhoods` | Lectura pública |
 | `properties` | Lectura pública |
-| `contact_submissions` | Inserción y lectura pública |
+| `contact_submissions` | Inserción pública; lectura solo admin/agentes |
 | `favorites` | Solo el usuario autenticado puede gestionar los suyos |
 | `site_settings` | Lectura pública |
 
@@ -281,6 +285,10 @@ La moneda seleccionada (EUR/MAD) se guarda en `localStorage` bajo la clave `curr
 
 ### Favoritos anónimos
 Se genera un `anonymous_id` vía `crypto.randomUUID()` y se guarda en `localStorage`. Los favoritos se sincronizan con Supabase usando este ID, permitiendo que persistan entre sesiones del mismo navegador.
+
+### Traducción IA
+
+La adaptación multilingüe de propiedades se hace desde el backoffice mediante una Netlify Function (`/.netlify/functions/translate-property`). La clave de DeepSeek debe configurarse como `DEEPSEEK_API_KEY` en Netlify, no como variable `VITE_*`, para que no se exponga en el navegador.
 
 ### Code-splitting
 Todas las páginas excepto Home y NotFound se cargan con `React.lazy()` para reducir el bundle inicial. El chunk de MapLibre GL (~1 MB) solo se carga cuando se visita Search o PropertyDetail.

@@ -1,0 +1,99 @@
+{
+  "title": {
+    "buy": "Buy in Marrakech",
+    "rent": "Rent in Marrakech"
+  },
+  "breadcrumb": {
+    "home": "Home"
+  },
+  "filters": {
+    "transaction": "Transaction",
+    "buy": "Buy",
+    "rent": "Rent",
+    "location": "Location",
+    "locationPlaceholder": "City, neighborhood...",
+    "type": "Property type",
+    "budget": "Budget (€)",
+    "min": "Min",
+    "max": "Max",
+    "surfaceLiving": "Living area (m²)",
+    "surfaceLand": "Land area (m²)",
+    "rooms": "Rooms",
+    "bedrooms": "Bedrooms",
+    "status": "Status",
+    "view": "View",
+    "style": "Style",
+    "amenities": "Amenities",
+    "media": "Media",
+    "radius": "Radius",
+    "reset": "Reset filters",
+    "resetAll": "Clear all"
+  },
+  "types": {
+    "villa": "Villa",
+    "apartment": "Apartment",
+    "riad": "Riad",
+    "prestige": "Prestige home",
+    "land": "Land",
+    "rooftop": "Rooftop"
+  },
+  "status": {
+    "new": "New",
+    "old": "Old",
+    "exclusive": "Exclusive",
+    "priceDrop": "Price drop",
+    "recent": "Less than a month"
+  },
+  "views": {
+    "atlas": "Atlas",
+    "garden": "Garden",
+    "pool": "Pool",
+    "medina": "Medina",
+    "golf": "Golf"
+  },
+  "styles": {
+    "contemporary": "Contemporary",
+    "moroccanModern": "Modern Moroccan",
+    "traditionalRiad": "Traditional renovated riad",
+    "minimalist": "Minimalist villa",
+    "privateEstate": "Private estate"
+  },
+  "media": {
+    "photos": "With photos",
+    "video": "With video",
+    "3d": "3D tour"
+  },
+  "sort": {
+    "recommended": "Recommended",
+    "priceAsc": "Price ascending",
+    "priceDesc": "Price descending",
+    "surfaceAsc": "Surface ascending",
+    "surfaceDesc": "Surface descending",
+    "pricePerSqmAsc": "Price per m² ascending",
+    "pricePerSqmDesc": "Price per m² descending",
+    "recent": "Most recent"
+  },
+  "results_one": "{{count}} property for {{transaction}} in Marrakech",
+  "results_other": "{{count}} properties for {{transaction}} in Marrakech",
+  "viewToggle": {
+    "grid": "Grid",
+    "list": "List",
+    "map": "Map"
+  },
+  "createAlert": "Create an alert",
+  "noResults": "No properties match your criteria",
+  "noResultsDesc": "Try broadening your search or adjusting your filters.",
+  "loading": "Loading listings...",
+  "mobile": {
+    "filters": "Filters",
+    "list": "List",
+    "map": "Map",
+    "reset": "Reset",
+    "title": "Filters",
+    "results_one": "See {{count}} result",
+    "results_other": "See {{count}} results",
+    "backToList": "Back to list"
+  },
+  "viewProperty": "View property",
+  "pricePerSqm": "/ m²"
+}

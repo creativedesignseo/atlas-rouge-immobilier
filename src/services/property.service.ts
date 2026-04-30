@@ -1,4 +1,5 @@
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
+import i18n, { SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/i18n'
 import { properties as mockProperties } from '@/data/properties'
 import type { Property } from '@/data/properties'
 
@@ -16,11 +17,32 @@ export interface PropertyFilters {
   sort?: string
 }
 
-function mapDbToProperty(row: Record<string, unknown>): Property {
+function getCurrentLanguage(): SupportedLanguage {
+  const lang = i18n.language?.slice(0, 2) as SupportedLanguage
+  return SUPPORTED_LANGUAGES.includes(lang) ? lang : 'en'
+}
+
+function localizedString(row: Record<string, unknown>, field: 'title' | 'description', lang: SupportedLanguage): string {
+  const localized = row[`${field}_${lang}`]
+  const french = row[`${field}_fr`]
+  if (typeof localized === 'string' && localized.trim()) return localized
+  if (typeof french === 'string' && french.trim()) return french
+  return (row[field] as string) || ''
+}
+
+function localizedArray(row: Record<string, unknown>, field: 'highlights', lang: SupportedLanguage): string[] {
+  const localized = row[`${field}_${lang}`]
+  const french = row[`${field}_fr`]
+  if (Array.isArray(localized) && localized.length > 0) return localized as string[]
+  if (Array.isArray(french) && french.length > 0) return french as string[]
+  return (row[field] as string[]) || []
+}
+
+function mapDbToProperty(row: Record<string, unknown>, lang = getCurrentLanguage()): Property {
   return {
     id: row.id as string,
     slug: row.slug as string,
-    title: row.title as string,
+    title: localizedString(row, 'title', lang),
     transaction: row.transaction as 'sale' | 'rent',
     type: row.type as Property['type'],
     neighborhood: (row.neighborhood_name as string) || '',
@@ -33,8 +55,8 @@ function mapDbToProperty(row: Record<string, unknown>): Property {
     bedrooms: row.bedrooms as number,
     bathrooms: row.bathrooms as number,
     pricePerSqm: row.price_per_sqm as number,
-    description: row.description as string,
-    highlights: (row.highlights as string[]) || [],
+    description: localizedString(row, 'description', lang),
+    highlights: localizedArray(row, 'highlights', lang),
     amenities: (row.amenities as string[]) || [],
     images: (row.images as string[]) || [],
     latitude: row.latitude as number,
@@ -82,7 +104,16 @@ export async function getProperties(filters: PropertyFilters = {}): Promise<Prop
   }
   if (filters.searchQuery) {
     const q = filters.searchQuery
-    query = query.or(`title.ilike.%${q}%,description.ilike.%${q}%`)
+    query = query.or([
+      `title.ilike.%${q}%`,
+      `description.ilike.%${q}%`,
+      `title_en.ilike.%${q}%`,
+      `title_fr.ilike.%${q}%`,
+      `title_es.ilike.%${q}%`,
+      `description_en.ilike.%${q}%`,
+      `description_fr.ilike.%${q}%`,
+      `description_es.ilike.%${q}%`,
+    ].join(','))
   }
 
   // Sort

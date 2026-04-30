@@ -19,6 +19,7 @@
   },
   "categories": {
     "title": "Rechercher par type",
+    "subtitle": "Trouvez votre bien idéal",
     "villas": "Villas",
     "apartments": "Appartements",
     "riads": "Riads",
@@ -27,13 +28,15 @@
     "rooftops": "Rooftops"
   },
   "featured": {
+    "tagline": "Annonces en vedette",
     "title": "Biens à la une",
     "subtitle": "Une sélection de propriétés d'exception",
     "seeAll": "Voir tous les biens"
   },
   "neighborhoods": {
-    "title": "Explorer les quartiers",
-    "subtitle": "Découvrez les zones les plus recherchées de Marrakech",
+    "tagline": "Explorer Marrakech",
+    "title": "Les quartiers les plus prisés",
+    "subtitle": "De la Médina historique à la Palmeraie luxueuse, trouvez le quartier qui vous correspond",
     "seeAll": "Voir tous les quartiers"
   },
   "services": {
@@ -64,6 +67,11 @@
       "description": "Assistance administrative, notaire, banque et fiscalité pour les acheteurs étrangers."
     }
   },
+  "trust": {
+    "tagline": "Pourquoi nous faire confiance",
+    "title": "Une expertise locale, une expérience pour les acheteurs français",
+    "description": "Atlas Rouge Immobilier est né d'une conviction : acheter au Maroc mérite un accompagnement de qualité, transparent et humain. Nos conseillers connaissent Marrakech quartier par quartier. Ils vous guident de la première visite jusqu'à la signature chez le notaire."
+  },
   "blog": {
     "title": "Conseils immobiliers",
     "subtitle": "Guides et tendances du marché pour éclairer vos décisions",
@@ -71,10 +79,12 @@
     "seeAll": "Voir tous les articles"
   },
   "cta": {
-    "title": "Prêt à trouver votre bien à Marrakech ?",
-    "subtitle": "Nos experts locaux vous accompagnent à chaque étape de votre projet",
+    "title": "Décrivez-nous votre bien idéal",
+    "subtitle": "Nous sélectionnons pour vous les meilleures propriétés correspondant à vos critères.",
     "contact": "Contacter un conseiller",
-    "search": "Rechercher des biens"
+    "search": "Rechercher des biens",
+    "startSearch": "Commencer ma recherche",
+    "createAlert": "Ou créer une alerte"
   },
   "stats": {
     "properties": "Biens",

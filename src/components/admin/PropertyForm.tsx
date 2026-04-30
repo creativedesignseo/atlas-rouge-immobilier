@@ -13,7 +13,7 @@ import { autoTranslateProperty } from '@/services/translation.service'
 import type { SupportedLanguage } from '@/i18n'
 
 const LANGS: SupportedLanguage[] = ['en', 'fr', 'es']
-const LANG_LABELS: Record<SupportedLanguage, string> = { en: '🇬🇧 EN', fr: '🇫🇷 FR', es: '🇪🇸 ES' }
+const LANG_LABELS: Record<SupportedLanguage, string> = { en: 'EN', fr: 'FR', es: 'ES' }
 
 const propertySchema = z.object({
   title: z.string().min(5, 'Le titre doit faire au moins 5 caractères').max(100),
@@ -108,6 +108,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
     handleSubmit,
     control,
     watch,
+    getValues,
     setValue,
     formState: { errors },
   } = useForm<PropertyFormValues>({
@@ -187,31 +188,53 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
   })
 
   const handleAutoTranslate = async () => {
-    const title = watch(`title_${activeLangTab}` as keyof PropertyFormValues) as string
-    const description = watch(`description_${activeLangTab}` as keyof PropertyFormValues) as string
-    const highlights = (watch(`highlights_${activeLangTab}` as keyof PropertyFormValues) as string[]) || []
+    const values = getValues()
+    const langTitle = values[`title_${activeLangTab}` as keyof PropertyFormValues] as string | null | undefined
+    const langDescription = values[`description_${activeLangTab}` as keyof PropertyFormValues] as string | null | undefined
+    const langHighlights = (values[`highlights_${activeLangTab}` as keyof PropertyFormValues] as string[] | undefined) || []
+    const title = (langTitle || (activeLangTab === 'fr' ? values.title : '') || '').trim()
+    const description = (langDescription || (activeLangTab === 'fr' ? values.description : '') || '').trim()
+    const sourceHighlights = langHighlights.length > 0 ? langHighlights : activeLangTab === 'fr' ? values.highlights : []
 
     if (!title || !description) {
-      toast.error(`Remplissez d'abord le titre et la description en ${activeLangTab.toUpperCase()}`)
+      toast.error(t('propertyForm.autoTranslateMissingSource', { lang: activeLangTab.toUpperCase() }))
       return
     }
 
     setIsTranslating(true)
     try {
-      const result = await autoTranslateProperty({ title, description, highlights }, activeLangTab)
+      const neighborhood = neighborhoods.find((item) => item.slug === values.neighborhood_id)
+      const result = await autoTranslateProperty({
+        title,
+        description,
+        highlights: sourceHighlights,
+        amenities: values.amenities || [],
+        transaction: values.transaction,
+        type: values.type,
+        city: values.city,
+        neighborhood: neighborhood?.name || '',
+        priceEUR: values.price_eur,
+        priceMAD: values.price_mad,
+        surface: values.surface,
+        landSurface: values.land_surface,
+        rooms: values.rooms,
+        bedrooms: values.bedrooms,
+        bathrooms: values.bathrooms,
+      }, activeLangTab)
+
+      setValue(`title_${activeLangTab}` as keyof PropertyFormValues, title as never)
+      setValue(`description_${activeLangTab}` as keyof PropertyFormValues, description as never)
+      setValue(`highlights_${activeLangTab}` as keyof PropertyFormValues, sourceHighlights as never)
+
       for (const [lang, content] of Object.entries(result)) {
         const l = lang as SupportedLanguage
-        const c = content as { title: string; description: string; highlights: string[] }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        setValue(`title_${l}` as any, c.title)
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        setValue(`description_${l}` as any, c.description)
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        setValue(`highlights_${l}` as any, c.highlights)
+        setValue(`title_${l}` as keyof PropertyFormValues, content.title as never)
+        setValue(`description_${l}` as keyof PropertyFormValues, content.description as never)
+        setValue(`highlights_${l}` as keyof PropertyFormValues, content.highlights as never)
       }
       toast.success(t('propertyForm.autoTranslateSuccess'))
-    } catch {
-      toast.error(t('propertyForm.autoTranslateError'))
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : t('propertyForm.autoTranslateError'))
     } finally {
       setIsTranslating(false)
     }
@@ -626,7 +649,10 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
           {/* Translation tabs */}
           <div className="bg-white rounded-2xl p-6 shadow-card border border-border-warm">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-text-primary">{t('propertyForm.translations')}</h3>
+              <div>
+                <h3 className="font-semibold text-text-primary">{t('propertyForm.translations')}</h3>
+                <p className="text-xs text-text-secondary mt-1">{t('propertyForm.autoTranslateHint')}</p>
+              </div>
               <button
                 type="button"
                 onClick={handleAutoTranslate}

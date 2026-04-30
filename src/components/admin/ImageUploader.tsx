@@ -24,7 +24,7 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
     setIsDragging(false)
   }, [])
 
-  const processFiles = async (files: FileList | null) => {
+  const processFiles = useCallback(async (files: FileList | null) => {
     if (!files || files.length === 0) return
 
     const validFiles = Array.from(files).filter((file) => {
@@ -57,13 +57,13 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
       onChange([...images, ...newImages])
       toast.success(`${newImages.length} image(s) ajoutée(s)`)
     }
-  }
+  }, [images, onChange])
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault()
     setIsDragging(false)
     processFiles(e.dataTransfer.files)
-  }, [images])
+  }, [processFiles])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     processFiles(e.target.files)

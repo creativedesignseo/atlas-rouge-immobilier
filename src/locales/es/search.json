@@ -1,0 +1,99 @@
+{
+  "title": {
+    "buy": "Comprar en Marrakech",
+    "rent": "Alquilar en Marrakech"
+  },
+  "breadcrumb": {
+    "home": "Inicio"
+  },
+  "filters": {
+    "transaction": "Transacción",
+    "buy": "Comprar",
+    "rent": "Alquilar",
+    "location": "Ubicación",
+    "locationPlaceholder": "Ciudad, barrio...",
+    "type": "Tipo de inmueble",
+    "budget": "Presupuesto (€)",
+    "min": "Mín",
+    "max": "Máx",
+    "surfaceLiving": "Superficie habitable (m²)",
+    "surfaceLand": "Superficie del terreno (m²)",
+    "rooms": "Habitaciones",
+    "bedrooms": "Dormitorios",
+    "status": "Estado",
+    "view": "Vista",
+    "style": "Estilo",
+    "amenities": "Equipamientos",
+    "media": "Multimedia",
+    "radius": "Radio",
+    "reset": "Restablecer filtros",
+    "resetAll": "Borrar todo"
+  },
+  "types": {
+    "villa": "Villa",
+    "apartment": "Apartamento",
+    "riad": "Riad",
+    "prestige": "Casa de prestigio",
+    "land": "Terreno",
+    "rooftop": "Ático"
+  },
+  "status": {
+    "new": "Nuevo",
+    "old": "Antiguo",
+    "exclusive": "Exclusividad",
+    "priceDrop": "Bajada de precio",
+    "recent": "Menos de un mes"
+  },
+  "views": {
+    "atlas": "Atlas",
+    "garden": "Jardín",
+    "pool": "Piscina",
+    "medina": "Medina",
+    "golf": "Golf"
+  },
+  "styles": {
+    "contemporary": "Contemporáneo",
+    "moroccanModern": "Marroquí moderno",
+    "traditionalRiad": "Riad tradicional renovado",
+    "minimalist": "Villa minimalista",
+    "privateEstate": "Dominio privado"
+  },
+  "media": {
+    "photos": "Con fotos",
+    "video": "Con vídeo",
+    "3d": "Visita 3D"
+  },
+  "sort": {
+    "recommended": "Recomendado",
+    "priceAsc": "Precio ascendente",
+    "priceDesc": "Precio descendente",
+    "surfaceAsc": "Superficie ascendente",
+    "surfaceDesc": "Superficie descendente",
+    "pricePerSqmAsc": "Precio por m² ascendente",
+    "pricePerSqmDesc": "Precio por m² descendente",
+    "recent": "Más reciente"
+  },
+  "results_one": "{{count}} propiedad en {{transaction}} en Marrakech",
+  "results_other": "{{count}} propiedades en {{transaction}} en Marrakech",
+  "viewToggle": {
+    "grid": "Cuadrícula",
+    "list": "Lista",
+    "map": "Mapa"
+  },
+  "createAlert": "Crear alerta",
+  "noResults": "Ninguna propiedad coincide con sus criterios",
+  "noResultsDesc": "Intente ampliar su búsqueda o ajustar sus filtros.",
+  "loading": "Cargando anuncios...",
+  "mobile": {
+    "filters": "Filtros",
+    "list": "Lista",
+    "map": "Mapa",
+    "reset": "Restablecer",
+    "title": "Filtros",
+    "results_one": "Ver {{count}} resultado",
+    "results_other": "Ver {{count}} resultados",
+    "backToList": "Volver a la lista"
+  },
+  "viewProperty": "Ver propiedad",
+  "pricePerSqm": "/ m²"
+}

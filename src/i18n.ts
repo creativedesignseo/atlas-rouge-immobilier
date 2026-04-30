@@ -9,6 +9,7 @@ import enFooter from './locales/en/footer.json'
 import enProperty from './locales/en/property.json'
 import enContact from './locales/en/contact.json'
 import enAdmin from './locales/en/admin.json'
+import enSearch from './locales/en/search.json'
 
 import frNav from './locales/fr/nav.json'
 import frCommon from './locales/fr/common.json'
@@ -17,6 +18,7 @@ import frFooter from './locales/fr/footer.json'
 import frProperty from './locales/fr/property.json'
 import frContact from './locales/fr/contact.json'
 import frAdmin from './locales/fr/admin.json'
+import frSearch from './locales/fr/search.json'
 
 import esNav from './locales/es/nav.json'
 import esCommon from './locales/es/common.json'
@@ -25,6 +27,7 @@ import esFooter from './locales/es/footer.json'
 import esProperty from './locales/es/property.json'
 import esContact from './locales/es/contact.json'
 import esAdmin from './locales/es/admin.json'
+import esSearch from './locales/es/search.json'
 
 export const SUPPORTED_LANGUAGES = ['en', 'fr', 'es'] as const
 export type SupportedLanguage = typeof SUPPORTED_LANGUAGES[number]
@@ -46,9 +49,9 @@ i18n
   .use(initReactI18next)
   .init({
     resources: {
-      en: { nav: enNav, common: enCommon, home: enHome, footer: enFooter, property: enProperty, contact: enContact, admin: enAdmin },
-      fr: { nav: frNav, common: frCommon, home: frHome, footer: frFooter, property: frProperty, contact: frContact, admin: frAdmin },
-      es: { nav: esNav, common: esCommon, home: esHome, footer: esFooter, property: esProperty, contact: esContact, admin: esAdmin },
+      en: { nav: enNav, common: enCommon, home: enHome, footer: enFooter, property: enProperty, contact: enContact, admin: enAdmin, search: enSearch },
+      fr: { nav: frNav, common: frCommon, home: frHome, footer: frFooter, property: frProperty, contact: frContact, admin: frAdmin, search: frSearch },
+      es: { nav: esNav, common: esCommon, home: esHome, footer: esFooter, property: esProperty, contact: esContact, admin: esAdmin, search: esSearch },
     },
     defaultNS: 'common',
     fallbackLng: 'en',

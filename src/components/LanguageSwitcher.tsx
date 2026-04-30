@@ -1,9 +1,55 @@
+import { Check, ChevronDown } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { SUPPORTED_LANGUAGES, LANGUAGE_FLAGS, type SupportedLanguage } from '@/i18n'
+import { SUPPORTED_LANGUAGES, LANGUAGE_NAMES, type SupportedLanguage } from '@/i18n'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { cn } from '@/lib/utils'
 
 interface Props {
   variant?: 'navbar' | 'mobile' | 'admin'
+}
+
+function RoundFlag({ lang }: { lang: SupportedLanguage }) {
+  if (lang === 'fr') {
+    return (
+      <span className="grid size-6 overflow-hidden rounded-full border border-black/10 shadow-sm">
+        <span className="flex h-full w-full">
+          <span className="flex-1 bg-[#1f4fa3]" />
+          <span className="flex-1 bg-white" />
+          <span className="flex-1 bg-[#e33b4d]" />
+        </span>
+      </span>
+    )
+  }
+
+  if (lang === 'es') {
+    return (
+      <span className="grid size-6 overflow-hidden rounded-full border border-black/10 shadow-sm">
+        <span className="flex h-full w-full flex-col">
+          <span className="h-1/4 bg-[#c82232]" />
+          <span className="h-1/2 bg-[#f4c430]" />
+          <span className="h-1/4 bg-[#c82232]" />
+        </span>
+      </span>
+    )
+  }
+
+  return (
+    <span className="grid size-6 overflow-hidden rounded-full border border-black/10 bg-[#17336f] shadow-sm">
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="size-full">
+        <rect width="24" height="24" fill="#17336f" />
+        <path d="M-2 2 22 26M26 2 2 26" stroke="#fff" strokeWidth="5" />
+        <path d="M-2 2 22 26M26 2 2 26" stroke="#c8203a" strokeWidth="2.4" />
+        <path d="M12 0v24M0 12h24" stroke="#fff" strokeWidth="7" />
+        <path d="M12 0v24M0 12h24" stroke="#c8203a" strokeWidth="4" />
+      </svg>
+    </span>
+  )
 }
 
 export default function LanguageSwitcher({ variant = 'navbar' }: Props) {
@@ -16,8 +62,6 @@ export default function LanguageSwitcher({ variant = 'navbar' }: Props) {
   const switchLanguage = (lang: SupportedLanguage) => {
     if (lang === currentLang) return
 
-    // Replace the lang prefix in the URL
-    // /en/property/villa → /fr/property/villa
     const segments = pathname.split('/').filter(Boolean)
     if (SUPPORTED_LANGUAGES.includes(segments[0] as SupportedLanguage)) {
       segments[0] = lang
@@ -29,67 +73,35 @@ export default function LanguageSwitcher({ variant = 'navbar' }: Props) {
     navigate(newPath, { replace: true })
   }
 
-  if (variant === 'admin') {
-    return (
-      <div className="flex items-center gap-1 bg-midnight/10 rounded-lg p-1">
+  const triggerClassName = cn(
+    'inline-flex items-center gap-2 rounded-full border border-border-warm bg-white text-text-primary shadow-sm transition-colors hover:border-terracotta/50 hover:text-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/30',
+    variant === 'admin' ? 'h-9 px-3 text-sm' : 'h-9 px-2.5 text-[13px]',
+    variant === 'mobile' && 'h-10 px-3 text-sm'
+  )
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button type="button" className={triggerClassName} aria-label="Change language">
+          <RoundFlag lang={currentLang} />
+          <span className="font-medium uppercase">{currentLang}</span>
+          <ChevronDown size={14} className="text-text-secondary" />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-[180px] rounded-xl border-border-warm bg-white p-1.5 shadow-xl">
         {SUPPORTED_LANGUAGES.map((lang) => (
-          <button
+          <DropdownMenuItem
             key={lang}
             onClick={() => switchLanguage(lang)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[13px] font-medium transition-colors ${
-              currentLang === lang
-                ? 'bg-white text-midnight shadow-sm'
-                : 'text-text-secondary hover:text-text-primary'
-            }`}
+            className="flex cursor-pointer items-center gap-3 rounded-lg px-2.5 py-2 text-sm"
           >
-            <span>{LANGUAGE_FLAGS[lang]}</span>
-            <span className="uppercase">{lang}</span>
-          </button>
+            <RoundFlag lang={lang} />
+            <span className="flex-1">{LANGUAGE_NAMES[lang]}</span>
+            <span className="text-xs font-semibold uppercase text-text-secondary">{lang}</span>
+            {currentLang === lang && <Check size={15} className="text-terracotta" />}
+          </DropdownMenuItem>
         ))}
-      </div>
-    )
-  }
-
-  if (variant === 'mobile') {
-    return (
-      <div className="flex items-center gap-3 text-[14px] text-text-secondary pt-4">
-        {SUPPORTED_LANGUAGES.map((lang, i) => (
-          <span key={lang} className="flex items-center gap-3">
-            <button
-              onClick={() => switchLanguage(lang)}
-              className={`flex items-center gap-1 transition-colors ${
-                currentLang === lang ? 'text-terracotta font-semibold' : 'hover:text-terracotta'
-              }`}
-            >
-              <span>{LANGUAGE_FLAGS[lang]}</span>
-              <span className="uppercase">{lang}</span>
-            </button>
-            {i < SUPPORTED_LANGUAGES.length - 1 && <span className="text-border-warm">|</span>}
-          </span>
-        ))}
-      </div>
-    )
-  }
-
-  // navbar variant
-  return (
-    <div className="flex items-center gap-1.5 text-[13px] text-text-secondary">
-      {SUPPORTED_LANGUAGES.map((lang, i) => (
-        <span key={lang} className="flex items-center gap-1.5">
-          <button
-            onClick={() => switchLanguage(lang)}
-            className={`flex items-center gap-1 transition-colors ${
-              currentLang === lang ? 'text-terracotta font-semibold' : 'hover:text-terracotta'
-            }`}
-          >
-            <span>{LANGUAGE_FLAGS[lang]}</span>
-            <span className="uppercase">{lang}</span>
-          </button>
-          {i < SUPPORTED_LANGUAGES.length - 1 && (
-            <span className="text-border-warm">|</span>
-          )}
-        </span>
-      ))}
-    </div>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }

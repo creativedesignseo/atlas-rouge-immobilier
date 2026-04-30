@@ -19,6 +19,7 @@
   },
   "categories": {
     "title": "Browse by type",
+    "subtitle": "Find your ideal property",
     "villas": "Villas",
     "apartments": "Apartments",
     "riads": "Riads",
@@ -27,13 +28,15 @@
     "rooftops": "Rooftops"
   },
   "featured": {
+    "tagline": "Featured listings",
     "title": "Featured properties",
     "subtitle": "A selection of exceptional properties",
     "seeAll": "See all properties"
   },
   "neighborhoods": {
-    "title": "Explore neighborhoods",
-    "subtitle": "Discover the most sought-after areas of Marrakech",
+    "tagline": "Explore Marrakech",
+    "title": "Most sought-after neighborhoods",
+    "subtitle": "From the historic Médina to the luxurious Palmeraie, find the neighborhood that suits you",
     "seeAll": "See all neighborhoods"
   },
   "services": {
@@ -64,6 +67,11 @@
       "description": "Administrative, notary, banking and tax assistance for foreign buyers."
     }
   },
+  "trust": {
+    "tagline": "Why trust us",
+    "title": "Local expertise, built for international buyers",
+    "description": "Atlas Rouge Immobilier was born from a conviction: buying in Morocco deserves quality, transparent, and human support. Our advisors know Marrakech neighborhood by neighborhood. They guide you from the first visit to the notary's signature."
+  },
   "blog": {
     "title": "Real estate advice",
     "subtitle": "Guides and market trends to help your decisions",
@@ -71,10 +79,12 @@
     "seeAll": "See all articles"
   },
   "cta": {
-    "title": "Ready to find your property in Marrakech?",
-    "subtitle": "Our local experts guide you at every step of your project",
+    "title": "Describe your ideal property",
+    "subtitle": "We select the best properties matching your criteria for you.",
     "contact": "Contact an advisor",
-    "search": "Search properties"
+    "search": "Search properties",
+    "startSearch": "Start my search",
+    "createAlert": "Or create an alert"
   },
   "stats": {
     "properties": "Properties",

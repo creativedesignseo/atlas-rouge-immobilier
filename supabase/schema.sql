@@ -66,14 +66,15 @@ CREATE TABLE IF NOT EXISTS contact_submissions (
 );
 
 -- ============================================
--- Table: favorites (requires auth)
+-- Table: favorites (authenticated or anonymous browser scope)
 -- ============================================
 CREATE TABLE IF NOT EXISTS favorites (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_id UUID NOT NULL,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+  anonymous_id TEXT,
   property_slug TEXT NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE(user_id, property_slug)
+  CONSTRAINT favorites_owner_check CHECK (user_id IS NOT NULL OR anonymous_id IS NOT NULL)
 );
 
 -- ============================================
@@ -98,6 +99,13 @@ CREATE INDEX IF NOT EXISTS idx_properties_featured ON properties(is_featured);
 CREATE INDEX IF NOT EXISTS idx_properties_created ON properties(created_at);
 CREATE INDEX IF NOT EXISTS idx_neighborhoods_slug ON neighborhoods(slug);
 CREATE INDEX IF NOT EXISTS idx_favorites_user ON favorites(user_id);
+CREATE INDEX IF NOT EXISTS idx_favorites_anonymous ON favorites(anonymous_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_favorites_user_property
+  ON favorites(user_id, property_slug)
+  WHERE user_id IS NOT NULL;
+CREATE UNIQUE INDEX IF NOT EXISTS idx_favorites_anonymous_property
+  ON favorites(anonymous_id, property_slug)
+  WHERE anonymous_id IS NOT NULL;
 CREATE INDEX IF NOT EXISTS idx_site_settings_key ON site_settings(key);
 
 -- ============================================
@@ -151,23 +159,25 @@ CREATE POLICY "Allow public read on properties"
   TO anon, authenticated
   USING (true);
 
--- Public insert/read on contact_submissions
+-- Public insert on contact_submissions
 CREATE POLICY "Allow public insert on contact_submissions"
   ON contact_submissions FOR INSERT
   TO anon, authenticated
   WITH CHECK (true);
 
-CREATE POLICY "Allow public read on contact_submissions"
-  ON contact_submissions FOR SELECT
-  TO anon, authenticated
-  USING (true);
-
--- Favorites: users can only manage their own
-CREATE POLICY "Allow users to manage own favorites"
+-- Favorites: authenticated users can only manage their own
+CREATE POLICY "Allow authenticated users to manage own favorites"
   ON favorites FOR ALL
   TO authenticated
   USING (user_id = auth.uid())
   WITH CHECK (user_id = auth.uid());
+
+-- Favorites: anonymous browser favorites. These are scoped by anonymous_id in the client.
+CREATE POLICY "Allow anonymous favorites"
+  ON favorites FOR ALL
+  TO anon
+  USING (anonymous_id IS NOT NULL)
+  WITH CHECK (user_id IS NULL AND anonymous_id IS NOT NULL);
 
 -- Site settings: public read
 CREATE POLICY "Allow public read on site_settings"

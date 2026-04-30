@@ -3,13 +3,13 @@ import { Routes, Route, Outlet, Navigate, useParams, useNavigate, useLocation } 
 import { useTranslation } from 'react-i18next'
 import { Toaster } from '@/components/ui/sonner'
 import Layout from './components/Layout'
-import Home from './pages/Home'
 import NotFound from './pages/NotFound'
 import ProtectedRoute from './components/admin/ProtectedRoute'
 import AdminLayout from './components/admin/AdminLayout'
 import AdminLogin from './pages/admin/AdminLogin'
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from './i18n'
 
+const Home = lazy(() => import('./pages/Home'))
 const SearchPage = lazy(() => import('./pages/Search'))
 const PropertyDetailPage = lazy(() => import('./pages/PropertyDetail'))
 const About = lazy(() => import('./pages/About'))
