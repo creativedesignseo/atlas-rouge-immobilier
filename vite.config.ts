@@ -19,17 +19,15 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/') || id.includes('node_modules/react-router')) {
-            return 'react-vendor'
+          // Solo separar chunks grandes y sin dependencias cruzadas problemáticas
+          if (id.includes('node_modules/maplibre-gl')) {
+            return 'maplibre'
           }
-          if (id.includes('node_modules/@supabase/')) {
+          if (id.includes('node_modules/@supabase')) {
             return 'supabase-vendor'
           }
-          if (id.includes('node_modules/i18next') || id.includes('node_modules/react-i18next')) {
-            return 'i18n-vendor'
-          }
-          if (id.includes('node_modules/@radix-ui/')) {
-            return 'radix-vendor'
+          if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/') || id.includes('node_modules/react-router')) {
+            return 'react-vendor'
           }
         },
       },
