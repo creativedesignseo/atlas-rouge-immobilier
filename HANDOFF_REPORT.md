@@ -1,7 +1,42 @@
 # Handoff Report - Atlas Rouge Immobilier
 
-Fecha: 2026-04-30  
-Autor de este reporte: Codex  
+> **Nota de continuidad:** Este documento se actualiza cada vez que una IA interviene. Leerlo completo antes de tocar código.
+
+---
+
+## Intervención: Claude Sonnet 4.6 — 2026-04-30
+
+Autor: Claude Sonnet 4.6 (claude-sonnet-4-6), invocado por el propietario del proyecto.
+
+### Acciones realizadas
+
+- Lectura y revisión completa del HANDOFF heredado de Codex.
+- Puesto en contexto del estado actual del proyecto.
+- Configurado para actualizar este documento tras cada bloque de cambios en la sesión.
+- Sin cambios de código aún en esta intervención.
+
+### Estado al tomar el relevo
+
+- Build: OK (`npm run build` pasa)
+- Lint: OK (0 errores, 14 advertencias no bloqueantes)
+- ~15 archivos modificados sin commitear (trabajo de i18n en progreso)
+- 3 archivos no trackeados: `src/locales/*/search.json` (nuevos, parte de i18n)
+
+### Pendiente según Codex (sin cambios por Claude aún)
+
+1. Configurar `DEEPSEEK_API_KEY` en Netlify y probar traducción real
+2. Aplicar migración Supabase en base remota si ya existe
+3. QA manual en `/en/`, `/fr/`, `/es/` y backoffice
+4. Revisar 14 warnings de hooks en `Search`, `AdminContacts`, `AdminProperties`
+5. Commit de los cambios pendientes
+6. Optimización de bundle (MapLibre ~1 MB)
+
+---
+
+## Intervención anterior: Codex — 2026-04-30
+
+Fecha original: 2026-04-30  
+Autor: Codex  
 Repositorio local: `/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier`
 
 ## Actualizacion De Esta Intervencion
@@ -182,6 +217,16 @@ Estado actual: corregidos los errores. Quedan advertencias no bloqueantes.
 
 ## Riesgos Funcionales Encontrados
 
+### Mapa bloqueando la pagina de inmuebles
+
+En produccion, Supabase respondia correctamente con propiedades y las variables `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` estaban presentes en el bundle. El fallo observado venia de MapLibre: si el navegador no puede crear contexto WebGL, la pagina de busqueda puede quedarse sin renderizar.
+
+Estado actual:
+
+- `src/pages/Search.tsx` ya no abre el mapa por defecto en escritorio; primero carga la lista/grid de inmuebles.
+- `Search.tsx` y `PropertyDetail.tsx` validan WebGL antes de iniciar MapLibre y capturan errores de inicializacion.
+- Si el mapa falla, se muestra una alternativa visual y los inmuebles siguen visibles.
+
 ### i18n de propiedades incompleto
 
 El admin maneja campos multilingues:
@@ -242,6 +287,7 @@ Estado actual:
 3. Hacer prueba manual en `/en/`, `/fr/`, `/es/`, `/admin/login` y flujo de creacion/edicion.
 4. Revisar warnings de hooks restantes en `Search`, `AdminContacts` y `AdminProperties`.
 5. Si la web sigue lenta, perfilar bundle inicial y separar admin/auth/vendor en chunks manuales.
+6. Verificar en Netlify que el ultimo deploy de `main` recoge el guardado de MapLibre/WebGL.
 
 ## Notas De Continuidad
 
@@ -254,4 +300,4 @@ Estado actual:
 
 ## Resumen Corto Para La Siguiente Persona O IA
 
-El proyecto vuelve a compilar y lint pasa sin errores. Las correcciones principales de i18n, traduccion IA server-side, schema base, selector de idioma y docs ya estan hechas. Lo siguiente es probar con credenciales reales de DeepSeek/Supabase, aplicar migracion en la base remota y hacer QA visual/manual del backoffice y de las rutas por idioma.
+El proyecto vuelve a compilar y lint pasa sin errores. Las correcciones principales de i18n, traduccion IA server-side, schema base, selector de idioma, docs y guardado contra fallos de WebGL/MapLibre ya estan hechas. Lo siguiente es probar con credenciales reales de DeepSeek/Supabase, aplicar migracion en la base remota y hacer QA visual/manual del backoffice y de las rutas por idioma.

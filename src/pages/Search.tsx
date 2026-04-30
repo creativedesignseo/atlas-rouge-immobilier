@@ -139,6 +139,16 @@ const nbhdList = ['Guéliz', 'Hivernage', 'Palmeraie', 'Médina', 'Agdal', 'Targ
 
 /* ───────────────────── helper functions ───────────────────── */
 
+function canUseWebGL() {
+  if (typeof document === 'undefined') return false
+  const canvas = document.createElement('canvas')
+  return Boolean(
+    canvas.getContext('webgl2') ||
+    canvas.getContext('webgl') ||
+    canvas.getContext('experimental-webgl')
+  )
+}
+
 function getActiveFilterChips(filters: Filters): { key: string; label: string; onRemove: () => void }[] {
   const chips: { key: string; label: string; onRemove: () => void }[] = []
   if (filters.searchQuery) chips.push({ key: 'search', label: `Recherche: ${filters.searchQuery}`, onRemove: () => { } })
@@ -232,23 +242,38 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
   const map = useRef<maplibregl.Map | null>(null)
   const markersRef = useRef<maplibregl.Marker[]>([])
   const popupsRef = useRef<maplibregl.Popup[]>([])
+  const [mapError, setMapError] = useState(false)
   const { formatPrice } = useCurrency()
   const { path } = useLang()
 
   useEffect(() => {
     if (!mapContainer.current) return
+    if (!canUseWebGL()) {
+      setMapError(true)
+      return
+    }
 
-    map.current = new maplibregl.Map({
-      container: mapContainer.current,
-      style: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
-      center: [-7.98, 31.62],
-      zoom: 11.5,
-      interactive: true,
-      attributionControl: false,
-    })
+    try {
+      map.current = new maplibregl.Map({
+        container: mapContainer.current,
+        style: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
+        center: [-7.98, 31.62],
+        zoom: 11.5,
+        interactive: true,
+        attributionControl: false,
+      })
+    } catch (error) {
+      console.error('Failed to initialize property map:', error)
+      setMapError(true)
+      map.current = null
+      return
+    }
 
     map.current.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right')
     map.current.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right')
+    map.current.on('error', (event) => {
+      console.error('Property map error:', event.error)
+    })
 
     return () => {
       markersRef.current.forEach(m => m.remove())
@@ -399,6 +424,20 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
     const target = properties.find(p => p.slug === hoveredId)
     if (target) map.current.easeTo({ center: [target.longitude, target.latitude], zoom: Math.max(map.current.getZoom(), 13), duration: 400 })
   }, [hoveredId])
+
+  if (mapError) {
+    return (
+      <div className="w-full h-full min-h-[320px] bg-cream-warm flex items-center justify-center p-6 text-center">
+        <div>
+          <MapPin size={36} className="mx-auto text-terracotta mb-3" />
+          <p className="font-inter text-[15px] font-semibold text-midnight">Carte indisponible</p>
+          <p className="font-inter text-[13px] text-text-secondary mt-1 max-w-xs">
+            Votre navigateur ne peut pas initialiser la carte. Les biens restent disponibles dans la liste.
+          </p>
+        </div>
+      </div>
+    )
+  }
 
   return <div ref={mapContainer} className="w-full h-full" />
 }
@@ -667,7 +706,7 @@ export default function SearchPage() {
   }))
   const [sort, setSort] = useState('recommande')
   const [view, setView] = useState<ViewMode>('grid')
-  const [mapVisible, setMapVisible] = useState(true)
+  const [mapVisible, setMapVisible] = useState(false)
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const [hoveredMapSlug, setHoveredMapSlug] = useState<string | null>(null)
   const [selectedMapSlug, setSelectedMapSlug] = useState<string | null>(null)
