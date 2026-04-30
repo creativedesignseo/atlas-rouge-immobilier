@@ -221,7 +221,7 @@ CREATE POLICY "Admin can delete contacts"
 -- ============================================================================
 CREATE INDEX IF NOT EXISTS properties_title_en_idx ON properties USING gin(to_tsvector('english', COALESCE(title_en, '')));
 CREATE INDEX IF NOT EXISTS properties_title_fr_idx ON properties USING gin(to_tsvector('french', COALESCE(title_fr, '')));
-CREATE INDEX IF NOT EXISTS properties_title_es_idx ON properties USING gin(to_tsvector('spanish', COALESCE(title_es, ''))));
+CREATE INDEX IF NOT EXISTS properties_title_es_idx ON properties USING gin(to_tsvector('spanish', COALESCE(title_es, '')));
 
 -- ============================================================================
 -- FIN
