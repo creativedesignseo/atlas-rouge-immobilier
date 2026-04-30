@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Plus, Pencil, Trash2, ExternalLink, Search, Home, Star } from 'lucide-react'
 import { toast } from 'sonner'
@@ -25,9 +25,25 @@ export default function AdminProperties() {
   const [loading, setLoading] = useState(true)
   const [deleting, setDeleting] = useState<string | null>(null)
 
+  const loadProperties = useCallback(async () => {
+    if (!agent) {
+      setLoading(false)
+      return
+    }
+    try {
+      const data = await getAdminProperties(agent.id, isAdmin)
+      setProperties(data)
+      setFiltered(data)
+    } catch {
+      toast.error('Erreur lors du chargement des propriétés')
+    } finally {
+      setLoading(false)
+    }
+  }, [agent, isAdmin])
+
   useEffect(() => {
     loadProperties()
-  }, [agent, isAdmin])
+  }, [loadProperties])
 
   useEffect(() => {
     if (!search.trim()) {
@@ -44,22 +60,6 @@ export default function AdminProperties() {
       )
     )
   }, [search, properties])
-
-  async function loadProperties() {
-    if (!agent) {
-      setLoading(false)
-      return
-    }
-    try {
-      const data = await getAdminProperties(agent.id, isAdmin)
-      setProperties(data)
-      setFiltered(data)
-    } catch {
-      toast.error('Erreur lors du chargement des propriétés')
-    } finally {
-      setLoading(false)
-    }
-  }
 
   async function handleDelete(slug: string) {
     if (!confirm('Êtes-vous sûr de vouloir supprimer cette propriété ?')) return

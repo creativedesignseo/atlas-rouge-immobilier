@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Mail, Trash2, Home, Search } from 'lucide-react'
 import { toast } from 'sonner'
 import { useAuth } from '@/hooks/useAuth'
@@ -15,9 +15,26 @@ export default function AdminContacts() {
   const [deleting, setDeleting] = useState<string | null>(null)
   const [expandedId, setExpandedId] = useState<string | null>(null)
 
+  const loadContacts = useCallback(async () => {
+    if (!agent) {
+      setLoading(false)
+      return
+    }
+    setLoading(true)
+    try {
+      const { contacts: data } = await getContactSubmissions(agent.id, isAdmin, 100)
+      setContacts(data)
+      setFiltered(data)
+    } catch {
+      toast.error('Erreur lors du chargement des contacts')
+    } finally {
+      setLoading(false)
+    }
+  }, [agent, isAdmin])
+
   useEffect(() => {
     loadContacts()
-  }, [agent, isAdmin])
+  }, [loadContacts])
 
   useEffect(() => {
     if (!search.trim()) {
@@ -34,23 +51,6 @@ export default function AdminContacts() {
       )
     )
   }, [search, contacts])
-
-  async function loadContacts() {
-    if (!agent) {
-      setLoading(false)
-      return
-    }
-    setLoading(true)
-    try {
-      const { contacts: data } = await getContactSubmissions(agent.id, isAdmin, 100)
-      setContacts(data)
-      setFiltered(data)
-    } catch {
-      toast.error('Erreur lors du chargement des contacts')
-    } finally {
-      setLoading(false)
-    }
-  }
 
   async function handleDelete(id: string) {
     if (!confirm('Êtes-vous sûr de vouloir supprimer ce contact ?')) return

@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect, useRef } from 'react'
+import { useState, useMemo, useCallback, useEffect, useLayoutEffect, useRef } from 'react'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
 import {
   MapPin, X, ChevronDown, Grid3X3, List, Map,
@@ -246,6 +246,17 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
   const { formatPrice } = useCurrency()
   const { path } = useLang()
 
+  const onHoverRef = useRef(onHover)
+  const onSelectRef = useRef(onSelect)
+  const formatPriceRef = useRef(formatPrice)
+  const pathRef = useRef(path)
+  useLayoutEffect(() => {
+    onHoverRef.current = onHover
+    onSelectRef.current = onSelect
+    formatPriceRef.current = formatPrice
+    pathRef.current = path
+  })
+
   useEffect(() => {
     if (!mapContainer.current) return
     if (!canUseWebGL()) {
@@ -290,7 +301,7 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
     if (!bounds.isEmpty()) {
       map.current.fitBounds(bounds, { padding: 60, maxZoom: 14, duration: 600 })
     }
-  }, [properties.length === 0 ? 0 : properties[0].slug])
+  }, [properties])
 
   useEffect(() => {
     if (!map.current) return
@@ -354,13 +365,13 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
           </div>
           <div style="padding:12px;background:white;border-radius:0 0 10px 10px;">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-              <p style="color:#B5533A;font-size:16px;font-weight:700;margin:0;flex:1;">${formatPrice(p.priceEUR)}</p>
+              <p style="color:#B5533A;font-size:16px;font-weight:700;margin:0;flex:1;">${formatPriceRef.current(p.priceEUR)}</p>
               ${p.isExclusive ? '<span style="background:#315C45;color:white;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;">Exclusivité</span>' : ''}
             </div>
             <p style="color:#1E1E1E;font-size:14px;font-weight:600;margin:0 0 2px 0;">${p.title}</p>
             <p style="color:#6E6259;font-size:12px;margin:0 0 8px 0;">${p.neighborhood}, Marrakech</p>
             <p style="color:#6E6259;font-size:12px;margin:0 0 12px 0;">${p.surface} m² · ${p.rooms} pièces · ${p.bedrooms} chambres</p>
-            <a href="${path(`/property/${p.slug}`)}" style="display:block;width:100%;text-align:center;background:#B5533A;color:white;font-size:13px;font-weight:600;padding:8px 0;border-radius:8px;text-decoration:none;">Voir le bien</a>
+            <a href="${pathRef.current(`/property/${p.slug}`)}" style="display:block;width:100%;text-align:center;background:#B5533A;color:white;font-size:13px;font-weight:600;padding:8px 0;border-radius:8px;text-decoration:none;">Voir le bien</a>
           </div>
         `
 
@@ -389,8 +400,8 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
         .setDOMContent(popupContainer)
 
       el.addEventListener('mouseenter', () => {
-        onHover(p.slug)
-        if (!onSelect) {
+        onHoverRef.current(p.slug)
+        if (!onSelectRef.current) {
           // Desktop: show popup on hover
           popupsRef.current.forEach(pop => pop.remove())
           popup.setLngLat([p.longitude, p.latitude]).addTo(map.current!)
@@ -398,9 +409,9 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
       })
       el.addEventListener('click', (e: Event) => {
         e.stopPropagation()
-        if (onSelect) {
+        if (onSelectRef.current) {
           // Mobile: call onSelect instead of showing popup
-          onSelect(p.slug)
+          onSelectRef.current(p.slug)
           // Center map on selected property
           map.current?.easeTo({ center: [p.longitude, p.latitude], zoom: Math.max(map.current.getZoom(), 14), duration: 300 })
         } else {
@@ -423,7 +434,7 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
     if (!map.current || !hoveredId) return
     const target = properties.find(p => p.slug === hoveredId)
     if (target) map.current.easeTo({ center: [target.longitude, target.latitude], zoom: Math.max(map.current.getZoom(), 13), duration: 400 })
-  }, [hoveredId])
+  }, [hoveredId, properties])
 
   if (mapError) {
     return (
