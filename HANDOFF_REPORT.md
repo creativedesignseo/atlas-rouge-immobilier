@@ -4,6 +4,48 @@
 
 ---
 
+## Intervención: Claude Sonnet 4.6 — 2026-05-01 (tercera sesión — fix de chunks colgados)
+
+Autor: Claude Sonnet 4.6.
+
+### Problema reportado por el usuario
+
+Tras el primer deploy, las páginas se quedaban colgadas:
+- `/fr/acheter` mostraba "Chargement des annonces..." indefinidamente
+- `/admin/login` se quedaba en "Connexion..." al pulsar el botón
+
+CORS probado y verificado correcto. Las peticiones desde curl con `Origin: https://immobilier.freecoche.com` funcionaban. El bundle tenía la URL y la anon key correctas.
+
+### Causa raíz
+
+Dos bugs combinados:
+
+1. **`manualChunks` separaba `@supabase/supabase-js` en su propio chunk** (`supabase-vendor`). Esto generaba un problema de orden de carga similar al que Kimi corrigió antes con i18n/radix: el cliente Supabase quedaba sin resolver y todas las llamadas (data y auth) se colgaban indefinidamente. Es una clase de bug recurrente al separar librerías que tienen contexto compartido.
+
+2. **`Search.tsx` y `Home.tsx` no tenían `.catch()` ni `.finally()`** en el `useEffect` que llama `getProperties()` / `getFeaturedProperties()`. Si la promesa nunca resuelve (como pasaba con el chunk roto), `setLoading(false)` nunca se ejecuta y el spinner queda eterno. Sin `.catch()` los errores no aparecían en consola.
+
+### Fix aplicado (commit `06b3e4b0`)
+
+- `vite.config.ts`: dejar solo `maplibre` como chunk separado (el único realmente grande, 1MB, y se carga lazy desde Search). Supabase y React vuelven al bundle principal.
+- `src/pages/Search.tsx`: añadir `.catch()` que loguea el error en consola y `.finally()` que siempre limpia el loading.
+- `src/pages/Home.tsx`: añadir `.catch()` a las dos llamadas (`getFeaturedProperties`, `getNeighborhoods`).
+
+### Estado al entregar
+
+- Deploy `69f3d6f967731227d554e18f` activo en `https://immobilier.freecoche.com`
+- Bundle nuevo: `index-DMQY_1LU.js` (714 kB, gzip 216 kB — sin chunk separado de supabase)
+- Solo `maplibre-D-jHInwO.js` (1 MB) sigue como chunk separado, lazy
+- `git push origin main` hecho
+- Lección aprendida: **NO separar @supabase/supabase-js en un chunk vendor**. Causa hangs silenciosos.
+
+### Pendiente
+
+1. **El usuario debe probar de nuevo** la web — el spinner ya no debería quedarse colgado.
+2. Si todavía no aparecen propiedades, ahora habrá errores en la consola (gracias al `.catch()`) que indicarán exactamente qué pasa.
+3. QA del backoffice: login, crear/editar propiedad, botón "Traducir con IA".
+
+---
+
 ## Intervención: Claude Sonnet 4.6 — 2026-04-30 (segunda sesión — deploy + diagnóstico)
 
 Autor: Claude Sonnet 4.6.
