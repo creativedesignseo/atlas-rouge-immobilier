@@ -55,16 +55,17 @@ Autor: Kimi (Kimi Code CLI), invocado por el propietario del proyecto tras el ra
 
 - Build: OK
 - Lint: OK (0 errores, 0 warnings)
-- Repo limpio: solo `supabase/schema.sql` modificado sin commitear + `HANDOFF_REPORT.md` por actualizar.
-- Netlify: `DEEPSEEK_API_KEY` configurada en production. Requiere **redeploy** para que la funcion serverless la recoja.
+- **Netlify deploy**: Completado. Sitio `https://immobilier.freecoche.com` actualizado.
+- **Traducción IA**: Verificada en producción. La función `translate-property.js` responde correctamente con traducciones EN/ES desde FR.
+- **Supabase**: Migración aplicada (`migrate_existing.sql`). Columnas multilingües y tabla `agents` confirmadas en la base remota.
+- Repo limpio.
 - Dev server: corriendo en `localhost:3000`.
 
 ### Pendiente tras esta intervención
 
-1. **Aplicar migración Supabase en base remota**: Si la base de datos Supabase ya existe y tiene datos, ejecutar `supabase/migrations/002_multilingual.sql` (y `001_agents.sql` si aún no se aplicó) en el SQL Editor de Supabase para añadir las columnas multilingües y la tabla agents sin perder datos. Si es un deploy desde cero, el `schema.sql` actualizado ya es suficiente.
-2. **Redeploy en Netlify**: Hacer un nuevo deploy de `main` en Netlify para que la funcion `translate-property.js` recoja la variable `DEEPSEEK_API_KEY` recién configurada.
-3. **QA visual completo del backoffice**: Probar login, flujo de creación/edición de propiedades, y botón "Traducir con IA" en `/admin/properties/new` una vez hecho el redeploy.
-4. **Revisar `.env`**: Considerar eliminar `VITE_DEEPSEEK_API_KEY` de `.env` y `.env.example` ya que la traducción ahora es 100% server-side.
+1. **QA visual completo del backoffice**: Probar login, flujo de creación/edición de propiedades, y botón "Traducir con IA" en `/admin/properties/new` en el sitio de producción.
+2. **Revisar `.env`**: Considerar eliminar `VITE_DEEPSEEK_API_KEY` de `.env` y `.env.example` ya que la traducción ahora es 100% server-side. La variable correcta es solo `DEEPSEEK_API_KEY` en Netlify.
+3. **Crear primer admin/agente en Supabase**: Si la tabla `agents` está vacía, seguir las instrucciones de `supabase/migrations/001_agents.sql` (sección 12) para crear el primer usuario admin desde Auth → Users y luego insertar en `agents`.
 
 ---
 
