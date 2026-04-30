@@ -23,7 +23,11 @@ const ANON_ID_KEY = 'atlas-rouge-anon-id'
 export function getAnonymousId(): string {
   let id = localStorage.getItem(ANON_ID_KEY)
   if (!id) {
-    id = crypto.randomUUID()
+    try {
+      id = crypto.randomUUID()
+    } catch {
+      id = `${Date.now()}-${Math.random().toString(36).slice(2)}`
+    }
     localStorage.setItem(ANON_ID_KEY, id)
   }
   return id
