@@ -753,6 +753,10 @@ export default function SearchPage() {
       sort,
     }).then((data) => {
       setAllProperties(data)
+    }).catch((err) => {
+      console.error('Failed to load properties:', err)
+      setAllProperties([])
+    }).finally(() => {
       setLoading(false)
     })
   }, [filters, sort])

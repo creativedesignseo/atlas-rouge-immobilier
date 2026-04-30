@@ -19,15 +19,11 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          // Solo separar chunks grandes y sin dependencias cruzadas problemáticas
+          // Solo separar maplibre porque es muy grande y se carga lazy en Search.
+          // No separamos supabase ni react para evitar problemas de orden de carga
+          // de chunks que han causado pantallas en blanco / requests colgadas.
           if (id.includes('node_modules/maplibre-gl')) {
             return 'maplibre'
-          }
-          if (id.includes('node_modules/@supabase')) {
-            return 'supabase-vendor'
-          }
-          if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/') || id.includes('node_modules/react-router')) {
-            return 'react-vendor'
           }
         },
       },

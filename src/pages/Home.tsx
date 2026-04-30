@@ -131,8 +131,12 @@ export default function Home() {
   const [neighborhoodsList, setNeighborhoodsList] = useState<Neighborhood[]>([])
 
   useEffect(() => {
-    getFeaturedProperties(3).then(setFeaturedProperties)
-    getNeighborhoods().then(setNeighborhoodsList)
+    getFeaturedProperties(3)
+      .then(setFeaturedProperties)
+      .catch((err) => console.error('Failed to load featured properties:', err))
+    getNeighborhoods()
+      .then(setNeighborhoodsList)
+      .catch((err) => console.error('Failed to load neighborhoods:', err))
   }, [])
 
   // Hero entrance animations
