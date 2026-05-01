@@ -174,7 +174,15 @@
     "highlightsLang": "Puntos destacados ({{lang}})",
     "save": "Guardar inmueble",
     "saving": "Guardando...",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "createSubmit": "Crear propiedad",
+    "updateSubmit": "Guardar cambios",
+    "backToList": "Volver a la lista",
+    "titlePlaceholder": "Villa contemporánea en la Palmeraie",
+    "slugPlaceholder": "villa-contemporanea-palmeraie",
+    "descriptionPlaceholder": "Describa la propiedad en detalle...",
+    "highlightPlaceholder": "Ej: Piscina privada",
+    "highlightLangPlaceholder": "Añadir característica..."
   },
   "contacts": {
     "title": "Contactos",

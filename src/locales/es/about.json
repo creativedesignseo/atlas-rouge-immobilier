@@ -1,0 +1,73 @@
+{
+  "breadcrumb": {
+    "home": "Inicio",
+    "about": "Nosotros"
+  },
+  "hero": {
+    "title": "Sobre Atlas Rouge Immobilier",
+    "subtitle": "Su socio de confianza para el sector inmobiliario en Marrakech desde 2015."
+  },
+  "story": {
+    "title": "Nuestra historia",
+    "p1": "Atlas Rouge Immobilier nació del encuentro entre la pasión por Marruecos y la experiencia inmobiliaria europea. Desde 2015 acompañamos a familias internacionales en su proyecto de adquisición en Marrakech.",
+    "p2": "Nuestro equipo bilingüe conoce a fondo el mercado local y los códigos del mercado europeo. Somos el puente entre dos culturas.",
+    "p3": "Nuestra misión: hacer de su proyecto inmobiliario una experiencia serena, transparente y exitosa."
+  },
+  "values": {
+    "title": "Nuestros valores",
+    "transparency": {
+      "title": "Transparencia",
+      "description": "Presentamos los inmuebles con sus puntos fuertes y débiles. Sin sorpresas."
+    },
+    "expertise": {
+      "title": "Experiencia local",
+      "description": "Más de 10 años en Marrakech. Conocemos cada barrio, cada calle."
+    },
+    "support": {
+      "title": "Acompañamiento",
+      "description": "Desde la primera cita hasta la firma, estamos a su lado."
+    },
+    "network": {
+      "title": "Red",
+      "description": "Notarios, abogados, arquitectos, artesanos. Nuestra agenda a su servicio."
+    }
+  },
+  "team": {
+    "title": "Nuestro equipo",
+    "subtitle": "Expertos apasionados a su servicio.",
+    "members": {
+      "sophie": {
+        "name": "Sophie Martin",
+        "role": "Fundadora y Directora",
+        "bio": "Apasionada por el sector inmobiliario y Marruecos, Sophie fundó Atlas Rouge para acompañar a clientes internacionales en su proyecto en Marrakech."
+      },
+      "karim": {
+        "name": "Karim Benali",
+        "role": "Director Comercial",
+        "bio": "Experto en el mercado marroquí, Karim es su interlocutor privilegiado para sus búsquedas de villas y riads."
+      },
+      "amina": {
+        "name": "Amina Zerhouni",
+        "role": "Responsable Jurídica",
+        "bio": "Especialista en derecho inmobiliario marroquí, Amina asegura todas sus transacciones de la A a la Z."
+      },
+      "thomas": {
+        "name": "Thomas Dubois",
+        "role": "Asesor de Inversión",
+        "bio": "Thomas le acompaña en las oportunidades de inversión en alquiler y la gestión patrimonial."
+      }
+    }
+  },
+  "stats": {
+    "properties": "Inmuebles vendidos",
+    "clients": "Clientes satisfechos",
+    "years": "Años de experiencia",
+    "neighborhoods": "Barrios cubiertos"
+  },
+  "cta": {
+    "title": "¿Listo para hacer realidad su proyecto?",
+    "subtitle": "Contáctenos para hablar de su proyecto, sin compromiso.",
+    "contact": "Contáctenos",
+    "search": "Ver inmuebles"
+  }
+}

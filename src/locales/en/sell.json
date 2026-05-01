@@ -29,5 +29,74 @@
         "description": "Support all the way to the signing at the notary."
       }
     }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "items": {
+      "estimation": {
+        "question": "How much does a valuation cost?",
+        "answer": "The valuation of your property is entirely free and with no commitment. Our experts analyse your property based on the local market, the property's features and recent neighbourhood trends."
+      },
+      "duration": {
+        "question": "How long does it take to sell?",
+        "answer": "The average time to sell in Marrakech is 3 to 6 months depending on the neighbourhood and property type. Luxury villas may take a little longer, while well-located apartments sell more quickly."
+      },
+      "documents": {
+        "question": "What documents are needed?",
+        "answer": "Land title, plot plan, deed of ownership, and tax certificates. Our team helps you put your file together."
+      },
+      "remote": {
+        "question": "Can I sell from abroad?",
+        "answer": "Yes, a power of attorney signed at a notary in your country is enough to represent your sale. We handle the entire transaction remotely."
+      },
+      "fees": {
+        "question": "What are the agency fees?",
+        "answer": "Agency fees are generally 5% incl. VAT for sales, payable by the buyer. This rate may vary depending on the mandate and property type."
+      },
+      "signing": {
+        "question": "How does the signing work?",
+        "answer": "The signing takes place at the notary or Adoul, with a translator if needed. We organise all appointments and support you at every step."
+      }
+    }
+  },
+  "features": {
+    "how": "How it works",
+    "depot": {
+      "title": "Publish a listing",
+      "description": "Publish your listing for free and reach buyers directly. Unlimited photos, detailed description, and instant visibility.",
+      "items": [
+        "Free listing",
+        "Unlimited photos",
+        "Visibility to 50,000+ monthly visitors",
+        "Manage from your personal area"
+      ],
+      "cta": "Publish my listing",
+      "learnMore": "Learn more"
+    },
+    "sell": {
+      "title": "Sell with Atlas Rouge",
+      "description": "Trust our experienced agents to sell your property. We handle valuation, marketing, and the full transaction.",
+      "items": [
+        "Professional valuation",
+        "Photos and virtual tour",
+        "Curated buyers network",
+        "Full administrative support"
+      ],
+      "cta": "Get a free estimate",
+      "learnMore": "Talk to an agent"
+    }
+  },
+  "agents": {
+    "title": "Find an agent",
+    "subtitle": "Our local experts at your service.",
+    "searchPlaceholder": "Search by name or area",
+    "specialty": "Specialty",
+    "allSpecialties": "All specialties",
+    "type": "Property type",
+    "allTypes": "All types",
+    "noResults": "No agents match your search.",
+    "properties_one": "{{count}} property",
+    "properties_other": "{{count}} properties",
+    "contact": "Contact"
   }
 }

@@ -29,5 +29,74 @@
         "description": "Acompañamiento hasta la firma en la notaría."
       }
     }
+  },
+  "faq": {
+    "title": "Preguntas frecuentes",
+    "items": {
+      "estimation": {
+        "question": "¿Cuánto cuesta una tasación?",
+        "answer": "La tasación de su inmueble es totalmente gratuita y sin compromiso. Nuestros expertos analizan su propiedad según el mercado local, las características del inmueble y las tendencias recientes del barrio."
+      },
+      "duration": {
+        "question": "¿Cuánto tiempo se tarda en vender?",
+        "answer": "El plazo medio de venta en Marrakech es de 3 a 6 meses según el barrio y el tipo de inmueble. Las villas de gama alta pueden tardar un poco más, mientras que los pisos bien ubicados se venden con mayor rapidez."
+      },
+      "documents": {
+        "question": "¿Qué documentos son necesarios?",
+        "answer": "Título de propiedad, plano parcelario, escritura de propiedad y certificados fiscales. Nuestro equipo le ayuda a preparar el expediente."
+      },
+      "remote": {
+        "question": "¿Puedo vender desde el extranjero?",
+        "answer": "Sí, un poder notarial firmado en su país es suficiente para representar su venta. Gestionamos toda la transacción a distancia."
+      },
+      "fees": {
+        "question": "¿Cuáles son los honorarios de la agencia?",
+        "answer": "Los honorarios de la agencia son generalmente del 5% IVA incluido para la venta, a cargo del comprador. Esta tasa puede variar según el mandato y el tipo de inmueble."
+      },
+      "signing": {
+        "question": "¿Cómo se firma?",
+        "answer": "La firma se realiza ante el notario o Adoul, con traductor si es necesario. Organizamos todas las citas y le acompañamos en cada paso."
+      }
+    }
+  },
+  "features": {
+    "how": "Cómo funciona",
+    "depot": {
+      "title": "Publicar un anuncio",
+      "description": "Publique su anuncio gratuitamente y llegue directamente a los compradores. Fotos ilimitadas, descripción detallada y visibilidad inmediata.",
+      "items": [
+        "Anuncio gratuito",
+        "Fotos ilimitadas",
+        "Visibilidad ante 50.000+ visitantes mensuales",
+        "Gestión desde su área personal"
+      ],
+      "cta": "Publicar mi anuncio",
+      "learnMore": "Saber más"
+    },
+    "sell": {
+      "title": "Vender con Atlas Rouge",
+      "description": "Confíe la venta de su inmueble a nuestros agentes experimentados. Gestionamos la tasación, el marketing y la transacción completa.",
+      "items": [
+        "Tasación profesional",
+        "Fotos y tour virtual",
+        "Red de compradores cualificados",
+        "Acompañamiento administrativo completo"
+      ],
+      "cta": "Tasar mi inmueble",
+      "learnMore": "Hablar con un agente"
+    }
+  },
+  "agents": {
+    "title": "Encontrar un agente",
+    "subtitle": "Nuestros expertos locales a su servicio.",
+    "searchPlaceholder": "Buscar por nombre o zona",
+    "specialty": "Especialidad",
+    "allSpecialties": "Todas las especialidades",
+    "type": "Tipo de inmueble",
+    "allTypes": "Todos los tipos",
+    "noResults": "Ningún agente coincide con su búsqueda.",
+    "properties_one": "{{count}} inmueble",
+    "properties_other": "{{count}} inmuebles",
+    "contact": "Contactar"
   }
 }

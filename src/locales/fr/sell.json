@@ -29,5 +29,74 @@
         "description": "Accompagnement jusqu'à la signature chez le notaire."
       }
     }
+  },
+  "faq": {
+    "title": "Questions fréquentes",
+    "items": {
+      "estimation": {
+        "question": "Combien coûte une estimation ?",
+        "answer": "L'estimation de votre bien est entièrement gratuite et sans engagement. Nos experts analysent votre propriété en fonction du marché local, des caractéristiques du bien et des tendances récentes du quartier."
+      },
+      "duration": {
+        "question": "Combien de temps pour vendre ?",
+        "answer": "Le délai moyen de vente à Marrakech est de 3 à 6 mois selon le quartier et le type de bien. Les villas haut de gamme peuvent prendre un peu plus de temps, tandis que les appartements bien situés se vendent plus rapidement."
+      },
+      "documents": {
+        "question": "Quels documents sont nécessaires ?",
+        "answer": "Titre foncier, plan de lotissement, acte de propriété, et attestations fiscales. Notre équipe vous accompagne dans la constitution de votre dossier."
+      },
+      "remote": {
+        "question": "Puis-je vendre depuis la France ?",
+        "answer": "Oui, un mandat signé chez un notaire français suffit pour représenter votre vente. Nous gérons l'intégralité de la transaction à distance."
+      },
+      "fees": {
+        "question": "Quels sont les frais d'agence ?",
+        "answer": "Les honoraires d'agence sont généralement de 5% TTC pour la vente, à la charge de l'acheteur. Ce taux peut varier selon le mandat et le type de bien."
+      },
+      "signing": {
+        "question": "Comment se passe la signature ?",
+        "answer": "La signature a lieu chez le notaire ou l'Adoul, avec traducteur si nécessaire. Nous organisons tous les rendez-vous et vous accompagnons à chaque étape."
+      }
+    }
+  },
+  "features": {
+    "how": "Comment ça marche",
+    "depot": {
+      "title": "Déposer une annonce",
+      "description": "Publiez votre annonce gratuitement et touchez directement les acheteurs. Photos illimitées, description détaillée, et visibilité immédiate.",
+      "items": [
+        "Annonce gratuite",
+        "Photos illimitées",
+        "Visibilité auprès de 50 000+ visiteurs mensuels",
+        "Gestion depuis votre espace personnel"
+      ],
+      "cta": "Déposer mon annonce",
+      "learnMore": "En savoir plus"
+    },
+    "sell": {
+      "title": "Vendre avec Atlas Rouge",
+      "description": "Confiez la vente de votre bien à nos agents expérimentés. Nous gérons l'estimation, le marketing et la transaction complète.",
+      "items": [
+        "Estimation professionnelle",
+        "Photos et visite virtuelle",
+        "Réseau d'acheteurs qualifiés",
+        "Accompagnement administratif complet"
+      ],
+      "cta": "Estimer mon bien",
+      "learnMore": "Parler à un agent"
+    }
+  },
+  "agents": {
+    "title": "Trouver un agent",
+    "subtitle": "Nos experts locaux à votre service.",
+    "searchPlaceholder": "Rechercher par nom ou zone",
+    "specialty": "Spécialité",
+    "allSpecialties": "Toutes les spécialités",
+    "type": "Type de bien",
+    "allTypes": "Tous les types",
+    "noResults": "Aucun agent ne correspond à votre recherche.",
+    "properties_one": "{{count}} bien",
+    "properties_other": "{{count}} biens",
+    "contact": "Contacter"
   }
 }

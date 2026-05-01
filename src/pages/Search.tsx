@@ -102,16 +102,17 @@ const mediaOptions = [
   { key: '3d', label: 'Visite 3D' },
 ]
 
+// Sort options reference i18n keys; labels resolved at render via t().
 const sortOptions = [
-  { value: 'recommande', label: 'Recommandé' },
-  { value: 'price-asc', label: 'Prix croissant' },
-  { value: 'price-desc', label: 'Prix décroissant' },
-  { value: 'surface-asc', label: 'Surface croissante' },
-  { value: 'surface-desc', label: 'Surface décroissante' },
-  { value: 'prix-m2-asc', label: 'Prix au m² croissant' },
-  { value: 'prix-m2-desc', label: 'Prix au m² décroissant' },
-  { value: 'recent', label: 'Plus récent' },
-]
+  { value: 'recommande', labelKey: 'sort.recommended' },
+  { value: 'price-asc', labelKey: 'sort.priceAsc' },
+  { value: 'price-desc', labelKey: 'sort.priceDesc' },
+  { value: 'surface-asc', labelKey: 'sort.surfaceAsc' },
+  { value: 'surface-desc', labelKey: 'sort.surfaceDesc' },
+  { value: 'prix-m2-asc', labelKey: 'sort.pricePerSqmAsc' },
+  { value: 'prix-m2-desc', labelKey: 'sort.pricePerSqmDesc' },
+  { value: 'recent', labelKey: 'sort.recent' },
+] as const
 
 const defaultFilters: Filters = {
   transaction: 'sale',
@@ -136,7 +137,7 @@ const defaultFilters: Filters = {
   media: [],
 }
 
-const nbhdList = ['Guéliz', 'Hivernage', 'Palmeraie', 'Médina', 'Agdal', 'Targa', 'Amelkis', 'Route de l\'Ourika', 'Route de Fès', 'Route d\'Amizmiz', 'M Avenue']
+const nbhdList = ['Guéliz', 'Hivernage', 'Palmeraie', 'Médina', 'Agdal', 'Targa', 'Amelkis', "Route de l'Ourika", 'Route de Fès', "Route d'Amizmiz", 'M Avenue']
 
 /* ───────────────────── helper functions ───────────────────── */
 
@@ -565,33 +566,34 @@ function PropertyCardGrid({ property, isHovered = false }: { property: Property;
 function MobileFilterDrawer({ filters, setFilters, onApply, onReset, resultCount }: {
   filters: Filters; setFilters: React.Dispatch<React.SetStateAction<Filters>>; onApply: () => void; onReset: () => void; resultCount: number
 }) {
+  const { t } = useTranslation('search')
   const update = <K extends keyof Filters>(key: K, value: Filters[K]) => setFilters(f => ({ ...f, [key]: value }))
 
   return (
     <div className="fixed inset-0 z-[60] flex flex-col bg-white lg:hidden">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-border-warm">
-        <button onClick={onReset} className="text-text-secondary text-[14px]">Réinitialiser</button>
-        <span className="font-inter text-[16px] font-semibold text-midnight">Filtres</span>
+        <button onClick={onReset} className="text-text-secondary text-[14px]">{t('mobile.reset')}</button>
+        <span className="font-inter text-[16px] font-semibold text-midnight">{t('mobile.filters')}</span>
         <button onClick={onApply}><X size={24} className="text-text-primary" /></button>
       </div>
       {/* Scrollable content */}
       <div className="flex-1 overflow-y-auto px-4 py-4">
         {/* Transaction */}
         <div className="mb-6">
-          <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">Transaction</label>
+          <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">{t('filters.transaction')}</label>
           <div className="flex border border-border-warm rounded-lg overflow-hidden">
-            <button onClick={() => update('transaction', 'sale')} className={cn('flex-1 py-2 text-[14px] font-medium', filters.transaction === 'sale' ? 'bg-terracotta text-white' : 'bg-white text-text-primary')}>Acheter</button>
-            <button onClick={() => update('transaction', 'rent')} className={cn('flex-1 py-2 text-[14px] font-medium', filters.transaction === 'rent' ? 'bg-terracotta text-white' : 'bg-white text-text-primary')}>Louer</button>
+            <button onClick={() => update('transaction', 'sale')} className={cn('flex-1 py-2 text-[14px] font-medium', filters.transaction === 'sale' ? 'bg-terracotta text-white' : 'bg-white text-text-primary')}>{t('filters.buy')}</button>
+            <button onClick={() => update('transaction', 'rent')} className={cn('flex-1 py-2 text-[14px] font-medium', filters.transaction === 'rent' ? 'bg-terracotta text-white' : 'bg-white text-text-primary')}>{t('filters.rent')}</button>
           </div>
         </div>
         {/* Localisation */}
         <div className="mb-6">
-          <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">Localisation</label>
+          <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">{t('filters.location')}</label>
           <div className="relative">
             <MapPin size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" />
             <input
-              type="text" placeholder="Ville, quartier..."
+              type="text" placeholder={t('filters.locationPlaceholder')}
               value={filters.searchQuery} onChange={e => update('searchQuery', e.target.value)}
               className="w-full h-12 pl-10 pr-4 border border-border-warm rounded-lg text-[14px] focus:border-terracotta focus:outline-none"
             />
@@ -609,7 +611,7 @@ function MobileFilterDrawer({ filters, setFilters, onApply, onReset, resultCount
         </div>
         {/* Type */}
         <div className="mb-6">
-          <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">Type de bien</label>
+          <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">{t('filters.type')}</label>
           <div className="space-y-2">
             {typeOptions.map(t => (
               <label key={t.key} className="flex items-center gap-2 cursor-pointer">
@@ -623,23 +625,23 @@ function MobileFilterDrawer({ filters, setFilters, onApply, onReset, resultCount
         </div>
         {/* Budget */}
         <div className="mb-6">
-          <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">Budget (€)</label>
+          <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">{t('filters.budget')}</label>
           <div className="flex gap-2">
-            <input type="number" placeholder="Min" value={filters.priceMin} onChange={e => update('priceMin', e.target.value)} className="w-full h-11 border border-border-warm rounded-lg px-3 text-[14px] focus:border-terracotta focus:outline-none" />
-            <input type="number" placeholder="Max" value={filters.priceMax} onChange={e => update('priceMax', e.target.value)} className="w-full h-11 border border-border-warm rounded-lg px-3 text-[14px] focus:border-terracotta focus:outline-none" />
+            <input type="number" placeholder={t('filters.min')} value={filters.priceMin} onChange={e => update('priceMin', e.target.value)} className="w-full h-11 border border-border-warm rounded-lg px-3 text-[14px] focus:border-terracotta focus:outline-none" />
+            <input type="number" placeholder={t('filters.max')} value={filters.priceMax} onChange={e => update('priceMax', e.target.value)} className="w-full h-11 border border-border-warm rounded-lg px-3 text-[14px] focus:border-terracotta focus:outline-none" />
           </div>
         </div>
         {/* Surface */}
         <div className="mb-6">
-          <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">Surface habitable (m²)</label>
+          <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">{t('filters.surfaceLiving')}</label>
           <div className="flex gap-2">
-            <input type="number" placeholder="Min" value={filters.surfaceMin} onChange={e => update('surfaceMin', e.target.value)} className="w-full h-11 border border-border-warm rounded-lg px-3 text-[14px] focus:border-terracotta focus:outline-none" />
-            <input type="number" placeholder="Max" value={filters.surfaceMax} onChange={e => update('surfaceMax', e.target.value)} className="w-full h-11 border border-border-warm rounded-lg px-3 text-[14px] focus:border-terracotta focus:outline-none" />
+            <input type="number" placeholder={t('filters.min')} value={filters.surfaceMin} onChange={e => update('surfaceMin', e.target.value)} className="w-full h-11 border border-border-warm rounded-lg px-3 text-[14px] focus:border-terracotta focus:outline-none" />
+            <input type="number" placeholder={t('filters.max')} value={filters.surfaceMax} onChange={e => update('surfaceMax', e.target.value)} className="w-full h-11 border border-border-warm rounded-lg px-3 text-[14px] focus:border-terracotta focus:outline-none" />
           </div>
         </div>
         {/* Pièces */}
         <div className="mb-6">
-          <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">Pièces</label>
+          <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">{t('filters.rooms')}</label>
           <div className="flex gap-2">
             <select value={filters.roomsMin} onChange={e => update('roomsMin', e.target.value)} className="w-full h-11 border border-border-warm rounded-lg px-3 text-[14px]">
               <option value="">Min</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
@@ -651,7 +653,7 @@ function MobileFilterDrawer({ filters, setFilters, onApply, onReset, resultCount
         </div>
         {/* Chambres */}
         <div className="mb-6">
-          <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">Chambres</label>
+          <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">{t('filters.bedrooms')}</label>
           <div className="flex gap-2">
             <select value={filters.bedroomsMin} onChange={e => update('bedroomsMin', e.target.value)} className="w-full h-11 border border-border-warm rounded-lg px-3 text-[14px]">
               <option value="">Min</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
@@ -663,7 +665,7 @@ function MobileFilterDrawer({ filters, setFilters, onApply, onReset, resultCount
         </div>
         {/* Statut */}
         <div className="mb-6">
-          <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">Statut</label>
+          <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">{t('filters.status')}</label>
           {statusOptions.map(s => (
             <label key={s.key} className="flex items-center gap-2 py-1 cursor-pointer">
               <div className={cn('w-4 h-4 border rounded flex items-center justify-center', filters.statuses.includes(s.key) ? 'bg-terracotta border-terracotta' : 'border-border-warm')}>
@@ -675,7 +677,7 @@ function MobileFilterDrawer({ filters, setFilters, onApply, onReset, resultCount
         </div>
         {/* Équipements */}
         <div className="mb-6">
-          <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">Équipements</label>
+          <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">{t('filters.amenities')}</label>
           <div className="grid grid-cols-2 gap-2">
             {amenitiesList.map(a => (
               <label key={a} className="flex items-center gap-2 cursor-pointer">
@@ -689,7 +691,7 @@ function MobileFilterDrawer({ filters, setFilters, onApply, onReset, resultCount
         </div>
         {/* Médias */}
         <div className="mb-6">
-          <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">Médias</label>
+          <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">{t('filters.media')}</label>
           {mediaOptions.map(m => (
             <label key={m.key} className="flex items-center gap-2 py-1 cursor-pointer">
               <div className={cn('w-4 h-4 border rounded flex items-center justify-center', filters.media.includes(m.key) ? 'bg-terracotta border-terracotta' : 'border-border-warm')}>
@@ -703,7 +705,7 @@ function MobileFilterDrawer({ filters, setFilters, onApply, onReset, resultCount
       {/* Sticky footer */}
       <div className="border-t border-border-warm p-4">
         <button onClick={onApply} className="w-full h-12 bg-terracotta text-white font-inter text-[14px] font-semibold rounded-lg hover:scale-[1.02] transition-transform">
-          Voir les {resultCount} résultats
+          {t('mobile.results', { count: resultCount })}
         </button>
       </div>
     </div>
@@ -831,7 +833,7 @@ export default function SearchPage() {
                   value={sort} onChange={e => setSort(e.target.value)}
                   className="h-9 pl-3 pr-8 border border-border-warm rounded-lg text-[13px] font-inter bg-white appearance-none cursor-pointer focus:border-terracotta focus:outline-none"
                 >
-                  {sortOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                  {sortOptions.map(o => <option key={o.value} value={o.value}>{t(o.labelKey)}</option>)}
                 </select>
                 <ChevronDown size={14} className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-text-secondary" />
               </div>
@@ -855,7 +857,7 @@ export default function SearchPage() {
               {/* Alert button */}
               <button className="hidden md:flex items-center gap-1.5 h-9 px-3 border border-border-warm rounded-lg text-[13px] font-medium text-text-primary hover:border-terracotta transition-colors">
                 <Bell size={14} />
-                <span>Créer une alerte</span>
+                <span>{t('createAlert')}</span>
               </button>
             </div>
           </div>
@@ -899,20 +901,20 @@ export default function SearchPage() {
                 <button
                   onClick={() => { updateFilter('transaction', 'sale'); navigate(path('/acheter')) }}
                   className={cn('flex-1 py-2 text-[14px] font-medium transition-colors', filters.transaction === 'sale' ? 'bg-terracotta text-white' : 'bg-white text-text-primary')}
-                >Acheter</button>
+                >{t('filters.buy')}</button>
                 <button
                   onClick={() => { updateFilter('transaction', 'rent'); navigate(path('/louer')) }}
                   className={cn('flex-1 py-2 text-[14px] font-medium transition-colors', filters.transaction === 'rent' ? 'bg-terracotta text-white' : 'bg-white text-text-primary')}
-                >Louer</button>
+                >{t('filters.rent')}</button>
               </div>
             </div>
 
             {/* Localisation */}
-            <FilterSection title="Localisation">
+            <FilterSection title={t('filters.location')}>
               <div className="relative mb-3">
                 <MapPin size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" />
                 <input
-                  type="text" placeholder="Ville, quartier..."
+                  type="text" placeholder={t('filters.locationPlaceholder')}
                   value={filters.searchQuery} onChange={e => updateFilter('searchQuery', e.target.value)}
                   className="w-full h-11 pl-10 pr-4 border border-border-warm rounded-lg text-[14px] focus:border-terracotta focus:outline-none"
                 />
@@ -938,7 +940,7 @@ export default function SearchPage() {
             </FilterSection>
 
             {/* Type de bien */}
-            <FilterSection title="Type de bien">
+            <FilterSection title={t('filters.type')}>
               {typeOptions.map(t => (
                 <label key={t.key} className="flex items-center gap-2 py-0.5 cursor-pointer">
                   <div
@@ -953,31 +955,31 @@ export default function SearchPage() {
             </FilterSection>
 
             {/* Budget */}
-            <FilterSection title="Budget (€)">
+            <FilterSection title={t('filters.budget')}>
               <div className="flex gap-2">
-                <input type="number" placeholder="Min" value={filters.priceMin} onChange={e => updateFilter('priceMin', e.target.value)} className="w-full h-10 border border-border-warm rounded-lg px-3 text-[13px] focus:border-terracotta focus:outline-none" />
-                <input type="number" placeholder="Max" value={filters.priceMax} onChange={e => updateFilter('priceMax', e.target.value)} className="w-full h-10 border border-border-warm rounded-lg px-3 text-[13px] focus:border-terracotta focus:outline-none" />
+                <input type="number" placeholder={t('filters.min')} value={filters.priceMin} onChange={e => updateFilter('priceMin', e.target.value)} className="w-full h-10 border border-border-warm rounded-lg px-3 text-[13px] focus:border-terracotta focus:outline-none" />
+                <input type="number" placeholder={t('filters.max')} value={filters.priceMax} onChange={e => updateFilter('priceMax', e.target.value)} className="w-full h-10 border border-border-warm rounded-lg px-3 text-[13px] focus:border-terracotta focus:outline-none" />
               </div>
             </FilterSection>
 
             {/* Surface habitable */}
-            <FilterSection title="Surface habitable (m²)">
+            <FilterSection title={t('filters.surfaceLiving')}>
               <div className="flex gap-2">
-                <input type="number" placeholder="Min" value={filters.surfaceMin} onChange={e => updateFilter('surfaceMin', e.target.value)} className="w-full h-10 border border-border-warm rounded-lg px-3 text-[13px] focus:border-terracotta focus:outline-none" />
-                <input type="number" placeholder="Max" value={filters.surfaceMax} onChange={e => updateFilter('surfaceMax', e.target.value)} className="w-full h-10 border border-border-warm rounded-lg px-3 text-[13px] focus:border-terracotta focus:outline-none" />
+                <input type="number" placeholder={t('filters.min')} value={filters.surfaceMin} onChange={e => updateFilter('surfaceMin', e.target.value)} className="w-full h-10 border border-border-warm rounded-lg px-3 text-[13px] focus:border-terracotta focus:outline-none" />
+                <input type="number" placeholder={t('filters.max')} value={filters.surfaceMax} onChange={e => updateFilter('surfaceMax', e.target.value)} className="w-full h-10 border border-border-warm rounded-lg px-3 text-[13px] focus:border-terracotta focus:outline-none" />
               </div>
             </FilterSection>
 
             {/* Surface terrain */}
-            <FilterSection title="Surface terrain (m²)">
+            <FilterSection title={t('filters.surfaceLand')}>
               <div className="flex gap-2">
-                <input type="number" placeholder="Min" value={filters.landMin} onChange={e => updateFilter('landMin', e.target.value)} className="w-full h-10 border border-border-warm rounded-lg px-3 text-[13px] focus:border-terracotta focus:outline-none" />
-                <input type="number" placeholder="Max" value={filters.landMax} onChange={e => updateFilter('landMax', e.target.value)} className="w-full h-10 border border-border-warm rounded-lg px-3 text-[13px] focus:border-terracotta focus:outline-none" />
+                <input type="number" placeholder={t('filters.min')} value={filters.landMin} onChange={e => updateFilter('landMin', e.target.value)} className="w-full h-10 border border-border-warm rounded-lg px-3 text-[13px] focus:border-terracotta focus:outline-none" />
+                <input type="number" placeholder={t('filters.max')} value={filters.landMax} onChange={e => updateFilter('landMax', e.target.value)} className="w-full h-10 border border-border-warm rounded-lg px-3 text-[13px] focus:border-terracotta focus:outline-none" />
               </div>
             </FilterSection>
 
             {/* Pièces */}
-            <FilterSection title="Pièces">
+            <FilterSection title={t('filters.rooms')}>
               <div className="flex gap-2">
                 <select value={filters.roomsMin} onChange={e => updateFilter('roomsMin', e.target.value)} className="w-full h-10 border border-border-warm rounded-lg px-2 text-[13px]">
                   <option value="">Min</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
@@ -989,7 +991,7 @@ export default function SearchPage() {
             </FilterSection>
 
             {/* Chambres */}
-            <FilterSection title="Chambres">
+            <FilterSection title={t('filters.bedrooms')}>
               <div className="flex gap-2">
                 <select value={filters.bedroomsMin} onChange={e => updateFilter('bedroomsMin', e.target.value)} className="w-full h-10 border border-border-warm rounded-lg px-2 text-[13px]">
                   <option value="">Min</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
@@ -1001,7 +1003,7 @@ export default function SearchPage() {
             </FilterSection>
 
             {/* Statut */}
-            <FilterSection title="Statut" defaultOpen={false}>
+            <FilterSection title={t('filters.status')} defaultOpen={false}>
               {statusOptions.map(s => (
                 <label key={s.key} className="flex items-center gap-2 py-0.5 cursor-pointer">
                   <div
@@ -1016,7 +1018,7 @@ export default function SearchPage() {
             </FilterSection>
 
             {/* Vue */}
-            <FilterSection title="Vue" defaultOpen={false}>
+            <FilterSection title={t('filters.view')} defaultOpen={false}>
               {viewOptions.map(v => (
                 <label key={v.key} className="flex items-center gap-2 py-0.5 cursor-pointer">
                   <div
@@ -1031,7 +1033,7 @@ export default function SearchPage() {
             </FilterSection>
 
             {/* Style */}
-            <FilterSection title="Style" defaultOpen={false}>
+            <FilterSection title={t('filters.style')} defaultOpen={false}>
               {styleOptions.map(s => (
                 <label key={s.key} className="flex items-center gap-2 py-0.5 cursor-pointer">
                   <div
@@ -1046,7 +1048,7 @@ export default function SearchPage() {
             </FilterSection>
 
             {/* Équipements */}
-            <FilterSection title="Équipements" defaultOpen={false}>
+            <FilterSection title={t('filters.amenities')} defaultOpen={false}>
               <div className="grid grid-cols-2 gap-x-2 gap-y-1">
                 {amenitiesList.map(a => (
                   <label key={a} className="flex items-center gap-1.5 py-0.5 cursor-pointer">
@@ -1063,7 +1065,7 @@ export default function SearchPage() {
             </FilterSection>
 
             {/* Médias */}
-            <FilterSection title="Médias" defaultOpen={false}>
+            <FilterSection title={t('filters.media')} defaultOpen={false}>
               {mediaOptions.map(m => (
                 <label key={m.key} className="flex items-center gap-2 py-0.5 cursor-pointer">
                   <div
@@ -1091,12 +1093,12 @@ export default function SearchPage() {
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20">
               <div className="w-10 h-10 border-4 border-terracotta border-t-transparent rounded-full animate-spin" />
-              <p className="text-text-secondary mt-4">Chargement des annonces...</p>
+              <p className="text-text-secondary mt-4">{t('loading')}</p>
             </div>
           ) : filtered.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <MapPin size={64} className="text-sand/60 mb-4" />
-              <h3 className="font-playfair text-[22px] font-semibold text-midnight mb-2">Aucun bien ne correspond à vos critères</h3>
+              <h3 className="font-playfair text-[22px] font-semibold text-midnight mb-2">{t('noResults')}</h3>
               <p className="text-text-secondary text-[15px] font-inter max-w-md mb-6">
                 Essayez d'élargir votre recherche ou de modifier vos filtres pour trouver plus de résultats.
               </p>

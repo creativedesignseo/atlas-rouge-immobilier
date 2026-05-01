@@ -4,6 +4,109 @@
 
 ---
 
+## Intervención: Claude Sonnet 4.6 — 2026-05-01 (quinta sesión — ejecución plan i18n, parcial)
+
+Autor: Claude Sonnet 4.6.
+
+### Contexto
+
+El usuario pidió ejecutar el plan i18n acordado en la sesión anterior, usando los skills `i18n` (lobehub), `vercel-react-best-practices` y `requesting-code-review` instalados vía `npx skills add ...`. La sesión avanzó las fases 1 y 2 parcialmente; quedó pausada antes de terminar todas las páginas públicas. Build verde, lint verde, listo para commit. La siguiente IA puede retomar exactamente donde se dejó.
+
+### Skills instalados (ya disponibles para futuras sesiones)
+
+```
+~/.agents/skills/find-skills              # descubrir más skills
+~/.agents/skills/i18n                     # convenciones lobehub i18n
+~/.agents/skills/vercel-react-best-practices
+~/.agents/skills/requesting-code-review
+```
+
+Symlinkados a `~/.claude/skills/`. Se cargan al iniciar Claude Code.
+
+### Fase 1 completada — estructura
+
+- 6 namespaces nuevos creados en EN/FR/ES (18 archivos):
+  - `about.json` (solo ES por ahora con contenido completo; EN/FR pendientes pero con JSON `{}` vacío)
+  - `blog.json`, `estimation.json`, `services.json`, `amenities.json`, `errors.json` (todos `{}` vacíos, listos para llenar)
+- Build pasa con namespaces vacíos (no hay roturas)
+- **NO se han registrado todavía en `src/i18n.ts`** — la siguiente IA debe añadir los imports y la entrada en `resources` antes de poder usar `t('about:...')` etc.
+
+### Fase 2 — progreso por archivo
+
+**Completado en esta sesión:**
+
+1. **`src/pages/Search.tsx`** — 51 reemplazos automáticos vía Python regex:
+   - Etiquetas de filtros (Transaction, Localisation, Type de bien, Budget, Surface, Pièces, Chambres, Statut, Vue, Style, Équipements, Médias, Rayon)
+   - `FilterSection title=...` en todo el sidebar
+   - Placeholders (`Ville, quartier...`, `Min`, `Max`)
+   - Botones reset/createAlert
+   - `sortOptions` ahora usa `t()` directamente en su definición (movido fuera de array literal)
+   - Tabs `Acheter/Louer`, badges `À vendre/À louer`, "Voir le bien"
+   - "Voir les X résultats" con interpolación count
+
+2. **`src/components/admin/PropertyForm.tsx`** — 19 reemplazos:
+   - Mensajes zod: ahora en inglés llano (project fallback). NO se usan keys de i18n porque zod necesita strings en tiempo de schema, no de render
+   - `transactionOptions` y `typeOptions` ahora son arrays de strings y se traducen con `t('properties.types.X')` y `t('properties.badges.sale|rent')` al renderizar
+   - Section titles, field labels (Pièces/Chambres/Salles de bain/Latitude/Longitude/Points forts/Informations de base/Localisation)
+   - Placeholders (titre, slug, description, highlight, highlight lang)
+   - Botones submit (`Créer la propriété` / `Enregistrer les modifications`) y `Retour à la liste`
+
+3. **JSON files actualizados:**
+   - `src/locales/{en,fr,es}/admin.json`: añadido `propertyForm.{createSubmit,updateSubmit,backToList,titlePlaceholder,slugPlaceholder,descriptionPlaceholder,highlightPlaceholder,highlightLangPlaceholder}`
+   - `src/locales/{en,fr,es}/sell.json`: añadido **completo** el contenido de FAQ (6 preguntas), feature cards (Déposer une annonce / Vendre avec Atlas Rouge), y agents search (search/specialty/type/results)
+
+**Pendiente — el usuario quiere todo. Lo siguiente que debe hacer la IA que retome:**
+
+1. **Registrar los nuevos namespaces en `src/i18n.ts`** — imports + entradas en `resources` para `about`, `blog`, `estimation`, `services`, `amenities`, `errors`
+2. **`src/pages/Sell.tsx`** — JSON ya está, falta tocar el componente:
+   - Reemplazar `faqItems` array para que use claves (ej. `['estimation', 'duration', ...]`) y traducir con `t('faq.items.{key}.question')` en render
+   - Las dos feature cards (`Déposer une annonce` y `Vendre avec Atlas Rouge`): título, descripción, items, CTA, learnMore
+   - Sección "Find an Agent": title, subtitle, searchPlaceholder, filtros specialty/type, noResults, contact
+   - Mock `agents` array tiene `specialties`/`location` en francés — son datos mock, decisión: dejar tal cual y marcar el array como `// MOCK` (Supabase ya devuelve agents reales)
+3. **`src/pages/About.tsx`** — usar `about.json` (solo ES tiene contenido, EN/FR pendientes de traducir). Reemplazar:
+   - Hero, Story (3 párrafos), Values (4 cards), Team (4 miembros), Stats, CTA
+4. **`src/pages/BuyerGuide.tsx` + `src/pages/Blog.tsx`** — añadir contenido a `blog.json` y reemplazar:
+   - BuyerGuide: TOC links (Le processus d'achat, Notaire ou Adoul, etc.), todas las secciones del guide
+   - Blog: categorías (`Tous`, `Achat`, `Investissement`, `Quartiers`, `Fiscalité`, `Décoration`), 8+ artículos con title+excerpt+date+readTime
+5. **`src/pages/Estimation.tsx` + `src/pages/Estimer.tsx`** — `estimation.json`:
+   - Pasos (Remplissez le formulaire, Notre agent analyse, Recevez votre estimation)
+   - Badges (Gratuit, Sans engagement)
+   - Form labels y placeholders (Quartier rue..., Prénom et nom, etc.)
+6. **`src/pages/GestionLocative.tsx`** — `services.json`:
+   - 4 servicios (Recherche de locataires, Garanties loyers impayés, Maintenance, ...) con title + description
+7. **`src/pages/Favorites.tsx` + `src/pages/NotFound.tsx`** — strings menores
+8. **`src/pages/PropertyDetail.tsx`** — refactor del mapa `amenityIcons`:
+   - Pasar de `{ 'Piscine': <Waves/> }` a `{ piscine: <Waves/> }` (slugs)
+   - Crear helper `slugifyAmenity(label)` que convierte "Piscine chauffée" → "piscine-chauffee"
+   - Llenar `amenities.json` con todas las claves: `piscine`, `piscine-chauffee`, `jardin`, `jardin-paysager`, `terrasse`, `terrasse-panoramique`, `garage-double`, `climatisation`, `ascenseur`, `cuisine-equipee`, `domotique`, `salle-de-fitness`, `vue-atlas`, `fontaine-centrale`, `zelliges-traditionnels`, `vue-degagee`, `piscine-a-debordement`, `vue-panoramique`, `salon-marocain`, `panneaux-solaires`, `systeme-de-securite`, `portail-electrique`, `chauffage-au-sol`
+   - El render ya usa `t('amenities:slug')`
+9. **Servicios de errores** (`auth.service.ts`, `propertyAdmin.service.ts`, etc.):
+   - Añadir keys a `errors.json`: `errors.auth.invalidCredentials`, `errors.property.notFound`, etc.
+   - Wrapping de los `throw new Error('...')` y `return { error: ... }` con t() — pero **cuidado**: los services no tienen acceso a `t()` directamente. Patrón recomendado: que el service lance keys, y los componentes que llaman traduzcan al mostrar el error. O retornar codes (`PROPERTY_NOT_FOUND`) que el componente mapea a t()
+10. **Datos mock** (`src/data/properties.ts`, `src/data/neighborhoods.ts`, `src/data/filters.ts`): añadir comentario `// MOCK — not used in prod, fallback only` y NO traducir
+
+**Después de Fase 2:**
+
+- Build verde, lint verde
+- **Un solo deploy** (no parciales)
+- Update HANDOFF
+- **Code review** con `requesting-code-review` skill (dispatch al subagent superpowers:code-reviewer)
+- Pasada con `vercel-react-best-practices` para detectar perf issues introducidas por los cambios
+
+### Estado al pausar (esta sesión)
+
+- Build OK, lint OK (0 errores, 0 warnings)
+- Cambios en local NO commiteados todavía
+- Files con cambios listos para commit:
+  - `src/pages/Search.tsx`
+  - `src/components/admin/PropertyForm.tsx`
+  - `src/locales/{en,fr,es}/admin.json` (propertyForm extras)
+  - `src/locales/{en,fr,es}/sell.json` (faq, features, agents)
+  - 18 archivos JSON nuevos vacíos (`{}`) en `src/locales/*/{about,blog,estimation,services,amenities,errors}.json`
+  - `src/locales/es/about.json` con contenido completo (EN/FR aún `{}`)
+
+---
+
 ## Intervención: Claude Sonnet 4.6 — 2026-05-01 (cuarta sesión — auditoría i18n + plan)
 
 Autor: Claude Sonnet 4.6.

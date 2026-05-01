@@ -15,25 +15,29 @@ import type { SupportedLanguage } from '@/i18n'
 const LANGS: SupportedLanguage[] = ['en', 'fr', 'es']
 const LANG_LABELS: Record<SupportedLanguage, string> = { en: 'EN', fr: 'FR', es: 'ES' }
 
+// Zod validation messages are emitted in English (the project fallback lng).
+// They show in form fields when validation fails — admin-facing. If we want
+// per-language messages we'd need to rebuild the schema with t() inside the
+// component; English messages are an acceptable trade-off for now.
 const propertySchema = z.object({
-  title: z.string().min(5, 'Le titre doit faire au moins 5 caractères').max(100),
-  slug: z.string().min(3).regex(/^[a-z0-9-]+$/, 'Le slug ne doit contenir que des lettres minuscules, chiffres et tirets'),
+  title: z.string().min(5, 'Title must be at least 5 characters').max(100),
+  slug: z.string().min(3).regex(/^[a-z0-9-]+$/, 'Slug must contain only lowercase letters, digits and dashes'),
   transaction: z.enum(['sale', 'rent']),
   type: z.enum(['villa', 'apartment', 'riad', 'prestige', 'land', 'rooftop']),
   neighborhood_id: z.string().nullable(),
-  city: z.string().min(1, 'Ville requise'),
-  price_eur: z.number().min(1, 'Prix requis'),
-  price_mad: z.number().min(1, 'Prix requis'),
-  surface: z.number().min(1, 'Surface requise'),
+  city: z.string().min(1, 'City required'),
+  price_eur: z.number().min(1, 'Price required'),
+  price_mad: z.number().min(1, 'Price required'),
+  surface: z.number().min(1, 'Surface required'),
   land_surface: z.number().nullable(),
   rooms: z.number().min(0),
   bedrooms: z.number().min(0),
   bathrooms: z.number().min(0),
   price_per_sqm: z.number().min(0),
-  description: z.string().min(50, 'La description doit faire au moins 50 caractères'),
+  description: z.string().min(50, 'Description must be at least 50 characters'),
   highlights: z.array(z.string()),
   amenities: z.array(z.string()),
-  images: z.array(z.string()).min(1, 'Au moins une image est requise'),
+  images: z.array(z.string()).min(1, 'At least one image is required'),
   latitude: z.number().min(-90).max(90),
   longitude: z.number().min(-180).max(180),
   is_featured: z.boolean(),
@@ -54,20 +58,13 @@ const propertySchema = z.object({
 
 type PropertyFormValues = z.infer<typeof propertySchema>
 
-const transactionOptions = [
-  { value: 'sale', label: 'Vente' },
-  { value: 'rent', label: 'Location' },
-]
+// Option values are stored in the DB; labels resolve via i18n at render.
+const transactionOptions = ['sale', 'rent'] as const
+const typeOptions = ['villa', 'apartment', 'riad', 'prestige', 'land', 'rooftop'] as const
 
-const typeOptions = [
-  { value: 'villa', label: 'Villa' },
-  { value: 'apartment', label: 'Appartement' },
-  { value: 'riad', label: 'Riad' },
-  { value: 'prestige', label: 'Prestige' },
-  { value: 'land', label: 'Terrain' },
-  { value: 'rooftop', label: 'Rooftop' },
-]
-
+// Amenity values are stored in the DB in French (the DB language) — they're
+// the canonical strings the filter logic compares against. The display label
+// is translated via amenities namespace using the slugified value as key.
 const amenitiesList = [
   'Piscine', 'Jardin', 'Terrasse', 'Parking', 'Climatisation',
   'Cheminée', 'Sécurité 24/7', 'Concierge', 'Gym', 'Spa',
@@ -284,7 +281,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
           ) : (
             <Save size={18} />
           )}
-          {mode === 'create' ? 'Créer la propriété' : 'Enregistrer les modifications'}
+          {mode === 'create' ? t('propertyForm.createSubmit') : t('propertyForm.updateSubmit')}
         </button>
       </div>
 
@@ -293,29 +290,29 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
         <div className="lg:col-span-3 space-y-6">
           {/* Basic info */}
           <div className="bg-white rounded-2xl p-6 shadow-card border border-border-warm space-y-5">
-            <h3 className="font-semibold text-text-primary">Informations de base</h3>
+            <h3 className="font-semibold text-text-primary">{t('propertyForm.basicInfo')}</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-text-primary mb-1.5">
-                  Titre <span className="text-red-500">*</span>
+                  {t('propertyForm.title')} <span className="text-red-500">*</span>
                 </label>
                 <input
                   {...register('title')}
                   className="w-full px-4 py-2.5 border border-border-warm rounded-xl focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta transition-colors"
-                  placeholder="Villa contemporaine à la Palmeraie"
+                  placeholder={t('propertyForm.titlePlaceholder')}
                 />
                 {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title.message}</p>}
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-text-primary mb-1.5">
-                  Slug <span className="text-red-500">*</span>
+                  {t('propertyForm.slug')} <span className="text-red-500">*</span>
                 </label>
                 <input
                   {...register('slug')}
                   className="w-full px-4 py-2.5 border border-border-warm rounded-xl focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta transition-colors"
-                  placeholder="villa-contemporaine-palmeraie"
+                  placeholder={t('propertyForm.slugPlaceholder')}
                 />
                 {errors.slug && <p className="text-red-500 text-xs mt-1">{errors.slug.message}</p>}
               </div>
@@ -332,35 +329,37 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
 
               <div>
                 <label className="block text-sm font-medium text-text-primary mb-1.5">
-                  Transaction <span className="text-red-500">*</span>
+                  {t('propertyForm.transaction')} <span className="text-red-500">*</span>
                 </label>
                 <select
                   {...register('transaction')}
                   className="w-full px-4 py-2.5 border border-border-warm rounded-xl focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta transition-colors bg-white"
                 >
                   {transactionOptions.map((opt) => (
-                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    <option key={opt} value={opt}>
+                      {opt === 'sale' ? t('properties.badges.sale') : t('properties.badges.rent')}
+                    </option>
                   ))}
                 </select>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-text-primary mb-1.5">
-                  Type <span className="text-red-500">*</span>
+                  {t('propertyForm.type')} <span className="text-red-500">*</span>
                 </label>
                 <select
                   {...register('type')}
                   className="w-full px-4 py-2.5 border border-border-warm rounded-xl focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta transition-colors bg-white"
                 >
                   {typeOptions.map((opt) => (
-                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    <option key={opt} value={opt}>{t(`properties.types.${opt}`)}</option>
                   ))}
                 </select>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-text-primary mb-1.5">
-                  Quartier
+                  {t('propertyForm.neighborhood')}
                 </label>
                 <select
                   {...register('neighborhood_id')}
@@ -445,7 +444,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
 
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-text-primary mb-1.5">Pièces</label>
+                <label className="block text-sm font-medium text-text-primary mb-1.5">{t('propertyForm.rooms')}</label>
                 <input
                   type="number"
                   {...register('rooms', { valueAsNumber: true })}
@@ -453,7 +452,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-text-primary mb-1.5">Chambres</label>
+                <label className="block text-sm font-medium text-text-primary mb-1.5">{t('propertyForm.bedrooms')}</label>
                 <input
                   type="number"
                   {...register('bedrooms', { valueAsNumber: true })}
@@ -461,7 +460,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-text-primary mb-1.5">Salles de bain</label>
+                <label className="block text-sm font-medium text-text-primary mb-1.5">{t('propertyForm.bathrooms')}</label>
                 <input
                   type="number"
                   {...register('bathrooms', { valueAsNumber: true })}
@@ -483,21 +482,21 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
                 {...register('description')}
                 rows={6}
                 className="w-full px-4 py-2.5 border border-border-warm rounded-xl focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta transition-colors resize-none"
-                placeholder="Décrivez la propriété en détail..."
+                placeholder={t('propertyForm.descriptionPlaceholder')}
               />
               {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description.message}</p>}
             </div>
 
             {/* Highlights */}
             <div>
-              <label className="block text-sm font-medium text-text-primary mb-1.5">Points forts</label>
+              <label className="block text-sm font-medium text-text-primary mb-1.5">{t('propertyForm.highlights')}</label>
               <div className="flex gap-2 mb-2">
                 <input
                   value={highlightInput}
                   onChange={(e) => setHighlightInput(e.target.value)}
                   onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addHighlight() } }}
                   className="flex-1 px-4 py-2.5 border border-border-warm rounded-xl focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta transition-colors"
-                  placeholder="Ex: Piscine privée"
+                  placeholder={t('propertyForm.highlightPlaceholder')}
                 />
                 <button
                   type="button"
@@ -554,11 +553,11 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
 
           {/* Location */}
           <div className="bg-white rounded-2xl p-6 shadow-card border border-border-warm space-y-5">
-            <h3 className="font-semibold text-text-primary">Localisation</h3>
+            <h3 className="font-semibold text-text-primary">{t('propertyForm.location')}</h3>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-text-primary mb-1.5">Latitude</label>
+                <label className="block text-sm font-medium text-text-primary mb-1.5">{t('propertyForm.latitude')}</label>
                 <input
                   type="number"
                   step="0.000001"
@@ -567,7 +566,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-text-primary mb-1.5">Longitude</label>
+                <label className="block text-sm font-medium text-text-primary mb-1.5">{t('propertyForm.longitude')}</label>
                 <input
                   type="number"
                   step="0.000001"
@@ -743,7 +742,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
                               value={highlightInputs[lang]}
                               onChange={(e) => setHighlightInputs((p) => ({ ...p, [lang]: e.target.value }))}
                               onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addLangHighlight(lang) } }}
-                              placeholder="Add feature..."
+                              placeholder={t('propertyForm.highlightLangPlaceholder')}
                               className="flex-1 px-3 py-1.5 text-sm border border-border-warm rounded-lg focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta"
                             />
                             <button

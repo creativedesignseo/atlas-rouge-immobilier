@@ -174,7 +174,15 @@
     "highlightsLang": "Key features ({{lang}})",
     "save": "Save property",
     "saving": "Saving...",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "createSubmit": "Create property",
+    "updateSubmit": "Save changes",
+    "backToList": "Back to list",
+    "titlePlaceholder": "Contemporary villa in the Palmeraie",
+    "slugPlaceholder": "contemporary-villa-palmeraie",
+    "descriptionPlaceholder": "Describe the property in detail...",
+    "highlightPlaceholder": "e.g. Private pool",
+    "highlightLangPlaceholder": "Add feature..."
   },
   "contacts": {
     "title": "Contacts",
