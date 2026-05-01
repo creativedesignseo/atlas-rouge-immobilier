@@ -18,6 +18,44 @@
     "administration": "Administration",
     "signOut": "Déconnexion"
   },
+  "properties": {
+    "searchPlaceholder": "Rechercher une propriété...",
+    "newProperty": "Nouvelle propriété",
+    "noResults": "Aucune propriété trouvée",
+    "noResultsHint": "Commencez par ajouter une propriété",
+    "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cette propriété ?",
+    "deleteSuccess": "Propriété supprimée",
+    "deleteError": "Erreur lors de la suppression",
+    "loadError": "Erreur lors du chargement des propriétés",
+    "table": {
+      "image": "Image",
+      "title": "Titre",
+      "type": "Type",
+      "price": "Prix (EUR)",
+      "surface": "Surface",
+      "status": "Statut",
+      "actions": "Actions"
+    },
+    "badges": {
+      "featured": "À la une",
+      "exclusive": "Exclusivité",
+      "sale": "Vente",
+      "rent": "Location"
+    },
+    "actions": {
+      "viewSite": "Voir sur le site",
+      "edit": "Modifier",
+      "delete": "Supprimer"
+    },
+    "types": {
+      "villa": "Villa",
+      "apartment": "Appartement",
+      "riad": "Riad",
+      "prestige": "Prestige",
+      "land": "Terrain",
+      "rooftop": "Rooftop"
+    }
+  },
   "sidebar": {
     "dashboard": "Tableau de bord",
     "properties": "Biens",
@@ -35,13 +73,11 @@
     "recentProperties": "Biens récents",
     "recentContacts": "Contacts récents"
   },
-  "properties": {
+  "propertiesLegacy": {
     "title": "Biens immobiliers",
     "new": "Nouveau bien",
     "edit": "Modifier le bien",
     "noProperties": "Aucun bien pour l'instant",
-    "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce bien ?",
-    "deleteSuccess": "Bien supprimé",
     "saveSuccess": "Bien enregistré",
     "saveError": "Erreur lors de l'enregistrement"
   },
@@ -94,6 +130,17 @@
   "contacts": {
     "title": "Contacts",
     "noContacts": "Aucun contact pour l'instant",
+    "noResults": "Aucun contact trouvé",
+    "searchPlaceholder": "Rechercher un contact...",
+    "countLabel_one": "{{count}} contact au total",
+    "countLabel_other": "{{count}} contacts au total",
+    "expand": "Lire tout",
+    "collapse": "Réduire",
+    "viewProperty": "Voir la propriété",
+    "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce contact ?",
+    "deleteSuccess": "Contact supprimé",
+    "deleteError": "Erreur lors de la suppression",
+    "loadError": "Erreur lors du chargement des contacts",
     "new": "nouveau",
     "inProgress": "en cours",
     "closed": "clôturé",

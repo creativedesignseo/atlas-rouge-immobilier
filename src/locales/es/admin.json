@@ -18,6 +18,44 @@
     "administration": "Administración",
     "signOut": "Cerrar sesión"
   },
+  "properties": {
+    "searchPlaceholder": "Buscar un inmueble...",
+    "newProperty": "Nueva propiedad",
+    "noResults": "Sin inmuebles encontrados",
+    "noResultsHint": "Empiece añadiendo un inmueble",
+    "deleteConfirm": "¿Está seguro que desea eliminar este inmueble?",
+    "deleteSuccess": "Inmueble eliminado",
+    "deleteError": "Error al eliminar",
+    "loadError": "Error al cargar los inmuebles",
+    "table": {
+      "image": "Imagen",
+      "title": "Título",
+      "type": "Tipo",
+      "price": "Precio (EUR)",
+      "surface": "Superficie",
+      "status": "Estado",
+      "actions": "Acciones"
+    },
+    "badges": {
+      "featured": "Destacado",
+      "exclusive": "Exclusivo",
+      "sale": "Venta",
+      "rent": "Alquiler"
+    },
+    "actions": {
+      "viewSite": "Ver en el sitio",
+      "edit": "Editar",
+      "delete": "Eliminar"
+    },
+    "types": {
+      "villa": "Villa",
+      "apartment": "Apartamento",
+      "riad": "Riad",
+      "prestige": "Prestige",
+      "land": "Terreno",
+      "rooftop": "Rooftop"
+    }
+  },
   "sidebar": {
     "dashboard": "Panel",
     "properties": "Inmuebles",
@@ -35,13 +73,11 @@
     "recentProperties": "Inmuebles recientes",
     "recentContacts": "Contactos recientes"
   },
-  "properties": {
+  "propertiesLegacy": {
     "title": "Inmuebles",
     "new": "Nuevo inmueble",
     "edit": "Editar inmueble",
     "noProperties": "Aún no hay inmuebles",
-    "deleteConfirm": "¿Está seguro de que desea eliminar este inmueble?",
-    "deleteSuccess": "Inmueble eliminado",
     "saveSuccess": "Inmueble guardado",
     "saveError": "Error al guardar el inmueble"
   },
@@ -94,6 +130,17 @@
   "contacts": {
     "title": "Contactos",
     "noContacts": "Aún no hay contactos",
+    "noResults": "Sin contactos encontrados",
+    "searchPlaceholder": "Buscar un contacto...",
+    "countLabel_one": "{{count}} contacto en total",
+    "countLabel_other": "{{count}} contactos en total",
+    "expand": "Leer todo",
+    "collapse": "Reducir",
+    "viewProperty": "Ver propiedad",
+    "deleteConfirm": "¿Está seguro que desea eliminar este contacto?",
+    "deleteSuccess": "Contacto eliminado",
+    "deleteError": "Error al eliminar",
+    "loadError": "Error al cargar los contactos",
     "new": "nuevo",
     "inProgress": "en proceso",
     "closed": "cerrado",

@@ -1,13 +1,23 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Mail, Trash2, Home, Search } from 'lucide-react'
 import { toast } from 'sonner'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '@/hooks/useAuth'
 import { getContactSubmissions, deleteContact, type ContactSubmission } from '@/services/admin/contactAdmin.service'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
+import { fr, enUS, es } from 'date-fns/locale'
+
+const DATE_LOCALES = { fr, en: enUS, es } as const
 
 export default function AdminContacts() {
+  const { t, i18n } = useTranslation('admin')
   const { agent, isAdmin } = useAuth()
+  const dateLocale = DATE_LOCALES[i18n.language?.slice(0, 2) as keyof typeof DATE_LOCALES] || enUS
+  const dateFormat = i18n.language?.startsWith('fr')
+    ? "dd MMMM yyyy 'à' HH:mm"
+    : i18n.language?.startsWith('es')
+      ? "dd 'de' MMMM 'de' yyyy, HH:mm"
+      : 'PP, HH:mm'
   const [contacts, setContacts] = useState<ContactSubmission[]>([])
   const [filtered, setFiltered] = useState<ContactSubmission[]>([])
   const [search, setSearch] = useState('')
@@ -26,11 +36,11 @@ export default function AdminContacts() {
       setContacts(data)
       setFiltered(data)
     } catch {
-      toast.error('Erreur lors du chargement des contacts')
+      toast.error(t('contacts.loadError'))
     } finally {
       setLoading(false)
     }
-  }, [agent, isAdmin])
+  }, [agent, isAdmin, t])
 
   useEffect(() => {
     loadContacts()
@@ -53,15 +63,15 @@ export default function AdminContacts() {
   }, [search, contacts])
 
   async function handleDelete(id: string) {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer ce contact ?')) return
+    if (!confirm(t('contacts.deleteConfirm'))) return
 
     setDeleting(id)
     try {
       await deleteContact(id)
-      toast.success('Contact supprimé')
+      toast.success(t('contacts.deleteSuccess'))
       setContacts((prev) => prev.filter((c) => c.id !== id))
     } catch {
-      toast.error('Erreur lors de la suppression')
+      toast.error(t('contacts.deleteError'))
     } finally {
       setDeleting(null)
     }
@@ -75,14 +85,14 @@ export default function AdminContacts() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" size={18} />
           <input
             type="text"
-            placeholder="Rechercher un contact..."
+            placeholder={t('contacts.searchPlaceholder')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full pl-10 pr-4 py-2.5 border border-border-warm rounded-xl focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta transition-colors"
           />
         </div>
         <p className="text-sm text-text-secondary">
-          {contacts.length} contact{contacts.length !== 1 ? 's' : ''} au total
+          {t('contacts.countLabel', { count: contacts.length })}
         </p>
       </div>
 
@@ -95,7 +105,7 @@ export default function AdminContacts() {
         ) : filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-text-secondary">
             <Mail size={48} className="mb-4 opacity-30" />
-            <p className="text-lg font-medium">Aucun contact trouvé</p>
+            <p className="text-lg font-medium">{t('contacts.noResults')}</p>
           </div>
         ) : (
           <div className="divide-y divide-border-warm">
@@ -125,7 +135,7 @@ export default function AdminContacts() {
                           onClick={() => setExpandedId(expandedId === contact.id ? null : contact.id)}
                           className="text-xs text-terracotta hover:underline"
                         >
-                          {expandedId === contact.id ? 'Réduire' : 'Lire tout'}
+                          {expandedId === contact.id ? t('contacts.collapse') : t('contacts.expand')}
                         </button>
                         {contact.property_slug && (
                           <a
@@ -135,11 +145,11 @@ export default function AdminContacts() {
                             className="inline-flex items-center gap-1 text-xs text-palm hover:underline"
                           >
                             <Home size={12} />
-                            Voir la propriété
+                            {t('contacts.viewProperty')}
                           </a>
                         )}
                         <span className="text-xs text-text-secondary">
-                          {format(new Date(contact.created_at), 'dd MMMM yyyy à HH:mm', { locale: fr })}
+                          {format(new Date(contact.created_at), dateFormat, { locale: dateLocale })}
                         </span>
                       </div>
                     </div>
