@@ -65,6 +65,12 @@ i18n
       lookupFromPathIndex: 0,
       caches: ['localStorage'],
     },
+    // All resources are bundled (no remote loading), so Suspense should never
+    // need to wait. Disabling explicitly avoids any chance of the Layout
+    // Suspense fallback flashing during a language switch.
+    react: {
+      useSuspense: false,
+    },
   })
 
 export default i18n

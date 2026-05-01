@@ -65,9 +65,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Check auth on mount
     checkAuth()
 
-    // Listen for auth state changes (login, logout, token refresh)
-    const { data } = onAuthStateChange(async (_event, session) => {
-      setIsLoading(true)
+    // Listen for auth state changes (login, logout, token refresh).
+    // IMPORTANT: do not flip isLoading=true on every event. TOKEN_REFRESHED
+    // fires ~hourly and would briefly unmount ProtectedRoute children, making
+    // the whole page disappear and show a spinner ("eventual reload" bug).
+    // Only update the user/agent in place; isLoading stays false.
+    const { data } = onAuthStateChange(async (event, session) => {
+      if (event === 'TOKEN_REFRESHED') {
+        if (session?.user) setUser(session.user)
+        return
+      }
       if (session?.user) {
         setUser(session.user)
         await loadAgentData(session.user)
@@ -75,7 +82,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(null)
         setAgent(null)
       }
-      setIsLoading(false)
     })
 
     return () => {
