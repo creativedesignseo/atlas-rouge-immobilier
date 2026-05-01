@@ -25,12 +25,12 @@ export default function AdminContacts() {
   const [deleting, setDeleting] = useState<string | null>(null)
   const [expandedId, setExpandedId] = useState<string | null>(null)
 
+  // t intentionally not in deps — would refetch on every language switch.
   const loadContacts = useCallback(async () => {
     if (!agent) {
       setLoading(false)
       return
     }
-    setLoading(true)
     try {
       const { contacts: data } = await getContactSubmissions(agent.id, isAdmin, 100)
       setContacts(data)
@@ -40,10 +40,15 @@ export default function AdminContacts() {
     } finally {
       setLoading(false)
     }
-  }, [agent, isAdmin, t])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [agent, isAdmin])
 
   useEffect(() => {
+    // Spinner only on first load; keep the previous list visible on
+    // subsequent re-mounts (back-navigation, language switch, etc.).
+    if (contacts.length === 0) setLoading(true)
     loadContacts()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadContacts])
 
   useEffect(() => {

@@ -20,6 +20,8 @@ export default function AdminProperties() {
 
   const siteLang = (i18n.language?.slice(0, 2) || 'en') as 'en' | 'fr' | 'es'
 
+  // t intentionally not in deps — it changes ref on language switch and would
+  // refetch unnecessarily. Reading from closure is fine for the toast.
   const loadProperties = useCallback(async () => {
     if (!agent) {
       setLoading(false)
@@ -34,10 +36,15 @@ export default function AdminProperties() {
     } finally {
       setLoading(false)
     }
-  }, [agent, isAdmin, t])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [agent, isAdmin])
 
   useEffect(() => {
+    // Only flash the spinner on the first load. Subsequent navigations
+    // back to this page keep the previous list visible while we refetch.
+    if (properties.length === 0) setLoading(true)
     loadProperties()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadProperties])
 
   useEffect(() => {
