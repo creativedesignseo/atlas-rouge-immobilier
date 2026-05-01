@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { User, Phone, FileText, Loader2, Save } from 'lucide-react'
 import { updateAgent } from '@/services/auth.service'
 import { toast } from 'sonner'
@@ -10,6 +11,7 @@ interface ProfileFormProps {
 }
 
 export default function ProfileForm({ agent, onUpdate }: ProfileFormProps) {
+  const { t } = useTranslation('admin')
   const [name, setName] = useState(agent.name || '')
   const [phone, setPhone] = useState(agent.phone || '')
   const [bio, setBio] = useState(agent.bio || '')
@@ -34,7 +36,7 @@ export default function ProfileForm({ agent, onUpdate }: ProfileFormProps) {
     setIsLoading(false)
 
     if (error) {
-      toast.error('Erreur: ' + error)
+      toast.error(`${t('profile.errorPrefix')}: ${error}`)
       return
     }
 
@@ -44,7 +46,7 @@ export default function ProfileForm({ agent, onUpdate }: ProfileFormProps) {
       phone: phone.trim() || null,
       bio: bio.trim() || null,
     })
-    toast.success('Profil mis à jour avec succès')
+    toast.success(t('profile.saveSuccess'))
   }
 
   const hasChanges =
@@ -57,7 +59,7 @@ export default function ProfileForm({ agent, onUpdate }: ProfileFormProps) {
       {/* Name */}
       <div>
         <label className="block text-sm font-medium text-text-primary mb-2">
-          Nom complet
+          {t('profile.name')}
         </label>
         <div className="relative">
           <User className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" size={18} />
@@ -65,7 +67,7 @@ export default function ProfileForm({ agent, onUpdate }: ProfileFormProps) {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Jean Dupont"
+            placeholder={t('profile.namePlaceholder')}
             className="w-full pl-10 pr-4 py-3 border border-border-warm rounded-xl focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta transition-colors"
           />
         </div>
@@ -74,7 +76,7 @@ export default function ProfileForm({ agent, onUpdate }: ProfileFormProps) {
       {/* Phone */}
       <div>
         <label className="block text-sm font-medium text-text-primary mb-2">
-          Téléphone
+          {t('profile.phone')}
         </label>
         <div className="relative">
           <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" size={18} />
@@ -82,7 +84,7 @@ export default function ProfileForm({ agent, onUpdate }: ProfileFormProps) {
             type="tel"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            placeholder="+212 6XX XXX XXX"
+            placeholder={t('profile.phonePlaceholder')}
             className="w-full pl-10 pr-4 py-3 border border-border-warm rounded-xl focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta transition-colors"
           />
         </div>
@@ -91,7 +93,7 @@ export default function ProfileForm({ agent, onUpdate }: ProfileFormProps) {
       {/* Bio */}
       <div>
         <label className="block text-sm font-medium text-text-primary mb-2">
-          Bio / Présentation
+          {t('profile.bioLabel')}
         </label>
         <div className="relative">
           <FileText className="absolute left-3 top-3 text-text-secondary" size={18} />
@@ -99,12 +101,12 @@ export default function ProfileForm({ agent, onUpdate }: ProfileFormProps) {
             value={bio}
             onChange={(e) => setBio(e.target.value)}
             rows={4}
-            placeholder="Décrivez votre expérience en tant qu'agent immobilier..."
+            placeholder={t('profile.bioPlaceholder')}
             className="w-full pl-10 pr-4 py-3 border border-border-warm rounded-xl focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta transition-colors resize-none"
           />
         </div>
         <p className="text-xs text-text-secondary mt-1">
-          Cette description apparaîtra sur votre profil public.
+          {t('profile.bioHint')}
         </p>
       </div>
 
@@ -116,12 +118,12 @@ export default function ProfileForm({ agent, onUpdate }: ProfileFormProps) {
         {isLoading ? (
           <>
             <Loader2 className="w-4 h-4 animate-spin" />
-            Enregistrement...
+            {t('profile.saving')}
           </>
         ) : (
           <>
             <Save className="w-4 h-4" />
-            Enregistrer les modifications
+            {t('profile.saveChanges')}
           </>
         )}
       </button>

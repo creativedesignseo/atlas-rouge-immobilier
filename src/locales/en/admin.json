@@ -106,20 +106,38 @@
   },
   "profile": {
     "title": "My profile",
+    "fallbackName": "My profile",
+    "tabs": {
+      "credential": "My ID card",
+      "profile": "Edit profile",
+      "security": "Security"
+    },
+    "editTitle": "Edit profile",
+    "editSubtitle": "Update your personal information.",
     "name": "Full name",
+    "namePlaceholder": "John Smith",
     "email": "Email",
     "phone": "Phone",
-    "bio": "Bio",
-    "avatar": "Profile photo",
-    "changeAvatar": "Change photo",
-    "saveSuccess": "Profile saved",
+    "phonePlaceholder": "+212 6XX XXX XXX",
+    "bioLabel": "Bio / About",
+    "bioPlaceholder": "Describe your experience as a real estate agent...",
+    "bioHint": "This description will appear on your public profile.",
+    "saveChanges": "Save changes",
+    "saving": "Saving...",
+    "errorPrefix": "Error",
+    "saveSuccess": "Profile updated successfully",
     "saveError": "Error saving profile",
-    "changePassword": "Change password",
-    "currentPassword": "Current password",
-    "newPassword": "New password",
-    "confirmPassword": "Confirm password",
-    "passwordSuccess": "Password changed",
-    "passwordError": "Error changing password",
-    "passwordMismatch": "Passwords do not match"
+    "security": {
+      "title": "Security",
+      "subtitle": "Change your password.",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm new password",
+      "submit": "Update password",
+      "submitting": "Updating...",
+      "success": "Password updated successfully",
+      "tooShort": "Password must be at least 6 characters long",
+      "mismatch": "Passwords do not match"
+    }
   }
 }

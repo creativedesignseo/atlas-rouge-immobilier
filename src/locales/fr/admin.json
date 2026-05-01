@@ -106,20 +106,38 @@
   },
   "profile": {
     "title": "Mon profil",
+    "fallbackName": "Mon profil",
+    "tabs": {
+      "credential": "Ma carte d'identité",
+      "profile": "Modifier le profil",
+      "security": "Sécurité"
+    },
+    "editTitle": "Modifier le profil",
+    "editSubtitle": "Mettez à jour vos informations personnelles.",
     "name": "Nom complet",
+    "namePlaceholder": "Jean Dupont",
     "email": "E-mail",
     "phone": "Téléphone",
-    "bio": "Biographie",
-    "avatar": "Photo de profil",
-    "changeAvatar": "Changer la photo",
-    "saveSuccess": "Profil enregistré",
+    "phonePlaceholder": "+212 6XX XXX XXX",
+    "bioLabel": "Bio / Présentation",
+    "bioPlaceholder": "Décrivez votre expérience en tant qu'agent immobilier...",
+    "bioHint": "Cette description apparaîtra sur votre profil public.",
+    "saveChanges": "Enregistrer les modifications",
+    "saving": "Enregistrement...",
+    "errorPrefix": "Erreur",
+    "saveSuccess": "Profil mis à jour avec succès",
     "saveError": "Erreur lors de l'enregistrement",
-    "changePassword": "Changer le mot de passe",
-    "currentPassword": "Mot de passe actuel",
-    "newPassword": "Nouveau mot de passe",
-    "confirmPassword": "Confirmer le mot de passe",
-    "passwordSuccess": "Mot de passe modifié",
-    "passwordError": "Erreur lors du changement",
-    "passwordMismatch": "Les mots de passe ne correspondent pas"
+    "security": {
+      "title": "Sécurité",
+      "subtitle": "Modifiez votre mot de passe.",
+      "currentPassword": "Mot de passe actuel",
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le nouveau mot de passe",
+      "submit": "Mettre à jour le mot de passe",
+      "submitting": "Mise à jour...",
+      "success": "Mot de passe mis à jour avec succès",
+      "tooShort": "Le mot de passe doit contenir au moins 6 caractères",
+      "mismatch": "Les mots de passe ne correspondent pas"
+    }
   }
 }

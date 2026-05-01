@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Lock, Eye, EyeOff, Loader2 } from 'lucide-react'
 import { updatePassword } from '@/services/auth.service'
 import { toast } from 'sonner'
 
 export default function PasswordChangeForm() {
+  const { t } = useTranslation('admin')
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -15,12 +17,12 @@ export default function PasswordChangeForm() {
     e.preventDefault()
 
     if (newPassword.length < 6) {
-      toast.error('Le mot de passe doit contenir au moins 6 caractères')
+      toast.error(t('profile.security.tooShort'))
       return
     }
 
     if (newPassword !== confirmPassword) {
-      toast.error('Les mots de passe ne correspondent pas')
+      toast.error(t('profile.security.mismatch'))
       return
     }
 
@@ -33,7 +35,7 @@ export default function PasswordChangeForm() {
       return
     }
 
-    toast.success('Mot de passe mis à jour avec succès')
+    toast.success(t('profile.security.success'))
     setCurrentPassword('')
     setNewPassword('')
     setConfirmPassword('')
@@ -44,7 +46,7 @@ export default function PasswordChangeForm() {
       {/* Current password */}
       <div>
         <label className="block text-sm font-medium text-text-primary mb-2">
-          Mot de passe actuel
+          {t('profile.security.currentPassword')}
         </label>
         <div className="relative">
           <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" size={18} />
@@ -69,7 +71,7 @@ export default function PasswordChangeForm() {
       {/* New password */}
       <div>
         <label className="block text-sm font-medium text-text-primary mb-2">
-          Nouveau mot de passe
+          {t('profile.security.newPassword')}
         </label>
         <div className="relative">
           <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" size={18} />
@@ -95,7 +97,7 @@ export default function PasswordChangeForm() {
       {/* Confirm password */}
       <div>
         <label className="block text-sm font-medium text-text-primary mb-2">
-          Confirmer le nouveau mot de passe
+          {t('profile.security.confirmPassword')}
         </label>
         <div className="relative">
           <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" size={18} />
@@ -118,10 +120,10 @@ export default function PasswordChangeForm() {
         {isLoading ? (
           <span className="flex items-center justify-center gap-2">
             <Loader2 className="w-4 h-4 animate-spin" />
-            Mise à jour...
+            {t('profile.security.submitting')}
           </span>
         ) : (
-          'Mettre à jour le mot de passe'
+          t('profile.security.submit')
         )}
       </button>
     </form>

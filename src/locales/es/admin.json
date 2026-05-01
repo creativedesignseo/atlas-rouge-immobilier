@@ -106,20 +106,38 @@
   },
   "profile": {
     "title": "Mi perfil",
+    "fallbackName": "Mi perfil",
+    "tabs": {
+      "credential": "Mi tarjeta de identidad",
+      "profile": "Editar perfil",
+      "security": "Seguridad"
+    },
+    "editTitle": "Editar perfil",
+    "editSubtitle": "Actualiza tu información personal.",
     "name": "Nombre completo",
+    "namePlaceholder": "Juan Pérez",
     "email": "Correo electrónico",
     "phone": "Teléfono",
-    "bio": "Biografía",
-    "avatar": "Foto de perfil",
-    "changeAvatar": "Cambiar foto",
-    "saveSuccess": "Perfil guardado",
+    "phonePlaceholder": "+212 6XX XXX XXX",
+    "bioLabel": "Bio / Presentación",
+    "bioPlaceholder": "Describe tu experiencia como agente inmobiliario...",
+    "bioHint": "Esta descripción aparecerá en tu perfil público.",
+    "saveChanges": "Guardar cambios",
+    "saving": "Guardando...",
+    "errorPrefix": "Error",
+    "saveSuccess": "Perfil actualizado con éxito",
     "saveError": "Error al guardar el perfil",
-    "changePassword": "Cambiar contraseña",
-    "currentPassword": "Contraseña actual",
-    "newPassword": "Nueva contraseña",
-    "confirmPassword": "Confirmar contraseña",
-    "passwordSuccess": "Contraseña cambiada",
-    "passwordError": "Error al cambiar la contraseña",
-    "passwordMismatch": "Las contraseñas no coinciden"
+    "security": {
+      "title": "Seguridad",
+      "subtitle": "Cambia tu contraseña.",
+      "currentPassword": "Contraseña actual",
+      "newPassword": "Nueva contraseña",
+      "confirmPassword": "Confirmar nueva contraseña",
+      "submit": "Actualizar contraseña",
+      "submitting": "Actualizando...",
+      "success": "Contraseña actualizada con éxito",
+      "tooShort": "La contraseña debe tener al menos 6 caracteres",
+      "mismatch": "Las contraseñas no coinciden"
+    }
   }
 }

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '@/hooks/useAuth'
 import { updateAgent } from '@/services/auth.service'
 import { toast } from 'sonner'
@@ -12,6 +13,7 @@ import type { Agent } from '@/hooks/useAuth'
 type Tab = 'profile' | 'credential' | 'security'
 
 export default function AgentProfile() {
+  const { t } = useTranslation('admin')
   const { agent: currentAgent, user, isLoading } = useAuth()
   const [agent, setAgent] = useState<Agent | null>(currentAgent)
   const [activeTab, setActiveTab] = useState<Tab>('credential')
@@ -34,7 +36,7 @@ export default function AgentProfile() {
   const handlePhotoUpload = async (url: string) => {
     const { error } = await updateAgent(user.id, { photo_url: url })
     if (error) {
-      toast.error('Erreur: ' + error)
+      toast.error(`${t('profile.errorPrefix')}: ${error}`)
       return
     }
     setAgent({ ...agent, photo_url: url })
@@ -45,9 +47,9 @@ export default function AgentProfile() {
   }
 
   const tabs: { key: Tab; label: string; icon: React.ElementType }[] = [
-    { key: 'credential', label: 'Ma carte d\'identité', icon: UserCircle },
-    { key: 'profile', label: 'Modifier le profil', icon: Shield },
-    { key: 'security', label: 'Sécurité', icon: Lock },
+    { key: 'credential', label: t('profile.tabs.credential'), icon: UserCircle },
+    { key: 'profile', label: t('profile.tabs.profile'), icon: Shield },
+    { key: 'security', label: t('profile.tabs.security'), icon: Lock },
   ]
 
   return (
@@ -62,7 +64,7 @@ export default function AgentProfile() {
           onUpload={handlePhotoUpload}
         />
         <h1 className="text-2xl font-bold text-text-primary mt-4">
-          {agent.name || 'Mon profil'}
+          {agent.name || t('profile.fallbackName')}
         </h1>
         <p className="text-text-secondary">{agent.email}</p>
       </div>
@@ -93,10 +95,7 @@ export default function AgentProfile() {
         {activeTab === 'credential' && (
           <div className="space-y-6">
             <div className="text-center">
-              <h2 className="text-lg font-semibold text-text-primary">Carte d'identité professionnelle</h2>
-              <p className="text-sm text-text-secondary mt-1">
-                Votre carte d'agent immobilier Atlas Rouge. Elle peut être partagée avec vos clients.
-              </p>
+              <h2 className="text-lg font-semibold text-text-primary">{t('profile.tabs.credential')}</h2>
             </div>
             <AgentCredential agent={agent} />
           </div>
@@ -105,9 +104,9 @@ export default function AgentProfile() {
         {activeTab === 'profile' && (
           <div className="space-y-6">
             <div>
-              <h2 className="text-lg font-semibold text-text-primary">Modifier le profil</h2>
+              <h2 className="text-lg font-semibold text-text-primary">{t('profile.editTitle')}</h2>
               <p className="text-sm text-text-secondary mt-1">
-                Mettez à jour vos informations personnelles.
+                {t('profile.editSubtitle')}
               </p>
             </div>
             <ProfileForm agent={agent} onUpdate={handleProfileUpdate} />
@@ -117,9 +116,9 @@ export default function AgentProfile() {
         {activeTab === 'security' && (
           <div className="space-y-6">
             <div>
-              <h2 className="text-lg font-semibold text-text-primary">Sécurité</h2>
+              <h2 className="text-lg font-semibold text-text-primary">{t('profile.security.title')}</h2>
               <p className="text-sm text-text-secondary mt-1">
-                Changez votre mot de passe pour sécuriser votre compte.
+                {t('profile.security.subtitle')}
               </p>
             </div>
             <PasswordChangeForm />
