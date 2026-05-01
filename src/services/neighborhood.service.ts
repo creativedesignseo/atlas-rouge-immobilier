@@ -1,4 +1,5 @@
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
+import { getCached, refetch } from '@/lib/queryCache'
 import { neighborhoods as mockNeighborhoods } from '@/data/neighborhoods'
 import type { Neighborhood } from '@/data/neighborhoods'
 
@@ -13,22 +14,27 @@ function mapDbToNeighborhood(row: Record<string, unknown>): Neighborhood {
   }
 }
 
-export async function getNeighborhoods(): Promise<Neighborhood[]> {
-  if (!isSupabaseConfigured) {
-    return mockNeighborhoods
-  }
-
+async function fetchNeighborhoods(): Promise<Neighborhood[]> {
+  if (!isSupabaseConfigured) return mockNeighborhoods
   const { data, error } = await supabase
     .from('neighborhoods')
     .select('*')
     .order('property_count', { ascending: false })
-
   if (error || !data) {
     console.error('Supabase error:', error)
     return mockNeighborhoods
   }
-
   return data.map(mapDbToNeighborhood)
+}
+
+export async function getNeighborhoods(): Promise<Neighborhood[]> {
+  const cached = getCached<Neighborhood[]>('neighborhoods')
+  const fresh = refetch('neighborhoods', fetchNeighborhoods)
+  if (cached !== undefined) {
+    fresh.catch(() => {})
+    return cached
+  }
+  return fresh
 }
 
 export async function getNeighborhoodBySlug(slug: string): Promise<Neighborhood | null> {

@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react'
 import type { User } from '@supabase/supabase-js'
 import { getSession, getAgent, onAuthStateChange, signOut as authSignOut } from '@/services/auth.service'
+import { clearAll as clearQueryCache } from '@/lib/queryCache'
 import type { AgentRow } from '@/types/supabase'
 
 export type Agent = AgentRow
@@ -93,6 +94,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await authSignOut()
     setUser(null)
     setAgent(null)
+    // Clear the SWR cache so the next user (or anonymous browser) doesn't
+    // see admin/private data left in memory from the previous session.
+    clearQueryCache()
   }, [])
 
   return (

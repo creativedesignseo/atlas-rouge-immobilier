@@ -1,4 +1,5 @@
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
+import { getCached, refetch, invalidate } from '@/lib/queryCache'
 import type { PropertyRow, PropertyInsert } from '@/types/supabase'
 
 export interface PropertyFormData {
@@ -77,34 +78,44 @@ function toDbInsert(data: PropertyFormData, agentId?: string): PropertyInsert {
   }
 }
 
-export async function getAdminProperties(
-  agentId: string,
-  isAdmin: boolean
-): Promise<PropertyRow[]> {
+async function fetchAdminProperties(agentId: string, isAdmin: boolean): Promise<PropertyRow[]> {
   if (!isSupabaseConfigured) return []
-
   let query = supabase
     .from('properties')
     .select('*')
     .order('created_at', { ascending: false })
-
-  if (!isAdmin) {
-    query = query.eq('agent_id', agentId)
-  }
-
+  if (!isAdmin) query = query.eq('agent_id', agentId)
   const { data, error } = await query
-
   if (error) {
     console.error('getAdminProperties error:', error)
     throw error
   }
-
   return (data || []) as PropertyRow[]
+}
+
+/**
+ * Stale-while-revalidate variant: returns whatever's in cache and kicks off
+ * a background refetch. Components subscribe via `subscribeAdminProperties`
+ * if they want live updates. For one-shot use (e.g. a callback that needs
+ * the latest), call `refetchAdminProperties` directly.
+ */
+export async function getAdminProperties(agentId: string, isAdmin: boolean): Promise<PropertyRow[]> {
+  const key = `adminProperties:${agentId}:${isAdmin ? 'all' : 'own'}`
+  const cached = getCached<PropertyRow[]>(key)
+  // Always fire a refresh so the cache stays warm for the next nav.
+  const freshPromise = refetch(key, () => fetchAdminProperties(agentId, isAdmin))
+  if (cached !== undefined) {
+    // Don't await — let the caller continue with cached data while the
+    // refresh runs in background. Errors are swallowed (already logged).
+    freshPromise.catch(() => {})
+    return cached
+  }
+  return freshPromise
 }
 
 export async function createProperty(data: PropertyFormData, agentId?: string): Promise<PropertyRow> {
   if (!isSupabaseConfigured) throw new Error('Supabase not configured')
-  
+
   const { data: result, error } = await supabase
     .from('properties')
     .insert(toDbInsert(data, agentId))
@@ -112,12 +123,16 @@ export async function createProperty(data: PropertyFormData, agentId?: string): 
     .single()
 
   if (error) throw error
+  // Drop cached lists so the next read fetches fresh.
+  invalidate('adminProperties:')
+  invalidate('publicProperties:')
+  invalidate('featuredProperties')
   return result as PropertyRow
 }
 
 export async function updateProperty(slug: string, data: PropertyFormData, agentId?: string): Promise<PropertyRow> {
   if (!isSupabaseConfigured) throw new Error('Supabase not configured')
-  
+
   const { data: result, error } = await supabase
     .from('properties')
     .update(toDbInsert(data, agentId))
@@ -126,18 +141,26 @@ export async function updateProperty(slug: string, data: PropertyFormData, agent
     .single()
 
   if (error) throw error
+  invalidate('adminProperties:')
+  invalidate('publicProperties:')
+  invalidate('featuredProperties')
+  invalidate(`property:${slug}`)
   return result as PropertyRow
 }
 
 export async function deleteProperty(slug: string): Promise<void> {
   if (!isSupabaseConfigured) throw new Error('Supabase not configured')
-  
+
   const { error } = await supabase
     .from('properties')
     .delete()
     .eq('slug', slug)
 
   if (error) throw error
+  invalidate('adminProperties:')
+  invalidate('publicProperties:')
+  invalidate('featuredProperties')
+  invalidate(`property:${slug}`)
 }
 
 export async function uploadImage(file: File): Promise<string> {

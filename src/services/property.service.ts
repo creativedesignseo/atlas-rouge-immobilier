@@ -1,4 +1,5 @@
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
+import { getCached, refetch } from '@/lib/queryCache'
 import i18n, { SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/i18n'
 import { properties as mockProperties } from '@/data/properties'
 import type { Property } from '@/data/properties'
@@ -69,39 +70,18 @@ function mapDbToProperty(row: Record<string, unknown>, lang = getCurrentLanguage
   }
 }
 
-export async function getProperties(filters: PropertyFilters = {}): Promise<Property[]> {
-  if (!isSupabaseConfigured) {
-    return applyMockFilters(mockProperties, filters)
-  }
+async function fetchProperties(filters: PropertyFilters): Promise<Property[]> {
+  if (!isSupabaseConfigured) return applyMockFilters(mockProperties, filters)
 
-  let query = supabase
-    .from('properties')
-    .select(`*, neighborhoods(name)`)
-
-  if (filters.transaction) {
-    query = query.eq('transaction', filters.transaction)
-  }
-  if (filters.types && filters.types.length > 0) {
-    query = query.in('type', filters.types as Property['type'][])
-  }
-  if (filters.priceMin !== undefined) {
-    query = query.gte('price_eur', filters.priceMin)
-  }
-  if (filters.priceMax !== undefined) {
-    query = query.lte('price_eur', filters.priceMax)
-  }
-  if (filters.surfaceMin !== undefined) {
-    query = query.gte('surface', filters.surfaceMin)
-  }
-  if (filters.surfaceMax !== undefined) {
-    query = query.lte('surface', filters.surfaceMax)
-  }
-  if (filters.bedroomsMin !== undefined) {
-    query = query.gte('bedrooms', filters.bedroomsMin)
-  }
-  if (filters.bedroomsMax !== undefined) {
-    query = query.lte('bedrooms', filters.bedroomsMax)
-  }
+  let query = supabase.from('properties').select(`*, neighborhoods(name)`)
+  if (filters.transaction) query = query.eq('transaction', filters.transaction)
+  if (filters.types && filters.types.length > 0) query = query.in('type', filters.types as Property['type'][])
+  if (filters.priceMin !== undefined) query = query.gte('price_eur', filters.priceMin)
+  if (filters.priceMax !== undefined) query = query.lte('price_eur', filters.priceMax)
+  if (filters.surfaceMin !== undefined) query = query.gte('surface', filters.surfaceMin)
+  if (filters.surfaceMax !== undefined) query = query.lte('surface', filters.surfaceMax)
+  if (filters.bedroomsMin !== undefined) query = query.gte('bedrooms', filters.bedroomsMin)
+  if (filters.bedroomsMax !== undefined) query = query.lte('bedrooms', filters.bedroomsMax)
   if (filters.searchQuery) {
     const q = filters.searchQuery
     query = query.or([
@@ -115,26 +95,13 @@ export async function getProperties(filters: PropertyFilters = {}): Promise<Prop
       `description_es.ilike.%${q}%`,
     ].join(','))
   }
-
-  // Sort
   switch (filters.sort) {
-    case 'price-asc':
-      query = query.order('price_eur', { ascending: true })
-      break
-    case 'price-desc':
-      query = query.order('price_eur', { ascending: false })
-      break
-    case 'surface-asc':
-      query = query.order('surface', { ascending: true })
-      break
-    case 'surface-desc':
-      query = query.order('surface', { ascending: false })
-      break
-    case 'recent':
-      query = query.order('created_at', { ascending: false })
-      break
-    default:
-      query = query.order('is_featured', { ascending: false })
+    case 'price-asc': query = query.order('price_eur', { ascending: true }); break
+    case 'price-desc': query = query.order('price_eur', { ascending: false }); break
+    case 'surface-asc': query = query.order('surface', { ascending: true }); break
+    case 'surface-desc': query = query.order('surface', { ascending: false }); break
+    case 'recent': query = query.order('created_at', { ascending: false }); break
+    default: query = query.order('is_featured', { ascending: false })
   }
 
   const { data, error } = await query
@@ -142,18 +109,29 @@ export async function getProperties(filters: PropertyFilters = {}): Promise<Prop
     console.error('Supabase error:', error)
     return applyMockFilters(mockProperties, filters)
   }
-
-  const mapped = (data || []).map((row: Record<string, unknown>) => {
+  return (data || []).map((row: Record<string, unknown>) => {
     const neighborhoodName = row.neighborhoods && typeof row.neighborhoods === 'object'
       ? (row.neighborhoods as Record<string, unknown>).name as string
       : ''
     return mapDbToProperty({ ...row, neighborhood_name: neighborhoodName })
   })
-
-  return mapped
 }
 
-export async function getPropertyBySlug(slug: string): Promise<Property | null> {
+export async function getProperties(filters: PropertyFilters = {}): Promise<Property[]> {
+  // Cache key includes the active language so a /en visitor and a /fr visitor
+  // each get their own localized snapshot. Filter object is serialized so
+  // identical filter combos hit the cache.
+  const key = `publicProperties:${getCurrentLanguage()}:${JSON.stringify(filters)}`
+  const cached = getCached<Property[]>(key)
+  const fresh = refetch(key, () => fetchProperties(filters))
+  if (cached !== undefined) {
+    fresh.catch(() => {})
+    return cached
+  }
+  return fresh
+}
+
+async function fetchPropertyBySlug(slug: string): Promise<Property | null> {
   if (!isSupabaseConfigured) {
     return mockProperties.find((p) => p.slug === slug) || null
   }
@@ -176,7 +154,18 @@ export async function getPropertyBySlug(slug: string): Promise<Property | null> 
   return mapDbToProperty({ ...row, neighborhood_name: neighborhoodName })
 }
 
-export async function getFeaturedProperties(limit = 3): Promise<Property[]> {
+export async function getPropertyBySlug(slug: string): Promise<Property | null> {
+  const key = `property:${slug}:${getCurrentLanguage()}`
+  const cached = getCached<Property | null>(key)
+  const fresh = refetch(key, () => fetchPropertyBySlug(slug))
+  if (cached !== undefined) {
+    fresh.catch(() => {})
+    return cached
+  }
+  return fresh
+}
+
+async function fetchFeaturedProperties(limit: number): Promise<Property[]> {
   if (!isSupabaseConfigured) {
     return mockProperties.filter((p) => p.isFeatured).slice(0, limit)
   }
@@ -198,6 +187,17 @@ export async function getFeaturedProperties(limit = 3): Promise<Property[]> {
       : ''
     return mapDbToProperty({ ...row, neighborhood_name: neighborhoodName })
   })
+}
+
+export async function getFeaturedProperties(limit = 3): Promise<Property[]> {
+  const key = `featuredProperties:${getCurrentLanguage()}:${limit}`
+  const cached = getCached<Property[]>(key)
+  const fresh = refetch(key, () => fetchFeaturedProperties(limit))
+  if (cached !== undefined) {
+    fresh.catch(() => {})
+    return cached
+  }
+  return fresh
 }
 
 export async function getSimilarProperties(property: Property, limit = 3): Promise<Property[]> {
