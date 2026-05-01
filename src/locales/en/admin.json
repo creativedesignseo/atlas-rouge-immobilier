@@ -67,11 +67,47 @@
   "dashboard": {
     "title": "Dashboard",
     "welcome": "Welcome, {{name}}",
-    "totalProperties": "Total properties",
+    "totalProperties": "Total Properties",
+    "saleProperties": "For Sale",
+    "rentProperties": "For Rent",
+    "featuredProperties": "Featured",
     "newContacts": "New contacts",
     "activeListings": "Active listings",
     "recentProperties": "Recent properties",
-    "recentContacts": "Recent contacts"
+    "recentContacts": "Recent contacts",
+    "viewAll": "View all",
+    "noProperty": "No properties",
+    "noContact": "No contacts"
+  },
+  "imageUploader": {
+    "maxReached": "Maximum 20 images allowed",
+    "moveLeft": "Move left",
+    "moveRight": "Move right",
+    "remove": "Remove",
+    "noImage": "No image added",
+    "addImage": "Add image",
+    "uploading": "Uploading...",
+    "dropHere": "Drag and drop images here",
+    "orClick": "or click to select • JPG, PNG, WebP • Max 5MB",
+    "invalidFormat": "{{name}}: invalid format or size > 5MB",
+    "uploadFailed": "Failed to upload {{name}}",
+    "addedCount_one": "{{count}} image added",
+    "addedCount_other": "{{count}} images added",
+    "primary": "Main"
+  },
+  "avatar": {
+    "selectImage": "Please select an image",
+    "tooLarge": "The image must not exceed 2 MB",
+    "uploadError": "Error while uploading",
+    "uploadSuccess": "Profile photo updated"
+  },
+  "credential": {
+    "memberSince": "Member since {{date}}",
+    "company": "Atlas Rouge Immobilier",
+    "city": "Marrakech, Morocco",
+    "fallbackName": "Atlas Rouge agent",
+    "roleAdmin": "Administrator",
+    "roleAgent": "Real estate agent"
   },
   "propertiesLegacy": {
     "title": "Properties",

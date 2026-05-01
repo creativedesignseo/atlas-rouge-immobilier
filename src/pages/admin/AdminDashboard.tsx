@@ -1,15 +1,20 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Building2, Euro, Mail, Star, Home } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import StatCard from '@/components/admin/StatCard'
 import { useAuth } from '@/hooks/useAuth'
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 import type { PropertyRow, ContactSubmissionRow } from '@/types/supabase'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
+import { fr, enUS, es } from 'date-fns/locale'
+
+const DATE_LOCALES = { fr, en: enUS, es } as const
 
 export default function AdminDashboard() {
   const navigate = useNavigate()
+  const { t, i18n } = useTranslation('admin')
+  const dateLocale = DATE_LOCALES[i18n.language?.slice(0, 2) as keyof typeof DATE_LOCALES] || enUS
   const { agent, isAdmin } = useAuth()
   const [stats, setStats] = useState({
     totalProperties: 0,
@@ -115,27 +120,27 @@ export default function AdminDashboard() {
     <div className="space-y-8">
       {/* Stats grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard title="Total Propriétés" value={stats.totalProperties} icon={Building2} color="terracotta" />
-        <StatCard title="En Vente" value={stats.saleProperties} icon={Euro} color="palm" />
-        <StatCard title="En Location" value={stats.rentProperties} icon={Home} color="gold" />
-        <StatCard title="Mises en avant" value={stats.featuredProperties} icon={Star} color="midnight" />
+        <StatCard title={t('dashboard.totalProperties')} value={stats.totalProperties} icon={Building2} color="terracotta" />
+        <StatCard title={t('dashboard.saleProperties')} value={stats.saleProperties} icon={Euro} color="palm" />
+        <StatCard title={t('dashboard.rentProperties')} value={stats.rentProperties} icon={Home} color="gold" />
+        <StatCard title={t('dashboard.featuredProperties')} value={stats.featuredProperties} icon={Star} color="midnight" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent properties */}
         <div className="bg-white rounded-2xl p-6 shadow-card border border-border-warm">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-text-primary">Propriétés récentes</h3>
+            <h3 className="font-semibold text-text-primary">{t('dashboard.recentProperties')}</h3>
             <button
               onClick={() => navigate('/admin/properties')}
               className="text-sm text-terracotta hover:underline"
             >
-              Voir tout
+              {t('dashboard.viewAll')}
             </button>
           </div>
 
           {recentProperties.length === 0 ? (
-            <p className="text-text-secondary text-sm py-4">Aucune propriété</p>
+            <p className="text-text-secondary text-sm py-4">{t('dashboard.noProperty')}</p>
           ) : (
             <div className="space-y-3">
               {recentProperties.map((p) => (
@@ -150,11 +155,11 @@ export default function AdminDashboard() {
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-text-primary truncate">{p.title}</p>
                     <p className="text-xs text-text-secondary">
-                      {p.transaction === 'sale' ? 'Vente' : 'Location'} • {p.price_eur.toLocaleString()} €
+                      {p.transaction === 'sale' ? t('properties.badges.sale') : t('properties.badges.rent')} • {p.price_eur.toLocaleString()} €
                     </p>
                   </div>
                   <span className="text-xs text-text-secondary">
-                    {format(new Date(p.created_at), 'dd/MM/yy', { locale: fr })}
+                    {format(new Date(p.created_at), 'dd/MM/yy', { locale: dateLocale })}
                   </span>
                 </div>
               ))}
@@ -165,17 +170,17 @@ export default function AdminDashboard() {
         {/* Recent contacts */}
         <div className="bg-white rounded-2xl p-6 shadow-card border border-border-warm">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-text-primary">Contacts récents</h3>
+            <h3 className="font-semibold text-text-primary">{t('dashboard.recentContacts')}</h3>
             <button
               onClick={() => navigate('/admin/contacts')}
               className="text-sm text-terracotta hover:underline"
             >
-              Voir tout
+              {t('dashboard.viewAll')}
             </button>
           </div>
 
           {recentContacts.length === 0 ? (
-            <p className="text-text-secondary text-sm py-4">Aucun contact</p>
+            <p className="text-text-secondary text-sm py-4">{t('dashboard.noContact')}</p>
           ) : (
             <div className="space-y-3">
               {recentContacts.map((c) => (
@@ -192,7 +197,7 @@ export default function AdminDashboard() {
                     <p className="text-xs text-text-secondary truncate">{c.subject}</p>
                   </div>
                   <span className="text-xs text-text-secondary">
-                    {format(new Date(c.created_at), 'dd/MM/yy', { locale: fr })}
+                    {format(new Date(c.created_at), 'dd/MM/yy', { locale: dateLocale })}
                   </span>
                 </div>
               ))}

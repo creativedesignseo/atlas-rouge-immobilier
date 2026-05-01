@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from 'react'
 import { Upload, X, ImageIcon, Loader2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { getImageUrl } from '@/lib/storage'
 import { uploadImage as uploadToStorage, deleteImage } from '@/services/admin/propertyAdmin.service'
 import { toast } from 'sonner'
@@ -10,6 +11,7 @@ interface ImageUploaderProps {
 }
 
 export default function ImageUploader({ images, onChange }: ImageUploaderProps) {
+  const { t } = useTranslation('admin')
   const [isDragging, setIsDragging] = useState(false)
   const [uploading, setUploading] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -30,13 +32,13 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
     const validFiles = Array.from(files).filter((file) => {
       const isValid = file.type.startsWith('image/') && file.size <= 5 * 1024 * 1024
       if (!isValid) {
-        toast.error(`${file.name}: format non valide ou taille > 5MB`)
+        toast.error(t('imageUploader.invalidFormat', { name: file.name }))
       }
       return isValid
     })
 
     if (images.length + validFiles.length > 20) {
-      toast.error('Maximum 20 images autorisées')
+      toast.error(t('imageUploader.maxReached'))
       return
     }
 
@@ -48,16 +50,16 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
         const filename = await uploadToStorage(file)
         newImages.push(filename)
       } catch {
-        toast.error(`Erreur lors de l'upload de ${file.name}`)
+        toast.error(t('imageUploader.uploadFailed', { name: file.name }))
       }
     }
 
     setUploading(false)
     if (newImages.length > 0) {
       onChange([...images, ...newImages])
-      toast.success(`${newImages.length} image(s) ajoutée(s)`)
+      toast.success(t('imageUploader.addedCount', { count: newImages.length }))
     }
-  }, [images, onChange])
+  }, [images, onChange, t])
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault()
@@ -116,10 +118,10 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
             <Upload className="w-8 h-8 text-text-secondary" />
           )}
           <p className="text-sm font-medium text-text-primary">
-            {uploading ? 'Téléchargement...' : 'Glissez-déposez des images ici'}
+            {uploading ? t('imageUploader.uploading') : t('imageUploader.dropHere')}
           </p>
           <p className="text-xs text-text-secondary">
-            ou cliquez pour sélectionner • JPG, PNG, WebP • Max 5MB
+            {t('imageUploader.orClick')}
           </p>
         </div>
       </div>
@@ -145,7 +147,7 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
                     type="button"
                     onClick={(e) => { e.stopPropagation(); handleReorder(index, index - 1) }}
                     className="p-1.5 bg-white/20 rounded-lg text-white hover:bg-white/40"
-                    title="Déplacer à gauche"
+                    title={t('imageUploader.moveLeft')}
                   >
                     ←
                   </button>
@@ -154,7 +156,7 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
                   type="button"
                   onClick={(e) => { e.stopPropagation(); handleRemove(filename, index) }}
                   className="p-1.5 bg-red-500/80 rounded-lg text-white hover:bg-red-500"
-                  title="Supprimer"
+                  title={t('imageUploader.remove')}
                 >
                   <X size={14} />
                 </button>
@@ -163,7 +165,7 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
                     type="button"
                     onClick={(e) => { e.stopPropagation(); handleReorder(index, index + 1) }}
                     className="p-1.5 bg-white/20 rounded-lg text-white hover:bg-white/40"
-                    title="Déplacer à droite"
+                    title={t('imageUploader.moveRight')}
                   >
                     →
                   </button>
@@ -173,7 +175,7 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
               {/* First badge */}
               {index === 0 && (
                 <div className="absolute top-1.5 left-1.5 px-2 py-0.5 bg-terracotta text-white text-[10px] font-medium rounded-md">
-                  Principale
+                  {t('imageUploader.primary')}
                 </div>
               )}
 
@@ -189,7 +191,7 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
       {images.length === 0 && (
         <div className="flex flex-col items-center gap-2 py-8 text-text-secondary">
           <ImageIcon size={32} />
-          <p className="text-sm">Aucune image ajoutée</p>
+          <p className="text-sm">{t('imageUploader.noImage')}</p>
         </div>
       )}
     </div>

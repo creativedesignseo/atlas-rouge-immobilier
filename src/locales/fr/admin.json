@@ -67,11 +67,47 @@
   "dashboard": {
     "title": "Tableau de bord",
     "welcome": "Bienvenue, {{name}}",
-    "totalProperties": "Biens totaux",
+    "totalProperties": "Total Propriétés",
+    "saleProperties": "En Vente",
+    "rentProperties": "En Location",
+    "featuredProperties": "Mises en avant",
     "newContacts": "Nouveaux contacts",
     "activeListings": "Annonces actives",
-    "recentProperties": "Biens récents",
-    "recentContacts": "Contacts récents"
+    "recentProperties": "Propriétés récentes",
+    "recentContacts": "Contacts récents",
+    "viewAll": "Voir tout",
+    "noProperty": "Aucune propriété",
+    "noContact": "Aucun contact"
+  },
+  "imageUploader": {
+    "maxReached": "Maximum 20 images autorisées",
+    "moveLeft": "Déplacer à gauche",
+    "moveRight": "Déplacer à droite",
+    "remove": "Supprimer",
+    "noImage": "Aucune image ajoutée",
+    "addImage": "Ajouter une image",
+    "uploading": "Téléchargement...",
+    "dropHere": "Glissez-déposez des images ici",
+    "orClick": "ou cliquez pour sélectionner • JPG, PNG, WebP • Max 5MB",
+    "invalidFormat": "{{name}} : format non valide ou taille > 5MB",
+    "uploadFailed": "Erreur lors de l'upload de {{name}}",
+    "addedCount_one": "{{count}} image ajoutée",
+    "addedCount_other": "{{count}} images ajoutées",
+    "primary": "Principale"
+  },
+  "avatar": {
+    "selectImage": "Veuillez sélectionner une image",
+    "tooLarge": "L'image ne doit pas dépasser 2 Mo",
+    "uploadError": "Erreur lors du téléchargement",
+    "uploadSuccess": "Photo de profil mise à jour"
+  },
+  "credential": {
+    "memberSince": "Membre depuis {{date}}",
+    "company": "Atlas Rouge Immobilier",
+    "city": "Marrakech, Maroc",
+    "fallbackName": "Agent Atlas Rouge",
+    "roleAdmin": "Administrateur",
+    "roleAgent": "Agent immobilier"
   },
   "propertiesLegacy": {
     "title": "Biens immobiliers",

@@ -1,17 +1,23 @@
 import { BadgeCheck, Shield, Calendar, Mail, Phone } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import type { Agent } from '@/hooks/useAuth'
 
 interface AgentCredentialProps {
   agent: Agent
 }
 
+const DATE_LOCALES: Record<string, string> = { fr: 'fr-FR', en: 'en-US', es: 'es-ES' }
+
 export default function AgentCredential({ agent }: AgentCredentialProps) {
+  const { t, i18n } = useTranslation('admin')
+  const dateLocale = DATE_LOCALES[i18n.language?.slice(0, 2)] || 'en-US'
+
   const initials = agent.name
     ? agent.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
     : agent.email.slice(0, 2).toUpperCase()
 
   const formattedDate = agent.created_at
-    ? new Date(agent.created_at).toLocaleDateString('fr-FR', {
+    ? new Date(agent.created_at).toLocaleDateString(dateLocale, {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
@@ -32,18 +38,18 @@ export default function AgentCredential({ agent }: AgentCredentialProps) {
           )}
         </div>
         <div className="min-w-0">
-          <h3 className="text-lg font-bold truncate">{agent.name || 'Agent Atlas Rouge'}</h3>
+          <h3 className="text-lg font-bold truncate">{agent.name || t('credential.fallbackName')}</h3>
           <p className="text-white/60 text-sm">{agent.email}</p>
           <div className="flex items-center gap-2 mt-1">
             {agent.role === 'admin' ? (
               <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-terracotta/20 text-terracotta text-xs font-medium rounded-full">
                 <Shield size={12} />
-                Administrateur
+                {t('credential.roleAdmin')}
               </span>
             ) : (
               <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-white/10 text-white/80 text-xs font-medium rounded-full">
                 <BadgeCheck size={12} />
-                Agent immobilier
+                {t('credential.roleAgent')}
               </span>
             )}
           </div>
@@ -68,7 +74,7 @@ export default function AgentCredential({ agent }: AgentCredentialProps) {
         {formattedDate && (
           <div className="flex items-center gap-3 text-sm">
             <Calendar size={16} className="text-terracotta flex-shrink-0" />
-            <span className="text-white/80">Membre depuis {formattedDate}</span>
+            <span className="text-white/80">{t('credential.memberSince', { date: formattedDate })}</span>
           </div>
         )}
       </div>

@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { Camera, Loader2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { uploadAvatar } from '@/services/auth.service'
 import { toast } from 'sonner'
 
@@ -12,6 +13,7 @@ interface AvatarUploadProps {
 }
 
 export default function AvatarUpload({ userId, name, email, currentUrl, onUpload }: AvatarUploadProps) {
+  const { t } = useTranslation('admin')
   const [isUploading, setIsUploading] = useState(false)
   const [preview, setPreview] = useState<string | null>(currentUrl)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -21,11 +23,11 @@ export default function AvatarUpload({ userId, name, email, currentUrl, onUpload
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      toast.error('Veuillez sélectionner une image')
+      toast.error(t('avatar.selectImage'))
       return
     }
     if (file.size > 2 * 1024 * 1024) {
-      toast.error('L\'image ne doit pas dépasser 2 Mo')
+      toast.error(t('avatar.tooLarge'))
       return
     }
 
@@ -39,14 +41,14 @@ export default function AvatarUpload({ userId, name, email, currentUrl, onUpload
     URL.revokeObjectURL(objectUrl)
 
     if (error || !url) {
-      toast.error('Erreur lors du téléchargement: ' + (error || 'Unknown error'))
+      toast.error(`${t('avatar.uploadError')}: ${error || 'Unknown error'}`)
       setPreview(currentUrl)
       return
     }
 
     setPreview(url)
     onUpload(url)
-    toast.success('Photo de profil mise à jour')
+    toast.success(t('avatar.uploadSuccess'))
   }
 
   const initials = name
