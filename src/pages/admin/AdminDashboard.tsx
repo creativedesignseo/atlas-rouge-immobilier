@@ -28,20 +28,37 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    let cancelled = false
+    // Hard safety: never leave the spinner up for more than 10 seconds. If
+    // something hangs (RLS issue, network, Supabase cold start), drop the
+    // spinner and let the user see whatever data we have plus the empty
+    // states. Better than a permanent loading screen.
+    const safetyTimeout = window.setTimeout(() => {
+      if (!cancelled) {
+        console.warn('Dashboard load timed out after 10s, dropping spinner')
+        setLoading(false)
+      }
+    }, 10_000)
+
     async function loadStats() {
-      if (!isSupabaseConfigured || !agent) return
+      // Always release the spinner — even on early return — so the
+      // dashboard never gets stuck on the spinner if agent is briefly null.
+      if (!isSupabaseConfigured || !agent) {
+        setLoading(false)
+        return
+      }
 
       try {
-        // Build all queries up front. Each is independent, so we fire them
-        // in parallel via Promise.all instead of sequential awaits — this
-        // is the difference between ~3s and ~500ms on the first dashboard
-        // open (vercel-react-best-practices: async-parallel rule).
+        // All queries are independent; Promise.all fires them in parallel
+        // instead of sequential awaits. Difference: ~3s → ~500ms on first
+        // open. (vercel-react-best-practices: async-parallel rule.)
         const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
+        const agentId = agent.id
         const ownFilter = (q: ReturnType<typeof supabase.from>) =>
-          isAdmin ? q : q.eq('agent_id', agent.id)
+          isAdmin ? q : q.eq('agent_id', agentId)
         const ownContactFilter = <T,>(q: T) =>
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          isAdmin ? q : (q as any).eq('assigned_to_agent_id', agent.id)
+          isAdmin ? q : (q as any).eq('assigned_to_agent_id', agentId)
 
         const [
           totalRes,
@@ -61,6 +78,7 @@ export default function AdminDashboard() {
           ownContactFilter(supabase.from('contact_submissions').select('*').order('created_at', { ascending: false }).limit(5)),
         ])
 
+        if (cancelled) return
         setStats({
           totalProperties: totalRes.count || 0,
           saleProperties: saleRes.count || 0,
@@ -71,13 +89,17 @@ export default function AdminDashboard() {
         setRecentProperties((propsRes.data || []) as PropertyRow[])
         setRecentContacts((contactsRes.data || []) as ContactSubmissionRow[])
       } catch (err) {
-        console.error('Failed to load dashboard stats:', err)
+        if (!cancelled) console.error('Failed to load dashboard stats:', err)
       } finally {
-        setLoading(false)
+        if (!cancelled) setLoading(false)
       }
     }
 
     loadStats()
+    return () => {
+      cancelled = true
+      window.clearTimeout(safetyTimeout)
+    }
   }, [agent, isAdmin])
 
   if (loading) {
