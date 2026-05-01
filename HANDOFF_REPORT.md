@@ -4,6 +4,101 @@
 
 ---
 
+## Intervención: Claude Sonnet 4.6 — 2026-05-01 (cuarta sesión — auditoría i18n + plan)
+
+Autor: Claude Sonnet 4.6.
+
+### Contexto
+
+El usuario se quejó (con razón) de que las traducciones se hacían "en goteo" — yo iba parchando solo lo que él reportaba en cada captura, sin auditar todo el proyecto. Esto generó muchas rondas de deploys parciales y la sensación de que "nunca acaba". Antes de seguir tocando código, hicimos auditoría completa.
+
+### Bugs críticos arreglados ANTES de la auditoría
+
+1. **White screen / spinner cada hora** (commit `143c186c`)
+   - Causa: `AuthProvider` ponía `isLoading=true` en cada `onAuthStateChange` (incluido `TOKEN_REFRESHED` que dispara cada hora). `ProtectedRoute` cuando ve `isLoading=true` renderiza solo el spinner ocultando todo el contenido del admin.
+   - Fix: handler de `TOKEN_REFRESHED` separado que solo actualiza `user` sin tocar `isLoading`. Inicial mount sigue usando `isLoading` para el spinner de carga inicial.
+   - También: deshabilitado `react.useSuspense: false` en i18n para evitar que cambios de idioma disparen el Suspense fallback del Layout.
+
+2. **Stale chunk error / "Failed to fetch dynamically imported module"** (commit `ba93e218`)
+   - Causa: tras un deploy nuevo, las pestañas que ya tenían el sitio abierto cacheaban el `index.js` viejo que apuntaba a chunks (`Search-XXX.js`) cuyos hashes ya no existían. Netlify devolvía el `index.html` (SPA fallback) con MIME `text/html` para esos chunks, el navegador rechazaba el módulo y la página entera quedaba en blanco.
+   - Fix capa 1: `netlify.toml` ahora devuelve **404 para `/assets/*`** que no existan, en lugar de fallback al index.html. Así el navegador recibe un error claro en vez de HTML mal etiquetado.
+   - Fix capa 2: `main.tsx` añade un listener global a `error` y `unhandledrejection`. Si detecta el error de chunk-load (`Failed to fetch dynamically imported module` / `Importing a module script failed` / `ChunkLoadError`), fuerza **un solo reload** de la pestaña (sessionStorage flag impide loops infinitos). El reload trae el nuevo `index.js` con los hashes correctos.
+
+### Auditoría completa del estado de i18n
+
+**~440 strings franceses hardcoded en ~30 archivos.** Lo que ya está traducido (no tocar):
+
+- `Home`, `Footer` (parcial), `Nav`, `Contact`, `PropertyCard` básica
+- Admin: sidebar, header, login, profile, contacts, properties (lista), dashboard, ImageUploader, AvatarUpload, AgentCredential, password change, profile form
+- `Sell` parcial: hero + breadcrumb + 4 pasos + CTAs
+
+**Lo que falta** (en orden de prioridad):
+
+| Bucket | Archivos | ~strings | Prioridad |
+|---|---|---|---|
+| **A. Páginas públicas grandes** | `BuyerGuide.tsx`, `Blog.tsx`, `Sell.tsx` (FAQs + feature cards + agentes + form), `About.tsx`, `GestionLocative.tsx`, `Estimation.tsx`, `Estimer.tsx`, `Favorites.tsx`, `NotFound.tsx` | ~180 | 🔴 P1 |
+| **B. Search filtros sidebar** | `Search.tsx` (`typeOptions`, `statusOptions`, `viewOptions`, `styleOptions`, `mediaOptions`, `sortOptions`, `amenitiesList`, FilterSection titles) | ~50 | 🔴 P1 |
+| **C. PropertyForm completo** | `PropertyForm.tsx` (zod messages, transactionOptions, typeOptions, amenitiesList, todos los placeholders) | ~28 | 🟡 P2 |
+| **D. PropertyDetail icons map** | `PropertyDetail.tsx` — el mapa `amenityIcons` indexa por nombre francés (`'Piscine'`, `'Jardin paysager'`); habría que migrar a slugs internos (`pool`, `garden`) y traducir el label en render | ~36 | 🟡 P2 |
+| **E. Datos mock** | `src/data/properties.ts`, `src/data/neighborhoods.ts`, `src/data/filters.ts` — solo se usan como fallback si Supabase no responde | ~110 | 🟢 P3 (recomendado: marcar `// MOCK — not used in prod` y NO traducir) |
+| **F. Servicios (errores)** | `auth.service.ts`, `admin/propertyAdmin.service.ts`, `settings.service.ts`, etc. | ~25 | 🟢 P3 |
+| **G. Otros menores** | `Contact.tsx` (resto), `Home.tsx` (1 string), `Footer.tsx` (3) | ~10 | 🟢 P3 |
+
+### Plan acordado (NO ejecutado todavía)
+
+**Fase 1 — Estructura sin cambiar UI (~15 min)**
+
+1. Crear nuevos namespaces: `about.json`, `blog.json`, `estimation.json`, `services.json`, `amenities.json`, `errors.json` en EN/FR/ES (18 archivos)
+2. Registrarlos en `src/i18n.ts`
+3. Build verde — sin cambios visuales
+
+**Fase 2 — Traducción por archivo completo (~45-60 min)**
+
+Trabajar archivo por archivo, completo cada vez (NO por sección como en sesiones anteriores):
+
+1. `Search.tsx` — todas las options arrays + sidebar
+2. `PropertyDetail.tsx` — refactor de `amenityIcons` a slugs + nuevo namespace `amenities`
+3. `PropertyForm.tsx` — zod messages a `errors.json`, options, placeholders
+4. `Sell.tsx` — FAQs, feature cards, agentes, formulario
+5. `About.tsx` — equipo, valores, historia
+6. `BuyerGuide.tsx` + `Blog.tsx` — categorías, secciones, artículos (a `blog.json`)
+7. `Estimation.tsx` + `Estimer.tsx` — formulario completo
+8. `GestionLocative.tsx` — servicios
+9. `Favorites.tsx` + `NotFound.tsx`
+10. Servicios — toasts a `errors.json` o al namespace correspondiente
+
+**Fase 3 — Cleanup (~10 min)**
+
+1. Marcar `src/data/*.ts` como `// MOCK — not used in prod`
+2. Build final, lint final
+3. **Un solo deploy** (no más despliegues parciales)
+4. Update HANDOFF
+
+### Definition of Done
+
+- `grep -rE "['\"][A-Z][a-zàéèêçï ]{4,}['\"]" src/pages src/components` solo encuentra matches en `src/data/*.ts` mock
+- Cambio de idioma → web entera en EN/ES sin strings franceses
+- Build OK, lint OK
+- HANDOFF actualizado
+
+### Estado al entregar (ESTA sesión)
+
+- Build OK, lint OK (0 errores, 0 warnings)
+- Bugs críticos del white-screen y stale-chunk: arreglados, en producción
+- i18n completado en esta sesión: AdminContacts, AdminProperties, AdminDashboard, ImageUploader, AvatarUpload, AgentCredential, profile + password forms, AdminLogin/PropertyNew/Edit toasts, sección hero+pasos de Sell.
+- 18+ commits en `origin/main`, todos desplegados en Netlify
+- Plan completo i18n acordado con el usuario, esperando aprobación para ejecutar
+
+### Para la siguiente IA
+
+1. **NO empezar a parchear strings sueltos.** El usuario explícitamente pidió hacer el plan completo de una sola tanda. Confirmar el plan con él si hay dudas.
+2. **Seguir el orden de las 3 fases** descritas arriba. Crear estructura primero, luego traducir por archivo completo.
+3. **Datos mock NO se traducen** — añadir comentario `// MOCK — not used in prod` y dejarlos.
+4. **Un solo deploy al final** de las 3 fases, no parciales.
+5. Detalles del schema/RLS de Supabase, función translate-property y resto de info técnica: ver intervenciones anteriores en este documento.
+
+---
+
 ## Intervención: Claude Sonnet 4.6 — 2026-05-01 (tercera sesión — fix de chunks colgados)
 
 Autor: Claude Sonnet 4.6.
