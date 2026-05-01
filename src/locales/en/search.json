@@ -75,6 +75,10 @@
   },
   "results_one": "{{count}} property for {{transaction}} in Marrakech",
   "results_other": "{{count}} properties for {{transaction}} in Marrakech",
+  "resultsForSale_one": "{{count}} property for sale in Marrakech",
+  "resultsForSale_other": "{{count}} properties for sale in Marrakech",
+  "resultsForRent_one": "{{count}} property for rent in Marrakech",
+  "resultsForRent_other": "{{count}} properties for rent in Marrakech",
   "viewToggle": {
     "grid": "Grid",
     "list": "List",
@@ -95,5 +99,16 @@
     "backToList": "Back to list"
   },
   "viewProperty": "View property",
-  "pricePerSqm": "/ m²"
+  "pricePerSqm": "/ m²",
+  "card": {
+    "forSale": "For sale",
+    "forRent": "For rent",
+    "exclusive": "Exclusive"
+  },
+  "pageTitle": {
+    "buy": "Buy",
+    "rent": "Rent"
+  },
+  "city": "Marrakech",
+  "kmAround": "{{km}} km"
 }

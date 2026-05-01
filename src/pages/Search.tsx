@@ -1,5 +1,6 @@
 import { useState, useMemo, useCallback, useEffect, useLayoutEffect, useRef } from 'react'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import {
   MapPin, X, ChevronDown, Grid3X3, List, Map,
   Bed, Bath, Maximize, Home, Heart, Check,
@@ -185,15 +186,17 @@ function PropertyCardList({ property }: { property: Property }) {
   const { toggleFavorite, isFavorite } = useFavorites()
   const { formatPrice } = useCurrency()
   const { path } = useLang()
+  const { t } = useTranslation('search')
   const priceDisplay = formatPrice(property.priceEUR)
   const image = getImageUrl(property.images[0] || 'property-01.jpg', { width: 400, height: 300, resize: 'cover' })
+  const transactionLabel = property.transaction === 'sale' ? t('card.forSale') : t('card.forRent')
 
   return (
     <div className="bg-white rounded-card border border-border-warm shadow-card hover:shadow-card-hover transition-all duration-250 overflow-hidden group flex flex-col sm:flex-row">
       <Link to={path(`/property/${property.slug}`)} className="relative sm:w-[40%] aspect-[3/2] sm:aspect-auto overflow-hidden flex-shrink-0">
         <img src={image} alt={property.title} className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-400" loading="lazy" />
         <span className="absolute top-3 left-3 bg-palm text-white text-[11px] font-semibold px-2 py-1 rounded">
-          {property.transaction === 'sale' ? 'À vendre' : 'À louer'}
+          {transactionLabel}
         </span>
         {property.isExclusive && (
           <span className="absolute top-3 left-[70px] bg-gold text-midnight text-[11px] font-semibold px-2 py-1 rounded">Exclusivité</span>
@@ -461,7 +464,9 @@ function PropertyCardCompact({ property, isHovered = false }: { property: Proper
   const { toggleFavorite, isFavorite } = useFavorites()
   const { formatPrice } = useCurrency()
   const { path } = useLang()
+  const { t } = useTranslation('search')
   const image = getImageUrl(property.images[0] || 'property-01.jpg', { width: 400, height: 300, resize: 'cover' })
+  const transactionLabel = property.transaction === 'sale' ? t('card.forSale') : t('card.forRent')
 
   return (
     <Link to={path(`/property/${property.slug}`)} className={cn(
@@ -470,7 +475,7 @@ function PropertyCardCompact({ property, isHovered = false }: { property: Proper
     )}>
       <div className="relative w-[100px] h-[80px] flex-shrink-0 rounded-lg overflow-hidden">
         <img src={image} alt={property.title} className="w-full h-full object-cover" loading="lazy" />
-        <span className="absolute top-1 left-1 bg-palm text-white text-[9px] font-semibold px-1.5 py-0.5 rounded">{property.transaction === 'sale' ? 'À vendre' : 'À louer'}</span>
+        <span className="absolute top-1 left-1 bg-palm text-white text-[9px] font-semibold px-1.5 py-0.5 rounded">{transactionLabel}</span>
         {property.isExclusive && <span className="absolute top-5 left-1 bg-gold text-midnight text-[9px] font-semibold px-1.5 py-0.5 rounded">Excl.</span>}
       </div>
       <div className="flex-1 min-w-0 py-0.5">
@@ -496,8 +501,10 @@ function PropertyCardGrid({ property, isHovered = false }: { property: Property;
   const { toggleFavorite, isFavorite } = useFavorites()
   const { formatPrice } = useCurrency()
   const { path } = useLang()
+  const { t } = useTranslation('search')
   const priceDisplay = formatPrice(property.priceEUR)
   const image = getImageUrl(property.images[0] || 'property-01.jpg', { width: 400, height: 300, resize: 'cover' })
+  const transactionLabel = property.transaction === 'sale' ? t('card.forSale') : t('card.forRent')
 
   return (
     <div className={cn(
@@ -509,7 +516,7 @@ function PropertyCardGrid({ property, isHovered = false }: { property: Property;
           <img src={image} alt={property.title} className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-400" loading="lazy" />
         </Link>
         <span className="absolute top-3 left-3 bg-palm text-white text-[11px] font-semibold px-2 py-1 rounded">
-          {property.transaction === 'sale' ? 'À vendre' : 'À louer'}
+          {transactionLabel}
         </span>
         {property.isExclusive && (
           <span className="absolute top-3 left-[70px] bg-gold text-midnight text-[11px] font-semibold px-2 py-1 rounded">Exclusivité</span>
@@ -546,7 +553,7 @@ function PropertyCardGrid({ property, isHovered = false }: { property: Property;
           </p>
         )}
         <Link to={path(`/property/${property.slug}`)} className="inline-block mt-3 text-terracotta text-[14px] font-inter font-medium hover:underline">
-          Voir le bien →
+          {t('viewProperty')} →
         </Link>
       </div>
     </div>
@@ -709,6 +716,7 @@ export default function SearchPage() {
   const location = useLocation()
   const navigate = useNavigate()
   const { path } = useLang()
+  const { t } = useTranslation('search')
   const isRentRoute = location.pathname.endsWith('/louer')
 
   const [filters, setFilters] = useState<Filters>(() => ({
@@ -730,7 +738,9 @@ export default function SearchPage() {
   }, [isRentRoute])
 
   useEffect(() => {
-    setLoading(true)
+    // Only flash the spinner on the first load; keep showing previous results
+    // when filters change so the list doesn't blink to empty.
+    if (allProperties.length === 0) setLoading(true)
     const typesMapped = filters.types.map(t => {
       const map: Record<string, string> = {
         'Villa': 'villa', 'Appartement': 'apartment', 'Riad': 'riad',
@@ -759,6 +769,7 @@ export default function SearchPage() {
     }).finally(() => {
       setLoading(false)
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters, sort])
 
   const filtered = allProperties
@@ -782,10 +793,10 @@ export default function SearchPage() {
   }, [])
 
   const resultsLabel = filters.transaction === 'sale'
-    ? `${filtered.length} bien${filtered.length > 1 ? 's' : ''} à vendre à Marrakech`
-    : `${filtered.length} bien${filtered.length > 1 ? 's' : ''} à louer à Marrakech`
+    ? t('resultsForSale', { count: filtered.length })
+    : t('resultsForRent', { count: filtered.length })
 
-  const pageTitle = filters.transaction === 'sale' ? 'Acheter' : 'Louer'
+  const pageTitle = filters.transaction === 'sale' ? t('pageTitle.buy') : t('pageTitle.rent')
 
   // Handle map pin hover syncing
   const handleMapHover = useCallback((slug: string | null) => {
@@ -807,7 +818,7 @@ export default function SearchPage() {
             {/* Breadcrumb + count */}
             <div>
               <p className="hidden lg:block text-[13px] text-text-secondary mb-1">
-                Accueil &gt; {pageTitle} &gt; Marrakech
+                {t('breadcrumb.home')} &gt; {pageTitle} &gt; {t('city')}
               </p>
               <p className="font-inter text-[16px] font-medium text-midnight">{resultsLabel}</p>
             </div>

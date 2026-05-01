@@ -23,7 +23,8 @@
     "properties": "Properties",
     "contacts": "Contacts",
     "profile": "My profile",
-    "settings": "Settings"
+    "settings": "Settings",
+    "backToSite": "Back to site"
   },
   "dashboard": {
     "title": "Dashboard",

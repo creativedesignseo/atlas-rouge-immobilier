@@ -75,6 +75,10 @@
   },
   "results_one": "{{count}} bien à {{transaction}} à Marrakech",
   "results_other": "{{count}} biens à {{transaction}} à Marrakech",
+  "resultsForSale_one": "{{count}} bien à vendre à Marrakech",
+  "resultsForSale_other": "{{count}} biens à vendre à Marrakech",
+  "resultsForRent_one": "{{count}} bien à louer à Marrakech",
+  "resultsForRent_other": "{{count}} biens à louer à Marrakech",
   "viewToggle": {
     "grid": "Galerie",
     "list": "Liste",
@@ -95,5 +99,16 @@
     "backToList": "Retour à la liste"
   },
   "viewProperty": "Voir le bien",
-  "pricePerSqm": "/ m²"
+  "pricePerSqm": "/ m²",
+  "card": {
+    "forSale": "À vendre",
+    "forRent": "À louer",
+    "exclusive": "Exclusivité"
+  },
+  "pageTitle": {
+    "buy": "Acheter",
+    "rent": "Louer"
+  },
+  "city": "Marrakech",
+  "kmAround": "{{km}} km"
 }

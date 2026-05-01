@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect } from 'react'
-import { Routes, Route, Outlet, Navigate, useParams, useNavigate, useLocation } from 'react-router-dom'
+import { Routes, Route, Outlet, Navigate, useParams, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Toaster } from '@/components/ui/sonner'
 import Layout from './components/Layout'
@@ -54,10 +54,8 @@ function LangWrapper() {
   const { lang } = useParams<{ lang: string }>()
   const { i18n } = useTranslation()
   const navigate = useNavigate()
-  const { pathname } = useLocation()
 
   useEffect(() => {
-    // Safety guard: never treat "admin" or other reserved words as a lang code
     if (!lang || !SUPPORTED_LANGUAGES.includes(lang as SupportedLanguage)) {
       navigate(`/en/`, { replace: true })
       return
@@ -66,7 +64,7 @@ function LangWrapper() {
       i18n.changeLanguage(lang)
     }
     document.documentElement.lang = lang
-  }, [lang, i18n, navigate, pathname])
+  }, [lang, i18n, navigate])
 
   return <Outlet />
 }

@@ -1,17 +1,19 @@
 import { NavLink, useLocation } from 'react-router-dom'
 import { LayoutDashboard, Home, Mail, ArrowLeft, Menu, X, UserCircle } from 'lucide-react'
 import { useState } from 'react'
-
-const navItems = [
-  { path: '/admin', label: 'Tableau de bord', icon: LayoutDashboard },
-  { path: '/admin/properties', label: 'Propriétés', icon: Home },
-  { path: '/admin/contacts', label: 'Contacts', icon: Mail },
-  { path: '/admin/profile', label: 'Mon profil', icon: UserCircle },
-]
+import { useTranslation } from 'react-i18next'
 
 export default function AdminSidebar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const location = useLocation()
+  const { t } = useTranslation('admin')
+
+  const navItems = [
+    { path: '/admin', label: t('sidebar.dashboard'), icon: LayoutDashboard },
+    { path: '/admin/properties', label: t('sidebar.properties'), icon: Home },
+    { path: '/admin/contacts', label: t('sidebar.contacts'), icon: Mail },
+    { path: '/admin/profile', label: t('sidebar.profile'), icon: UserCircle },
+  ]
 
   const isActive = (path: string) => {
     if (path === '/admin') return location.pathname === '/admin'
@@ -47,7 +49,7 @@ export default function AdminSidebar() {
           <h1 className="text-white font-playfair text-xl font-semibold tracking-wide">
             Atlas Rouge
           </h1>
-          <p className="text-white/50 text-xs mt-1">Panneau d'administration</p>
+          <p className="text-white/50 text-xs mt-1">{t('login.subtitle')}</p>
         </div>
 
         {/* Nav */}
@@ -79,7 +81,7 @@ export default function AdminSidebar() {
             className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-white/70 hover:bg-white/10 hover:text-white transition-colors"
           >
             <ArrowLeft size={18} />
-            Retour au site
+            {t('sidebar.backToSite')}
           </NavLink>
         </div>
       </aside>

@@ -23,7 +23,8 @@
     "properties": "Inmuebles",
     "contacts": "Contactos",
     "profile": "Mi perfil",
-    "settings": "Configuración"
+    "settings": "Configuración",
+    "backToSite": "Volver al sitio"
   },
   "dashboard": {
     "title": "Panel de control",

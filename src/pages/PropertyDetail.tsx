@@ -344,7 +344,7 @@ function AmenityItem({ label }: { label: string }) {
 
 export default function PropertyDetail() {
   const { slug } = useParams<{ slug: string }>()
-  const { t } = useTranslation('property')
+  const { t, i18n } = useTranslation('property')
   const { t: tc } = useTranslation('common')
   const { toggleFavorite, isFavorite } = useFavorites()
   const { formatPrice } = useCurrency()
@@ -354,6 +354,7 @@ export default function PropertyDetail() {
   const [property, setProperty] = useState<Property | undefined>(undefined)
   const [similarProperties, setSimilarProperties] = useState<Property[]>([])
   const [loading, setLoading] = useState(true)
+  const currentLang = i18n.language?.slice(0, 2) || 'en'
 
   const guideLinkLabels: Record<string, string> = {
     notaire: t('guideLabels.notaire', { defaultValue: 'Notaire ou Adoul' }),
@@ -365,14 +366,21 @@ export default function PropertyDetail() {
 
   useEffect(() => {
     if (!slug) return
-    setLoading(true)
+    let cancelled = false
+    // Only show the loading spinner on the first fetch. On language switches
+    // (and other refetches) keep the previous content visible until the new
+    // data arrives — fixes the "property disappears, then re-appears" flicker.
+    if (!property) setLoading(true)
+
     getPropertyBySlug(slug)
       .then((p) => {
+        if (cancelled) return
         setProperty(p || undefined)
         if (p) {
           getSimilarProperties(p, 3)
-            .then(setSimilarProperties)
+            .then((data) => { if (!cancelled) setSimilarProperties(data) })
             .catch((err) => {
+              if (cancelled) return
               console.error('Failed to load similar properties:', err)
               setSimilarProperties([])
             })
@@ -381,14 +389,21 @@ export default function PropertyDetail() {
         }
       })
       .catch((err) => {
+        if (cancelled) return
         console.error('Failed to load property:', err)
         setProperty(undefined)
         setSimilarProperties([])
       })
       .finally(() => {
-        setLoading(false)
+        if (!cancelled) setLoading(false)
       })
-  }, [slug])
+
+    return () => { cancelled = true }
+    // currentLang is intentionally a dep: when the user changes the UI
+    // language we want to refetch so the localized title/description/highlights
+    // match. The slug-only dep would leave stale French text on /en/.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug, currentLang])
 
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)

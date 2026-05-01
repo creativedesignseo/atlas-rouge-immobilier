@@ -23,7 +23,8 @@
     "properties": "Biens",
     "contacts": "Contacts",
     "profile": "Mon profil",
-    "settings": "Paramètres"
+    "settings": "Paramètres",
+    "backToSite": "Retour au site"
   },
   "dashboard": {
     "title": "Tableau de bord",
