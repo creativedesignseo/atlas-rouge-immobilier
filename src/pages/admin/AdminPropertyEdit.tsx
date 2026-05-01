@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '@/hooks/useAuth'
 import PropertyForm from '@/components/admin/PropertyForm'
 import { getPropertyForEdit, updateProperty } from '@/services/admin/propertyAdmin.service'
@@ -8,6 +9,7 @@ import type { PropertyFormData } from '@/services/admin/propertyAdmin.service'
 
 export default function AdminPropertyEdit() {
   const navigate = useNavigate()
+  const { t } = useTranslation('admin')
   const { slug } = useParams<{ slug: string }>()
   const { agent } = useAuth()
   const [defaultValues, setDefaultValues] = useState<Partial<PropertyFormData>>()
@@ -20,22 +22,22 @@ export default function AdminPropertyEdit() {
       if (data) {
         setDefaultValues(data)
       } else {
-        toast.error('Propriété non trouvée')
+        toast.error(t('propertyEdit.notFound'))
         navigate('/admin/properties')
       }
       setIsFetching(false)
     })
-  }, [slug, navigate])
+  }, [slug, navigate, t])
 
   const handleSubmit = async (data: PropertyFormData) => {
     if (!slug) return
     setIsLoading(true)
     try {
       await updateProperty(slug, data, agent?.id)
-      toast.success('Propriété mise à jour avec succès')
+      toast.success(t('propertyEdit.updateSuccess'))
       navigate('/admin/properties')
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Erreur lors de la mise à jour')
+      toast.error(error instanceof Error ? error.message : t('propertyEdit.updateError'))
       throw error
     } finally {
       setIsLoading(false)

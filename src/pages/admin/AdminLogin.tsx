@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Eye, EyeOff, Lock, Mail } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { signIn } from '@/services/auth.service'
 import { useAuth } from '@/hooks/useAuth'
 import { toast } from 'sonner'
 
 export default function AdminLogin() {
   const navigate = useNavigate()
+  const { t } = useTranslation('admin')
   const { user, agent, isLoading: authLoading } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -23,7 +25,7 @@ export default function AdminLogin() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!email.trim() || !password.trim()) {
-      toast.error('Veuillez remplir tous les champs')
+      toast.error(t('loginExtra.missingFields'))
       return
     }
 
@@ -33,8 +35,8 @@ export default function AdminLogin() {
 
       if (error) {
         toast.error(error.message === 'Invalid login credentials'
-          ? 'Email ou mot de passe incorrect'
-          : 'Erreur de connexion: ' + error.message
+          ? t('loginExtra.invalidCredentials')
+          : `${t('loginExtra.errorPrefix')}: ${error.message}`
         )
       }
       // Navigation is handled by the useEffect above once agent data loads

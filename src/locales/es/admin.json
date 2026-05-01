@@ -117,6 +117,19 @@
     "saveSuccess": "Inmueble guardado",
     "saveError": "Error al guardar el inmueble"
   },
+  "propertyEdit": {
+    "notFound": "Inmueble no encontrado",
+    "createSuccess": "Inmueble creado con éxito",
+    "createError": "Error al crear el inmueble",
+    "updateSuccess": "Inmueble actualizado con éxito",
+    "updateError": "Error al actualizar el inmueble",
+    "saveError": "Error al guardar"
+  },
+  "loginExtra": {
+    "missingFields": "Por favor complete todos los campos",
+    "invalidCredentials": "Email o contraseña incorrectos",
+    "errorPrefix": "Error de inicio de sesión"
+  },
   "propertyForm": {
     "basicInfo": "Información básica",
     "title": "Título",

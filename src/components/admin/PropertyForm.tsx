@@ -191,7 +191,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
     try {
       await onSubmit(data)
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Erreur lors de la sauvegarde')
+      toast.error(error instanceof Error ? error.message : t('propertyEdit.saveError'))
     }
   })
 

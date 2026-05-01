@@ -117,6 +117,19 @@
     "saveSuccess": "Bien enregistré",
     "saveError": "Erreur lors de l'enregistrement"
   },
+  "propertyEdit": {
+    "notFound": "Propriété non trouvée",
+    "createSuccess": "Propriété créée avec succès",
+    "createError": "Erreur lors de la création",
+    "updateSuccess": "Propriété mise à jour avec succès",
+    "updateError": "Erreur lors de la mise à jour",
+    "saveError": "Erreur lors de la sauvegarde"
+  },
+  "loginExtra": {
+    "missingFields": "Veuillez remplir tous les champs",
+    "invalidCredentials": "Email ou mot de passe incorrect",
+    "errorPrefix": "Erreur de connexion"
+  },
   "propertyForm": {
     "basicInfo": "Informations de base",
     "title": "Titre",

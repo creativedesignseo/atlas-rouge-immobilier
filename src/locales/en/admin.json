@@ -117,6 +117,19 @@
     "saveSuccess": "Property saved",
     "saveError": "Error saving property"
   },
+  "propertyEdit": {
+    "notFound": "Property not found",
+    "createSuccess": "Property created successfully",
+    "createError": "Error creating property",
+    "updateSuccess": "Property updated successfully",
+    "updateError": "Error updating property",
+    "saveError": "Error saving property"
+  },
+  "loginExtra": {
+    "missingFields": "Please fill in all fields",
+    "invalidCredentials": "Incorrect email or password",
+    "errorPrefix": "Login error"
+  },
   "propertyForm": {
     "basicInfo": "Basic information",
     "title": "Title",

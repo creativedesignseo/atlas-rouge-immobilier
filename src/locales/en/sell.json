@@ -1,0 +1,33 @@
+{
+  "breadcrumb": {
+    "home": "Home",
+    "sell": "Sell"
+  },
+  "hero": {
+    "title": "Sell or rent your property in Marrakech",
+    "subtitle": "Free valuation, professional presentation, and exposure to thousands of international buyers.",
+    "estimateButton": "Get a free estimate",
+    "publishButton": "Publish a listing"
+  },
+  "howItWorks": {
+    "title": "Sell your property in 4 steps",
+    "steps": {
+      "1": {
+        "title": "Valuation",
+        "description": "Free and realistic valuation of your property by our experts."
+      },
+      "2": {
+        "title": "Presentation",
+        "description": "Professional photos, virtual tour and optimised description."
+      },
+      "3": {
+        "title": "Exposure",
+        "description": "Your listing is shown to our network of qualified buyers."
+      },
+      "4": {
+        "title": "Sale",
+        "description": "Support all the way to the signing at the notary."
+      }
+    }
+  }
+}

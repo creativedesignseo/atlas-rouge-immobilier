@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useLang } from '@/hooks/useLang'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
@@ -103,29 +104,8 @@ const agents = [
   },
 ]
 
-/* ── How it works steps ── */
-const steps = [
-  {
-    number: '01',
-    title: 'Estimation',
-    description: '\u00C9valuation gratuite et r\u00E9aliste de votre bien par nos experts.',
-  },
-  {
-    number: '02',
-    title: 'Mise en valeur',
-    description: 'Photos professionnelles, visite virtuelle et description optimis\u00E9e.',
-  },
-  {
-    number: '03',
-    title: 'Diffusion',
-    description: 'Votre annonce est diffus\u00E9e aupr\u00E8s de notre r\u00E9seau d\u2019acheteurs qualifi\u00E9s.',
-  },
-  {
-    number: '04',
-    title: 'Vente',
-    description: 'Accompagnement jusqu\u2019\u00E0 la signature chez le notaire.',
-  },
-]
+/* ── How it works steps (labels resolved via i18n at render time) ── */
+const stepNumbers = ['01', '02', '03', '04'] as const
 
 /* ── FAQ Accordion Item ── */
 function FaqItem({
@@ -177,6 +157,7 @@ function FaqItem({
 /* ── Main Component ── */
 export default function Sell() {
   const { path } = useLang()
+  const { t } = useTranslation('sell')
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [specialtyFilter, setSpecialtyFilter] = useState('')
@@ -365,31 +346,30 @@ export default function Sell() {
           {/* Breadcrumb */}
           <p className="text-text-secondary text-[13px] font-inter mb-6">
             <Link to={path('/')} className="hover:text-terracotta transition-colors">
-              Accueil
+              {t('breadcrumb.home')}
             </Link>
             <span className="mx-2">&gt;</span>
-            <span>Vendre</span>
+            <span>{t('breadcrumb.sell')}</span>
           </p>
 
           <h1 className="hero-title font-playfair text-[42px] md:text-[48px] font-medium text-midnight leading-tight max-w-[700px] mx-auto mb-6">
-            Vendez ou louez votre bien &agrave; Marrakech
+            {t('hero.title')}
           </h1>
           <p className="hero-subtitle text-text-secondary text-[17px] md:text-[18px] font-inter max-w-[560px] mx-auto mb-8 leading-relaxed">
-            Estimation gratuite, mise en valeur professionnelle, et diffusion
-            aupr&egrave;s de milliers d&rsquo;acheteurs fran&ccedil;ais.
+            {t('hero.subtitle')}
           </p>
           <div className="hero-buttons flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               to={path('/estimation')}
               className="bg-terracotta text-white font-inter text-[14px] font-semibold px-6 py-3 rounded-lg hover:scale-[1.02] transition-transform"
             >
-              Estimer mon bien
+              {t('hero.estimateButton')}
             </Link>
             <Link
               to="#depot"
               className="bg-white text-text-primary font-inter text-[14px] font-semibold px-6 py-3 rounded-lg border border-border-warm hover:scale-[1.02] transition-transform"
             >
-              D&eacute;poser une annonce
+              {t('hero.publishButton')}
             </Link>
           </div>
         </div>
@@ -516,7 +496,7 @@ export default function Sell() {
             Comment &ccedil;a marche
           </p>
           <h2 className="hiw-title font-playfair text-[36px] md:text-[40px] font-medium text-midnight text-center mb-16">
-            Vendre votre bien en 4 &eacute;tapes
+            {t('howItWorks.title')}
           </h2>
 
           {/* Steps */}
@@ -524,16 +504,16 @@ export default function Sell() {
             {/* Dashed connector line - desktop */}
             <div className="hidden lg:block absolute top-[30px] left-[12%] right-[12%] border-t border-dashed border-sand" />
 
-            {steps.map((step) => (
-              <div key={step.number} className="hiw-step relative text-center">
+            {stepNumbers.map((number, idx) => (
+              <div key={number} className="hiw-step relative text-center">
                 <span className="font-playfair text-[48px] font-semibold text-terracotta/30 block mb-3">
-                  {step.number}
+                  {number}
                 </span>
                 <h4 className="font-playfair text-[20px] font-semibold text-midnight mb-2">
-                  {step.title}
+                  {t(`howItWorks.steps.${idx + 1}.title`)}
                 </h4>
                 <p className="text-text-secondary text-[14px] font-inter leading-relaxed">
-                  {step.description}
+                  {t(`howItWorks.steps.${idx + 1}.description`)}
                 </p>
               </div>
             ))}
