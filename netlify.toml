@@ -5,6 +5,14 @@
   function = "img-proxy"
   path = "/img/*"
 
+# Stale chunks (e.g. Search-XXX.js from a previous deploy) must NOT fall
+# back to /index.html — that returns HTML with a wrong MIME type and the
+# browser refuses to execute it. Return 404 so the chunk-load handler in
+# main.tsx can detect the error and force a reload.
+[[redirects]]
+  from = "/assets/*"
+  status = 404
+
 [[redirects]]
   from = "/admin/*"
   to = "/index.html"
