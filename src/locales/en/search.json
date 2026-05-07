@@ -27,7 +27,8 @@
     "media": "Media",
     "radius": "Radius",
     "reset": "Reset filters",
-    "resetAll": "Clear all"
+    "resetAll": "Clear all",
+    "search": "Search"
   },
   "types": {
     "villa": "Villa",

@@ -48,13 +48,14 @@ interface Filters {
 
 /* ───────────────────── constants ───────────────────── */
 
+// Filter options reference i18n keys; labels resolved at render via t().
 const typeOptions = [
-  { key: 'villa', label: 'Villa' },
-  { key: 'apartment', label: 'Appartement' },
-  { key: 'riad', label: 'Riad' },
-  { key: 'prestige', label: 'Maison de prestige' },
-  { key: 'land', label: 'Terrain' },
-  { key: 'rooftop', label: 'Rooftop' },
+  { key: 'villa', i18nKey: 'types.villa' },
+  { key: 'apartment', i18nKey: 'types.apartment' },
+  { key: 'riad', i18nKey: 'types.riad' },
+  { key: 'prestige', i18nKey: 'types.prestige' },
+  { key: 'land', i18nKey: 'types.land' },
+  { key: 'rooftop', i18nKey: 'types.rooftop' },
 ]
 
 const radiusOptions = [
@@ -66,27 +67,27 @@ const radiusOptions = [
 ]
 
 const statusOptions = [
-  { key: 'neuf', label: 'Neuf' },
-  { key: 'ancien', label: 'Ancien' },
-  { key: 'exclusivite', label: 'Exclusivité' },
-  { key: 'baisse', label: 'Baisse de prix' },
-  { key: 'recent', label: "Moins d'un mois" },
+  { key: 'neuf', i18nKey: 'status.new' },
+  { key: 'ancien', i18nKey: 'status.old' },
+  { key: 'exclusivite', i18nKey: 'status.exclusive' },
+  { key: 'baisse', i18nKey: 'status.priceDrop' },
+  { key: 'recent', i18nKey: 'status.recent' },
 ]
 
 const viewOptions = [
-  { key: 'atlas', label: 'Atlas' },
-  { key: 'jardin', label: 'Jardin' },
-  { key: 'piscine', label: 'Piscine' },
-  { key: 'medina', label: 'Médina' },
-  { key: 'golf', label: 'Golf' },
+  { key: 'atlas', i18nKey: 'views.atlas' },
+  { key: 'jardin', i18nKey: 'views.garden' },
+  { key: 'piscine', i18nKey: 'views.pool' },
+  { key: 'medina', i18nKey: 'views.medina' },
+  { key: 'golf', i18nKey: 'views.golf' },
 ]
 
 const styleOptions = [
-  { key: 'contemporain', label: 'Contemporain' },
-  { key: 'marocain-moderne', label: 'Marocain moderne' },
-  { key: 'riad-traditionnel', label: 'Riad traditionnel rénové' },
-  { key: 'minimaliste', label: 'Villa minimaliste' },
-  { key: 'domaine-prive', label: 'Domaine privé' },
+  { key: 'contemporain', i18nKey: 'styles.contemporary' },
+  { key: 'marocain-moderne', i18nKey: 'styles.moroccanModern' },
+  { key: 'riad-traditionnel', i18nKey: 'styles.traditionalRiad' },
+  { key: 'minimaliste', i18nKey: 'styles.minimalist' },
+  { key: 'domaine-prive', i18nKey: 'styles.privateEstate' },
 ]
 
 const amenitiesList = [
@@ -97,9 +98,9 @@ const amenitiesList = [
 ]
 
 const mediaOptions = [
-  { key: 'photos', label: 'Avec photos' },
-  { key: 'video', label: 'Avec vidéo' },
-  { key: '3d', label: 'Visite 3D' },
+  { key: 'photos', i18nKey: 'media.photos' },
+  { key: 'video', i18nKey: 'media.video' },
+  { key: '3d', i18nKey: 'media.3d' },
 ]
 
 // Sort options reference i18n keys; labels resolved at render via t().
@@ -137,7 +138,7 @@ const defaultFilters: Filters = {
   media: [],
 }
 
-const nbhdList = ['Guéliz', 'Hivernage', 'Palmeraie', 'Médina', 'Agdal', 'Targa', 'Amelkis', "Route de l'Ourika", 'Route de Fès', "Route d'Amizmiz", 'M Avenue']
+const nbhdList = ['Guéliz', 'Hivernage', 'Palmeraie', 'Médina', 'Agdal', 'Targa', 'Amelkis', "Route de l'Ourika", 'Route de Fès', "Route d'Amizmiz", 'Route de Tahannaout', 'M Avenue']
 
 /* ───────────────────── helper functions ───────────────────── */
 
@@ -151,18 +152,30 @@ function canUseWebGL() {
   )
 }
 
-function getActiveFilterChips(filters: Filters): { key: string; label: string; onRemove: () => void }[] {
+function getActiveFilterChips(
+  filters: Filters,
+  t: (key: string) => string,
+): { key: string; label: string; onRemove: () => void }[] {
   const chips: { key: string; label: string; onRemove: () => void }[] = []
-  if (filters.searchQuery) chips.push({ key: 'search', label: `Recherche: ${filters.searchQuery}`, onRemove: () => { } })
+  if (filters.searchQuery) chips.push({ key: 'search', label: `${t('filters.search')}: ${filters.searchQuery}`, onRemove: () => { } })
   filters.neighborhoods.forEach(n => chips.push({ key: `nbhd-${n}`, label: n, onRemove: () => { } }))
-  filters.types.forEach(t => chips.push({ key: `type-${t}`, label: t, onRemove: () => { } }))
-  if (filters.priceMin || filters.priceMax) chips.push({ key: 'price', label: `Prix: ${filters.priceMin || '0'} - ${filters.priceMax || '∞'} €`, onRemove: () => { } })
-  if (filters.surfaceMin || filters.surfaceMax) chips.push({ key: 'surface', label: `Surface: ${filters.surfaceMin || '0'} - ${filters.surfaceMax || '∞'} m²`, onRemove: () => { } })
-  if (filters.bedroomsMin || filters.bedroomsMax) chips.push({ key: 'bedrooms', label: `Chambres: ${filters.bedroomsMin || '0'} - ${filters.bedroomsMax || '∞'}`, onRemove: () => { } })
-  if (filters.roomsMin || filters.roomsMax) chips.push({ key: 'rooms', label: `Pièces: ${filters.roomsMin || '0'} - ${filters.roomsMax || '∞'}`, onRemove: () => { } })
-  filters.statuses.forEach(s => chips.push({ key: `status-${s}`, label: statusOptions.find(o => o.key === s)?.label || s, onRemove: () => { } }))
+  filters.types.forEach(typeKey => {
+    const opt = typeOptions.find(o => o.key === typeKey)
+    chips.push({ key: `type-${typeKey}`, label: opt ? t(opt.i18nKey) : typeKey, onRemove: () => { } })
+  })
+  if (filters.priceMin || filters.priceMax) chips.push({ key: 'price', label: `${t('filters.budget')}: ${filters.priceMin || '0'} - ${filters.priceMax || '∞'} €`, onRemove: () => { } })
+  if (filters.surfaceMin || filters.surfaceMax) chips.push({ key: 'surface', label: `${t('filters.surfaceLiving')}: ${filters.surfaceMin || '0'} - ${filters.surfaceMax || '∞'} m²`, onRemove: () => { } })
+  if (filters.bedroomsMin || filters.bedroomsMax) chips.push({ key: 'bedrooms', label: `${t('filters.bedrooms')}: ${filters.bedroomsMin || '0'} - ${filters.bedroomsMax || '∞'}`, onRemove: () => { } })
+  if (filters.roomsMin || filters.roomsMax) chips.push({ key: 'rooms', label: `${t('filters.rooms')}: ${filters.roomsMin || '0'} - ${filters.roomsMax || '∞'}`, onRemove: () => { } })
+  filters.statuses.forEach(s => {
+    const opt = statusOptions.find(o => o.key === s)
+    chips.push({ key: `status-${s}`, label: opt ? t(opt.i18nKey) : s, onRemove: () => { } })
+  })
   filters.amenities.forEach(a => chips.push({ key: `amenity-${a}`, label: a, onRemove: () => { } }))
-  filters.media.forEach(m => chips.push({ key: `media-${m}`, label: mediaOptions.find(o => o.key === m)?.label || m, onRemove: () => { } }))
+  filters.media.forEach(m => {
+    const opt = mediaOptions.find(o => o.key === m)
+    chips.push({ key: `media-${m}`, label: opt ? t(opt.i18nKey) : m, onRemove: () => { } })
+  })
   return chips
 }
 
@@ -613,12 +626,12 @@ function MobileFilterDrawer({ filters, setFilters, onApply, onReset, resultCount
         <div className="mb-6">
           <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">{t('filters.type')}</label>
           <div className="space-y-2">
-            {typeOptions.map(t => (
-              <label key={t.key} className="flex items-center gap-2 cursor-pointer">
-                <div className={cn('w-4 h-4 border rounded flex items-center justify-center', filters.types.includes(t.label) ? 'bg-terracotta border-terracotta' : 'border-border-warm')}>
-                  {filters.types.includes(t.label) && <Check size={10} className="text-white" />}
+            {typeOptions.map(opt => (
+              <label key={opt.key} className="flex items-center gap-2 cursor-pointer">
+                <div className={cn('w-4 h-4 border rounded flex items-center justify-center', filters.types.includes(opt.key) ? 'bg-terracotta border-terracotta' : 'border-border-warm')}>
+                  {filters.types.includes(opt.key) && <Check size={10} className="text-white" />}
                 </div>
-                <span className="text-[14px] text-text-primary">{t.label}</span>
+                <span className="text-[14px] text-text-primary">{t(opt.i18nKey)}</span>
               </label>
             ))}
           </div>
@@ -671,7 +684,7 @@ function MobileFilterDrawer({ filters, setFilters, onApply, onReset, resultCount
               <div className={cn('w-4 h-4 border rounded flex items-center justify-center', filters.statuses.includes(s.key) ? 'bg-terracotta border-terracotta' : 'border-border-warm')}>
                 {filters.statuses.includes(s.key) && <Check size={10} className="text-white" />}
               </div>
-              <span className="text-[14px] text-text-primary">{s.label}</span>
+              <span className="text-[14px] text-text-primary">{t(s.i18nKey)}</span>
             </label>
           ))}
         </div>
@@ -697,7 +710,7 @@ function MobileFilterDrawer({ filters, setFilters, onApply, onReset, resultCount
               <div className={cn('w-4 h-4 border rounded flex items-center justify-center', filters.media.includes(m.key) ? 'bg-terracotta border-terracotta' : 'border-border-warm')}>
                 {filters.media.includes(m.key) && <Check size={10} className="text-white" />}
               </div>
-              <span className="text-[14px] text-text-primary">{m.label}</span>
+              <span className="text-[14px] text-text-primary">{t(m.i18nKey)}</span>
             </label>
           ))}
         </div>
@@ -743,17 +756,10 @@ export default function SearchPage() {
     // Only flash the spinner on the first load; keep showing previous results
     // when filters change so the list doesn't blink to empty.
     if (allProperties.length === 0) setLoading(true)
-    const typesMapped = filters.types.map(t => {
-      const map: Record<string, string> = {
-        'Villa': 'villa', 'Appartement': 'apartment', 'Riad': 'riad',
-        'Maison de prestige': 'prestige', 'Terrain': 'land', 'Rooftop': 'rooftop'
-      }
-      return map[t]
-    }).filter(Boolean) as string[]
 
     getProperties({
       transaction: filters.transaction,
-      types: typesMapped,
+      types: filters.types,
       neighborhoods: filters.neighborhoods,
       priceMin: filters.priceMin ? Number(filters.priceMin) : undefined,
       priceMax: filters.priceMax ? Number(filters.priceMax) : undefined,
@@ -776,7 +782,7 @@ export default function SearchPage() {
 
   const filtered = allProperties
 
-  const activeChips = useMemo(() => getActiveFilterChips(filters), [filters])
+  const activeChips = useMemo(() => getActiveFilterChips(filters, t), [filters, t])
 
   const resetFilters = useCallback(() => {
     setFilters({ ...defaultFilters, transaction: filters.transaction })
@@ -870,8 +876,8 @@ export default function SearchPage() {
                   {chip.label}
                   <button onClick={() => {
                     if (chip.key === 'search') updateFilter('searchQuery', '')
-                    else if (chip.key.startsWith('nbhd-')) toggleArrayValue('neighborhoods', chip.label)
-                    else if (chip.key.startsWith('type-')) toggleArrayValue('types', chip.label)
+                    else if (chip.key.startsWith('nbhd-')) toggleArrayValue('neighborhoods', chip.key.replace('nbhd-', ''))
+                    else if (chip.key.startsWith('type-')) toggleArrayValue('types', chip.key.replace('type-', ''))
                     else if (chip.key === 'price') { updateFilter('priceMin', ''); updateFilter('priceMax', '') }
                     else if (chip.key === 'surface') { updateFilter('surfaceMin', ''); updateFilter('surfaceMax', '') }
                     else if (chip.key.startsWith('status-')) toggleArrayValue('statuses', chip.key.replace('status-', ''))
@@ -883,7 +889,7 @@ export default function SearchPage() {
                 </span>
               ))}
               <button onClick={resetFilters} className="text-text-secondary text-[12px] font-medium hover:text-terracotta whitespace-nowrap">
-                Tout effacer
+                {t('filters.resetAll')}
               </button>
             </div>
           )}
@@ -941,15 +947,15 @@ export default function SearchPage() {
 
             {/* Type de bien */}
             <FilterSection title={t('filters.type')}>
-              {typeOptions.map(t => (
-                <label key={t.key} className="flex items-center gap-2 py-0.5 cursor-pointer">
+              {typeOptions.map(opt => (
+                <label key={opt.key} className="flex items-center gap-2 py-0.5 cursor-pointer">
                   <div
-                    onClick={() => toggleArrayValue('types', t.label)}
-                    className={cn('w-4 h-4 border rounded flex items-center justify-center cursor-pointer', filters.types.includes(t.label) ? 'bg-terracotta border-terracotta' : 'border-border-warm')}
+                    onClick={() => toggleArrayValue('types', opt.key)}
+                    className={cn('w-4 h-4 border rounded flex items-center justify-center cursor-pointer', filters.types.includes(opt.key) ? 'bg-terracotta border-terracotta' : 'border-border-warm')}
                   >
-                    {filters.types.includes(t.label) && <Check size={10} className="text-white" />}
+                    {filters.types.includes(opt.key) && <Check size={10} className="text-white" />}
                   </div>
-                  <span className="text-[13px] text-text-primary">{t.label}</span>
+                  <span className="text-[13px] text-text-primary">{t(opt.i18nKey)}</span>
                 </label>
               ))}
             </FilterSection>
@@ -1012,7 +1018,7 @@ export default function SearchPage() {
                   >
                     {filters.statuses.includes(s.key) && <Check size={10} className="text-white" />}
                   </div>
-                  <span className="text-[13px] text-text-primary">{s.label}</span>
+                  <span className="text-[13px] text-text-primary">{t(s.i18nKey)}</span>
                 </label>
               ))}
             </FilterSection>
@@ -1027,7 +1033,7 @@ export default function SearchPage() {
                   >
                     {filters.views.includes(v.key) && <Check size={10} className="text-white" />}
                   </div>
-                  <span className="text-[13px] text-text-primary">{v.label}</span>
+                  <span className="text-[13px] text-text-primary">{t(v.i18nKey)}</span>
                 </label>
               ))}
             </FilterSection>
@@ -1042,7 +1048,7 @@ export default function SearchPage() {
                   >
                     {filters.styles.includes(s.key) && <Check size={10} className="text-white" />}
                   </div>
-                  <span className="text-[13px] text-text-primary">{s.label}</span>
+                  <span className="text-[13px] text-text-primary">{t(s.i18nKey)}</span>
                 </label>
               ))}
             </FilterSection>
@@ -1074,7 +1080,7 @@ export default function SearchPage() {
                   >
                     {filters.media.includes(m.key) && <Check size={10} className="text-white" />}
                   </div>
-                  <span className="text-[13px] text-text-primary">{m.label}</span>
+                  <span className="text-[13px] text-text-primary">{t(m.i18nKey)}</span>
                 </label>
               ))}
             </FilterSection>
@@ -1082,7 +1088,7 @@ export default function SearchPage() {
             {/* Footer */}
             <div className="mt-6 space-y-2">
               <button onClick={resetFilters} className="w-full h-10 text-text-secondary text-[13px] font-medium hover:text-terracotta transition-colors">
-                Réinitialiser les filtres
+                {t('filters.reset')}
               </button>
             </div>
           </div>

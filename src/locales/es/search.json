@@ -27,7 +27,8 @@
     "media": "Multimedia",
     "radius": "Radio",
     "reset": "Restablecer filtros",
-    "resetAll": "Borrar todo"
+    "resetAll": "Borrar todo",
+    "search": "Búsqueda"
   },
   "types": {
     "villa": "Villa",
