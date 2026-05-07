@@ -1,1 +1,101 @@
-{}
+{
+  "breadcrumb": {
+    "home": "Accueil",
+    "blog": "Conseils immobiliers"
+  },
+  "hero": {
+    "title": "Conseils immobiliers à Marrakech",
+    "subtitle": "Guides, tendances du marché et conseils pour acheter, vendre ou louer au Maroc."
+  },
+  "categories": {
+    "all": "Tous",
+    "buying": "Achat",
+    "investment": "Investissement",
+    "neighborhoods": "Quartiers",
+    "taxation": "Fiscalité",
+    "decoration": "Décoration",
+    "market": "Marché"
+  },
+  "readTimeSuffix": "de lecture",
+  "readMore": "Lire l'article",
+  "featured": {
+    "category": "market",
+    "title": "Prix de l'immobilier à Marrakech : tendances et prévisions 2024",
+    "excerpt": "Après une année de stabilisation, le marché immobilier de Marrakech montre des signes de reprise. Analyse des prix au m² par quartier et des facteurs qui influenceront le marché en 2024.",
+    "date": "15 janvier 2024",
+    "readTime": "8 min"
+  },
+  "articles": {
+    "pricing-trends": {
+      "category": "neighborhoods",
+      "title": "Prix de l'immobilier à Marrakech : tendances et prévisions 2025",
+      "excerpt": "Après une année de stabilisation, le marché immobilier de Marrakech montre des signes de reprise. Analyse des prix au m² par quartier et des facteurs qui influenceront le marché en 2025.",
+      "date": "15 janvier 2024",
+      "readTime": "8 min"
+    },
+    "gueliz-vs-hivernage": {
+      "category": "neighborhoods",
+      "title": "Choisir son quartier à Marrakech : Guéliz vs Hivernage",
+      "excerpt": "Deux quartiers, deux ambiances. Guéliz, le cœur moderne avec ses commerces et restaurants, contre Hivernage, l'élégance des avenues bordées d'arbres. Le comparatif détaillé pour bien choisir.",
+      "date": "12 janvier 2024",
+      "readTime": "6 min"
+    },
+    "foreigner-guide": {
+      "category": "buying",
+      "title": "Acheter au Maroc en tant qu'étranger : le guide complet",
+      "excerpt": "Tout ce que les étrangers doivent savoir pour acquérir un bien immobilier au Maroc : formalités, financement, fiscalité et pièges à éviter.",
+      "date": "10 janvier 2024",
+      "readTime": "7 min"
+    },
+    "riad-vs-villa": {
+      "category": "buying",
+      "title": "Riad ou villa : quel bien choisir à Marrakech ?",
+      "excerpt": "Entre l'authenticité d'un riad traditionnel et le confort moderne d'une villa avec piscine, le choix n'est pas simple. Découvrez les avantages de chaque option.",
+      "date": "8 janvier 2024",
+      "readTime": "6 min"
+    },
+    "rental-yields": {
+      "category": "investment",
+      "title": "Investissement locatif à Marrakech : les meilleurs rendements",
+      "excerpt": "Les villas avec piscine génèrent les meilleurs rendements en saisonnier. Découvrez quels quartiers offrent le meilleur rapport qualité/prix pour votre projet locatif.",
+      "date": "5 janvier 2024",
+      "readTime": "7 min"
+    },
+    "palmeraie-luxury": {
+      "category": "neighborhoods",
+      "title": "Palmeraie : le quartier des villas de luxe",
+      "excerpt": "L'oasis de 150 000 palmiers abrite les plus belles propriétés de Marrakech. Villas avec piscine, resorts haut de gamme et vue sur l'Atlas : tout savoir sur ce quartier prisé.",
+      "date": "3 janvier 2024",
+      "readTime": "5 min"
+    },
+    "moroccan-decor": {
+      "category": "decoration",
+      "title": "Décoration marocaine moderne : tendances et inspirations",
+      "excerpt": "Le style marocain contemporain mêle zelliges, tadelakt et mobilier design. Découvrez les dernières tendances pour aménager votre riad ou villa avec une touche moderne.",
+      "date": "28 décembre 2023",
+      "readTime": "5 min"
+    },
+    "palmeraie-vs-hivernage": {
+      "category": "neighborhoods",
+      "title": "La Palmeraie vs l'Hivernage : où investir en 2025 ?",
+      "excerpt": "Deux quartiers emblématiques, deux profils d'investissement. La Palmeraie offre l'exclusivité et la nature, tandis que l'Hivernage allie centralité et prestige historique.",
+      "date": "20 décembre 2023",
+      "readTime": "6 min"
+    },
+    "eco-houses": {
+      "category": "investment",
+      "title": "Maisons écologiques à Marrakech : le nouveau marché",
+      "excerpt": "Construction durable, panneaux solaires et gestion de l'eau : le green building séduit de plus en plus d'acheteurs à Marrakech. Zoom sur cette tendance porteuse.",
+      "date": "15 décembre 2023",
+      "readTime": "6 min"
+    }
+  },
+  "newsletter": {
+    "title": "Ne manquez aucune actualité du marché",
+    "subtitle": "Recevez nos analyses et conseils immobiliers directement dans votre boîte mail.",
+    "placeholder": "Votre adresse email",
+    "submit": "S'inscrire",
+    "disclaimer": "Désinscription à tout moment. Aucun spam.",
+    "alertSoon": "Inscription bientôt disponible !"
+  }
+}
