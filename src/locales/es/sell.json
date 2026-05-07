@@ -9,7 +9,34 @@
     "estimateButton": "Tasar mi inmueble",
     "publishButton": "Publicar un anuncio"
   },
+  "features": {
+    "depot": {
+      "title": "Publicar un anuncio",
+      "description": "Publique su anuncio gratuitamente y llegue directamente a los compradores. Fotos ilimitadas, descripción detallada y visibilidad inmediata.",
+      "items": [
+        "Anuncio gratuito",
+        "Fotos ilimitadas",
+        "Visibilidad ante más de 50 000 visitantes mensuales",
+        "Gestión desde su área personal"
+      ],
+      "cta": "Publicar mi anuncio",
+      "learnMore": "Saber más"
+    },
+    "sell": {
+      "title": "Encargar a una agencia inmobiliaria",
+      "description": "Confíe la venta de su inmueble a un profesional de su barrio. Experiencia local, negociación y acompañamiento hasta la firma.",
+      "items": [
+        "Tasación profesional",
+        "Fotos y visita virtual",
+        "Difusión en nuestra red de socios",
+        "Acompañamiento administrativo completo"
+      ],
+      "cta": "Buscar una agencia",
+      "learnMore": "¿Cómo funciona?"
+    }
+  },
   "howItWorks": {
+    "label": "Cómo funciona",
     "title": "Venda su inmueble en 4 pasos",
     "steps": {
       "1": {
@@ -29,6 +56,31 @@
         "description": "Acompañamiento hasta la firma en la notaría."
       }
     }
+  },
+  "agents": {
+    "title": "Encuentre una agencia inmobiliaria en Marrakech",
+    "searchPlaceholder": "Barrio o ciudad",
+    "filters": {
+      "specialty": "Especialidad",
+      "type": "Tipo de inmueble",
+      "specialties": {
+        "sale": "Venta",
+        "rent": "Alquiler",
+        "new": "Obra nueva"
+      },
+      "types": {
+        "villa": "Villa",
+        "apartment": "Apartamento",
+        "riad": "Riad",
+        "prestige": "Prestigio"
+      }
+    },
+    "card": {
+      "stats_one": "{{count}} inmueble · {{rating}}/5",
+      "stats_other": "{{count}} inmuebles · {{rating}}/5",
+      "viewProfile": "Ver el perfil"
+    },
+    "noResults": "Ninguna agencia coincide con su búsqueda."
   },
   "faq": {
     "title": "Preguntas frecuentes",
@@ -58,45 +110,5 @@
         "answer": "La firma se realiza ante el notario o Adoul, con traductor si es necesario. Organizamos todas las citas y le acompañamos en cada paso."
       }
     }
-  },
-  "features": {
-    "how": "Cómo funciona",
-    "depot": {
-      "title": "Publicar un anuncio",
-      "description": "Publique su anuncio gratuitamente y llegue directamente a los compradores. Fotos ilimitadas, descripción detallada y visibilidad inmediata.",
-      "items": [
-        "Anuncio gratuito",
-        "Fotos ilimitadas",
-        "Visibilidad ante 50.000+ visitantes mensuales",
-        "Gestión desde su área personal"
-      ],
-      "cta": "Publicar mi anuncio",
-      "learnMore": "Saber más"
-    },
-    "sell": {
-      "title": "Vender con Atlas Rouge",
-      "description": "Confíe la venta de su inmueble a nuestros agentes experimentados. Gestionamos la tasación, el marketing y la transacción completa.",
-      "items": [
-        "Tasación profesional",
-        "Fotos y tour virtual",
-        "Red de compradores cualificados",
-        "Acompañamiento administrativo completo"
-      ],
-      "cta": "Tasar mi inmueble",
-      "learnMore": "Hablar con un agente"
-    }
-  },
-  "agents": {
-    "title": "Encontrar un agente",
-    "subtitle": "Nuestros expertos locales a su servicio.",
-    "searchPlaceholder": "Buscar por nombre o zona",
-    "specialty": "Especialidad",
-    "allSpecialties": "Todas las especialidades",
-    "type": "Tipo de inmueble",
-    "allTypes": "Todos los tipos",
-    "noResults": "Ningún agente coincide con su búsqueda.",
-    "properties_one": "{{count}} inmueble",
-    "properties_other": "{{count}} inmuebles",
-    "contact": "Contactar"
   }
 }

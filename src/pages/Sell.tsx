@@ -18,88 +18,61 @@ import { cn } from '@/lib/utils'
 
 gsap.registerPlugin(ScrollTrigger)
 
-/* ── FAQ data ── */
-const faqItems = [
-  {
-    question: 'Combien co\u00FBte une estimation ?',
-    answer: 'L\u2019estimation de votre bien est enti\u00E8rement gratuite et sans engagement. Nos experts analysent votre propri\u00E9t\u00E9 en fonction du march\u00E9 local, des caract\u00E9ristiques du bien et des tendances r\u00E9centes du quartier.',
-  },
-  {
-    question: 'Combien de temps pour vendre ?',
-    answer: 'Le d\u00E9lai moyen de vente \u00E0 Marrakech est de 3 \u00E0 6 mois selon le quartier et le type de bien. Les villas haut de gamme peuvent prendre un peu plus de temps, tandis que les appartements bien situ\u00E9s se vendent plus rapidement.',
-  },
-  {
-    question: 'Quels documents sont n\u00E9cessaires ?',
-    answer: 'Titre foncier, plan de lotissement, acte de propri\u00E9t\u00E9, et attestations fiscales. Notre \u00E9quipe vous accompagne dans la constitution de votre dossier.',
-  },
-  {
-    question: 'Puis-je vendre depuis la France ?',
-    answer: 'Oui, un mandat sign\u00E9 chez un notaire fran\u00E7ais suffit pour repr\u00E9senter votre vente. Nous g\u00E9rons l\u2019int\u00E9gralit\u00E9 de la transaction \u00E0 distance.',
-  },
-  {
-    question: 'Quels sont les frais d\u2019agence ?',
-    answer: 'Les honoraires d\u2019agence sont g\u00E9n\u00E9ralement de 5% TTC pour la vente, \u00E0 la charge de l\u2019acheteur. Ce taux peut varier selon le mandat et le type de bien.',
-  },
-  {
-    question: 'Comment se passe la signature ?',
-    answer: 'La signature a lieu chez le notaire ou l\u2019Adoul, avec traducteur si n\u00E9cessaire. Nous organisons tous les rendez-vous et vous accompagnons \u00E0 chaque \u00E9tape.',
-  },
-]
+/* ── FAQ keys (content resolved at render time via t()) ── */
+const faqKeys = ['estimation', 'duration', 'documents', 'remote', 'fees', 'signing'] as const
 
-/* ── Agent mock data ── */
+/* ── Filter option keys (labels resolved via t() at render) ── */
+const specialtyKeys = ['sale', 'rent', 'new'] as const
+const typeKeys = ['villa', 'apartment', 'riad', 'prestige'] as const
+
+/* ── Agent mock data — specialties and locations stored as i18n-friendly keys ── */
 const agents = [
   {
-    name: 'Immobili\u00E8re Palmeraie',
-    stats: '47 biens \u00B7 4.8/5',
+    name: 'Immobilière Palmeraie',
     rating: 4.8,
     properties: 47,
-    specialties: ['Vente', 'Villa', 'Prestige'],
+    specialties: ['sale', 'villa', 'prestige'],
     location: 'Palmeraie, Marrakech',
     initials: 'IP',
   },
   {
-    name: 'M\u00E9dina Immobilier',
-    stats: '32 biens \u00B7 4.7/5',
+    name: 'Médina Immobilier',
     rating: 4.7,
     properties: 32,
-    specialties: ['Vente', 'Riad', 'Location'],
-    location: 'M\u00E9dina, Marrakech',
+    specialties: ['sale', 'riad', 'rent'],
+    location: 'Médina, Marrakech',
     initials: 'MI',
   },
   {
     name: 'Gueliz Properties',
-    stats: '65 biens \u00B7 4.6/5',
     rating: 4.6,
     properties: 65,
-    specialties: ['Vente', 'Appartement', 'Neuf'],
-    location: 'Gueliz, Marrakech',
+    specialties: ['sale', 'apartment', 'new'],
+    location: 'Guéliz, Marrakech',
     initials: 'GP',
   },
   {
     name: 'Hivernage Prestige',
-    stats: '28 biens \u00B7 4.9/5',
     rating: 4.9,
     properties: 28,
-    specialties: ['Vente', 'Prestige', 'Location'],
+    specialties: ['sale', 'prestige', 'rent'],
     location: 'Hivernage, Marrakech',
     initials: 'HP',
   },
   {
     name: 'Atlas Golf Immobilier',
-    stats: '41 biens \u00B7 4.7/5',
     rating: 4.7,
     properties: 41,
-    specialties: ['Vente', 'Villa', 'Location'],
+    specialties: ['sale', 'villa', 'rent'],
     location: 'Amelkis, Marrakech',
     initials: 'AG',
   },
   {
     name: 'Ourika Valley Homes',
-    stats: '19 biens \u00B7 4.5/5',
     rating: 4.5,
     properties: 19,
-    specialties: ['Vente', 'Terrain', 'Villa'],
-    location: 'Route de l\u2019Ourika, Marrakech',
+    specialties: ['sale', 'villa'],
+    location: 'Route de l’Ourika, Marrakech',
     initials: 'OV',
   },
 ]
@@ -323,7 +296,7 @@ export default function Sell() {
     { scope: faqRef }
   )
 
-  /* Filtered agents */
+  /* Filtered agents — filters compare against language-stable keys */
   const filteredAgents = agents.filter((agent) => {
     const matchesSearch =
       !searchQuery ||
@@ -334,6 +307,17 @@ export default function Sell() {
     const matchesType = !typeFilter || agent.specialties.includes(typeFilter)
     return matchesSearch && matchesSpecialty && matchesType
   })
+
+  /* Translate a specialty/type key — falls back to the key itself if missing */
+  const translateTag = (key: string) => {
+    if ((specialtyKeys as readonly string[]).includes(key)) {
+      return t(`agents.filters.specialties.${key}`)
+    }
+    if ((typeKeys as readonly string[]).includes(key)) {
+      return t(`agents.filters.types.${key}`)
+    }
+    return key
+  }
 
   return (
     <div>
@@ -381,7 +365,7 @@ export default function Sell() {
           ref={featureCardsRef}
           className="max-w-[1100px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6"
         >
-          {/* Card 1 */}
+          {/* Card 1 — Déposer une annonce */}
           <div
             id="depot"
             className="feature-card bg-white rounded-card border border-border-warm p-8 md:p-12 shadow-card"
@@ -390,20 +374,13 @@ export default function Sell() {
               <Upload size={48} strokeWidth={1.5} />
             </div>
             <h3 className="font-playfair text-[28px] font-medium text-text-primary mb-4">
-              D&eacute;poser une annonce
+              {t('features.depot.title')}
             </h3>
             <p className="text-text-secondary text-[16px] font-inter leading-[1.7] mb-6">
-              Publiez votre annonce gratuitement et touchez directement les
-              acheteurs. Photos illimit&eacute;es, description d&eacute;taill&eacute;e, et
-              visibilit&eacute; imm&eacute;diate.
+              {t('features.depot.description')}
             </p>
             <ul className="space-y-3 mb-8">
-              {[
-                'Annonce gratuite',
-                'Photos illimit&eacute;es',
-                'Visibilit&eacute; aupr&egrave;s de 50 000+ visiteurs mensuels',
-                'Gestion depuis votre espace personnel',
-              ].map((item) => (
+              {(t('features.depot.items', { returnObjects: true }) as string[]).map((item) => (
                 <li
                   key={item}
                   className="feature-check flex items-center gap-3 text-text-primary text-[14px] font-inter"
@@ -413,7 +390,7 @@ export default function Sell() {
                     className="text-palm shrink-0"
                     strokeWidth={2.5}
                   />
-                  <span dangerouslySetInnerHTML={{ __html: item }} />
+                  <span>{item}</span>
                 </li>
               ))}
             </ul>
@@ -422,37 +399,30 @@ export default function Sell() {
                 to={path('/vendre#depot')}
                 className="bg-terracotta text-white font-inter text-[14px] font-semibold px-6 py-3 rounded-lg hover:scale-[1.02] transition-transform"
               >
-                D&eacute;poser mon annonce
+                {t('features.depot.cta')}
               </Link>
               <Link
                 to="#"
                 className="text-terracotta font-inter text-[14px] font-medium hover:underline"
               >
-                En savoir plus
+                {t('features.depot.learnMore')}
               </Link>
             </div>
           </div>
 
-          {/* Card 2 */}
+          {/* Card 2 — Mandater une agence */}
           <div className="feature-card bg-white rounded-card border border-border-warm p-8 md:p-12 shadow-card">
             <div className="w-12 h-12 text-palm mb-4">
               <Users size={48} strokeWidth={1.5} />
             </div>
             <h3 className="font-playfair text-[28px] font-medium text-text-primary mb-4">
-              Mandater une agence immobili&egrave;re
+              {t('features.sell.title')}
             </h3>
             <p className="text-text-secondary text-[16px] font-inter leading-[1.7] mb-6">
-              Confiez la vente de votre bien &agrave; un professionnel de votre quartier.
-              Expertise locale, n&eacute;gociation, et accompagnement jusqu&rsquo;&agrave; la
-              signature.
+              {t('features.sell.description')}
             </p>
             <ul className="space-y-3 mb-8">
-              {[
-                'Estimation professionnelle',
-                'Photos et visite virtuelle',
-                'Diffusion sur notre r&eacute;seau partenaire',
-                'Accompagnement administratif complet',
-              ].map((item) => (
+              {(t('features.sell.items', { returnObjects: true }) as string[]).map((item) => (
                 <li
                   key={item}
                   className="feature-check flex items-center gap-3 text-text-primary text-[14px] font-inter"
@@ -462,7 +432,7 @@ export default function Sell() {
                     className="text-palm shrink-0"
                     strokeWidth={2.5}
                   />
-                  <span dangerouslySetInnerHTML={{ __html: item }} />
+                  <span>{item}</span>
                 </li>
               ))}
             </ul>
@@ -471,13 +441,13 @@ export default function Sell() {
                 to="#agents"
                 className="bg-palm text-white font-inter text-[14px] font-semibold px-6 py-3 rounded-lg hover:scale-[1.02] transition-transform"
               >
-                Trouver une agence
+                {t('features.sell.cta')}
               </Link>
               <Link
                 to="#comment"
                 className="text-palm font-inter text-[14px] font-medium hover:underline"
               >
-                Comment &ccedil;a marche ?
+                {t('features.sell.learnMore')}
               </Link>
             </div>
           </div>
@@ -493,7 +463,7 @@ export default function Sell() {
         <div className="max-w-[1100px] mx-auto">
           {/* Section label */}
           <p className="text-terracotta text-[12px] font-inter font-medium uppercase tracking-[0.3px] text-center mb-3">
-            Comment &ccedil;a marche
+            {t('howItWorks.label')}
           </p>
           <h2 className="hiw-title font-playfair text-[36px] md:text-[40px] font-medium text-midnight text-center mb-16">
             {t('howItWorks.title')}
@@ -529,7 +499,7 @@ export default function Sell() {
       >
         <div className="max-w-[1100px] mx-auto">
           <h2 className="agent-title font-playfair text-[36px] md:text-[40px] font-medium text-midnight text-center mb-8">
-            Trouvez une agence immobili&egrave;re &agrave; Marrakech
+            {t('agents.title')}
           </h2>
 
           {/* Search bar */}
@@ -541,7 +511,7 @@ export default function Sell() {
               />
               <input
                 type="text"
-                placeholder="Quartier ou ville"
+                placeholder={t('agents.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full h-[56px] pl-12 pr-4 border border-border-warm rounded-card bg-white font-inter text-[15px] text-text-primary placeholder:text-text-secondary/60 focus:outline-none focus:border-terracotta transition-colors"
@@ -560,81 +530,86 @@ export default function Sell() {
               onChange={(e) => setSpecialtyFilter(e.target.value)}
               className="h-[44px] px-4 border border-border-warm rounded-lg bg-white font-inter text-[14px] text-text-primary focus:outline-none focus:border-terracotta"
             >
-              <option value="">Sp&eacute;cialit&eacute;</option>
-              <option value="Vente">Vente</option>
-              <option value="Location">Location</option>
-              <option value="Neuf">Neuf</option>
+              <option value="">{t('agents.filters.specialty')}</option>
+              {specialtyKeys.map((k) => (
+                <option key={k} value={k}>{t(`agents.filters.specialties.${k}`)}</option>
+              ))}
             </select>
             <select
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
               className="h-[44px] px-4 border border-border-warm rounded-lg bg-white font-inter text-[14px] text-text-primary focus:outline-none focus:border-terracotta"
             >
-              <option value="">Type de bien</option>
-              <option value="Villa">Villa</option>
-              <option value="Appartement">Appartement</option>
-              <option value="Riad">Riad</option>
-              <option value="Prestige">Prestige</option>
+              <option value="">{t('agents.filters.type')}</option>
+              {typeKeys.map((k) => (
+                <option key={k} value={k}>{t(`agents.filters.types.${k}`)}</option>
+              ))}
             </select>
           </div>
 
           {/* Agent cards grid */}
           <div className="agent-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredAgents.map((agent) => (
-              <div
-                key={agent.name}
-                className="agent-card bg-white rounded-card border border-border-warm p-6 shadow-card hover:shadow-card-hover transition-shadow"
-              >
-                {/* Header */}
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-[60px] h-[60px] rounded-full bg-cream-warm flex items-center justify-center shrink-0">
-                    <span className="font-playfair text-[20px] font-semibold text-midnight">
-                      {agent.initials}
-                    </span>
-                  </div>
-                  <div>
-                    <h4 className="font-inter text-[16px] font-semibold text-text-primary">
-                      {agent.name}
-                    </h4>
-                    <div className="flex items-center gap-2 text-text-secondary text-[13px] font-inter">
-                      <span>
-                        {agent.properties} biens &middot; {agent.rating}/5
+            {filteredAgents.length === 0 ? (
+              <div className="col-span-full text-center text-text-secondary font-inter text-[14px] py-12">
+                {t('agents.noResults')}
+              </div>
+            ) : (
+              filteredAgents.map((agent) => (
+                <div
+                  key={agent.name}
+                  className="agent-card bg-white rounded-card border border-border-warm p-6 shadow-card hover:shadow-card-hover transition-shadow"
+                >
+                  {/* Header */}
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-[60px] h-[60px] rounded-full bg-cream-warm flex items-center justify-center shrink-0">
+                      <span className="font-playfair text-[20px] font-semibold text-midnight">
+                        {agent.initials}
                       </span>
-                      <Star
-                        size={13}
-                        className="fill-gold text-gold"
-                      />
+                    </div>
+                    <div>
+                      <h4 className="font-inter text-[16px] font-semibold text-text-primary">
+                        {agent.name}
+                      </h4>
+                      <div className="flex items-center gap-2 text-text-secondary text-[13px] font-inter">
+                        <span>
+                          {t('agents.card.stats', { count: agent.properties, rating: agent.rating })}
+                        </span>
+                        <Star
+                          size={13}
+                          className="fill-gold text-gold"
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Specialties */}
-                <div className="flex flex-wrap gap-2 mb-3">
-                  {agent.specialties.map((s) => (
-                    <span
-                      key={s}
-                      className="bg-cream-warm text-text-secondary text-[12px] font-medium px-3 py-1 rounded-full"
-                    >
-                      {s}
-                    </span>
-                  ))}
-                </div>
+                  {/* Specialties */}
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {agent.specialties.map((s) => (
+                      <span
+                        key={s}
+                        className="bg-cream-warm text-text-secondary text-[12px] font-medium px-3 py-1 rounded-full"
+                      >
+                        {translateTag(s)}
+                      </span>
+                    ))}
+                  </div>
 
-                {/* Location */}
-                <div className="flex items-center gap-1.5 text-text-secondary text-[13px] font-inter mb-4">
-                  <MapPin size={14} />
-                  <span>{agent.location}</span>
-                </div>
+                  {/* Location */}
+                  <div className="flex items-center gap-1.5 text-text-secondary text-[13px] font-inter mb-4">
+                    <MapPin size={14} />
+                    <span>{agent.location}</span>
+                  </div>
 
-                {/* CTA */}
-                <Link
-                  to="#"
-                  className="block w-full text-center bg-white border border-border-warm text-text-primary font-inter text-[14px] font-medium py-2.5 rounded-lg hover:bg-cream-warm transition-colors"
-                >
-                  Voir le profil
-                </Link>
-              </div>
-            ))}
+                  {/* CTA */}
+                  <Link
+                    to="#"
+                    className="block w-full text-center bg-white border border-border-warm text-text-primary font-inter text-[14px] font-medium py-2.5 rounded-lg hover:bg-cream-warm transition-colors"
+                  >
+                    {t('agents.card.viewProfile')}
+                  </Link>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </section>
@@ -643,14 +618,14 @@ export default function Sell() {
       <section ref={faqRef} className="bg-cream-warm py-16 md:py-24 px-6">
         <div className="max-w-[720px] mx-auto">
           <h2 className="faq-title font-playfair text-[36px] md:text-[40px] font-medium text-midnight text-center mb-12">
-            Questions fr&eacute;quemment pos&eacute;es
+            {t('faq.title')}
           </h2>
           <div>
-            {faqItems.map((item, index) => (
-              <div key={index} className="faq-item">
+            {faqKeys.map((key, index) => (
+              <div key={key} className="faq-item">
                 <FaqItem
-                  question={item.question}
-                  answer={item.answer}
+                  question={t(`faq.items.${key}.question`)}
+                  answer={t(`faq.items.${key}.answer`)}
                   isOpen={openFaq === index}
                   onClick={() =>
                     setOpenFaq(openFaq === index ? null : index)

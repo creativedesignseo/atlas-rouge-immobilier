@@ -5,12 +5,39 @@
   },
   "hero": {
     "title": "Vendez ou louez votre bien à Marrakech",
-    "subtitle": "Estimation gratuite, mise en valeur professionnelle, et diffusion auprès de milliers d'acheteurs francophones.",
+    "subtitle": "Estimation gratuite, mise en valeur professionnelle et diffusion auprès de milliers d'acheteurs internationaux.",
     "estimateButton": "Estimer mon bien",
     "publishButton": "Déposer une annonce"
   },
+  "features": {
+    "depot": {
+      "title": "Déposer une annonce",
+      "description": "Publiez votre annonce gratuitement et touchez directement les acheteurs. Photos illimitées, description détaillée, et visibilité immédiate.",
+      "items": [
+        "Annonce gratuite",
+        "Photos illimitées",
+        "Visibilité auprès de 50 000+ visiteurs mensuels",
+        "Gestion depuis votre espace personnel"
+      ],
+      "cta": "Déposer mon annonce",
+      "learnMore": "En savoir plus"
+    },
+    "sell": {
+      "title": "Mandater une agence immobilière",
+      "description": "Confiez la vente de votre bien à un professionnel de votre quartier. Expertise locale, négociation, et accompagnement jusqu'à la signature.",
+      "items": [
+        "Estimation professionnelle",
+        "Photos et visite virtuelle",
+        "Diffusion sur notre réseau partenaire",
+        "Accompagnement administratif complet"
+      ],
+      "cta": "Trouver une agence",
+      "learnMore": "Comment ça marche ?"
+    }
+  },
   "howItWorks": {
-    "title": "Vendre votre bien en 4 étapes",
+    "label": "Comment ça marche",
+    "title": "Vendez votre bien en 4 étapes",
     "steps": {
       "1": {
         "title": "Estimation",
@@ -22,7 +49,7 @@
       },
       "3": {
         "title": "Diffusion",
-        "description": "Votre annonce est diffusée auprès de notre réseau d'acheteurs qualifiés."
+        "description": "Votre annonce est exposée à notre réseau d'acheteurs qualifiés."
       },
       "4": {
         "title": "Vente",
@@ -30,8 +57,33 @@
       }
     }
   },
+  "agents": {
+    "title": "Trouvez une agence immobilière à Marrakech",
+    "searchPlaceholder": "Quartier ou ville",
+    "filters": {
+      "specialty": "Spécialité",
+      "type": "Type de bien",
+      "specialties": {
+        "sale": "Vente",
+        "rent": "Location",
+        "new": "Neuf"
+      },
+      "types": {
+        "villa": "Villa",
+        "apartment": "Appartement",
+        "riad": "Riad",
+        "prestige": "Prestige"
+      }
+    },
+    "card": {
+      "stats_one": "{{count}} bien · {{rating}}/5",
+      "stats_other": "{{count}} biens · {{rating}}/5",
+      "viewProfile": "Voir le profil"
+    },
+    "noResults": "Aucune agence ne correspond à votre recherche."
+  },
   "faq": {
-    "title": "Questions fréquentes",
+    "title": "Questions fréquemment posées",
     "items": {
       "estimation": {
         "question": "Combien coûte une estimation ?",
@@ -58,45 +110,5 @@
         "answer": "La signature a lieu chez le notaire ou l'Adoul, avec traducteur si nécessaire. Nous organisons tous les rendez-vous et vous accompagnons à chaque étape."
       }
     }
-  },
-  "features": {
-    "how": "Comment ça marche",
-    "depot": {
-      "title": "Déposer une annonce",
-      "description": "Publiez votre annonce gratuitement et touchez directement les acheteurs. Photos illimitées, description détaillée, et visibilité immédiate.",
-      "items": [
-        "Annonce gratuite",
-        "Photos illimitées",
-        "Visibilité auprès de 50 000+ visiteurs mensuels",
-        "Gestion depuis votre espace personnel"
-      ],
-      "cta": "Déposer mon annonce",
-      "learnMore": "En savoir plus"
-    },
-    "sell": {
-      "title": "Vendre avec Atlas Rouge",
-      "description": "Confiez la vente de votre bien à nos agents expérimentés. Nous gérons l'estimation, le marketing et la transaction complète.",
-      "items": [
-        "Estimation professionnelle",
-        "Photos et visite virtuelle",
-        "Réseau d'acheteurs qualifiés",
-        "Accompagnement administratif complet"
-      ],
-      "cta": "Estimer mon bien",
-      "learnMore": "Parler à un agent"
-    }
-  },
-  "agents": {
-    "title": "Trouver un agent",
-    "subtitle": "Nos experts locaux à votre service.",
-    "searchPlaceholder": "Rechercher par nom ou zone",
-    "specialty": "Spécialité",
-    "allSpecialties": "Toutes les spécialités",
-    "type": "Type de bien",
-    "allTypes": "Tous les types",
-    "noResults": "Aucun agent ne correspond à votre recherche.",
-    "properties_one": "{{count}} bien",
-    "properties_other": "{{count}} biens",
-    "contact": "Contacter"
   }
 }
