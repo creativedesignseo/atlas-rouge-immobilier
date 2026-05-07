@@ -5,7 +5,7 @@ import { useLang } from '@/hooks/useLang'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Upload, Users, Check, ChevronDown } from 'lucide-react'
+import { Users, Check, ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -244,67 +244,21 @@ export default function Sell() {
               {t('hero.estimateButton')}
             </Link>
             <Link
-              to="#depot"
+              to={path('/contact')}
               className="bg-white text-text-primary font-inter text-[14px] font-semibold px-6 py-3 rounded-lg border border-border-warm hover:scale-[1.02] transition-transform"
             >
-              {t('hero.publishButton')}
+              {t('hero.contactButton')}
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ═══════ Two-Column Feature Cards ═══════ */}
+      {/* ═══════ Single Feature Card — Confier la vente ═══════ */}
       <section className="bg-white py-16 px-6">
         <div
           ref={featureCardsRef}
-          className="max-w-[1100px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6"
+          className="max-w-[640px] mx-auto"
         >
-          {/* Card 1 — Déposer une annonce */}
-          <div
-            id="depot"
-            className="feature-card bg-white rounded-card border border-border-warm p-8 md:p-12 shadow-card"
-          >
-            <div className="w-12 h-12 text-terracotta mb-4">
-              <Upload size={48} strokeWidth={1.5} />
-            </div>
-            <h3 className="font-playfair text-[28px] font-medium text-text-primary mb-4">
-              {t('features.depot.title')}
-            </h3>
-            <p className="text-text-secondary text-[16px] font-inter leading-[1.7] mb-6">
-              {t('features.depot.description')}
-            </p>
-            <ul className="space-y-3 mb-8">
-              {(t('features.depot.items', { returnObjects: true }) as string[]).map((item) => (
-                <li
-                  key={item}
-                  className="feature-check flex items-center gap-3 text-text-primary text-[14px] font-inter"
-                >
-                  <Check
-                    size={18}
-                    className="text-palm shrink-0"
-                    strokeWidth={2.5}
-                  />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <Link
-                to={path('/sell#depot')}
-                className="bg-terracotta text-white font-inter text-[14px] font-semibold px-6 py-3 rounded-lg hover:scale-[1.02] transition-transform"
-              >
-                {t('features.depot.cta')}
-              </Link>
-              <Link
-                to={path('/contact')}
-                className="text-terracotta font-inter text-[14px] font-medium hover:underline"
-              >
-                {t('features.depot.learnMore')}
-              </Link>
-            </div>
-          </div>
-
-          {/* Card 2 — Mandater une agence */}
           <div className="feature-card bg-white rounded-card border border-border-warm p-8 md:p-12 shadow-card">
             <div className="w-12 h-12 text-palm mb-4">
               <Users size={48} strokeWidth={1.5} />

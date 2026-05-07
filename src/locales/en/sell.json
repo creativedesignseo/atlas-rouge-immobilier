@@ -7,21 +7,9 @@
     "title": "Sell or rent your property in Marrakech",
     "subtitle": "Free valuation, professional staging, and exposure to thousands of international buyers.",
     "estimateButton": "Value my property",
-    "publishButton": "Post a listing"
+    "contactButton": "Contact us"
   },
   "features": {
-    "depot": {
-      "title": "Post a listing",
-      "description": "Publish your listing for free and reach buyers directly. Unlimited photos, detailed description, and instant visibility.",
-      "items": [
-        "Free listing",
-        "Unlimited photos",
-        "Exposure to 50,000+ monthly visitors",
-        "Manage everything from your personal dashboard"
-      ],
-      "cta": "Post my listing",
-      "learnMore": "Learn more"
-    },
     "sell": {
       "title": "Entrust the sale to our team",
       "description": "Entrust the sale of your property to our expert agents. Local expertise, negotiation, and full support up to signing.",

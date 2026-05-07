@@ -7,21 +7,9 @@
     "title": "Venda o alquile su inmueble en Marrakech",
     "subtitle": "Tasación gratuita, puesta en valor profesional y difusión a miles de compradores internacionales.",
     "estimateButton": "Tasar mi inmueble",
-    "publishButton": "Publicar un anuncio"
+    "contactButton": "Contáctenos"
   },
   "features": {
-    "depot": {
-      "title": "Publicar un anuncio",
-      "description": "Publique su anuncio gratuitamente y llegue directamente a los compradores. Fotos ilimitadas, descripción detallada y visibilidad inmediata.",
-      "items": [
-        "Anuncio gratuito",
-        "Fotos ilimitadas",
-        "Visibilidad ante más de 50 000 visitantes mensuales",
-        "Gestión desde su área personal"
-      ],
-      "cta": "Publicar mi anuncio",
-      "learnMore": "Saber más"
-    },
     "sell": {
       "title": "Confíe la venta a nuestro equipo",
       "description": "Confíe la venta de su inmueble a nuestros agentes expertos. Experiencia local, negociación y acompañamiento hasta la firma.",

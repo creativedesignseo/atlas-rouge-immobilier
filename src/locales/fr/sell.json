@@ -7,21 +7,9 @@
     "title": "Vendez ou louez votre bien à Marrakech",
     "subtitle": "Estimation gratuite, mise en valeur professionnelle et diffusion auprès de milliers d'acheteurs internationaux.",
     "estimateButton": "Estimer mon bien",
-    "publishButton": "Déposer une annonce"
+    "contactButton": "Nous contacter"
   },
   "features": {
-    "depot": {
-      "title": "Déposer une annonce",
-      "description": "Publiez votre annonce gratuitement et touchez directement les acheteurs. Photos illimitées, description détaillée, et visibilité immédiate.",
-      "items": [
-        "Annonce gratuite",
-        "Photos illimitées",
-        "Visibilité auprès de 50 000+ visiteurs mensuels",
-        "Gestion depuis votre espace personnel"
-      ],
-      "cta": "Déposer mon annonce",
-      "learnMore": "En savoir plus"
-    },
     "sell": {
       "title": "Confier la vente à notre équipe",
       "description": "Confiez la vente de votre bien à nos agents experts. Expertise locale, négociation, et accompagnement jusqu'à la signature.",
