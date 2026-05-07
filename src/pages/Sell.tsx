@@ -162,6 +162,22 @@ export default function Sell() {
           once: true,
         },
       })
+      // Progress line traces left → right as the user scrolls through the
+      // steps. `scrub` ties the line growth directly to scroll position so
+      // it feels like a recorrido (the line "follows" the reader's eye).
+      const progressLine = howItWorksRef.current!.querySelector('.hiw-line-progress')
+      if (progressLine) {
+        gsap.to(progressLine, {
+          scaleX: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: howItWorksRef.current,
+            start: 'top 70%',
+            end: 'bottom 60%',
+            scrub: 0.6,
+          },
+        })
+      }
     },
     { scope: howItWorksRef }
   )
@@ -349,14 +365,23 @@ export default function Sell() {
 
           {/* Steps */}
           <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* Dashed connector line - desktop */}
-            <div className="hidden lg:block absolute top-[30px] left-[12%] right-[12%] border-t border-dashed border-sand" />
+            {/* Connector lines (desktop only) — span between the centers of
+                step 1 and step 4, exactly through the vertical middle of the
+                number row (60px tall → top: 30px). */}
+            <div className="hidden lg:block absolute top-[30px] left-[12.5%] right-[12.5%] border-t-2 border-dashed border-sand pointer-events-none" />
+            <div className="hiw-line-progress hidden lg:block absolute top-[30px] left-[12.5%] right-[12.5%] h-[2px] bg-terracotta origin-left scale-x-0 pointer-events-none" />
 
             {stepNumbers.map((number, idx) => (
               <div key={number} className="hiw-step relative text-center">
-                <span className="font-playfair text-[48px] font-semibold text-terracotta/30 block mb-3">
-                  {number}
-                </span>
+                {/* Fixed-height container ensures the connector line passes
+                    cleanly through the visual middle of every number, with
+                    a bg-cream-warm "cap" on the digits hiding the line under
+                    them so it never overlaps the glyphs. */}
+                <div className="relative h-[60px] flex items-center justify-center mb-3">
+                  <span className="font-playfair text-[48px] font-semibold text-terracotta/30 leading-none bg-cream-warm px-3 relative z-10">
+                    {number}
+                  </span>
+                </div>
                 <h4 className="font-playfair text-[20px] font-semibold text-midnight mb-2">
                   {t(`howItWorks.steps.${idx + 1}.title`)}
                 </h4>
@@ -370,7 +395,7 @@ export default function Sell() {
       </section>
 
       {/* ═══════ FAQ Accordion ═══════ */}
-      <section ref={faqRef} className="bg-cream-warm py-16 md:py-24 px-6">
+      <section ref={faqRef} className="bg-white py-16 md:py-24 px-6">
         <div className="max-w-[720px] mx-auto">
           <h2 className="faq-title font-playfair text-[36px] md:text-[40px] font-medium text-midnight text-center mb-12">
             {t('faq.title')}
