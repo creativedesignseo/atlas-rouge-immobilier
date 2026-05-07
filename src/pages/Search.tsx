@@ -7,6 +7,7 @@ import {
   Camera, Sliders, Bell
 } from 'lucide-react'
 import { getProperties } from '@/services/property.service'
+import { getNeighborhoods } from '@/services/neighborhood.service'
 
 import { useFavorites } from '@/hooks/useFavorites'
 import { useCurrency } from '@/hooks/useCurrency'
@@ -138,7 +139,9 @@ const defaultFilters: Filters = {
   media: [],
 }
 
-const nbhdList = ['Guéliz', 'Hivernage', 'Palmeraie', 'Médina', 'Agdal', 'Targa', 'Amelkis', "Route de l'Ourika", 'Route de Fès', "Route d'Amizmiz", 'Route de Tahannaout', 'M Avenue']
+// Fallback list when Supabase is unreachable. Source of truth is the
+// `neighborhoods` table in Supabase (loaded via getNeighborhoods()).
+const nbhdFallback = ['Guéliz', 'Hivernage', 'Palmeraie', 'Médina', 'Agdal', 'Targa', 'Amelkis', "Route de l'Ourika", 'Route de Fès', "Route d'Amizmiz", 'Route de Tahannaout', 'M Avenue']
 
 /* ───────────────────── helper functions ───────────────────── */
 
@@ -576,8 +579,8 @@ function PropertyCardGrid({ property, isHovered = false }: { property: Property;
 
 /* ───────────────────── Mobile filter drawer ───────────────────── */
 
-function MobileFilterDrawer({ filters, setFilters, onApply, onReset, resultCount }: {
-  filters: Filters; setFilters: React.Dispatch<React.SetStateAction<Filters>>; onApply: () => void; onReset: () => void; resultCount: number
+function MobileFilterDrawer({ filters, setFilters, onApply, onReset, resultCount, nbhdList }: {
+  filters: Filters; setFilters: React.Dispatch<React.SetStateAction<Filters>>; onApply: () => void; onReset: () => void; resultCount: number; nbhdList: string[]
 }) {
   const { t } = useTranslation('search')
   const update = <K extends keyof Filters>(key: K, value: Filters[K]) => setFilters(f => ({ ...f, [key]: value }))
@@ -746,6 +749,16 @@ export default function SearchPage() {
   const [selectedMapSlug, setSelectedMapSlug] = useState<string | null>(null)
   const [allProperties, setAllProperties] = useState<Property[]>([])
   const [loading, setLoading] = useState(true)
+  const [nbhdList, setNbhdList] = useState<string[]>(nbhdFallback)
+
+  // Load neighborhoods from Supabase (fallback to hardcoded list on failure).
+  useEffect(() => {
+    getNeighborhoods()
+      .then(rows => {
+        if (rows.length > 0) setNbhdList(rows.map(n => n.name))
+      })
+      .catch(err => console.error('Failed to load neighborhoods:', err))
+  }, [])
 
   // Update transaction when route changes
   useEffect(() => {
@@ -1225,6 +1238,7 @@ export default function SearchPage() {
             onApply={() => setMobileFiltersOpen(false)}
             onReset={resetFilters}
             resultCount={filtered.length}
+            nbhdList={nbhdList}
           />
         </div>
       )}
