@@ -1,8 +1,9 @@
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { useLang } from '@/hooks/useLang'
 
 export default function Footer() {
-  const { lang = 'en' } = useParams<{ lang: string }>()
+  const { path } = useLang()
   const { t } = useTranslation('footer')
   const { t: tc } = useTranslation('common')
 
@@ -10,17 +11,17 @@ export default function Footer() {
     {
       titleKey: 'helpContact',
       links: [
-        { labelKey: 'contactUs', href: `/${lang}/contact` },
+        { labelKey: 'contactUs', href: path('/contact') },
         { labelKey: 'faq', href: '#' },
-        { labelKey: 'buyersGuide', href: `/${lang}/guide-achat-maroc` },
-        { labelKey: 'realEstateAdvice', href: `/${lang}/conseils-immobiliers` },
+        { labelKey: 'buyersGuide', href: path('/buyerGuide') },
+        { labelKey: 'realEstateAdvice', href: path('/blog') },
       ],
     },
     {
       titleKey: 'about',
       links: [
-        { labelKey: 'whoWeAre', href: `/${lang}/a-propos` },
-        { labelKey: 'ourAgencies', href: `/${lang}/contact` },
+        { labelKey: 'whoWeAre', href: path('/about') },
+        { labelKey: 'ourAgencies', href: path('/contact') },
         { labelKey: 'recruitment', href: '#' },
         { labelKey: 'press', href: '#' },
       ],

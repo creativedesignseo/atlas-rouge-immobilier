@@ -8,6 +8,7 @@ import ProtectedRoute from './components/admin/ProtectedRoute'
 import AdminLayout from './components/admin/AdminLayout'
 import AdminLogin from './pages/admin/AdminLogin'
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from './i18n'
+import { getAllSlugsForKey } from './lib/routes'
 
 const Home = lazy(() => import('./pages/Home'))
 const SearchPage = lazy(() => import('./pages/Search'))
@@ -97,22 +98,50 @@ export default function App() {
         </Route>
         <Route path="/admin/" element={<Navigate to="/admin" replace />} />
 
-        {/* Public routes with lang prefix */}
+        {/* Public routes with lang prefix.
+            Each canonical route is registered under every language slug
+            (e.g. /es/vender, /fr/vendre, /en/sell all render <Sell />).
+            This is more permissive than canonicalizing — a user typing
+            /es/vendre still gets the page in Spanish, no 404. */}
         <Route path="/:lang" element={<LangWrapper />}>
           <Route element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path="acheter" element={<SearchPage />} />
-            <Route path="louer" element={<SearchPage />} />
-            <Route path="property/:slug" element={<PropertyDetailPage />} />
-            <Route path="vendre" element={<Sell />} />
-            <Route path="guide-achat-maroc" element={<BuyerGuide />} />
-            <Route path="conseils-immobiliers" element={<Blog />} />
-            <Route path="a-propos" element={<About />} />
-            <Route path="contact" element={<Contact />} />
-            <Route path="favoris" element={<Favorites />} />
-            <Route path="estimation" element={<Estimation />} />
-            <Route path="gestion-locative" element={<GestionLocative />} />
-            <Route path="estimer" element={<Estimer />} />
+            {getAllSlugsForKey('buy').map((slug) => (
+              <Route key={`buy-${slug}`} path={slug} element={<SearchPage />} />
+            ))}
+            {getAllSlugsForKey('rent').map((slug) => (
+              <Route key={`rent-${slug}`} path={slug} element={<SearchPage />} />
+            ))}
+            {getAllSlugsForKey('propertyDetail').map((slug) => (
+              <Route key={`prop-${slug}`} path={`${slug}/:slug`} element={<PropertyDetailPage />} />
+            ))}
+            {getAllSlugsForKey('sell').map((slug) => (
+              <Route key={`sell-${slug}`} path={slug} element={<Sell />} />
+            ))}
+            {getAllSlugsForKey('buyerGuide').map((slug) => (
+              <Route key={`guide-${slug}`} path={slug} element={<BuyerGuide />} />
+            ))}
+            {getAllSlugsForKey('blog').map((slug) => (
+              <Route key={`blog-${slug}`} path={slug} element={<Blog />} />
+            ))}
+            {getAllSlugsForKey('about').map((slug) => (
+              <Route key={`about-${slug}`} path={slug} element={<About />} />
+            ))}
+            {getAllSlugsForKey('contact').map((slug) => (
+              <Route key={`contact-${slug}`} path={slug} element={<Contact />} />
+            ))}
+            {getAllSlugsForKey('favorites').map((slug) => (
+              <Route key={`fav-${slug}`} path={slug} element={<Favorites />} />
+            ))}
+            {getAllSlugsForKey('valuation').map((slug) => (
+              <Route key={`val-${slug}`} path={slug} element={<Estimation />} />
+            ))}
+            {getAllSlugsForKey('propertyManagement').map((slug) => (
+              <Route key={`mgmt-${slug}`} path={slug} element={<GestionLocative />} />
+            ))}
+            {getAllSlugsForKey('valuationStart').map((slug) => (
+              <Route key={`valstart-${slug}`} path={slug} element={<Estimer />} />
+            ))}
             <Route path="*" element={<NotFound />} />
           </Route>
         </Route>

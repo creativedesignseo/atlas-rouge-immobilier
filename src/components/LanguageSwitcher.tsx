@@ -2,6 +2,7 @@ import { Check, ChevronDown } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { SUPPORTED_LANGUAGES, LANGUAGE_NAMES, type SupportedLanguage } from '@/i18n'
+import { translatePath } from '@/lib/routes'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -69,13 +70,9 @@ export default function LanguageSwitcher({ variant = 'navbar' }: Props) {
       return
     }
 
-    const segments = pathname.split('/').filter(Boolean)
-    if (SUPPORTED_LANGUAGES.includes(segments[0] as SupportedLanguage)) {
-      segments[0] = lang
-    } else {
-      segments.unshift(lang)
-    }
-    const newPath = '/' + segments.join('/')
+    // translatePath also re-translates known slugs (vendre→vender, acheter→comprar, etc.)
+    // so users stay on the same page when switching language.
+    const newPath = translatePath(pathname, lang)
     i18n.changeLanguage(lang)
     navigate(newPath, { replace: true })
   }

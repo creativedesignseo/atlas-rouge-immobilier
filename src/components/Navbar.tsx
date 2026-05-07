@@ -1,23 +1,24 @@
 import { useState } from 'react'
-import { Link, useLocation, useParams } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Menu, X, Shield, LogOut, User } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '@/hooks/useAuth'
+import { useLang } from '@/hooks/useLang'
 import LanguageSwitcher from './LanguageSwitcher'
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const { pathname } = useLocation()
-  const { lang = 'en' } = useParams<{ lang: string }>()
+  const { lang, path } = useLang()
   const { agent, signOut } = useAuth()
   const { t } = useTranslation('nav')
 
   const navLinks = [
-    { key: 'buy', href: `/${lang}/acheter` },
-    { key: 'rent', href: `/${lang}/louer` },
-    { key: 'sell', href: `/${lang}/vendre` },
-    { key: 'estimate', href: `/${lang}/estimation` },
-    { key: 'guides', href: `/${lang}/conseils-immobiliers` },
+    { key: 'buy', href: path('/buy') },
+    { key: 'rent', href: path('/rent') },
+    { key: 'sell', href: path('/sell') },
+    { key: 'estimate', href: path('/valuation') },
+    { key: 'guides', href: path('/blog') },
   ]
 
   const isActive = (href: string) => pathname === href
@@ -91,7 +92,7 @@ export default function Navbar() {
             )}
 
             <Link
-              to={`/${lang}/vendre`}
+              to={path('/sell')}
               className="bg-terracotta text-white font-inter text-[14px] font-semibold px-5 py-2.5 rounded-lg hover:scale-[1.02] transition-transform"
             >
               {t('listProperty')}
@@ -156,7 +157,7 @@ export default function Navbar() {
             )}
 
             <Link
-              to={`/${lang}/vendre`}
+              to={path('/sell')}
               className="bg-terracotta text-white font-inter text-[14px] font-semibold px-5 py-3 rounded-lg text-center mt-2"
               onClick={() => setMobileOpen(false)}
             >
