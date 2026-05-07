@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight, Calculator } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import SectionReveal from '@/components/SectionReveal'
 import { useLang } from '@/hooks/useLang'
 
 export default function Estimer() {
+  const { t } = useTranslation('estimation')
   const { path } = useLang()
   return (
     <div>
@@ -15,15 +17,13 @@ export default function Estimer() {
               <Calculator size={28} className="text-terracotta" />
             </div>
             <h1 className="font-playfair text-[36px] md:text-[48px] font-medium text-midnight leading-[1.1] tracking-[-0.3px] mb-4">
-              Estimez votre bien
+              {t('intro.title')}
             </h1>
           </SectionReveal>
 
           <SectionReveal y={30} delay={0.15}>
             <p className="font-inter text-[16px] md:text-[18px] text-text-secondary max-w-[560px] mx-auto mb-8">
-              Découvrez la valeur de votre propriété à Marrakech avec notre
-              outil d&#8217;estimation en ligne ou en prenant rendez-vous avec
-              l&#8217;un de nos experts.
+              {t('intro.subtitle')}
             </p>
           </SectionReveal>
 
@@ -32,7 +32,7 @@ export default function Estimer() {
               to={path('/estimation')}
               className="inline-flex items-center gap-2 bg-terracotta text-white font-inter text-[14px] font-semibold px-8 py-4 rounded-lg hover:scale-[1.02] transition-transform"
             >
-              Commencer l&#8217;estimation
+              {t('intro.cta')}
               <ArrowRight size={18} />
             </Link>
           </SectionReveal>
@@ -51,10 +51,10 @@ export default function Estimer() {
                   </span>
                 </div>
                 <h3 className="font-playfair text-[18px] font-semibold text-midnight mb-2">
-                  Remplissez le formulaire
+                  {t('steps.step1.title')}
                 </h3>
                 <p className="font-inter text-[14px] text-text-secondary leading-[1.7]">
-                  Indiquez les caractéristiques de votre bien en quelques clics.
+                  {t('intro.step1Description')}
                 </p>
               </div>
 
@@ -65,10 +65,10 @@ export default function Estimer() {
                   </span>
                 </div>
                 <h3 className="font-playfair text-[18px] font-semibold text-midnight mb-2">
-                  Notre agent analyse
+                  {t('steps.step2.title')}
                 </h3>
                 <p className="font-inter text-[14px] text-text-secondary leading-[1.7]">
-                  Un expert étudie votre bien et les comparables du marché.
+                  {t('intro.step2Description')}
                 </p>
               </div>
 
@@ -79,10 +79,10 @@ export default function Estimer() {
                   </span>
                 </div>
                 <h3 className="font-playfair text-[18px] font-semibold text-midnight mb-2">
-                  Recevez votre estimation
+                  {t('steps.step3.title')}
                 </h3>
                 <p className="font-inter text-[14px] text-text-secondary leading-[1.7]">
-                  Obtenez une fourchette de prix précise sous 24 heures.
+                  {t('intro.step3Description')}
                 </p>
               </div>
             </div>
@@ -94,7 +94,7 @@ export default function Estimer() {
                 to={path('/estimation')}
                 className="inline-flex items-center gap-2 text-terracotta font-inter text-[16px] font-medium hover:underline"
               >
-                Accéder à l&#8217;estimation en ligne
+                {t('intro.linkOnline')}
                 <ArrowRight size={18} />
               </Link>
             </div>

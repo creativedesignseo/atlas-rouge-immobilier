@@ -1,1 +1,50 @@
-{}
+{
+  "hero": {
+    "title": "Value your property in Marrakech",
+    "subtitle": "Discover the value of your property thanks to our local market expertise. Contact us for an accurate, personalized valuation."
+  },
+  "trust": {
+    "free": "Free",
+    "noCommitment": "No commitment",
+    "result24h": "Result within 24h"
+  },
+  "expert": {
+    "title": "Valuation by an expert",
+    "subtitle": "Schedule a visit with one of our agents for an accurate valuation.",
+    "nameLabel": "Your name",
+    "namePlaceholder": "First and last name",
+    "phoneLabel": "Phone",
+    "phonePlaceholder": "+212 6 XX XX XX XX",
+    "dateLabel": "Preferred date",
+    "submit": "Request a visit"
+  },
+  "steps": {
+    "heading": "How it works",
+    "step1": {
+      "title": "Fill in the form",
+      "description": "Provide your contact details and the preferred date for the visit."
+    },
+    "step2": {
+      "title": "Our agent contacts you",
+      "description": "An expert calls you to confirm the appointment and prepare the visit."
+    },
+    "step3": {
+      "title": "Receive your valuation",
+      "description": "You'll get an accurate, personalized valuation within 24 hours."
+    }
+  },
+  "cta": {
+    "title": "Any questions?",
+    "subtitle": "Our team is available for any question about valuing your property.",
+    "contact": "Contact us"
+  },
+  "intro": {
+    "title": "Value your property",
+    "subtitle": "Discover the value of your property in Marrakech by scheduling an appointment with one of our experts.",
+    "cta": "Request a valuation",
+    "step1Description": "Fill in the form with your contact details and preferred date.",
+    "step2Description": "An expert contacts you to prepare the visit.",
+    "step3Description": "Receive an accurate valuation within 24 hours.",
+    "linkOnline": "Request a valuation"
+  }
+}

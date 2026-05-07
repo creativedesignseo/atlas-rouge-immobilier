@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useLang } from '@/hooks/useLang'
 import {
-  Calculator,
   UserCheck,
   BadgeCheck,
   Clock,
@@ -14,48 +14,41 @@ import {
 } from 'lucide-react'
 import SectionReveal from '@/components/SectionReveal'
 
-const steps = [
-  {
-    number: '1',
-    title: 'Remplissez le formulaire',
-    description:
-      'Indiquez l\u2019adresse, le type de bien et la surface de votre propri\u00E9t\u00E9.',
-    icon: FileText,
-  },
-  {
-    number: '2',
-    title: 'Notre agent analyse',
-    description:
-      'Un expert \u00E9tudie votre bien et compare avec les ventes r\u00E9centes du quartier.',
-    icon: Search,
-  },
-  {
-    number: '3',
-    title: 'Recevez votre estimation',
-    description:
-      'Vous obtenez une fourchette de prix pr\u00E9cise sous 24 heures.',
-    icon: Send,
-  },
-]
-
-const trustElements = [
-  { icon: BadgeCheck, label: 'Gratuit' },
-  { icon: Handshake, label: 'Sans engagement' },
-  { icon: Clock, label: 'R\u00E9sultat en 24h' },
-]
-
 export default function Estimation() {
+  const { t } = useTranslation('estimation')
   const { path } = useLang()
-  const [onlineForm, setOnlineForm] = useState({
-    address: '',
-    type: 'appartement',
-    surface: '',
-  })
   const [expertForm, setExpertForm] = useState({
     name: '',
     phone: '',
     date: '',
   })
+
+  const steps = [
+    {
+      number: '1',
+      title: t('steps.step1.title'),
+      description: t('steps.step1.description'),
+      icon: FileText,
+    },
+    {
+      number: '2',
+      title: t('steps.step2.title'),
+      description: t('steps.step2.description'),
+      icon: Search,
+    },
+    {
+      number: '3',
+      title: t('steps.step3.title'),
+      description: t('steps.step3.description'),
+      icon: Send,
+    },
+  ]
+
+  const trustElements = [
+    { icon: BadgeCheck, label: t('trust.free') },
+    { icon: Handshake, label: t('trust.noCommitment') },
+    { icon: Clock, label: t('trust.result24h') },
+  ]
 
   return (
     <div>
@@ -64,14 +57,13 @@ export default function Estimation() {
         <div className="max-w-[1280px] mx-auto px-6 lg:px-12 text-center">
           <SectionReveal y={40}>
             <h1 className="font-playfair text-[36px] md:text-[48px] font-medium text-white leading-[1.1] tracking-[-0.3px] mb-4">
-              Estimez votre bien à Marrakech
+              {t('hero.title')}
             </h1>
           </SectionReveal>
 
           <SectionReveal y={30} delay={0.15}>
             <p className="font-inter text-[16px] md:text-[18px] text-white/70 max-w-[600px] mx-auto mb-8">
-              Découvrez la valeur de votre propriété en quelques clics. Notre
-              expertise du marché local pour une estimation précise.
+              {t('hero.subtitle')}
             </p>
           </SectionReveal>
 
@@ -94,153 +86,72 @@ export default function Estimation() {
         </div>
       </section>
 
-      {/* ═══════ TWO CTA CARDS ═══════ */}
+      {/* ═══════ EXPERT CTA CARD ═══════ */}
       <section className="bg-white py-12 md:py-20">
-        <div className="max-w-[1100px] mx-auto px-6 lg:px-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* ── Online estimation ── */}
-            <div className="bg-cream-warm rounded-card p-8">
-              <div className="w-12 h-12 rounded-lg bg-terracotta/10 flex items-center justify-center mb-5">
-                <Calculator size={24} className="text-terracotta" />
-              </div>
-              <h2 className="font-playfair text-[24px] font-medium text-midnight mb-2">
-                Estimation en ligne
-              </h2>
-              <p className="font-inter text-[14px] text-text-secondary mb-6">
-                Obtenez une première fourchette de prix instantanément.
-              </p>
-
-              <form className="space-y-4">
-                <div>
-                  <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
-                    Adresse du bien
-                  </label>
-                  <input
-                    type="text"
-                    value={onlineForm.address}
-                    onChange={(e) =>
-                      setOnlineForm((s) => ({
-                        ...s,
-                        address: e.target.value,
-                      }))
-                    }
-                    className="w-full h-12 px-4 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors"
-                    placeholder="Quartier, rue..."
-                  />
-                </div>
-
-                <div>
-                  <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
-                    Type de bien
-                  </label>
-                  <select
-                    value={onlineForm.type}
-                    onChange={(e) =>
-                      setOnlineForm((s) => ({ ...s, type: e.target.value }))
-                    }
-                    className="w-full h-12 px-4 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors bg-white"
-                  >
-                    <option value="appartement">Appartement</option>
-                    <option value="villa">Villa</option>
-                    <option value="riad">Riad</option>
-                    <option value="terrain">Terrain</option>
-                    <option value="prestige">Maison de prestige</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
-                    Surface (m²)
-                  </label>
-                  <input
-                    type="number"
-                    value={onlineForm.surface}
-                    onChange={(e) =>
-                      setOnlineForm((s) => ({
-                        ...s,
-                        surface: e.target.value,
-                      }))
-                    }
-                    className="w-full h-12 px-4 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors"
-                    placeholder="Ex: 120"
-                  />
-                </div>
-
-                <button
-                  type="button"
-                  className="w-full h-12 bg-terracotta text-white font-inter text-[14px] font-semibold rounded-lg hover:scale-[1.01] active:scale-[0.99] transition-transform"
-                >
-                  Obtenir une estimation
-                </button>
-              </form>
+        <div className="max-w-[560px] mx-auto px-6 lg:px-12">
+          <div className="bg-cream-warm rounded-card p-8">
+            <div className="w-12 h-12 rounded-lg bg-palm/10 flex items-center justify-center mb-5">
+              <UserCheck size={24} className="text-palm" />
             </div>
+            <h2 className="font-playfair text-[24px] font-medium text-midnight mb-2">
+              {t('expert.title')}
+            </h2>
+            <p className="font-inter text-[14px] text-text-secondary mb-6">
+              {t('expert.subtitle')}
+            </p>
 
-            {/* ── Expert estimation ── */}
-            <div className="bg-cream-warm rounded-card p-8">
-              <div className="w-12 h-12 rounded-lg bg-palm/10 flex items-center justify-center mb-5">
-                <UserCheck size={24} className="text-palm" />
+            <form className="space-y-4">
+              <div>
+                <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
+                  {t('expert.nameLabel')}
+                </label>
+                <input
+                  type="text"
+                  value={expertForm.name}
+                  onChange={(e) =>
+                    setExpertForm((s) => ({ ...s, name: e.target.value }))
+                  }
+                  className="w-full h-12 px-4 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors"
+                  placeholder={t('expert.namePlaceholder')}
+                />
               </div>
-              <h2 className="font-playfair text-[24px] font-medium text-midnight mb-2">
-                Estimation par un expert
-              </h2>
-              <p className="font-inter text-[14px] text-text-secondary mb-6">
-                Planifiez une visite avec l'un de nos agents pour une estimation
-                précise.
-              </p>
 
-              <form className="space-y-4">
-                <div>
-                  <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
-                    Votre nom
-                  </label>
-                  <input
-                    type="text"
-                    value={expertForm.name}
-                    onChange={(e) =>
-                      setExpertForm((s) => ({ ...s, name: e.target.value }))
-                    }
-                    className="w-full h-12 px-4 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors"
-                    placeholder="Prénom et nom"
-                  />
-                </div>
+              <div>
+                <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
+                  {t('expert.phoneLabel')}
+                </label>
+                <input
+                  type="tel"
+                  value={expertForm.phone}
+                  onChange={(e) =>
+                    setExpertForm((s) => ({ ...s, phone: e.target.value }))
+                  }
+                  className="w-full h-12 px-4 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors"
+                  placeholder={t('expert.phonePlaceholder')}
+                />
+              </div>
 
-                <div>
-                  <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
-                    Téléphone
-                  </label>
-                  <input
-                    type="tel"
-                    value={expertForm.phone}
-                    onChange={(e) =>
-                      setExpertForm((s) => ({ ...s, phone: e.target.value }))
-                    }
-                    className="w-full h-12 px-4 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors"
-                    placeholder="+212 6 XX XX XX XX"
-                  />
-                </div>
+              <div>
+                <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
+                  {t('expert.dateLabel')}
+                </label>
+                <input
+                  type="date"
+                  value={expertForm.date}
+                  onChange={(e) =>
+                    setExpertForm((s) => ({ ...s, date: e.target.value }))
+                  }
+                  className="w-full h-12 px-4 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors"
+                />
+              </div>
 
-                <div>
-                  <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
-                    Date souhaitée
-                  </label>
-                  <input
-                    type="date"
-                    value={expertForm.date}
-                    onChange={(e) =>
-                      setExpertForm((s) => ({ ...s, date: e.target.value }))
-                    }
-                    className="w-full h-12 px-4 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors"
-                  />
-                </div>
-
-                <button
-                  type="button"
-                  className="w-full h-12 bg-palm text-white font-inter text-[14px] font-semibold rounded-lg hover:scale-[1.01] active:scale-[0.99] transition-transform"
-                >
-                  Demander une visite
-                </button>
-              </form>
-            </div>
+              <button
+                type="button"
+                className="w-full h-12 bg-palm text-white font-inter text-[14px] font-semibold rounded-lg hover:scale-[1.01] active:scale-[0.99] transition-transform"
+              >
+                {t('expert.submit')}
+              </button>
+            </form>
           </div>
         </div>
       </section>
@@ -250,7 +161,7 @@ export default function Estimation() {
         <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
           <SectionReveal y={30}>
             <h2 className="font-playfair text-[28px] md:text-[36px] font-medium text-midnight text-center mb-12">
-              Comment ça marche ?
+              {t('steps.heading')}
             </h2>
           </SectionReveal>
 
@@ -287,18 +198,17 @@ export default function Estimation() {
         <div className="max-w-[800px] mx-auto px-6 lg:px-12 text-center">
           <SectionReveal y={30}>
             <h2 className="font-playfair text-[28px] md:text-[36px] font-medium text-midnight mb-4">
-              Des questions ?
+              {t('cta.title')}
             </h2>
             <p className="font-inter text-[16px] text-text-secondary mb-8 max-w-[560px] mx-auto">
-              Notre équipe est à votre disposition pour toute question sur
-              l&#8217;estimation de votre bien.
+              {t('cta.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 to={path('/contact')}
                 className="inline-block bg-terracotta text-white font-inter text-[14px] font-semibold px-8 py-3.5 rounded-lg hover:scale-[1.02] transition-transform"
               >
-                Nous contacter
+                {t('cta.contact')}
               </Link>
               <a
                 href="tel:+212524000000"

@@ -1,1 +1,50 @@
-{}
+{
+  "hero": {
+    "title": "Valore su propiedad en Marrakech",
+    "subtitle": "Descubra el valor de su propiedad gracias a nuestra experiencia en el mercado local. Contáctenos para una valoración precisa y personalizada."
+  },
+  "trust": {
+    "free": "Gratuito",
+    "noCommitment": "Sin compromiso",
+    "result24h": "Resultado en 24 h"
+  },
+  "expert": {
+    "title": "Valoración por un experto",
+    "subtitle": "Concierte una visita con uno de nuestros agentes para una valoración precisa.",
+    "nameLabel": "Su nombre",
+    "namePlaceholder": "Nombre y apellidos",
+    "phoneLabel": "Teléfono",
+    "phonePlaceholder": "+212 6 XX XX XX XX",
+    "dateLabel": "Fecha deseada",
+    "submit": "Solicitar una visita"
+  },
+  "steps": {
+    "heading": "¿Cómo funciona?",
+    "step1": {
+      "title": "Rellene el formulario",
+      "description": "Indique sus datos de contacto y la fecha deseada para la visita."
+    },
+    "step2": {
+      "title": "Nuestro agente le contacta",
+      "description": "Un experto le llama para confirmar la cita y preparar la visita."
+    },
+    "step3": {
+      "title": "Reciba su valoración",
+      "description": "Obtendrá una valoración precisa y personalizada en menos de 24 horas."
+    }
+  },
+  "cta": {
+    "title": "¿Tiene preguntas?",
+    "subtitle": "Nuestro equipo está a su disposición para cualquier consulta sobre la valoración de su propiedad.",
+    "contact": "Contáctenos"
+  },
+  "intro": {
+    "title": "Valore su propiedad",
+    "subtitle": "Descubra el valor de su propiedad en Marrakech concertando una cita con uno de nuestros expertos.",
+    "cta": "Solicitar una valoración",
+    "step1Description": "Rellene el formulario con sus datos y la fecha deseada.",
+    "step2Description": "Un experto le contacta para preparar la visita.",
+    "step3Description": "Reciba una valoración precisa en menos de 24 horas.",
+    "linkOnline": "Solicitar una valoración"
+  }
+}

@@ -1,1 +1,50 @@
-{}
+{
+  "hero": {
+    "title": "Estimez votre bien à Marrakech",
+    "subtitle": "Découvrez la valeur de votre propriété grâce à notre expertise du marché local. Contactez-nous pour une estimation précise et personnalisée."
+  },
+  "trust": {
+    "free": "Gratuit",
+    "noCommitment": "Sans engagement",
+    "result24h": "Résultat en 24h"
+  },
+  "expert": {
+    "title": "Estimation par un expert",
+    "subtitle": "Planifiez une visite avec l'un de nos agents pour une estimation précise.",
+    "nameLabel": "Votre nom",
+    "namePlaceholder": "Prénom et nom",
+    "phoneLabel": "Téléphone",
+    "phonePlaceholder": "+212 6 XX XX XX XX",
+    "dateLabel": "Date souhaitée",
+    "submit": "Demander une visite"
+  },
+  "steps": {
+    "heading": "Comment ça marche ?",
+    "step1": {
+      "title": "Remplissez le formulaire",
+      "description": "Indiquez vos coordonnées et la date souhaitée pour la visite."
+    },
+    "step2": {
+      "title": "Notre agent vous contacte",
+      "description": "Un expert vous appelle pour confirmer le rendez-vous et préparer la visite."
+    },
+    "step3": {
+      "title": "Recevez votre estimation",
+      "description": "Vous obtenez une estimation précise et personnalisée sous 24 heures."
+    }
+  },
+  "cta": {
+    "title": "Des questions ?",
+    "subtitle": "Notre équipe est à votre disposition pour toute question sur l'estimation de votre bien.",
+    "contact": "Nous contacter"
+  },
+  "intro": {
+    "title": "Estimez votre bien",
+    "subtitle": "Découvrez la valeur de votre propriété à Marrakech en prenant rendez-vous avec l'un de nos experts.",
+    "cta": "Demander une estimation",
+    "step1Description": "Remplissez le formulaire avec vos coordonnées et la date souhaitée.",
+    "step2Description": "Un expert vous contacte pour préparer la visite.",
+    "step3Description": "Recevez une estimation précise sous 24 heures.",
+    "linkOnline": "Demander une estimation"
+  }
+}
