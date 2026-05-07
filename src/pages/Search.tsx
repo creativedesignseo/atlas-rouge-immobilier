@@ -141,7 +141,7 @@ const defaultFilters: Filters = {
 
 // Fallback list when Supabase is unreachable. Source of truth is the
 // `neighborhoods` table in Supabase (loaded via getNeighborhoods()).
-const nbhdFallback = ['Guéliz', 'Hivernage', 'Palmeraie', 'Médina', 'Agdal', 'Targa', 'Amelkis', "Route de l'Ourika", 'Route de Fès', "Route d'Amizmiz", 'Route de Tahannaout', 'M Avenue']
+const nbhdFallback = ['Guéliz', 'Hivernage', 'Palmeraie', 'Médina', 'Agdal', 'Targa', 'Amelkis', "Route de l'Ourika", 'Route de Fès', "Route d'Amizmiz", 'Route de Tahannaout', 'M Avenue', 'Chrifia']
 
 /* ───────────────────── helper functions ───────────────────── */
 
