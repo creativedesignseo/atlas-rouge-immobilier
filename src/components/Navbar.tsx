@@ -115,9 +115,9 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={t('whatsappAria')}
-              className="group inline-flex items-center gap-2 rounded-full border border-[#25D366]/30 bg-[#25D366]/10 px-4 py-2 font-inter text-[14px] font-semibold text-[#128C7E] transition-all duration-200 hover:bg-[#25D366] hover:text-white hover:shadow-[0_4px_14px_rgba(37,211,102,0.35)]"
+              className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 font-inter text-[14px] font-semibold text-white shadow-[0_2px_8px_rgba(37,211,102,0.25)] transition-all duration-200 hover:bg-[#1da851] hover:shadow-[0_4px_14px_rgba(37,211,102,0.4)] hover:-translate-y-px"
             >
-              <WhatsAppIcon size={17} className="text-[#25D366] group-hover:text-white transition-colors" />
+              <WhatsAppIcon size={17} />
               <span>{t('whatsapp')}</span>
             </a>
           </div>
