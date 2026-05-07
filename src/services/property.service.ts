@@ -73,9 +73,18 @@ function mapDbToProperty(row: Record<string, unknown>, lang = getCurrentLanguage
 async function fetchProperties(filters: PropertyFilters): Promise<Property[]> {
   if (!isSupabaseConfigured) return applyMockFilters(mockProperties, filters)
 
-  let query = supabase.from('properties').select(`*, neighborhoods(name)`)
+  // When filtering by neighborhoods, force an inner join so PostgREST applies
+  // the embedded resource filter to the parent rows. Without !inner, the
+  // filter on `neighborhoods.name` is ignored for the parent query.
+  const selectStr = (filters.neighborhoods && filters.neighborhoods.length > 0)
+    ? '*, neighborhoods!inner(name)'
+    : '*, neighborhoods(name)'
+  let query = supabase.from('properties').select(selectStr)
   if (filters.transaction) query = query.eq('transaction', filters.transaction)
   if (filters.types && filters.types.length > 0) query = query.in('type', filters.types as Property['type'][])
+  if (filters.neighborhoods && filters.neighborhoods.length > 0) {
+    query = query.in('neighborhoods.name', filters.neighborhoods)
+  }
   if (filters.priceMin !== undefined) query = query.gte('price_eur', filters.priceMin)
   if (filters.priceMax !== undefined) query = query.lte('price_eur', filters.priceMax)
   if (filters.surfaceMin !== undefined) query = query.gte('surface', filters.surfaceMin)
@@ -236,6 +245,9 @@ function applyMockFilters(properties: Property[], filters: PropertyFilters): Pro
   }
   if (filters.types && filters.types.length > 0) {
     result = result.filter((p) => filters.types!.includes(p.type))
+  }
+  if (filters.neighborhoods && filters.neighborhoods.length > 0) {
+    result = result.filter((p) => filters.neighborhoods!.includes(p.neighborhood))
   }
   if (filters.priceMin !== undefined) {
     result = result.filter((p) => p.priceEUR >= filters.priceMin!)
