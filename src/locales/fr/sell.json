@@ -23,15 +23,15 @@
       "learnMore": "En savoir plus"
     },
     "sell": {
-      "title": "Mandater une agence immobilière",
-      "description": "Confiez la vente de votre bien à un professionnel de votre quartier. Expertise locale, négociation, et accompagnement jusqu'à la signature.",
+      "title": "Confier la vente à notre équipe",
+      "description": "Confiez la vente de votre bien à nos agents experts. Expertise locale, négociation, et accompagnement jusqu'à la signature.",
       "items": [
         "Estimation professionnelle",
         "Photos et visite virtuelle",
         "Diffusion sur notre réseau partenaire",
         "Accompagnement administratif complet"
       ],
-      "cta": "Trouver une agence",
+      "cta": "Nous contacter",
       "learnMore": "Comment ça marche ?"
     }
   },

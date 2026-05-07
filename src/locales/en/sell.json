@@ -23,15 +23,15 @@
       "learnMore": "Learn more"
     },
     "sell": {
-      "title": "Hire a real estate agency",
-      "description": "Entrust the sale of your property to a professional in your area. Local expertise, negotiation, and full support up to signing.",
+      "title": "Entrust the sale to our team",
+      "description": "Entrust the sale of your property to our expert agents. Local expertise, negotiation, and full support up to signing.",
       "items": [
         "Professional valuation",
         "Photos and virtual tour",
         "Distribution across our partner network",
         "Full administrative support"
       ],
-      "cta": "Find an agency",
+      "cta": "Contact us",
       "learnMore": "How does it work?"
     }
   },

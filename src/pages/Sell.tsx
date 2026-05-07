@@ -5,77 +5,13 @@ import { useLang } from '@/hooks/useLang'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import {
-  Upload,
-  Users,
-  Check,
-  MapPin,
-  ChevronDown,
-  Star,
-  Search,
-} from 'lucide-react'
+import { Upload, Users, Check, ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 gsap.registerPlugin(ScrollTrigger)
 
 /* ── FAQ keys (content resolved at render time via t()) ── */
 const faqKeys = ['estimation', 'duration', 'documents', 'remote', 'fees', 'signing'] as const
-
-/* ── Filter option keys (labels resolved via t() at render) ── */
-const specialtyKeys = ['sale', 'rent', 'new'] as const
-const typeKeys = ['villa', 'apartment', 'riad', 'prestige'] as const
-
-/* ── Agent mock data — specialties and locations stored as i18n-friendly keys ── */
-const agents = [
-  {
-    name: 'Immobilière Palmeraie',
-    rating: 4.8,
-    properties: 47,
-    specialties: ['sale', 'villa', 'prestige'],
-    location: 'Palmeraie, Marrakech',
-    initials: 'IP',
-  },
-  {
-    name: 'Médina Immobilier',
-    rating: 4.7,
-    properties: 32,
-    specialties: ['sale', 'riad', 'rent'],
-    location: 'Médina, Marrakech',
-    initials: 'MI',
-  },
-  {
-    name: 'Gueliz Properties',
-    rating: 4.6,
-    properties: 65,
-    specialties: ['sale', 'apartment', 'new'],
-    location: 'Guéliz, Marrakech',
-    initials: 'GP',
-  },
-  {
-    name: 'Hivernage Prestige',
-    rating: 4.9,
-    properties: 28,
-    specialties: ['sale', 'prestige', 'rent'],
-    location: 'Hivernage, Marrakech',
-    initials: 'HP',
-  },
-  {
-    name: 'Atlas Golf Immobilier',
-    rating: 4.7,
-    properties: 41,
-    specialties: ['sale', 'villa', 'rent'],
-    location: 'Amelkis, Marrakech',
-    initials: 'AG',
-  },
-  {
-    name: 'Ourika Valley Homes',
-    rating: 4.5,
-    properties: 19,
-    specialties: ['sale', 'villa'],
-    location: 'Route de l’Ourika, Marrakech',
-    initials: 'OV',
-  },
-]
 
 /* ── How it works steps (labels resolved via i18n at render time) ── */
 const stepNumbers = ['01', '02', '03', '04'] as const
@@ -132,14 +68,10 @@ export default function Sell() {
   const { path } = useLang()
   const { t } = useTranslation('sell')
   const [openFaq, setOpenFaq] = useState<number | null>(null)
-  const [searchQuery, setSearchQuery] = useState('')
-  const [specialtyFilter, setSpecialtyFilter] = useState('')
-  const [typeFilter, setTypeFilter] = useState('')
 
   const heroRef = useRef<HTMLDivElement>(null)
   const featureCardsRef = useRef<HTMLDivElement>(null)
   const howItWorksRef = useRef<HTMLDivElement>(null)
-  const agentSearchRef = useRef<HTMLDivElement>(null)
   const faqRef = useRef<HTMLDivElement>(null)
 
   /* Hero animations */
@@ -234,37 +166,6 @@ export default function Sell() {
     { scope: howItWorksRef }
   )
 
-  /* Agent search animation */
-  useGSAP(
-    () => {
-      if (!agentSearchRef.current) return
-      gsap.from(agentSearchRef.current!.querySelector('.agent-title'), {
-        y: 30,
-        opacity: 0,
-        duration: 0.7,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: agentSearchRef.current,
-          start: 'top 85%',
-          once: true,
-        },
-      })
-      gsap.from(agentSearchRef.current!.querySelectorAll('.agent-card'), {
-        y: 30,
-        opacity: 0,
-        duration: 0.6,
-        ease: 'power3.out',
-        stagger: 0.1,
-        scrollTrigger: {
-          trigger: agentSearchRef.current!.querySelector('.agent-grid'),
-          start: 'top 85%',
-          once: true,
-        },
-      })
-    },
-    { scope: agentSearchRef }
-  )
-
   /* FAQ animation */
   useGSAP(
     () => {
@@ -296,29 +197,6 @@ export default function Sell() {
     { scope: faqRef }
   )
 
-  /* Filtered agents — filters compare against language-stable keys */
-  const filteredAgents = agents.filter((agent) => {
-    const matchesSearch =
-      !searchQuery ||
-      agent.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      agent.location.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesSpecialty =
-      !specialtyFilter || agent.specialties.includes(specialtyFilter)
-    const matchesType = !typeFilter || agent.specialties.includes(typeFilter)
-    return matchesSearch && matchesSpecialty && matchesType
-  })
-
-  /* Translate a specialty/type key — falls back to the key itself if missing */
-  const translateTag = (key: string) => {
-    if ((specialtyKeys as readonly string[]).includes(key)) {
-      return t(`agents.filters.specialties.${key}`)
-    }
-    if ((typeKeys as readonly string[]).includes(key)) {
-      return t(`agents.filters.types.${key}`)
-    }
-    return key
-  }
-
   return (
     <div>
       {/* ═══════ Hero Section ═══════ */}
@@ -344,7 +222,7 @@ export default function Sell() {
           </p>
           <div className="hero-buttons flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              to={path('/estimation')}
+              to={path('/valuation')}
               className="bg-terracotta text-white font-inter text-[14px] font-semibold px-6 py-3 rounded-lg hover:scale-[1.02] transition-transform"
             >
               {t('hero.estimateButton')}
@@ -396,13 +274,13 @@ export default function Sell() {
             </ul>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <Link
-                to={path('/vendre#depot')}
+                to={path('/sell#depot')}
                 className="bg-terracotta text-white font-inter text-[14px] font-semibold px-6 py-3 rounded-lg hover:scale-[1.02] transition-transform"
               >
                 {t('features.depot.cta')}
               </Link>
               <Link
-                to="#"
+                to={path('/contact')}
                 className="text-terracotta font-inter text-[14px] font-medium hover:underline"
               >
                 {t('features.depot.learnMore')}
@@ -438,7 +316,7 @@ export default function Sell() {
             </ul>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <Link
-                to="#agents"
+                to={path('/contact')}
                 className="bg-palm text-white font-inter text-[14px] font-semibold px-6 py-3 rounded-lg hover:scale-[1.02] transition-transform"
               >
                 {t('features.sell.cta')}
@@ -487,129 +365,6 @@ export default function Sell() {
                 </p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════ Find an Agent ═══════ */}
-      <section
-        ref={agentSearchRef}
-        id="agents"
-        className="bg-white py-16 md:py-24 px-6"
-      >
-        <div className="max-w-[1100px] mx-auto">
-          <h2 className="agent-title font-playfair text-[36px] md:text-[40px] font-medium text-midnight text-center mb-8">
-            {t('agents.title')}
-          </h2>
-
-          {/* Search bar */}
-          <div className="max-w-[600px] mx-auto mb-8">
-            <div className="relative">
-              <MapPin
-                size={20}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary"
-              />
-              <input
-                type="text"
-                placeholder={t('agents.searchPlaceholder')}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-[56px] pl-12 pr-4 border border-border-warm rounded-card bg-white font-inter text-[15px] text-text-primary placeholder:text-text-secondary/60 focus:outline-none focus:border-terracotta transition-colors"
-              />
-              <Search
-                size={20}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-text-secondary/60"
-              />
-            </div>
-          </div>
-
-          {/* Filters */}
-          <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
-            <select
-              value={specialtyFilter}
-              onChange={(e) => setSpecialtyFilter(e.target.value)}
-              className="h-[44px] px-4 border border-border-warm rounded-lg bg-white font-inter text-[14px] text-text-primary focus:outline-none focus:border-terracotta"
-            >
-              <option value="">{t('agents.filters.specialty')}</option>
-              {specialtyKeys.map((k) => (
-                <option key={k} value={k}>{t(`agents.filters.specialties.${k}`)}</option>
-              ))}
-            </select>
-            <select
-              value={typeFilter}
-              onChange={(e) => setTypeFilter(e.target.value)}
-              className="h-[44px] px-4 border border-border-warm rounded-lg bg-white font-inter text-[14px] text-text-primary focus:outline-none focus:border-terracotta"
-            >
-              <option value="">{t('agents.filters.type')}</option>
-              {typeKeys.map((k) => (
-                <option key={k} value={k}>{t(`agents.filters.types.${k}`)}</option>
-              ))}
-            </select>
-          </div>
-
-          {/* Agent cards grid */}
-          <div className="agent-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredAgents.length === 0 ? (
-              <div className="col-span-full text-center text-text-secondary font-inter text-[14px] py-12">
-                {t('agents.noResults')}
-              </div>
-            ) : (
-              filteredAgents.map((agent) => (
-                <div
-                  key={agent.name}
-                  className="agent-card bg-white rounded-card border border-border-warm p-6 shadow-card hover:shadow-card-hover transition-shadow"
-                >
-                  {/* Header */}
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-[60px] h-[60px] rounded-full bg-cream-warm flex items-center justify-center shrink-0">
-                      <span className="font-playfair text-[20px] font-semibold text-midnight">
-                        {agent.initials}
-                      </span>
-                    </div>
-                    <div>
-                      <h4 className="font-inter text-[16px] font-semibold text-text-primary">
-                        {agent.name}
-                      </h4>
-                      <div className="flex items-center gap-2 text-text-secondary text-[13px] font-inter">
-                        <span>
-                          {t('agents.card.stats', { count: agent.properties, rating: agent.rating })}
-                        </span>
-                        <Star
-                          size={13}
-                          className="fill-gold text-gold"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Specialties */}
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {agent.specialties.map((s) => (
-                      <span
-                        key={s}
-                        className="bg-cream-warm text-text-secondary text-[12px] font-medium px-3 py-1 rounded-full"
-                      >
-                        {translateTag(s)}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Location */}
-                  <div className="flex items-center gap-1.5 text-text-secondary text-[13px] font-inter mb-4">
-                    <MapPin size={14} />
-                    <span>{agent.location}</span>
-                  </div>
-
-                  {/* CTA */}
-                  <Link
-                    to="#"
-                    className="block w-full text-center bg-white border border-border-warm text-text-primary font-inter text-[14px] font-medium py-2.5 rounded-lg hover:bg-cream-warm transition-colors"
-                  >
-                    {t('agents.card.viewProfile')}
-                  </Link>
-                </div>
-              ))
-            )}
           </div>
         </div>
       </section>

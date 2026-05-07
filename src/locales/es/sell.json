@@ -23,15 +23,15 @@
       "learnMore": "Saber más"
     },
     "sell": {
-      "title": "Encargar a una agencia inmobiliaria",
-      "description": "Confíe la venta de su inmueble a un profesional de su barrio. Experiencia local, negociación y acompañamiento hasta la firma.",
+      "title": "Confíe la venta a nuestro equipo",
+      "description": "Confíe la venta de su inmueble a nuestros agentes expertos. Experiencia local, negociación y acompañamiento hasta la firma.",
       "items": [
         "Tasación profesional",
         "Fotos y visita virtual",
         "Difusión en nuestra red de socios",
         "Acompañamiento administrativo completo"
       ],
-      "cta": "Buscar una agencia",
+      "cta": "Contáctenos",
       "learnMore": "¿Cómo funciona?"
     }
   },
