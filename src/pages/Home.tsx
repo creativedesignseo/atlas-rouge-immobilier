@@ -272,10 +272,10 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Search bar (autocomplete + type filter) — own container so it
-              can stretch up to 1200px and fit Comprar/Alquilar/Obra nueva +
-              type + search input + Buscar inline without truncation. */}
-          <div ref={heroSearchRef} className="max-w-[1200px] mx-auto">
+          {/* Search bar — own container that respects HeroSearch's own
+              max-w. Wider than the title block so the inline tabs +
+              search input + Buscar fit on a single row without cropping. */}
+          <div ref={heroSearchRef} className="max-w-[1000px] mx-auto">
             <HeroSearch />
           </div>
         </div>
