@@ -827,9 +827,18 @@ export default function SearchPage() {
     })
   }, [])
 
+  // Build the location string for the page heading. When the user has
+  // filtered by one or more neighborhoods we list them and prepend them
+  // to the city ("Médina, Marrakech"), otherwise we just show the city.
+  // This is what the user reads when landing on the filtered page so it
+  // has to feel specific and SEO-friendly.
+  const locationLabel = filters.neighborhoods.length > 0
+    ? `${filters.neighborhoods.join(', ')}, ${t('city')}`
+    : t('city')
+
   const resultsLabel = filters.transaction === 'sale'
-    ? t('resultsForSale', { count: filtered.length })
-    : t('resultsForRent', { count: filtered.length })
+    ? t('resultsForSale', { count: filtered.length, location: locationLabel })
+    : t('resultsForRent', { count: filtered.length, location: locationLabel })
 
   const pageTitle = filters.transaction === 'sale' ? t('pageTitle.buy') : t('pageTitle.rent')
 
@@ -853,9 +862,11 @@ export default function SearchPage() {
             {/* Breadcrumb + count */}
             <div>
               <p className="hidden lg:block text-[13px] text-text-secondary mb-1">
-                {t('breadcrumb.home')} &gt; {pageTitle} &gt; {t('city')}
+                {t('breadcrumb.home')} &gt; {pageTitle} &gt; {locationLabel}
               </p>
-              <p className="font-inter text-[16px] font-medium text-midnight">{resultsLabel}</p>
+              <h1 className="font-playfair text-[20px] md:text-[24px] font-medium text-midnight leading-tight">
+                {resultsLabel}
+              </h1>
             </div>
 
             {/* Right controls */}
