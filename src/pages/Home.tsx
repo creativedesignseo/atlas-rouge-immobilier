@@ -239,7 +239,7 @@ export default function Home() {
       {/* ====== HERO ====== */}
       <section
         ref={heroRef}
-        className="relative z-30 min-h-[100dvh] flex items-center justify-center"
+        className="relative z-30 min-h-[560px] md:min-h-[640px] lg:min-h-[680px] flex items-center justify-center"
       >
         {/* Background with Ken Burns — overflow-hidden is contained HERE
             (not on the section) so the Ken Burns scaling animation is
@@ -253,20 +253,20 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-b from-[rgba(23,32,51,0.55)] to-[rgba(23,32,51,0.75)]" />
         </div>
 
-        {/* Content — title/subtitle stay narrow (max-w-800), the search bar
-            below gets its own wider container so the 4-tab inline layout
-            doesn't get cropped on widescreen. */}
-        <div className="relative z-10 text-center px-6 pt-20 pb-12 w-full">
+        {/* Content — paddings tightened so the search bar is visible
+            without scrolling on most viewports. Title block stays narrow
+            (max-w-800); search bar wrapper is wider. */}
+        <div className="relative z-10 text-center px-6 pt-16 pb-8 md:pt-20 md:pb-12 w-full">
           <div className="max-w-[800px] mx-auto">
             <h1
               ref={heroTitleRef}
-              className="font-playfair text-[36px] md:text-[56px] font-medium text-white leading-[1.1] tracking-[-0.5px] mb-6"
+              className="font-playfair text-[32px] md:text-[48px] lg:text-[52px] font-medium text-white leading-[1.1] tracking-[-0.5px] mb-4 md:mb-5"
             >
               {t('hero.title')}
             </h1>
             <p
               ref={heroSubtitleRef}
-              className="text-white/85 text-[16px] md:text-[18px] font-inter font-normal mb-10"
+              className="text-white/85 text-[15px] md:text-[17px] font-inter font-normal mb-6 md:mb-8"
             >
               {t('hero.subtitle')}
             </p>
