@@ -737,10 +737,21 @@ export default function SearchPage() {
   const { t } = useTranslation('search')
   const isRentRoute = location.pathname.endsWith('/louer')
 
-  const [filters, setFilters] = useState<Filters>(() => ({
-    ...defaultFilters,
-    transaction: isRentRoute ? 'rent' : 'sale',
-  }))
+  // Initial filters: URL params (q, type, neighborhood) seed the state when
+  // the user lands here from the home hero search bar or from a deep link.
+  const [filters, setFilters] = useState<Filters>(() => {
+    const params = new URLSearchParams(location.search)
+    const q = params.get('q') || ''
+    const typeParam = params.get('type') || ''
+    const nbhdParam = params.get('neighborhood') || ''
+    return {
+      ...defaultFilters,
+      transaction: isRentRoute ? 'rent' : 'sale',
+      searchQuery: q,
+      types: typeParam ? [typeParam] : [],
+      neighborhoods: nbhdParam ? [nbhdParam] : [],
+    }
+  })
   const [sort, setSort] = useState('recommande')
   const [view, setView] = useState<ViewMode>('grid')
   const [mapVisible, setMapVisible] = useState(false)

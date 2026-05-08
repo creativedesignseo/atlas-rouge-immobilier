@@ -7,9 +7,6 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
-  MapPin,
-  ChevronDown,
-  Search,
   Home as HomeIcon,
   Building,
   Landmark,
@@ -31,6 +28,7 @@ import type { Neighborhood } from '@/data/neighborhoods'
 import PropertyCard from '@/components/PropertyCard'
 import NeighborhoodCard from '@/components/NeighborhoodCard'
 import ServiceCard from '@/components/ServiceCard'
+import HeroSearch from '@/components/HeroSearch'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -111,7 +109,6 @@ function AnimatedCounter({ target, suffix = '', duration = 1.5 }: { target: numb
 
 export default function Home() {
   const { t } = useTranslation('home')
-  const { t: tc } = useTranslation('common')
   const { path } = useLang()
   const heroRef = useRef<HTMLDivElement>(null)
   const heroTitleRef = useRef<HTMLHeadingElement>(null)
@@ -268,38 +265,9 @@ export default function Home() {
             {t('hero.subtitle')}
           </p>
 
-          {/* Search bar */}
-          <div
-            ref={heroSearchRef}
-            className="bg-white rounded-card shadow-search p-2 max-w-[720px] mx-auto"
-          >
-            <div className="flex flex-col md:flex-row items-stretch gap-2">
-              {/* Location */}
-              <div className="flex-1 flex items-center gap-2 px-4 py-2 bg-cream rounded-lg min-h-[48px]">
-                <MapPin size={18} className="text-text-secondary shrink-0" />
-                <input
-                  type="text"
-                  placeholder={t('hero.searchPlaceholder')}
-                  className="bg-transparent text-text-primary text-[14px] font-inter w-full outline-none placeholder:text-text-secondary/60"
-                />
-              </div>
-              {/* Property type */}
-              <div className="flex items-center gap-2 px-4 py-2 bg-cream rounded-lg min-h-[48px] cursor-pointer">
-                <HomeIcon size={18} className="text-text-secondary shrink-0" />
-                <span className="text-text-secondary text-[14px] font-inter">
-                  {tc('filter')}
-                </span>
-                <ChevronDown size={16} className="text-text-secondary ml-auto" />
-              </div>
-              {/* Button */}
-              <Link
-                to={path('/acheter')}
-                className="bg-terracotta text-white font-inter text-[14px] font-semibold px-6 py-3 rounded-lg flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform min-h-[48px]"
-              >
-                <Search size={16} />
-                {tc('search')}
-              </Link>
-            </div>
+          {/* Search bar (autocomplete + type filter) */}
+          <div ref={heroSearchRef}>
+            <HeroSearch />
           </div>
 
         </div>
