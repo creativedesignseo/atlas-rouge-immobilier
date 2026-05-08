@@ -11,6 +11,22 @@ type TypeKey = typeof TYPE_KEYS[number]
 
 const PANEL_ANIM = 'animate-in fade-in slide-in-from-top-2 duration-150'
 
+// Common search aliases per type and language. Lets users find a property
+// type using the words they actually say in their region (e.g. Spanish
+// users typing "piso" or "casa" instead of the canonical labels).
+const TYPE_SYNONYMS: Record<TypeKey, Record<string, string[]>> = {
+  villa:     { fr: ['maison'],                       es: ['casa', 'chalet'],            en: ['house'] },
+  apartment: { fr: ['appart', 'appartement', 'flat'], es: ['piso', 'departamento'],      en: ['flat', 'apt'] },
+  riad:      { fr: [],                                es: [],                            en: [] },
+  prestige:  { fr: ['luxe', 'haut de gamme'],         es: ['lujo', 'prestigio'],         en: ['luxury'] },
+  land:      { fr: ['terrain', 'parcelle'],           es: ['terreno', 'parcela', 'solar'], en: ['plot', 'lot'] },
+  rooftop:   { fr: ['terrasse', 'penthouse'],         es: ['atico', 'terraza', 'penthouse'], en: ['penthouse'] },
+}
+
+// Strip diacritics so "atico" matches "ático", "gueliz" matches "Guéliz", etc.
+const normalize = (s: string) =>
+  s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim()
+
 /**
  * Hero search bar shown on the home page.
  *
@@ -24,7 +40,8 @@ const PANEL_ANIM = 'animate-in fade-in slide-in-from-top-2 duration-150'
 export default function HeroSearch() {
   const navigate = useNavigate()
   const { path } = useLang()
-  const { t } = useTranslation(['home', 'search', 'common'])
+  const { t, i18n } = useTranslation(['home', 'search', 'common'])
+  const lang = (i18n.language?.slice(0, 2) || 'en') as 'fr' | 'es' | 'en'
 
   const [query, setQuery] = useState('')
   const [type, setType] = useState<TypeKey | null>(null)
@@ -69,21 +86,30 @@ export default function HeroSearch() {
   // Filter suggestions against the current query. When the input is empty
   // we still show a few popular options so the panel feels useful from the
   // first focus.
+  //
+  // Matching is accent-insensitive AND uses per-language synonyms — so a
+  // Spanish visitor typing "piso" matches Apartamento, "casa" matches Villa,
+  // "atico" matches Ático/Rooftop, and so on.
   const suggestions = useMemo(() => {
-    const q = query.trim().toLowerCase()
+    const q = normalize(query)
     if (!q) {
       return {
         neighborhoods: neighborhoodList.slice(0, 6),
         types: TYPE_KEYS.slice(0, 4) as readonly TypeKey[],
       }
     }
+    const matchesType = (k: TypeKey) => {
+      const label = normalize(t(`search:types.${k}`))
+      const synonyms = (TYPE_SYNONYMS[k][lang] || []).map(normalize)
+      return [label, ...synonyms].some((s) => s.includes(q))
+    }
     return {
       neighborhoods: neighborhoodList
-        .filter((n) => n.toLowerCase().includes(q))
+        .filter((n) => normalize(n).includes(q))
         .slice(0, 6),
-      types: TYPE_KEYS.filter((k) => t(`search:types.${k}`).toLowerCase().includes(q)),
+      types: TYPE_KEYS.filter(matchesType),
     }
-  }, [query, neighborhoodList, t])
+  }, [query, neighborhoodList, t, lang])
 
   const buildUrl = (overrides?: { q?: string; type?: TypeKey | null; neighborhood?: string }) => {
     const params = new URLSearchParams()
