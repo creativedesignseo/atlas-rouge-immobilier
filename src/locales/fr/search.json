@@ -28,7 +28,9 @@
     "radius": "Rayon",
     "reset": "Réinitialiser les filtres",
     "resetAll": "Tout effacer",
-    "search": "Recherche"
+    "search": "Recherche",
+    "typePickerTitle": "Sélectionnez une typologie",
+    "anyType": "Tout type de bien"
   },
   "types": {
     "villa": "Villa",

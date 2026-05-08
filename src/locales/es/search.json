@@ -28,7 +28,9 @@
     "radius": "Radio",
     "reset": "Restablecer filtros",
     "resetAll": "Borrar todo",
-    "search": "Búsqueda"
+    "search": "Búsqueda",
+    "typePickerTitle": "Seleccione una tipología",
+    "anyType": "Cualquier inmueble"
   },
   "types": {
     "villa": "Villa",

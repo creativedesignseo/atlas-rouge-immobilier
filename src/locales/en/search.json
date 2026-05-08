@@ -28,7 +28,9 @@
     "radius": "Radius",
     "reset": "Reset filters",
     "resetAll": "Clear all",
-    "search": "Search"
+    "search": "Search",
+    "typePickerTitle": "Select a property type",
+    "anyType": "Any property"
   },
   "types": {
     "villa": "Villa",
