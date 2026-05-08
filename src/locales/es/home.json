@@ -7,14 +7,6 @@
       "all": "Todo",
       "buy": "Comprar",
       "rent": "Alquilar"
-    },
-    "chips": {
-      "villaPool": "Villa con piscina",
-      "riadMedina": "Riad medina",
-      "newApartment": "Apartamento nuevo",
-      "palmeraie": "Palmeraie",
-      "ourika": "Carretera de Ourika",
-      "investment": "Inversión de alquiler"
     }
   },
   "categories": {

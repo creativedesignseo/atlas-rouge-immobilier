@@ -7,14 +7,6 @@
       "all": "All",
       "buy": "Buy",
       "rent": "Rent"
-    },
-    "chips": {
-      "villaPool": "Villa with pool",
-      "riadMedina": "Medina riad",
-      "newApartment": "New apartment",
-      "palmeraie": "Palmeraie",
-      "ourika": "Ourika Road",
-      "investment": "Rental investment"
     }
   },
   "categories": {

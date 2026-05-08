@@ -34,7 +34,6 @@ import ServiceCard from '@/components/ServiceCard'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const chipKeys = ['villaPool', 'riadMedina', 'newApartment', 'palmeraie', 'ourika', 'investment'] as const
 
 const categories = [
   { icon: <HomeIcon size={32} />, labelKey: 'villas', typeParam: 'villa' },
@@ -118,7 +117,6 @@ export default function Home() {
   const heroTitleRef = useRef<HTMLHeadingElement>(null)
   const heroSubtitleRef = useRef<HTMLParagraphElement>(null)
   const heroSearchRef = useRef<HTMLDivElement>(null)
-  const heroChipsRef = useRef<HTMLDivElement>(null)
   const exploreRef = useRef<HTMLElement>(null)
   const featuredRef = useRef<HTMLElement>(null)
   const categoriesRef = useRef<HTMLElement>(null)
@@ -164,16 +162,6 @@ export default function Home() {
         ease: 'power3.out',
         delay: 0.6,
       })
-      if (heroChipsRef.current) {
-        gsap.from(heroChipsRef.current.children, {
-          y: 15,
-          opacity: 0,
-          duration: 0.5,
-          ease: 'power3.out',
-          stagger: 0.08,
-          delay: 0.8,
-        })
-      }
     },
     { scope: heroRef }
   )
@@ -314,21 +302,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Filter chips */}
-          <div
-            ref={heroChipsRef}
-            className="flex flex-wrap justify-center gap-2 mt-8"
-          >
-            {chipKeys.map((chipKey) => (
-              <Link
-                key={chipKey}
-                to={path('/acheter')}
-                className="bg-[rgba(216,195,165,0.3)] text-white text-[12px] font-medium font-inter px-4 py-1.5 rounded-pill hover:bg-[rgba(216,195,165,0.5)] transition-colors"
-              >
-                {t(`hero.chips.${chipKey}`)}
-              </Link>
-            ))}
-          </div>
         </div>
       </section>
 
