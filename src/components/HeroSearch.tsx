@@ -140,180 +140,211 @@ export default function HeroSearch() {
     suggestions.neighborhoods.length > 0 || suggestions.types.length > 0
 
   return (
-    <div className="bg-white rounded-card shadow-search p-2 max-w-[720px] mx-auto relative">
-      <div className="flex flex-col md:flex-row items-stretch gap-2">
-        {/* ─── Search input + autocomplete ─── */}
-        <div ref={searchRef} className="flex-1 relative">
-          <div
-            className={cn(
-              'flex items-center gap-2 px-4 py-2 bg-cream rounded-lg min-h-[48px] transition-shadow',
-              searchOpen && 'ring-2 ring-terracotta/30',
-            )}
-          >
-            <MapPin size={18} className="text-text-secondary shrink-0" />
-            <input
-              ref={inputRef}
-              type="text"
-              placeholder={t('home:hero.searchPlaceholder')}
-              value={query}
-              onChange={(e) => {
-                setQuery(e.target.value)
-                if (!searchOpen) setSearchOpen(true)
-              }}
-              onFocus={() => setSearchOpen(true)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') submit()
-              }}
-              className="bg-transparent text-text-primary text-[14px] font-inter w-full outline-none placeholder:text-text-secondary/60"
-            />
-            {query && (
-              <button
-                type="button"
-                onClick={() => {
-                  setQuery('')
-                  inputRef.current?.focus()
+    <div className="group relative max-w-[720px] mx-auto">
+      {/* Soft glow that intensifies on hover — terracotta tinted to match brand */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -inset-1 rounded-3xl md:rounded-full bg-gradient-to-r from-terracotta/30 via-terracotta/10 to-terracotta/30 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100 group-focus-within:opacity-100"
+      />
+
+      {/* Outer pill — rounded-full on desktop, rounded-3xl on mobile (stack) */}
+      <div
+        className={cn(
+          'relative bg-white/95 backdrop-blur-md p-1.5 rounded-3xl md:rounded-full',
+          'shadow-[0_10px_40px_-15px_rgba(23,32,51,0.25)] border border-white/60',
+          'transition-all duration-300',
+          'group-hover:shadow-[0_15px_50px_-10px_rgba(204,123,80,0.35)]',
+          'group-focus-within:shadow-[0_15px_50px_-10px_rgba(204,123,80,0.4)]',
+        )}
+      >
+        <div className="flex flex-col md:flex-row items-stretch gap-1.5">
+          {/* ─── Search input + autocomplete ─── */}
+          <div ref={searchRef} className="flex-1 relative">
+            <div
+              className={cn(
+                'flex items-center gap-2.5 px-5 min-h-[48px] rounded-2xl md:rounded-full transition-all duration-200',
+                searchOpen
+                  ? 'bg-cream-warm ring-2 ring-terracotta/40'
+                  : 'bg-cream/60 hover:bg-cream',
+              )}
+            >
+              <MapPin size={18} className="text-text-secondary shrink-0" />
+              <input
+                ref={inputRef}
+                type="text"
+                placeholder={t('home:hero.searchPlaceholder')}
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value)
+                  if (!searchOpen) setSearchOpen(true)
                 }}
-                className="text-text-secondary hover:text-terracotta transition-colors"
-                aria-label="Clear"
+                onFocus={() => setSearchOpen(true)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') submit()
+                }}
+                className="bg-transparent text-text-primary text-[14px] font-inter w-full outline-none placeholder:text-text-secondary/60"
+              />
+              {query && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setQuery('')
+                    inputRef.current?.focus()
+                  }}
+                  className="text-text-secondary hover:text-terracotta transition-colors"
+                  aria-label="Clear"
+                >
+                  <X size={14} />
+                </button>
+              )}
+            </div>
+
+            {searchOpen && hasSuggestions && (
+              <div
+                className={cn(
+                  'absolute top-full left-0 right-0 mt-3 bg-white/98 backdrop-blur-lg rounded-2xl shadow-[0_20px_50px_-12px_rgba(23,32,51,0.25)] border border-border-warm/60 z-30 overflow-hidden text-left',
+                  PANEL_ANIM,
+                )}
               >
-                <X size={14} />
-              </button>
+                {suggestions.neighborhoods.length > 0 && (
+                  <div className="p-2">
+                    <p className="text-text-secondary text-[10px] font-inter font-semibold uppercase tracking-wider px-3 py-1.5">
+                      {t('search:filters.location')}
+                    </p>
+                    {suggestions.neighborhoods.map((n) => (
+                      <button
+                        key={n}
+                        type="button"
+                        onMouseDown={(e) => e.preventDefault()}
+                        onClick={() => pickNeighborhood(n)}
+                        className="w-full flex items-center gap-2.5 px-3 py-2 hover:bg-cream-warm rounded-xl text-left text-[14px] font-inter text-text-primary transition-colors"
+                      >
+                        <MapPin size={14} className="text-text-secondary shrink-0" />
+                        <span className="truncate">{n}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {suggestions.types.length > 0 && (
+                  <div
+                    className={cn(
+                      'p-2',
+                      suggestions.neighborhoods.length > 0 && 'border-t border-border-warm/60',
+                    )}
+                  >
+                    <p className="text-text-secondary text-[10px] font-inter font-semibold uppercase tracking-wider px-3 py-1.5">
+                      {t('search:filters.type')}
+                    </p>
+                    {suggestions.types.map((k) => (
+                      <button
+                        key={k}
+                        type="button"
+                        onMouseDown={(e) => e.preventDefault()}
+                        onClick={() => pickTypeFromSuggestion(k)}
+                        className="w-full flex items-center gap-2.5 px-3 py-2 hover:bg-cream-warm rounded-xl text-left text-[14px] font-inter text-text-primary transition-colors"
+                      >
+                        <HomeIcon size={14} className="text-text-secondary shrink-0" />
+                        <span className="truncate">{t(`search:types.${k}`)}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             )}
           </div>
 
-          {searchOpen && hasSuggestions && (
-            <div
+          {/* ─── Type dropdown ─── */}
+          <div ref={typeRef} className="relative md:min-w-[180px]">
+            <button
+              type="button"
+              onClick={() => setTypeOpen((o) => !o)}
               className={cn(
-                'absolute top-full left-0 right-0 mt-2 bg-white rounded-card shadow-xl border border-border-warm z-30 overflow-hidden text-left',
-                PANEL_ANIM,
+                'w-full flex items-center gap-2.5 px-5 min-h-[48px] rounded-2xl md:rounded-full transition-all duration-200',
+                typeOpen
+                  ? 'bg-cream-warm ring-2 ring-terracotta/40'
+                  : 'bg-cream/60 hover:bg-cream',
               )}
             >
-              {suggestions.neighborhoods.length > 0 && (
-                <div className="p-2">
-                  <p className="text-text-secondary text-[10px] font-inter font-semibold uppercase tracking-wider px-3 py-1.5">
-                    {t('search:filters.location')}
-                  </p>
-                  {suggestions.neighborhoods.map((n) => (
+              <HomeIcon size={18} className="text-text-secondary shrink-0" />
+              <span
+                className={cn(
+                  'text-[14px] font-inter flex-1 text-left truncate',
+                  type ? 'text-text-primary font-medium' : 'text-text-secondary',
+                )}
+              >
+                {type ? t(`search:types.${type}`) : t('common:filter')}
+              </span>
+              <ChevronDown
+                size={16}
+                className={cn(
+                  'text-text-secondary transition-transform shrink-0',
+                  typeOpen && 'rotate-180',
+                )}
+              />
+            </button>
+
+            {typeOpen && (
+              <div
+                className={cn(
+                  'absolute top-full left-0 right-0 md:left-auto md:right-0 md:min-w-[220px] mt-3 bg-white/98 backdrop-blur-lg rounded-2xl shadow-[0_20px_50px_-12px_rgba(23,32,51,0.25)] border border-border-warm/60 z-30 overflow-hidden p-1.5 text-left',
+                  PANEL_ANIM,
+                )}
+              >
+                {type && (
+                  <>
                     <button
-                      key={n}
                       type="button"
-                      onMouseDown={(e) => e.preventDefault()}
-                      onClick={() => pickNeighborhood(n)}
-                      className="w-full flex items-center gap-2.5 px-3 py-2 hover:bg-cream rounded-lg text-left text-[14px] font-inter text-text-primary transition-colors"
+                      onClick={() => {
+                        setType(null)
+                        setTypeOpen(false)
+                      }}
+                      className="w-full flex items-center gap-2 px-3 py-2 hover:bg-cream-warm rounded-xl text-left text-[13px] font-inter text-text-secondary transition-colors"
                     >
-                      <MapPin size={14} className="text-text-secondary shrink-0" />
-                      <span className="truncate">{n}</span>
+                      <X size={14} />
+                      {t('search:filters.resetAll')}
                     </button>
-                  ))}
-                </div>
-              )}
-
-              {suggestions.types.length > 0 && (
-                <div
-                  className={cn(
-                    'p-2',
-                    suggestions.neighborhoods.length > 0 && 'border-t border-border-warm',
-                  )}
-                >
-                  <p className="text-text-secondary text-[10px] font-inter font-semibold uppercase tracking-wider px-3 py-1.5">
-                    {t('search:filters.type')}
-                  </p>
-                  {suggestions.types.map((k) => (
-                    <button
-                      key={k}
-                      type="button"
-                      onMouseDown={(e) => e.preventDefault()}
-                      onClick={() => pickTypeFromSuggestion(k)}
-                      className="w-full flex items-center gap-2.5 px-3 py-2 hover:bg-cream rounded-lg text-left text-[14px] font-inter text-text-primary transition-colors"
-                    >
-                      <HomeIcon size={14} className="text-text-secondary shrink-0" />
-                      <span className="truncate">{t(`search:types.${k}`)}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* ─── Type dropdown ─── */}
-        <div ref={typeRef} className="relative md:min-w-[180px]">
-          <button
-            type="button"
-            onClick={() => setTypeOpen((o) => !o)}
-            className={cn(
-              'w-full flex items-center gap-2 px-4 py-2 bg-cream rounded-lg min-h-[48px] transition-colors hover:bg-[#ebe5d9]',
-              typeOpen && 'bg-[#ebe5d9] ring-2 ring-terracotta/30',
-            )}
-          >
-            <HomeIcon size={18} className="text-text-secondary shrink-0" />
-            <span
-              className={cn(
-                'text-[14px] font-inter flex-1 text-left truncate',
-                type ? 'text-text-primary font-medium' : 'text-text-secondary',
-              )}
-            >
-              {type ? t(`search:types.${type}`) : t('common:filter')}
-            </span>
-            <ChevronDown
-              size={16}
-              className={cn('text-text-secondary transition-transform shrink-0', typeOpen && 'rotate-180')}
-            />
-          </button>
-
-          {typeOpen && (
-            <div
-              className={cn(
-                'absolute top-full left-0 right-0 md:left-auto md:right-0 md:min-w-[220px] mt-2 bg-white rounded-card shadow-xl border border-border-warm z-30 overflow-hidden p-1.5 text-left',
-                PANEL_ANIM,
-              )}
-            >
-              {type && (
-                <>
+                    <div className="my-1 border-t border-border-warm/60" />
+                  </>
+                )}
+                {TYPE_KEYS.map((k) => (
                   <button
+                    key={k}
                     type="button"
                     onClick={() => {
-                      setType(null)
+                      setType(k)
                       setTypeOpen(false)
                     }}
-                    className="w-full flex items-center gap-2 px-3 py-2 hover:bg-cream rounded-lg text-left text-[13px] font-inter text-text-secondary transition-colors"
+                    className={cn(
+                      'w-full flex items-center justify-between gap-2 px-3 py-2 hover:bg-cream-warm rounded-xl text-left text-[14px] font-inter transition-colors',
+                      type === k ? 'text-terracotta font-semibold' : 'text-text-primary',
+                    )}
                   >
-                    <X size={14} />
-                    {t('search:filters.resetAll')}
+                    <span>{t(`search:types.${k}`)}</span>
+                    {type === k && <Check size={14} className="text-terracotta" />}
                   </button>
-                  <div className="my-1 border-t border-border-warm" />
-                </>
-              )}
-              {TYPE_KEYS.map((k) => (
-                <button
-                  key={k}
-                  type="button"
-                  onClick={() => {
-                    setType(k)
-                    setTypeOpen(false)
-                  }}
-                  className={cn(
-                    'w-full flex items-center justify-between gap-2 px-3 py-2 hover:bg-cream rounded-lg text-left text-[14px] font-inter transition-colors',
-                    type === k ? 'text-terracotta font-semibold' : 'text-text-primary',
-                  )}
-                >
-                  <span>{t(`search:types.${k}`)}</span>
-                  {type === k && <Check size={14} className="text-terracotta" />}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+                ))}
+              </div>
+            )}
+          </div>
 
-        {/* ─── Submit ─── */}
-        <button
-          type="button"
-          onClick={submit}
-          className="bg-terracotta text-white font-inter text-[14px] font-semibold px-6 py-3 rounded-lg flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-transform min-h-[48px]"
-        >
-          <Search size={16} />
-          {t('common:search')}
-        </button>
+          {/* ─── Submit ─── */}
+          <button
+            type="button"
+            onClick={submit}
+            className={cn(
+              'bg-terracotta text-white font-inter text-[14px] font-semibold px-7 min-h-[48px] rounded-2xl md:rounded-full',
+              'flex items-center justify-center gap-2',
+              'shadow-[0_4px_14px_rgba(204,123,80,0.4)]',
+              'transition-all duration-200',
+              'hover:shadow-[0_8px_24px_rgba(204,123,80,0.55)] hover:-translate-y-px hover:bg-[#b8694a]',
+              'active:translate-y-0 active:shadow-[0_2px_8px_rgba(204,123,80,0.4)]',
+            )}
+          >
+            <Search size={16} />
+            {t('common:search')}
+          </button>
+        </div>
       </div>
     </div>
   )
