@@ -64,5 +64,7 @@
   "viewListings": "Voir les annonces",
   "saved": "sauvegardé",
   "saved_plural": "sauvegardés",
+  "properties_one": "{{count}} bien",
+  "properties_other": "{{count}} biens",
   "tagline": "Immobilier Marrakech"
 }

@@ -64,5 +64,7 @@
   "viewListings": "Ver anuncios",
   "saved": "guardado",
   "saved_plural": "guardados",
+  "properties_one": "{{count}} propiedad",
+  "properties_other": "{{count}} propiedades",
   "tagline": "Inmobiliaria Marrakech"
 }

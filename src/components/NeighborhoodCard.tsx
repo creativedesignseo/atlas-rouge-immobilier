@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { getImageUrl } from '@/lib/storage'
 import { useLang } from '@/hooks/useLang'
 import type { Neighborhood } from '@/data/neighborhoods'
@@ -9,9 +10,17 @@ interface NeighborhoodCardProps {
 
 export default function NeighborhoodCard({ neighborhood }: NeighborhoodCardProps) {
   const { path } = useLang()
+  const { t } = useTranslation('common')
+
+  // Click sends the user to the buy page with the neighborhood NAME as the
+  // filter param. Search.tsx reads `?neighborhood=` (not `?quartier=`) and
+  // its filter logic in property.service.ts queries `neighborhoods.name`,
+  // so we pass the name (URI-encoded for accents and apostrophes).
+  const href = path(`/buy?neighborhood=${encodeURIComponent(neighborhood.name)}`)
+
   return (
     <Link
-      to={path(`/acheter?quartier=${neighborhood.slug}`)}
+      to={href}
       className="relative aspect-[3/2] rounded-card overflow-hidden group block"
     >
       <img
@@ -32,7 +41,7 @@ export default function NeighborhoodCard({ neighborhood }: NeighborhoodCardProps
           {neighborhood.subtitle}
         </p>
         <p className="text-white/50 text-[12px] font-inter mt-1">
-          {neighborhood.propertyCount} biens
+          {t('properties', { count: neighborhood.propertyCount })}
         </p>
       </div>
     </Link>

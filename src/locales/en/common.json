@@ -64,5 +64,7 @@
   "viewListings": "View listings",
   "saved": "saved",
   "saved_plural": "saved",
+  "properties_one": "{{count}} property",
+  "properties_other": "{{count}} properties",
   "tagline": "Real Estate Marrakech"
 }
