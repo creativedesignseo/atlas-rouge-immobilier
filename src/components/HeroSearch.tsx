@@ -202,7 +202,7 @@ export default function HeroSearch() {
             {searchOpen && hasSuggestions && (
               <div
                 className={cn(
-                  'absolute top-full left-0 right-0 mt-3 bg-white/98 backdrop-blur-lg rounded-2xl shadow-[0_20px_50px_-12px_rgba(23,32,51,0.25)] border border-border-warm/60 z-30 overflow-hidden text-left',
+                  'absolute top-full left-0 right-0 mt-3 bg-white rounded-2xl shadow-[0_20px_50px_-12px_rgba(23,32,51,0.25)] border border-border-warm/60 z-30 overflow-hidden text-left',
                   PANEL_ANIM,
                 )}
               >
@@ -287,7 +287,7 @@ export default function HeroSearch() {
             {typeOpen && (
               <div
                 className={cn(
-                  'absolute top-full left-0 right-0 md:left-auto md:right-0 md:min-w-[220px] mt-3 bg-white/98 backdrop-blur-lg rounded-2xl shadow-[0_20px_50px_-12px_rgba(23,32,51,0.25)] border border-border-warm/60 z-30 overflow-hidden p-1.5 text-left',
+                  'absolute top-full left-0 right-0 md:left-auto md:right-0 md:min-w-[220px] mt-3 bg-white rounded-2xl shadow-[0_20px_50px_-12px_rgba(23,32,51,0.25)] border border-border-warm/60 z-30 overflow-hidden p-1.5 text-left',
                   PANEL_ANIM,
                 )}
               >
