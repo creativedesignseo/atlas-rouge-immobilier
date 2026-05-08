@@ -239,10 +239,13 @@ export default function Home() {
       {/* ====== HERO ====== */}
       <section
         ref={heroRef}
-        className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden"
+        className="relative z-30 min-h-[100dvh] flex items-center justify-center"
       >
-        {/* Background with Ken Burns */}
-        <div className="absolute inset-0">
+        {/* Background with Ken Burns — overflow-hidden is contained HERE
+            (not on the section) so the Ken Burns scaling animation is
+            clipped, but the hero search dropdowns can extend beyond the
+            section boundary on top of the next section below. */}
+        <div className="absolute inset-0 overflow-hidden">
           <div
             className="absolute inset-0 bg-cover bg-center animate-ken-burns"
             style={{ backgroundImage: `url(${getImageUrl('marraketch-banner-1.jpg', { width: 1920, height: 800, resize: 'cover' })})` }}

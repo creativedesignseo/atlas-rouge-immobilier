@@ -84,8 +84,8 @@ export default function HeroSearch() {
   }, [])
 
   // Filter suggestions against the current query. When the input is empty
-  // we still show a few popular options so the panel feels useful from the
-  // first focus.
+  // we show ALL neighborhoods (scrollable) and all types so the user can
+  // browse the full catalog at a glance.
   //
   // Matching is accent-insensitive AND uses per-language synonyms — so a
   // Spanish visitor typing "piso" matches Apartamento, "casa" matches Villa,
@@ -94,8 +94,8 @@ export default function HeroSearch() {
     const q = normalize(query)
     if (!q) {
       return {
-        neighborhoods: neighborhoodList.slice(0, 6),
-        types: TYPE_KEYS.slice(0, 4) as readonly TypeKey[],
+        neighborhoods: neighborhoodList,
+        types: TYPE_KEYS as readonly TypeKey[],
       }
     }
     const matchesType = (k: TypeKey) => {
@@ -104,9 +104,7 @@ export default function HeroSearch() {
       return [label, ...synonyms].some((s) => s.includes(q))
     }
     return {
-      neighborhoods: neighborhoodList
-        .filter((n) => normalize(n).includes(q))
-        .slice(0, 6),
+      neighborhoods: neighborhoodList.filter((n) => normalize(n).includes(q)),
       types: TYPE_KEYS.filter(matchesType),
     }
   }, [query, neighborhoodList, t, lang])
@@ -141,20 +139,24 @@ export default function HeroSearch() {
 
   return (
     <div className="group relative max-w-[720px] mx-auto">
-      {/* Soft glow that intensifies on hover — terracotta tinted to match brand */}
+      {/* Soft glow that lights up the whole bar on hover/focus — terracotta
+          tinted to match brand. The halo sits behind everything via -inset-2
+          so it's clearly visible all around the pill. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -inset-1 rounded-3xl md:rounded-full bg-gradient-to-r from-terracotta/30 via-terracotta/10 to-terracotta/30 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100 group-focus-within:opacity-100"
+        className="pointer-events-none absolute -inset-2 rounded-3xl md:rounded-full bg-gradient-to-r from-terracotta/40 via-terracotta/25 to-terracotta/40 opacity-30 blur-2xl transition-opacity duration-500 group-hover:opacity-90 group-focus-within:opacity-100"
       />
 
-      {/* Outer pill — rounded-full on desktop, rounded-3xl on mobile (stack) */}
+      {/* Outer pill — rounded-full on desktop, rounded-3xl on mobile (stack).
+          Border deepens to terracotta on hover so the whole bar feels active,
+          not just the field you're touching. */}
       <div
         className={cn(
           'relative bg-white/95 backdrop-blur-md p-1.5 rounded-3xl md:rounded-full',
-          'shadow-[0_10px_40px_-15px_rgba(23,32,51,0.25)] border border-white/60',
+          'shadow-[0_10px_40px_-15px_rgba(23,32,51,0.25)] border-2 border-white/70',
           'transition-all duration-300',
-          'group-hover:shadow-[0_15px_50px_-10px_rgba(204,123,80,0.35)]',
-          'group-focus-within:shadow-[0_15px_50px_-10px_rgba(204,123,80,0.4)]',
+          'group-hover:border-terracotta/40 group-hover:shadow-[0_20px_60px_-10px_rgba(204,123,80,0.45)]',
+          'group-focus-within:border-terracotta/60 group-focus-within:shadow-[0_20px_60px_-10px_rgba(204,123,80,0.55)]',
         )}
       >
         <div className="flex flex-col md:flex-row items-stretch gap-1.5">
@@ -202,54 +204,57 @@ export default function HeroSearch() {
             {searchOpen && hasSuggestions && (
               <div
                 className={cn(
-                  'absolute top-full left-0 right-0 mt-3 bg-white rounded-2xl shadow-[0_20px_50px_-12px_rgba(23,32,51,0.25)] border border-border-warm/60 z-30 overflow-hidden text-left',
+                  'absolute top-full left-0 right-0 mt-3 bg-white rounded-2xl shadow-[0_20px_50px_-12px_rgba(23,32,51,0.25)] border border-border-warm/60 z-50 overflow-hidden text-left max-h-[420px] flex flex-col',
                   PANEL_ANIM,
                 )}
               >
-                {suggestions.neighborhoods.length > 0 && (
-                  <div className="p-2">
-                    <p className="text-text-secondary text-[10px] font-inter font-semibold uppercase tracking-wider px-3 py-1.5">
-                      {t('search:filters.location')}
-                    </p>
-                    {suggestions.neighborhoods.map((n) => (
-                      <button
-                        key={n}
-                        type="button"
-                        onMouseDown={(e) => e.preventDefault()}
-                        onClick={() => pickNeighborhood(n)}
-                        className="w-full flex items-center gap-2.5 px-3 py-2 hover:bg-cream-warm rounded-xl text-left text-[14px] font-inter text-text-primary transition-colors"
-                      >
-                        <MapPin size={14} className="text-text-secondary shrink-0" />
-                        <span className="truncate">{n}</span>
-                      </button>
-                    ))}
-                  </div>
-                )}
+                {/* Scrollable inner area so the panel never grows past max-h */}
+                <div className="overflow-y-auto overscroll-contain">
+                  {suggestions.neighborhoods.length > 0 && (
+                    <div className="p-2">
+                      <p className="text-text-secondary text-[10px] font-inter font-semibold uppercase tracking-wider px-3 py-1.5 sticky top-0 bg-white">
+                        {t('search:filters.location')}
+                      </p>
+                      {suggestions.neighborhoods.map((n) => (
+                        <button
+                          key={n}
+                          type="button"
+                          onMouseDown={(e) => e.preventDefault()}
+                          onClick={() => pickNeighborhood(n)}
+                          className="w-full flex items-center gap-2.5 px-3 py-2 hover:bg-cream-warm rounded-xl text-left text-[14px] font-inter text-text-primary transition-colors"
+                        >
+                          <MapPin size={14} className="text-text-secondary shrink-0" />
+                          <span className="truncate">{n}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
 
-                {suggestions.types.length > 0 && (
-                  <div
-                    className={cn(
-                      'p-2',
-                      suggestions.neighborhoods.length > 0 && 'border-t border-border-warm/60',
-                    )}
-                  >
-                    <p className="text-text-secondary text-[10px] font-inter font-semibold uppercase tracking-wider px-3 py-1.5">
-                      {t('search:filters.type')}
-                    </p>
-                    {suggestions.types.map((k) => (
-                      <button
-                        key={k}
-                        type="button"
-                        onMouseDown={(e) => e.preventDefault()}
-                        onClick={() => pickTypeFromSuggestion(k)}
-                        className="w-full flex items-center gap-2.5 px-3 py-2 hover:bg-cream-warm rounded-xl text-left text-[14px] font-inter text-text-primary transition-colors"
-                      >
-                        <HomeIcon size={14} className="text-text-secondary shrink-0" />
-                        <span className="truncate">{t(`search:types.${k}`)}</span>
-                      </button>
-                    ))}
-                  </div>
-                )}
+                  {suggestions.types.length > 0 && (
+                    <div
+                      className={cn(
+                        'p-2',
+                        suggestions.neighborhoods.length > 0 && 'border-t border-border-warm/60',
+                      )}
+                    >
+                      <p className="text-text-secondary text-[10px] font-inter font-semibold uppercase tracking-wider px-3 py-1.5 sticky top-0 bg-white">
+                        {t('search:filters.type')}
+                      </p>
+                      {suggestions.types.map((k) => (
+                        <button
+                          key={k}
+                          type="button"
+                          onMouseDown={(e) => e.preventDefault()}
+                          onClick={() => pickTypeFromSuggestion(k)}
+                          className="w-full flex items-center gap-2.5 px-3 py-2 hover:bg-cream-warm rounded-xl text-left text-[14px] font-inter text-text-primary transition-colors"
+                        >
+                          <HomeIcon size={14} className="text-text-secondary shrink-0" />
+                          <span className="truncate">{t(`search:types.${k}`)}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>
@@ -287,7 +292,7 @@ export default function HeroSearch() {
             {typeOpen && (
               <div
                 className={cn(
-                  'absolute top-full left-0 right-0 md:left-auto md:right-0 md:min-w-[220px] mt-3 bg-white rounded-2xl shadow-[0_20px_50px_-12px_rgba(23,32,51,0.25)] border border-border-warm/60 z-30 overflow-hidden p-1.5 text-left',
+                  'absolute top-full left-0 right-0 md:left-auto md:right-0 md:min-w-[220px] mt-3 bg-white rounded-2xl shadow-[0_20px_50px_-12px_rgba(23,32,51,0.25)] border border-border-warm/60 z-50 overflow-hidden p-1.5 text-left',
                   PANEL_ANIM,
                 )}
               >
