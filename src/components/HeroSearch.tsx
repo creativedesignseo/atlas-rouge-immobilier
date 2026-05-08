@@ -217,17 +217,12 @@ export default function HeroSearch() {
         {/* Single row on desktop (Fotocasa-style), stacked on mobile.
             Layout: [tabs] | [type] [search] [buscar] */}
         <div className="flex flex-col lg:flex-row lg:items-center gap-2">
-          {/* ─── Tabs (transaction + sell page) ─── */}
+          {/* ─── Filter tabs (no navigation, just transaction state) ─── */}
           <div className="flex items-center gap-1 px-1 overflow-x-auto lg:overflow-visible scrollbar-hide shrink-0">
             <TabButton
               active={transaction === 'sale'}
               onClick={() => setTransaction('sale')}
               label={t('search:filters.buy')}
-            />
-            <TabButton
-              active={false}
-              onClick={() => navigate(path('/sell'))}
-              label={t('search:filters.sell')}
             />
             <TabButton
               active={transaction === 'rent'}

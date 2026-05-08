@@ -253,26 +253,31 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-b from-[rgba(23,32,51,0.55)] to-[rgba(23,32,51,0.75)]" />
         </div>
 
-        {/* Content */}
-        <div className="relative z-10 text-center px-6 max-w-[800px] mx-auto pt-20 pb-12">
-          <h1
-            ref={heroTitleRef}
-            className="font-playfair text-[36px] md:text-[56px] font-medium text-white leading-[1.1] tracking-[-0.5px] mb-6"
-          >
-            {t('hero.title')}
-          </h1>
-          <p
-            ref={heroSubtitleRef}
-            className="text-white/85 text-[16px] md:text-[18px] font-inter font-normal mb-10"
-          >
-            {t('hero.subtitle')}
-          </p>
-
-          {/* Search bar (autocomplete + type filter) */}
-          <div ref={heroSearchRef}>
-            <HeroSearch />
+        {/* Content — title/subtitle stay narrow (max-w-800), the search bar
+            below gets its own wider container so the 4-tab inline layout
+            doesn't get cropped on widescreen. */}
+        <div className="relative z-10 text-center px-6 pt-20 pb-12 w-full">
+          <div className="max-w-[800px] mx-auto">
+            <h1
+              ref={heroTitleRef}
+              className="font-playfair text-[36px] md:text-[56px] font-medium text-white leading-[1.1] tracking-[-0.5px] mb-6"
+            >
+              {t('hero.title')}
+            </h1>
+            <p
+              ref={heroSubtitleRef}
+              className="text-white/85 text-[16px] md:text-[18px] font-inter font-normal mb-10"
+            >
+              {t('hero.subtitle')}
+            </p>
           </div>
 
+          {/* Search bar (autocomplete + type filter) — own container so it
+              can stretch up to 1200px and fit Comprar/Alquilar/Obra nueva +
+              type + search input + Buscar inline without truncation. */}
+          <div ref={heroSearchRef} className="max-w-[1200px] mx-auto">
+            <HeroSearch />
+          </div>
         </div>
       </section>
 

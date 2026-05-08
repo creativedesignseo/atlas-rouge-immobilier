@@ -32,11 +32,10 @@ export default function Navbar() {
   const { agent, signOut } = useAuth()
   const { t } = useTranslation('nav')
 
-  // Comprar (buy) and Vender (sell) are now exposed as inline tabs in the
-  // hero search bar on the home page, so they're removed here to avoid
-  // duplication. Alquilar (rent) stays as a quick access from any page.
   const navLinks = [
+    { key: 'buy', href: path('/buy') },
     { key: 'rent', href: path('/rent') },
+    { key: 'sell', href: path('/sell') },
     { key: 'estimate', href: path('/valuation') },
     { key: 'guides', href: path('/blog') },
   ]
