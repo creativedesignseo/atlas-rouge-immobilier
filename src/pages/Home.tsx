@@ -273,9 +273,9 @@ export default function Home() {
           </div>
 
           {/* Search bar — own container that respects HeroSearch's own
-              max-w. Wider than the title block so the inline tabs +
-              search input + Buscar fit on a single row without cropping. */}
-          <div ref={heroSearchRef} className="max-w-[1000px] mx-auto">
+              max-w. Wider than the title block so tabs + type + search +
+              Buscar all fit on a single row without cropping. */}
+          <div ref={heroSearchRef} className="max-w-[1140px] mx-auto">
             <HeroSearch />
           </div>
         </div>

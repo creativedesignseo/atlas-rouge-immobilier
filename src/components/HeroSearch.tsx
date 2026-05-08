@@ -1,14 +1,41 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { MapPin, Search, X } from 'lucide-react'
+import {
+  Building,
+  Building2,
+  Check,
+  ChevronDown,
+  Home as HomeIcon,
+  Landmark,
+  MapPin,
+  Search,
+  Sparkles,
+  Trees,
+  X,
+  type LucideIcon,
+} from 'lucide-react'
 import { useLang } from '@/hooks/useLang'
 import { getNeighborhoods } from '@/services/neighborhood.service'
 import { cn } from '@/lib/utils'
 
+const TYPE_KEYS = ['villa', 'apartment', 'riad', 'prestige', 'land', 'rooftop'] as const
+type TypeKey = typeof TYPE_KEYS[number]
+
 type Transaction = 'sale' | 'rent' | 'new'
 
 const PANEL_ANIM = 'animate-in fade-in slide-in-from-top-2 duration-150'
+
+// Icon per property type — chosen for elegance, all stroke-1.5 for a thin
+// "editorial" feel (not chunky/blocky).
+const TYPE_ICONS: Record<TypeKey, LucideIcon> = {
+  villa: HomeIcon,
+  apartment: Building,
+  riad: Landmark,
+  prestige: Sparkles,
+  land: Trees,
+  rooftop: Building2,
+}
 
 // Strip diacritics so "atico" matches "ático", "gueliz" matches "Guéliz", etc.
 const normalize = (s: string) =>
@@ -44,14 +71,16 @@ function TabButton({
 /**
  * Hero search bar shown on the home page. Fotocasa-inspired:
  *
- *   [Comprar][Alquilar][Obra nueva] │ [search by neighborhood] [🔍 Buscar]
+ *   [Comprar][Alquilar][Obra nueva] │ [🏠 type ▾] [search] [🔍 Buscar]
  *
  * - Tabs choose the transaction (sale/rent/new) without navigating yet.
- * - Free-text input has live autocomplete with the full list of barrios
- *   from the Supabase `neighborhoods` table, accent-insensitive.
+ * - Type dropdown picks a property type (Villa, Apartamento, Riad…) with
+ *   icons and a header.
+ * - Free-text input has live autocomplete with NEIGHBORHOODS ONLY (the
+ *   type filter has its own dropdown — keeping the input focused on
+ *   location avoids confusion).
  * - Submit (button or Enter) navigates to /comprar or /alquilar in the
- *   active language with q, neighborhood, and (for "Obra nueva")
- *   status=neuf as URL params so Search.tsx picks them up.
+ *   active language with q, type, neighborhood, status as URL params.
  */
 export default function HeroSearch() {
   const navigate = useNavigate()
@@ -60,10 +89,14 @@ export default function HeroSearch() {
 
   const [transaction, setTransaction] = useState<Transaction>('sale')
   const [query, setQuery] = useState('')
+  const [type, setType] = useState<TypeKey | null>(null)
   const [neighborhoodList, setNeighborhoodList] = useState<string[]>([])
+
   const [searchOpen, setSearchOpen] = useState(false)
+  const [typeOpen, setTypeOpen] = useState(false)
 
   const searchRef = useRef<HTMLDivElement>(null)
+  const typeRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -72,14 +105,18 @@ export default function HeroSearch() {
       .catch(() => {})
   }, [])
 
-  // Outside click + Esc close the suggestions panel.
+  // Outside click + Esc close both panels.
   useEffect(() => {
     const onMouseDown = (e: MouseEvent) => {
       const target = e.target as Node
       if (searchRef.current && !searchRef.current.contains(target)) setSearchOpen(false)
+      if (typeRef.current && !typeRef.current.contains(target)) setTypeOpen(false)
     }
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setSearchOpen(false)
+      if (e.key === 'Escape') {
+        setSearchOpen(false)
+        setTypeOpen(false)
+      }
     }
     document.addEventListener('mousedown', onMouseDown)
     document.addEventListener('keydown', onKey)
@@ -90,6 +127,8 @@ export default function HeroSearch() {
   }, [])
 
   // Filter neighborhoods accent-insensitively. Empty query → full list.
+  // Property types are NOT in the autocomplete — they have their own
+  // dedicated dropdown next to the input.
   const suggestions = useMemo(() => {
     const q = normalize(query)
     if (!q) return neighborhoodList
@@ -100,11 +139,13 @@ export default function HeroSearch() {
   // 'new' adding a status=neuf URL param so the Search page picks it up).
   const targetRouteKey = transaction === 'rent' ? 'rent' : 'buy'
 
-  const buildUrl = (overrides?: { q?: string; neighborhood?: string }) => {
+  const buildUrl = (overrides?: { q?: string; type?: TypeKey | null; neighborhood?: string }) => {
     const params = new URLSearchParams()
     const finalQ = overrides?.q !== undefined ? overrides.q : query.trim()
+    const finalType = overrides && 'type' in overrides ? overrides.type : type
     const finalNbhd = overrides?.neighborhood
     if (finalQ) params.set('q', finalQ)
+    if (finalType) params.set('type', finalType)
     if (finalNbhd) params.set('neighborhood', finalNbhd)
     if (transaction === 'new') params.set('status', 'neuf')
     const qs = params.toString()
@@ -118,8 +159,10 @@ export default function HeroSearch() {
     navigate(buildUrl({ neighborhood: name }))
   }
 
+  const TypeIcon = type ? TYPE_ICONS[type] : HomeIcon
+
   return (
-    <div className="group relative max-w-[960px] mx-auto">
+    <div className="group relative max-w-[1100px] mx-auto">
       {/* Soft brand-tinted glow that lights up the whole bar on interaction */}
       <div
         aria-hidden="true"
@@ -159,8 +202,109 @@ export default function HeroSearch() {
           {/* Vertical separator on desktop only */}
           <div className="hidden lg:block self-stretch w-px bg-border-warm/40 my-1.5 mx-1 shrink-0" />
 
-          {/* ─── Search input + Buscar (single neighborhood field) ─── */}
-          <div className="flex items-stretch gap-1.5 bg-cream/70 rounded-2xl p-1.5 flex-1">
+          {/* ─── Inputs row: type / search / buscar ─── */}
+          <div className="flex flex-col md:flex-row items-stretch gap-1.5 bg-cream/70 rounded-2xl p-1.5 flex-1">
+            {/* Type dropdown */}
+            <div ref={typeRef} className="relative md:min-w-[180px]">
+              <button
+                type="button"
+                onClick={() => setTypeOpen((o) => !o)}
+                className={cn(
+                  'w-full flex items-center gap-2.5 px-4 min-h-[48px] rounded-xl transition-all duration-200',
+                  typeOpen
+                    ? 'bg-white shadow-sm ring-2 ring-terracotta/30'
+                    : 'bg-white hover:shadow-sm',
+                )}
+              >
+                <TypeIcon size={18} strokeWidth={1.5} className="text-text-secondary shrink-0" />
+                <span
+                  className={cn(
+                    'text-[14px] font-inter flex-1 text-left truncate',
+                    type ? 'text-text-primary font-medium' : 'text-text-secondary',
+                  )}
+                >
+                  {type ? t(`search:types.${type}`) : t('search:filters.anyType')}
+                </span>
+                <ChevronDown
+                  size={16}
+                  strokeWidth={1.75}
+                  className={cn(
+                    'text-text-secondary transition-transform shrink-0',
+                    typeOpen && 'rotate-180',
+                  )}
+                />
+              </button>
+
+              {typeOpen && (
+                <div
+                  className={cn(
+                    'absolute top-full left-0 right-0 md:left-0 md:min-w-[280px] mt-2 bg-white rounded-2xl shadow-[0_20px_50px_-12px_rgba(23,32,51,0.25)] border border-border-warm/60 z-50 overflow-hidden text-left',
+                    PANEL_ANIM,
+                  )}
+                >
+                  <div className="px-4 py-3 border-b border-border-warm/60">
+                    <p className="text-text-primary text-[13px] font-inter font-semibold">
+                      {t('search:filters.typePickerTitle')}
+                    </p>
+                  </div>
+                  <div className="p-1.5">
+                    {type && (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setType(null)
+                            setTypeOpen(false)
+                          }}
+                          className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-cream rounded-xl text-left text-[14px] font-inter text-text-secondary transition-colors"
+                        >
+                          <X size={16} strokeWidth={1.5} />
+                          <span>{t('search:filters.anyType')}</span>
+                        </button>
+                        <div className="my-1 border-t border-border-warm/40" />
+                      </>
+                    )}
+                    {TYPE_KEYS.map((k) => {
+                      const Icon = TYPE_ICONS[k]
+                      const active = type === k
+                      return (
+                        <button
+                          key={k}
+                          type="button"
+                          onClick={() => {
+                            setType(k)
+                            setTypeOpen(false)
+                          }}
+                          className={cn(
+                            'w-full flex items-center justify-between gap-3 px-3 py-2.5 hover:bg-cream rounded-xl text-left text-[14px] font-inter transition-colors',
+                            active ? 'bg-cream' : '',
+                          )}
+                        >
+                          <span className="flex items-center gap-3 min-w-0">
+                            <Icon
+                              size={18}
+                              strokeWidth={1.5}
+                              className={active ? 'text-terracotta' : 'text-text-secondary'}
+                            />
+                            <span
+                              className={cn(
+                                'truncate',
+                                active ? 'text-terracotta font-semibold' : 'text-text-primary',
+                              )}
+                            >
+                              {t(`search:types.${k}`)}
+                            </span>
+                          </span>
+                          {active && <Check size={15} strokeWidth={2} className="text-terracotta shrink-0" />}
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Search input — neighborhoods-only autocomplete */}
             <div ref={searchRef} className="flex-1 relative">
               <div
                 className={cn(
