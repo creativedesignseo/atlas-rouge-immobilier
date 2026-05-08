@@ -30,7 +30,9 @@
     "resetAll": "Borrar todo",
     "search": "Búsqueda",
     "typePickerTitle": "Seleccione una tipología",
-    "anyType": "Cualquier inmueble"
+    "anyType": "Cualquier inmueble",
+    "sell": "Vender",
+    "newBuild": "Obra nueva"
   },
   "types": {
     "villa": "Villa",

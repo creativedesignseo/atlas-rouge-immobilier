@@ -22,7 +22,7 @@ import { cn } from '@/lib/utils'
 const TYPE_KEYS = ['villa', 'apartment', 'riad', 'prestige', 'land', 'rooftop'] as const
 type TypeKey = typeof TYPE_KEYS[number]
 
-type Transaction = 'sale' | 'rent'
+type Transaction = 'sale' | 'rent' | 'new'
 
 const PANEL_ANIM = 'animate-in fade-in slide-in-from-top-2 duration-150'
 
@@ -162,6 +162,8 @@ export default function HeroSearch() {
     }
   }, [query, neighborhoodList, t, lang])
 
+  // 'rent' goes to /alquilar; 'sale' and 'new' both go to /comprar (with
+  // 'new' adding a status=neuf URL param so the Search page picks it up).
   const targetRouteKey = transaction === 'rent' ? 'rent' : 'buy'
 
   const buildUrl = (overrides?: { q?: string; type?: TypeKey | null; neighborhood?: string }) => {
@@ -172,6 +174,7 @@ export default function HeroSearch() {
     if (finalQ) params.set('q', finalQ)
     if (finalType) params.set('type', finalType)
     if (finalNbhd) params.set('neighborhood', finalNbhd)
+    if (transaction === 'new') params.set('status', 'neuf')
     const qs = params.toString()
     return path('/' + targetRouteKey) + (qs ? `?${qs}` : '')
   }
@@ -195,7 +198,7 @@ export default function HeroSearch() {
   const TypeIcon = type ? TYPE_ICONS[type] : HomeIcon
 
   return (
-    <div className="group relative max-w-[840px] mx-auto">
+    <div className="group relative max-w-[1200px] mx-auto">
       {/* Soft brand-tinted glow that lights up the whole bar on interaction */}
       <div
         aria-hidden="true"
@@ -211,22 +214,38 @@ export default function HeroSearch() {
           'group-focus-within:border-terracotta/60 group-focus-within:shadow-[0_20px_60px_-10px_rgba(204,123,80,0.55)]',
         )}
       >
-        {/* ─── Tabs row (transaction) ─── */}
-        <div className="flex items-center gap-1 px-2 pt-1 pb-2">
-          <TabButton
-            active={transaction === 'sale'}
-            onClick={() => setTransaction('sale')}
-            label={t('search:filters.buy')}
-          />
-          <TabButton
-            active={transaction === 'rent'}
-            onClick={() => setTransaction('rent')}
-            label={t('search:filters.rent')}
-          />
-        </div>
+        {/* Single row on desktop (Fotocasa-style), stacked on mobile.
+            Layout: [tabs] | [type] [search] [buscar] */}
+        <div className="flex flex-col lg:flex-row lg:items-center gap-2">
+          {/* ─── Tabs (transaction + sell page) ─── */}
+          <div className="flex items-center gap-1 px-1 overflow-x-auto lg:overflow-visible scrollbar-hide shrink-0">
+            <TabButton
+              active={transaction === 'sale'}
+              onClick={() => setTransaction('sale')}
+              label={t('search:filters.buy')}
+            />
+            <TabButton
+              active={false}
+              onClick={() => navigate(path('/sell'))}
+              label={t('search:filters.sell')}
+            />
+            <TabButton
+              active={transaction === 'rent'}
+              onClick={() => setTransaction('rent')}
+              label={t('search:filters.rent')}
+            />
+            <TabButton
+              active={transaction === 'new'}
+              onClick={() => setTransaction('new')}
+              label={t('search:filters.newBuild')}
+            />
+          </div>
 
-        {/* ─── Search row ─── */}
-        <div className="flex flex-col md:flex-row items-stretch gap-1.5 bg-cream/70 rounded-2xl p-1.5">
+          {/* Vertical separator on desktop only */}
+          <div className="hidden lg:block self-stretch w-px bg-border-warm/40 my-1.5 mx-1 shrink-0" />
+
+          {/* ─── Search row ─── */}
+          <div className="flex flex-col md:flex-row items-stretch gap-1.5 bg-cream/70 rounded-2xl p-1.5 flex-1">
           {/* Type dropdown */}
           <div ref={typeRef} className="relative md:min-w-[200px]">
             <button
@@ -445,6 +464,7 @@ export default function HeroSearch() {
             <Search size={16} strokeWidth={2} />
             {t('common:search')}
           </button>
+          </div>
         </div>
       </div>
     </div>

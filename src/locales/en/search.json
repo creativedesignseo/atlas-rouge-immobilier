@@ -30,7 +30,9 @@
     "resetAll": "Clear all",
     "search": "Search",
     "typePickerTitle": "Select a property type",
-    "anyType": "Any property"
+    "anyType": "Any property",
+    "sell": "Sell",
+    "newBuild": "New build"
   },
   "types": {
     "villa": "Villa",

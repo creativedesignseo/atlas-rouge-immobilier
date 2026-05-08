@@ -737,19 +737,22 @@ export default function SearchPage() {
   const { t } = useTranslation('search')
   const isRentRoute = location.pathname.endsWith('/louer')
 
-  // Initial filters: URL params (q, type, neighborhood) seed the state when
-  // the user lands here from the home hero search bar or from a deep link.
+  // Initial filters: URL params (q, type, neighborhood, status) seed the
+  // state when the user lands here from the home hero search bar or from a
+  // deep link. `status=neuf` is what the "Obra nueva" tab sends.
   const [filters, setFilters] = useState<Filters>(() => {
     const params = new URLSearchParams(location.search)
     const q = params.get('q') || ''
     const typeParam = params.get('type') || ''
     const nbhdParam = params.get('neighborhood') || ''
+    const statusParam = params.get('status') || ''
     return {
       ...defaultFilters,
       transaction: isRentRoute ? 'rent' : 'sale',
       searchQuery: q,
       types: typeParam ? [typeParam] : [],
       neighborhoods: nbhdParam ? [nbhdParam] : [],
+      statuses: statusParam ? [statusParam] : [],
     }
   })
   const [sort, setSort] = useState('recommande')

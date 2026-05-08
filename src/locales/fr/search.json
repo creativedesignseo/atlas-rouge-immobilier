@@ -30,7 +30,9 @@
     "resetAll": "Tout effacer",
     "search": "Recherche",
     "typePickerTitle": "Sélectionnez une typologie",
-    "anyType": "Tout type de bien"
+    "anyType": "Tout type de bien",
+    "sell": "Vendre",
+    "newBuild": "Neuf"
   },
   "types": {
     "villa": "Villa",
