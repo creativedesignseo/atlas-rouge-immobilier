@@ -45,3 +45,4 @@ atlas-rouge-immobilier-v4/
 .netlify/edge-functions-import-map.json
 .netlify/functions/
 deno.lock
+source-images/

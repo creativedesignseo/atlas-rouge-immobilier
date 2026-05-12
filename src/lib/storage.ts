@@ -1,6 +1,12 @@
 const BUCKET_NAME = 'property-images'
 const SUPABASE_URL = 'https://slxlkbrqcjabsfuhlwdf.supabase.co'
 
+// Bump this string when files in Supabase Storage are replaced (same name,
+// new content). The /img/ proxy serves with `cache-control: max-age=31536000
+// immutable`, so without changing the URL the browser will never re-fetch.
+// This `?v=` query param appears in every image URL and changes the cache key.
+const STORAGE_VERSION = '2026-05-13'
+
 export interface ImageTransformOptions {
   width?: number
   height?: number
@@ -37,11 +43,9 @@ export function getImageUrl(
     if (options?.height) params.set('height', String(options.height))
     if (options?.quality) params.set('quality', String(options.quality))
     if (options?.resize) params.set('resize', options.resize)
+    params.set('v', STORAGE_VERSION)
 
-    if (params.toString()) {
-      return `${SUPABASE_URL}/storage/v1/render/image/public/${BUCKET_NAME}/${cleanFilename}?${params.toString()}`
-    }
-    return `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_NAME}/${cleanFilename}`
+    return `${SUPABASE_URL}/storage/v1/render/image/public/${BUCKET_NAME}/${cleanFilename}?${params.toString()}`
   }
 
   // En producción: usar proxy /img/ bajo dominio propio
@@ -50,9 +54,9 @@ export function getImageUrl(
   if (options?.height) params.set('height', String(options.height))
   if (options?.quality) params.set('quality', String(options.quality))
   if (options?.resize) params.set('resize', options.resize)
+  params.set('v', STORAGE_VERSION)
 
-  const query = params.toString() ? `?${params.toString()}` : ''
-  return `/img/${cleanFilename}${query}`
+  return `/img/${cleanFilename}?${params.toString()}`
 }
 
 /**
