@@ -5,7 +5,7 @@ const SUPABASE_URL = 'https://slxlkbrqcjabsfuhlwdf.supabase.co'
 // new content). The /img/ proxy serves with `cache-control: max-age=31536000
 // immutable`, so without changing the URL the browser will never re-fetch.
 // This `?v=` query param appears in every image URL and changes the cache key.
-const STORAGE_VERSION = '2026-05-13-medina'
+const STORAGE_VERSION = '2026-05-13-medina-v2'
 
 export interface ImageTransformOptions {
   width?: number
