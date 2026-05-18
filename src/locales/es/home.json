@@ -79,9 +79,8 @@
     "createAlert": "O crear una alerta"
   },
   "stats": {
-    "properties": "Propiedades",
-    "clients": "Clientes satisfechos",
-    "years": "Años de experiencia",
-    "agents": "Agentes locales"
+    "neighborhoods": "Barrios cubiertos",
+    "years": "Años en Marrakech",
+    "languages": "Idiomas (FR · ES · EN)"
   }
 }

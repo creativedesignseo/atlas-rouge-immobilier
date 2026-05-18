@@ -401,19 +401,19 @@ export default function Home() {
                 {t('trust.description')}
               </p>
 
-              {/* Stats */}
+              {/* Stats — claims verificables, no marketing inflado */}
               <div className="flex flex-wrap gap-8 md:gap-12">
                 <div>
                   <span className="font-playfair text-[32px] font-medium text-terracotta">
-                    <AnimatedCounter target={3500} suffix="+" />
+                    <AnimatedCounter target={13} />
                   </span>
                   <p className="text-text-secondary text-[14px] font-inter mt-1">
-                    {t('stats.properties')}
+                    {t('stats.neighborhoods')}
                   </p>
                 </div>
                 <div>
                   <span className="font-playfair text-[32px] font-medium text-terracotta">
-                    <AnimatedCounter target={12} />
+                    <AnimatedCounter target={12} suffix="+" />
                   </span>
                   <p className="text-text-secondary text-[14px] font-inter mt-1">
                     {t('stats.years')}
@@ -421,10 +421,10 @@ export default function Home() {
                 </div>
                 <div>
                   <span className="font-playfair text-[32px] font-medium text-terracotta">
-                    <AnimatedCounter target={98} suffix="%" />
+                    <AnimatedCounter target={3} />
                   </span>
                   <p className="text-text-secondary text-[14px] font-inter mt-1">
-                    {t('stats.clients')}
+                    {t('stats.languages')}
                   </p>
                 </div>
               </div>
