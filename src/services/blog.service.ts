@@ -288,9 +288,10 @@ export async function upsertPost(input: UpsertPostInput): Promise<BlogPost | nul
     throw new Error('Supabase no configurado')
   }
 
-  // 1. Upsert del post principal
+  // 1. INSERT (nuevo) o UPDATE (existente).
+  // Separamos los dos casos en vez de usar upsert mágico para evitar que
+  // crear un new sin id intente INSERT y choque con un slug ya existente.
   const postPayload = {
-    ...(input.id ? { id: input.id } : {}),
     slug: input.slug,
     status: input.status,
     cover_image: input.coverImage ?? null,
@@ -304,20 +305,48 @@ export async function upsertPost(input: UpsertPostInput): Promise<BlogPost | nul
         : null,
   }
 
-  const { data: postRow, error: postError } = await supabase
-    .from('blog_posts')
-    .upsert(postPayload, { onConflict: 'id' })
-    .select('id')
-    .single()
+  let postId: string
+  if (input.id) {
+    // ── UPDATE de post existente ─────────────────────────────────────
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .update(postPayload)
+      .eq('id', input.id)
+      .select('id')
+      .single()
 
-  if (postError || !postRow) {
-    console.error('[blog.service] upsertPost (post):', postError)
-    throw new Error(postError?.message || 'No se pudo guardar el post')
+    if (error || !data) {
+      console.error('[blog.service] upsertPost (UPDATE):', error)
+      if (error?.code === '23505' && /slug/i.test(error.message)) {
+        throw new Error(
+          `Ya existe otro artículo con el slug "${input.slug}". Cambia el slug en la barra lateral.`,
+        )
+      }
+      throw new Error(error?.message || 'No se pudo actualizar el artículo')
+    }
+    postId = data.id
+  } else {
+    // ── INSERT de post nuevo ─────────────────────────────────────────
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .insert(postPayload)
+      .select('id')
+      .single()
+
+    if (error || !data) {
+      console.error('[blog.service] upsertPost (INSERT):', error)
+      if (error?.code === '23505' && /slug/i.test(error.message)) {
+        throw new Error(
+          `Ya existe un artículo con el slug "${input.slug}". Cámbialo en la barra lateral antes de guardar.`,
+        )
+      }
+      throw new Error(error?.message || 'No se pudo crear el artículo')
+    }
+    postId = data.id
   }
 
-  const postId = postRow.id
-
   // 2. Upsert de cada traducción
+  const translationErrors: string[] = []
   for (const tr of input.translations) {
     if (!tr.title?.trim()) continue // sin título no se guarda esa traducción
 
@@ -338,7 +367,16 @@ export async function upsertPost(input: UpsertPostInput): Promise<BlogPost | nul
 
     if (trError) {
       console.error(`[blog.service] upsertPost (translation ${tr.locale}):`, trError)
+      translationErrors.push(`${tr.locale}: ${trError.message}`)
     }
+  }
+
+  // Si alguna traducción falló, propagar el error para que el usuario lo vea
+  // (el post principal sí se guardó, pero al menos una traducción no)
+  if (translationErrors.length > 0) {
+    throw new Error(
+      `El artículo se guardó pero falló alguna traducción: ${translationErrors.join('; ')}`,
+    )
   }
 
   return getPostBySlug(input.slug)
