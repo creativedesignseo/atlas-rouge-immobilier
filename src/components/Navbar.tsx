@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Menu, X, Shield, LogOut, User } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -7,7 +7,8 @@ import { useLang } from '@/hooks/useLang'
 import { buildWhatsAppLink } from '@/lib/contact'
 import LanguageSwitcher from './LanguageSwitcher'
 
-// Official WhatsApp glyph as inline SVG.
+// Official WhatsApp glyph as inline SVG (Lucide doesn't ship one).
+// Crisp at any size, inherits currentColor for the foreground.
 function WhatsAppIcon({ size = 18, className = '' }: { size?: number; className?: string }) {
   return (
     <svg
@@ -24,37 +25,12 @@ function WhatsAppIcon({ size = 18, className = '' }: { size?: number; className?
   )
 }
 
-/**
- * Minimal editorial navbar.
- *
- * Design intent:
- * - Transparent over the hero (overlays the full-bleed image). After 60px
- *   scroll, fades to a solid cream background with a hairline bottom border.
- * - No shadow, no chrome. Whitespace and type weight do all the work.
- * - Logo set in uppercase Schibsted Grotesk with wide tracking — the "luxury
- *   wordmark" treatment used by Aman, Chrifia Hills, etc.
- * - Links uppercase tiny (12px) tracking-eyebrow. The smaller the link,
- *   the more luxe the brand reads (counter-intuitive but true).
- */
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
   const { pathname } = useLocation()
   const { lang, path } = useLang()
   const { agent, signOut } = useAuth()
   const { t } = useTranslation('nav')
-
-  // Detect if we're on the home page — only there do we want the
-  // transparent-over-hero treatment. On all other pages the navbar
-  // is solid cream from the start so it doesn't collide with content.
-  const isHome = pathname === `/${lang}` || pathname === `/${lang}/`
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
 
   const navLinks = [
     { key: 'buy', href: path('/buy') },
@@ -71,49 +47,31 @@ export default function Navbar() {
     setMobileOpen(false)
   }
 
-  // Visual mode: transparent over hero (white text), or solid cream after scroll / off-home (ink text)
-  const transparent = isHome && !scrolled && !mobileOpen
-  const textColor = transparent ? 'text-white' : 'text-ink'
-  const linkHover = transparent ? 'hover:text-white/70' : 'hover:text-terracotta'
-
   return (
-    <header
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ease-premium ${
-        transparent
-          ? 'bg-transparent'
-          : 'bg-cream-warm/95 backdrop-blur-md border-b border-border-subtle'
-      }`}
-    >
-      <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
-        <div className="flex items-center justify-between h-[80px]">
-          {/* Wordmark — uppercase, wide tracking, the "luxury silent" treatment */}
-          <Link to={`/${lang}/`} className="shrink-0 group">
-            <span
-              className={`block font-display text-[15px] md:text-[16px] font-medium uppercase leading-none transition-colors duration-500 ${textColor}`}
-              style={{ letterSpacing: '0.22em' }}
-            >
-              Atlas Rouge
+    <header className="sticky top-0 z-50 bg-white border-b border-border-warm">
+      <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
+        <div className="flex items-center justify-between h-[72px]">
+          {/* Logo */}
+          <Link to={`/${lang}/`} className="flex flex-col shrink-0">
+            <span className="font-display text-[22px] font-semibold text-terracotta leading-tight">
+              Atlas Rouge Immobilier
             </span>
-            <span
-              className={`block font-inter text-[9px] uppercase mt-1.5 transition-colors duration-500 ${
-                transparent ? 'text-white/55' : 'text-stone'
-              }`}
-              style={{ letterSpacing: '0.32em' }}
-            >
-              Immobilier · Marrakech
+            <span className="text-text-secondary text-[12px] font-inter">
+              {t('tagline')}
             </span>
           </Link>
 
-          {/* Desktop Nav — uppercase tiny links, eyebrow tracking */}
-          <nav className="hidden lg:flex items-center gap-9">
+          {/* Desktop Nav */}
+          <nav className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
               <Link
                 key={link.key}
                 to={link.href}
-                className={`font-inter text-[11px] uppercase font-medium transition-colors duration-300 ${textColor} ${linkHover} ${
-                  isActive(link.href) ? 'opacity-100' : 'opacity-85 hover:opacity-100'
+                className={`font-inter text-[15px] font-medium transition-colors ${
+                  isActive(link.href)
+                    ? 'text-terracotta'
+                    : 'text-text-primary hover:text-terracotta'
                 }`}
-                style={{ letterSpacing: '0.18em' }}
                 aria-current={isActive(link.href) ? 'page' : undefined}
               >
                 {t(link.key)}
@@ -122,104 +80,30 @@ export default function Navbar() {
           </nav>
 
           {/* Right Side */}
-          <div className="hidden lg:flex items-center gap-6">
+          <div className="hidden lg:flex items-center gap-4">
             <LanguageSwitcher variant="navbar" />
 
             {agent ? (
               <div className="flex items-center gap-3">
                 <Link
                   to="/admin"
-                  className={`flex items-center gap-1.5 font-inter text-[11px] uppercase font-medium transition-colors ${textColor} ${linkHover}`}
-                  style={{ letterSpacing: '0.16em' }}
+                  className="flex items-center gap-1.5 text-text-primary font-inter text-[14px] font-medium hover:text-terracotta transition-colors"
                 >
-                  <Shield size={14} strokeWidth={1.5} />
+                  <Shield size={16} />
                   <span>{t('admin')}</span>
                 </Link>
                 <button
                   onClick={handleSignOut}
-                  className={`opacity-60 hover:opacity-100 transition-opacity ${textColor}`}
+                  className="flex items-center gap-1.5 text-text-secondary font-inter text-[14px] hover:text-red-600 transition-colors"
                   title={t('signOut')}
                 >
-                  <LogOut size={14} strokeWidth={1.5} />
+                  <LogOut size={16} />
                 </button>
               </div>
-            ) : null}
-
-            {/* WhatsApp CTA — outlined ghost on transparent, filled ink on solid */}
-            <a
-              href={buildWhatsAppLink(t('whatsappMessage'))}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={t('whatsappAria')}
-              className={`inline-flex items-center gap-2 px-5 py-2.5 font-inter text-[11px] uppercase font-medium transition-all duration-300 rounded-full ${
-                transparent
-                  ? 'border border-white/40 text-white hover:bg-white hover:text-ink'
-                  : 'bg-ink text-cream-warm hover:bg-terracotta'
-              }`}
-              style={{ letterSpacing: '0.16em' }}
-            >
-              <WhatsAppIcon size={14} />
-              <span>{t('whatsapp')}</span>
-            </a>
-          </div>
-
-          {/* Mobile Hamburger */}
-          <button
-            className={`lg:hidden p-2 transition-colors ${textColor}`}
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label={mobileOpen ? t('closeMenu') : t('openMenu')}
-          >
-            {mobileOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Drawer */}
-      {mobileOpen && (
-        <div className="lg:hidden fixed inset-0 top-[80px] z-40 bg-cream-warm">
-          <div className="flex flex-col p-6 gap-1 max-w-[480px] mx-auto pt-10">
-            {navLinks.map((link, idx) => (
-              <Link
-                key={link.key}
-                to={link.href}
-                className="font-display text-[28px] font-medium text-ink py-3 border-b border-border-subtle leading-none tracking-tight"
-                onClick={() => setMobileOpen(false)}
-                style={{ transitionDelay: `${idx * 40}ms` }}
-              >
-                {t(link.key)}
-              </Link>
-            ))}
-
-            <div className="mt-8">
-              <LanguageSwitcher variant="mobile" />
-            </div>
-
-            {agent ? (
-              <>
-                <Link
-                  to="/admin"
-                  className="flex items-center gap-2 text-terracotta font-inter text-[12px] uppercase font-medium py-3 mt-4"
-                  style={{ letterSpacing: '0.16em' }}
-                  onClick={() => setMobileOpen(false)}
-                >
-                  <Shield size={16} />
-                  {t('adminPanel')}
-                </Link>
-                <button
-                  onClick={handleSignOut}
-                  className="flex items-center gap-2 text-stone font-inter text-[12px] uppercase font-medium py-3 text-left"
-                  style={{ letterSpacing: '0.16em' }}
-                >
-                  <LogOut size={16} />
-                  {t('signOut')}
-                </button>
-              </>
             ) : (
               <Link
                 to="/admin/login"
-                className="flex items-center gap-2 text-stone font-inter text-[12px] uppercase font-medium py-3 mt-4"
-                style={{ letterSpacing: '0.16em' }}
-                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-1.5 text-text-primary font-inter text-[14px] font-medium hover:text-terracotta transition-colors"
               >
                 <User size={16} />
                 {t('signIn')}
@@ -231,11 +115,79 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={t('whatsappAria')}
-              onClick={() => setMobileOpen(false)}
-              className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-ink text-cream-warm px-6 py-3.5 font-inter text-[11px] uppercase font-medium"
-              style={{ letterSpacing: '0.18em' }}
+              className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 font-inter text-[14px] font-semibold text-white shadow-[0_2px_8px_rgba(37,211,102,0.25)] transition-all duration-200 hover:bg-[#1da851] hover:shadow-[0_4px_14px_rgba(37,211,102,0.4)] hover:-translate-y-px"
             >
-              <WhatsAppIcon size={16} />
+              <WhatsAppIcon size={17} />
+              <span>{t('whatsapp')}</span>
+            </a>
+          </div>
+
+          {/* Mobile Hamburger */}
+          <button
+            className="lg:hidden p-2"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label={mobileOpen ? t('closeMenu') : t('openMenu')}
+          >
+            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Drawer */}
+      {mobileOpen && (
+        <div className="lg:hidden fixed inset-0 top-[64px] z-40 bg-white">
+          <div className="flex flex-col p-6 gap-4">
+            {navLinks.map((link) => (
+              <Link
+                key={link.key}
+                to={link.href}
+                className="text-text-primary font-inter text-[16px] font-medium py-3 border-b border-border-warm"
+                onClick={() => setMobileOpen(false)}
+              >
+                {t(link.key)}
+              </Link>
+            ))}
+
+            <LanguageSwitcher variant="mobile" />
+
+            {agent ? (
+              <>
+                <Link
+                  to="/admin"
+                  className="flex items-center gap-2 text-terracotta font-inter text-[14px] font-medium py-3"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  <Shield size={18} />
+                  {t('adminPanel')}
+                </Link>
+                <button
+                  onClick={handleSignOut}
+                  className="flex items-center gap-2 text-red-600 font-inter text-[14px] font-medium py-3 text-left"
+                >
+                  <LogOut size={18} />
+                  {t('signOut')}
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/admin/login"
+                className="flex items-center gap-2 text-text-primary font-inter text-[14px] font-medium py-3"
+                onClick={() => setMobileOpen(false)}
+              >
+                <User size={18} />
+                {t('signIn')}
+              </Link>
+            )}
+
+            <a
+              href={buildWhatsAppLink(t('whatsappMessage'))}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t('whatsappAria')}
+              onClick={() => setMobileOpen(false)}
+              className="mt-2 inline-flex items-center justify-center gap-2 rounded-lg bg-[#25D366] px-5 py-3 font-inter text-[14px] font-semibold text-white shadow-[0_4px_14px_rgba(37,211,102,0.3)] transition-all duration-200 hover:bg-[#1da851]"
+            >
+              <WhatsAppIcon size={18} />
               <span>{t('whatsapp')}</span>
             </a>
           </div>

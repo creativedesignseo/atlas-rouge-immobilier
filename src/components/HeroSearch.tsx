@@ -163,12 +163,19 @@ export default function HeroSearch() {
 
   return (
     <div className="group relative max-w-[1100px] mx-auto">
-      {/* Single calm card — no glow, no neon. Premium = restraint. */}
+      {/* Soft brand-tinted glow that lights up the whole bar on interaction */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -inset-2 rounded-[28px] bg-gradient-to-r from-terracotta/40 via-terracotta/25 to-terracotta/40 opacity-30 blur-2xl transition-opacity duration-500 group-hover:opacity-90 group-focus-within:opacity-100"
+      />
+
       <div
         className={cn(
-          'relative bg-white rounded-full p-1.5',
-          'shadow-[0_2px_4px_rgba(15,20,25,0.04),0_24px_60px_-20px_rgba(15,20,25,0.25)]',
-          'transition-shadow duration-500 ease-premium',
+          'relative bg-white/95 backdrop-blur-md rounded-[26px] p-2',
+          'shadow-[0_10px_40px_-15px_rgba(23,32,51,0.25)] border-2 border-white/70',
+          'transition-all duration-300',
+          'group-hover:border-terracotta/40 group-hover:shadow-[0_20px_60px_-10px_rgba(204,123,80,0.45)]',
+          'group-focus-within:border-terracotta/60 group-focus-within:shadow-[0_20px_60px_-10px_rgba(204,123,80,0.55)]',
         )}
       >
         {/* Single row on lg+ (Fotocasa-style), stacked on smaller screens */}
