@@ -22,6 +22,7 @@ const Favorites = lazy(() => import('./pages/Favorites'))
 const Sell = lazy(() => import('./pages/Sell'))
 const BuyerGuide = lazy(() => import('./pages/BuyerGuide'))
 const Blog = lazy(() => import('./pages/Blog'))
+const BlogPost = lazy(() => import('./pages/BlogPost'))
 
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'))
 const AdminProperties = lazy(() => import('./pages/admin/AdminProperties'))
@@ -29,6 +30,8 @@ const AdminPropertyNew = lazy(() => import('./pages/admin/AdminPropertyNew'))
 const AdminPropertyEdit = lazy(() => import('./pages/admin/AdminPropertyEdit'))
 const AdminContacts = lazy(() => import('./pages/admin/AdminContacts'))
 const AgentProfile = lazy(() => import('./pages/admin/AgentProfile'))
+const AdminBlog = lazy(() => import('./pages/admin/AdminBlog'))
+const AdminBlogForm = lazy(() => import('./pages/admin/AdminBlogForm'))
 
 function AdminLoader() {
   return (
@@ -95,6 +98,9 @@ export default function App() {
           <Route path="properties/:slug/edit" element={<AdminPropertyEdit />} />
           <Route path="contacts" element={<AdminContacts />} />
           <Route path="profile" element={<AgentProfile />} />
+          <Route path="blog" element={<AdminBlog />} />
+          <Route path="blog/new" element={<AdminBlogForm />} />
+          <Route path="blog/:slug/edit" element={<AdminBlogForm />} />
         </Route>
         <Route path="/admin/" element={<Navigate to="/admin" replace />} />
 
@@ -124,6 +130,19 @@ export default function App() {
             {getAllSlugsForKey('blog').map((slug) => (
               <Route key={`blog-${slug}`} path={slug} element={<Blog />} />
             ))}
+            {/* Individual blog post: <blog-slug>/<post-slug>. Uses the
+                same blog route slugs as the listing — el path añadido es
+                /:slug debajo, donde :slug es el slug del post. */}
+            {getAllSlugsForKey('blog').map((slug) => (
+              <Route
+                key={`blogpost-${slug}`}
+                path={`${slug}/:slug`}
+                element={<BlogPost />}
+              />
+            ))}
+            {/* También /blog/:slug en cualquier idioma como atajo cómodo */}
+            <Route path="blog" element={<Blog />} />
+            <Route path="blog/:slug" element={<BlogPost />} />
             {getAllSlugsForKey('about').map((slug) => (
               <Route key={`about-${slug}`} path={slug} element={<About />} />
             ))}

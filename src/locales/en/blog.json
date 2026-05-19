@@ -97,5 +97,19 @@
     "submit": "Subscribe",
     "disclaimer": "Unsubscribe anytime. No spam.",
     "alertSoon": "Subscription coming soon!"
+  },
+  "by": "By",
+  "emptyState": {
+    "title": "No articles published yet.",
+    "subtitle": "Check back soon — we're preparing content.",
+    "noCategory": "No articles in this category yet."
+  },
+  "emptyContent": "Content in preparation.",
+  "aboutAuthor": "About the author",
+  "related": "Related articles",
+  "backToBlog": "Back to blog",
+  "cta": {
+    "title": "Have a real estate project in Marrakech?",
+    "subtitle": "Let's talk. We support you at every step."
   }
 }

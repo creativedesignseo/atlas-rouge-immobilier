@@ -58,7 +58,7 @@
   },
   "sidebar": {
     "dashboard": "Dashboard",
-    "properties": "Properties",
+    "properties": "Properties","blog": "Blog",
     "contacts": "Contacts",
     "profile": "My profile",
     "settings": "Settings",

@@ -58,7 +58,7 @@
   },
   "sidebar": {
     "dashboard": "Panel",
-    "properties": "Inmuebles",
+    "properties": "Inmuebles","blog": "Blog",
     "contacts": "Contactos",
     "profile": "Mi perfil",
     "settings": "Configuración",

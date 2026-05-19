@@ -97,5 +97,19 @@
     "submit": "S'inscrire",
     "disclaimer": "Désinscription à tout moment. Aucun spam.",
     "alertSoon": "Inscription bientôt disponible !"
+  },
+  "by": "Par",
+  "emptyState": {
+    "title": "Pas encore d'articles publiés.",
+    "subtitle": "Revenez bientôt — nous préparons des contenus.",
+    "noCategory": "Aucun article dans cette catégorie pour l'instant."
+  },
+  "emptyContent": "Contenu en préparation.",
+  "aboutAuthor": "À propos de l'auteur",
+  "related": "Articles liés",
+  "backToBlog": "Retour au blog",
+  "cta": {
+    "title": "Vous avez un projet immobilier à Marrakech ?",
+    "subtitle": "Parlons-en. Nous vous accompagnons à chaque étape."
   }
 }

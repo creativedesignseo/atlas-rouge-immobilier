@@ -37,6 +37,18 @@ export type Database = {
         Update: AgentUpdate
         Relationships: []
       }
+      blog_posts: {
+        Row: BlogPostRow
+        Insert: BlogPostInsert
+        Update: BlogPostUpdate
+        Relationships: []
+      }
+      blog_post_translations: {
+        Row: BlogPostTranslationRow
+        Insert: BlogPostTranslationInsert
+        Update: BlogPostTranslationUpdate
+        Relationships: []
+      }
     }
     Views: Record<string, never>
     Functions: Record<string, never>
@@ -154,3 +166,45 @@ export type AgentRow = {
 
 export type AgentInsert = Omit<AgentRow, 'id' | 'created_at'>
 export type AgentUpdate = Partial<AgentInsert>
+
+// ============================================================================
+// Blog (003_blog.sql)
+// ============================================================================
+
+export type BlogPostRow = {
+  id: string
+  slug: string
+  status: 'draft' | 'published'
+  cover_image: string | null
+  category: 'buying' | 'investment' | 'neighborhoods' | 'taxation' | 'decoration' | 'market'
+  read_time_min: number
+  author_id: string | null
+  guest_author: string | null
+  published_at: string | null
+  created_at: string
+  updated_at: string
+  created_by: string | null
+}
+
+export type BlogPostInsert = Partial<Pick<BlogPostRow, 'id' | 'created_by'>> &
+  Omit<BlogPostRow, 'id' | 'created_at' | 'updated_at' | 'created_by'>
+
+export type BlogPostUpdate = Partial<BlogPostInsert>
+
+export type BlogPostTranslationRow = {
+  id: string
+  post_id: string
+  locale: 'fr' | 'es' | 'en'
+  title: string
+  excerpt: string | null
+  content: unknown | null
+  seo_title: string | null
+  seo_description: string | null
+  created_at: string
+  updated_at: string
+}
+
+export type BlogPostTranslationInsert = Omit<BlogPostTranslationRow, 'id' | 'created_at' | 'updated_at'> & {
+  id?: string
+}
+export type BlogPostTranslationUpdate = Partial<BlogPostTranslationInsert>
