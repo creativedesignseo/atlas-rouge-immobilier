@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom'
-import { LayoutDashboard, Home, Mail, ArrowLeft, Menu, X, UserCircle } from 'lucide-react'
+import { LayoutDashboard, Home, Mail, ArrowLeft, Menu, X, UserCircle, BookOpen } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -11,6 +11,7 @@ export default function AdminSidebar() {
   const navItems = [
     { path: '/admin', label: t('sidebar.dashboard'), icon: LayoutDashboard },
     { path: '/admin/properties', label: t('sidebar.properties'), icon: Home },
+    { path: '/admin/blog', label: t('sidebar.blog', 'Blog'), icon: BookOpen },
     { path: '/admin/contacts', label: t('sidebar.contacts'), icon: Mail },
     { path: '/admin/profile', label: t('sidebar.profile'), icon: UserCircle },
   ]

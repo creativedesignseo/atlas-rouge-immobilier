@@ -97,5 +97,19 @@
     "submit": "Suscribirme",
     "disclaimer": "Cancele su suscripción en cualquier momento. Sin spam.",
     "alertSoon": "¡La suscripción estará disponible próximamente!"
+  },
+  "by": "Por",
+  "emptyState": {
+    "title": "Aún no hay artículos publicados.",
+    "subtitle": "Vuelve pronto — estamos preparando contenidos.",
+    "noCategory": "No hay artículos en esta categoría todavía."
+  },
+  "emptyContent": "Contenido en preparación.",
+  "aboutAuthor": "Sobre el autor",
+  "related": "Artículos relacionados",
+  "backToBlog": "Volver al blog",
+  "cta": {
+    "title": "¿Tiene un proyecto inmobiliario en Marrakech?",
+    "subtitle": "Hablemos. Le acompañamos en cada etapa del proceso."
   }
 }

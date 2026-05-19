@@ -58,7 +58,7 @@
   },
   "sidebar": {
     "dashboard": "Tableau de bord",
-    "properties": "Biens",
+    "properties": "Biens","blog": "Blog",
     "contacts": "Contacts",
     "profile": "Mon profil",
     "settings": "Paramètres",
