@@ -70,7 +70,7 @@ function StatCard({
 
   return (
     <div className="flex flex-col items-center text-center px-6 py-8">
-      <span className="font-playfair text-[48px] font-semibold text-terracotta leading-none mb-2">
+      <span className="font-display text-[48px] font-semibold text-terracotta leading-none mb-2">
         {display}
         {suffix}
       </span>
@@ -263,7 +263,7 @@ export default function About() {
             <span>À propos</span>
           </nav>
 
-          <h1 className="about-hero-h1 font-playfair text-[42px] md:text-[56px] font-medium text-white leading-[1.1] tracking-[-0.5px] mb-4">
+          <h1 className="about-hero-h1 font-display text-[42px] md:text-[56px] font-medium text-white leading-[1.1] tracking-[-0.5px] mb-4">
             Atlas Rouge Immobilier
           </h1>
           <p className="about-hero-tagline font-inter text-[18px] md:text-[20px] text-white/80 mb-6 max-w-[600px]">
@@ -288,7 +288,7 @@ export default function About() {
               <span className="inline-block font-inter text-[12px] font-medium tracking-[0.3px] uppercase text-terracotta mb-3">
                 Notre histoire
               </span>
-              <h2 className="font-playfair text-[28px] md:text-[36px] font-medium text-midnight leading-[1.15] tracking-[-0.3px] mb-6">
+              <h2 className="font-display text-[28px] md:text-[36px] font-medium text-midnight leading-[1.15] tracking-[-0.3px] mb-6">
                 Un pont entre la France et le Maroc
               </h2>
               <div className="space-y-4 font-inter text-[16px] text-text-secondary leading-[1.8]">
@@ -364,7 +364,7 @@ export default function About() {
       <section className="bg-white py-16 md:py-24">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
           <SectionReveal>
-            <h2 className="font-playfair text-[28px] md:text-[36px] font-medium text-midnight text-center mb-12 md:mb-16">
+            <h2 className="font-display text-[28px] md:text-[36px] font-medium text-midnight text-center mb-12 md:mb-16">
               Nos valeurs
             </h2>
           </SectionReveal>
@@ -382,7 +382,7 @@ export default function About() {
                 <div className="w-12 h-12 mx-auto mb-5 flex items-center justify-center">
                   <Icon size={40} className="text-terracotta" />
                 </div>
-                <h3 className="font-playfair text-[22px] font-semibold text-midnight mb-3">
+                <h3 className="font-display text-[22px] font-semibold text-midnight mb-3">
                   {title}
                 </h3>
                 <p className="font-inter text-[15px] text-text-secondary leading-[1.7]">
@@ -398,7 +398,7 @@ export default function About() {
       <section className="bg-cream-warm py-16 md:py-24">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
           <div className="text-center mb-12">
-            <h2 className="font-playfair text-[28px] md:text-[36px] font-medium text-midnight mb-3">
+            <h2 className="font-display text-[28px] md:text-[36px] font-medium text-midnight mb-3">
               Notre équipe
             </h2>
             <p className="font-inter text-[16px] text-text-secondary">
@@ -422,7 +422,7 @@ export default function About() {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <h3 className="font-playfair text-[20px] font-semibold text-midnight mb-1">
+                <h3 className="font-display text-[20px] font-semibold text-midnight mb-1">
                   {member.name}
                 </h3>
                 <p className="font-inter text-[14px] text-text-secondary mb-3">
@@ -446,7 +446,7 @@ export default function About() {
       {/* ═══════ CTA ═══════ */}
       <section className="bg-terracotta py-16 md:py-20">
         <SectionReveal className="max-w-[800px] mx-auto px-6 lg:px-12 text-center">
-          <h2 className="font-playfair text-[28px] md:text-[36px] font-medium text-white mb-4">
+          <h2 className="font-display text-[28px] md:text-[36px] font-medium text-white mb-4">
             Prêt à trouver votre bien ?
           </h2>
           <p className="font-inter text-[16px] text-white/80 mb-8 max-w-[560px] mx-auto">

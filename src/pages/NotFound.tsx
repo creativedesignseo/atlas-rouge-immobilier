@@ -10,10 +10,10 @@ export default function NotFound() {
     <div className="min-h-[70vh] bg-cream flex items-center justify-center px-6">
       <div className="text-center max-w-md">
         <MapPin size={64} className="text-sand/60 mx-auto mb-6" />
-        <h1 className="font-playfair text-[48px] font-medium text-midnight mb-2">
+        <h1 className="font-display text-[48px] font-medium text-midnight mb-2">
           404
         </h1>
-        <h2 className="font-playfair text-[22px] font-medium text-midnight mb-4">
+        <h2 className="font-display text-[22px] font-medium text-midnight mb-4">
           {t('pageNotFound')}
         </h2>
         <p className="text-text-secondary text-[16px] font-inter mb-8">

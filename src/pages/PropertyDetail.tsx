@@ -236,7 +236,7 @@ function ContactPanel({ property, settings }: { property: Property; settings: Re
   if (submitted) {
     return (
       <div className="bg-white rounded-card border border-border-warm shadow-[0_4px_24px_rgba(0,0,0,0.06)] p-6">
-        <h3 className="font-playfair text-[18px] font-semibold text-midnight mb-1">Atlas Rouge Immobilier</h3>
+        <h3 className="font-display text-[18px] font-semibold text-midnight mb-1">Atlas Rouge Immobilier</h3>
         <div className="flex items-start gap-3 bg-green-50 border border-green-200 rounded-lg p-5 mt-4">
           <Check size={22} className="text-green-600 shrink-0 mt-0.5" />
           <div>
@@ -250,7 +250,7 @@ function ContactPanel({ property, settings }: { property: Property; settings: Re
 
   return (
     <div className="bg-white rounded-card border border-border-warm shadow-[0_4px_24px_rgba(0,0,0,0.06)] p-6">
-      <h3 className="font-playfair text-[18px] font-semibold text-midnight mb-1">Atlas Rouge Immobilier</h3>
+      <h3 className="font-display text-[18px] font-semibold text-midnight mb-1">Atlas Rouge Immobilier</h3>
       <div className="flex items-center gap-3 mb-5">
         <div className="w-12 h-12 rounded-full bg-cream-warm flex items-center justify-center">
           <User size={22} className="text-text-secondary" />
@@ -417,7 +417,7 @@ export default function PropertyDetail() {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4">
         <Info size={64} className="text-sand/60 mb-4" />
-        <h1 className="font-playfair text-[32px] font-semibold text-midnight mb-3">{t('propertyNotFound')}</h1>
+        <h1 className="font-display text-[32px] font-semibold text-midnight mb-3">{t('propertyNotFound')}</h1>
         <p className="text-text-secondary text-[16px] font-inter mb-6">{t('propertyNotFoundDesc')}</p>
         <Link to={path('/acheter')}
           className="h-12 px-6 bg-terracotta text-white font-inter text-[14px] font-semibold rounded-lg hover:scale-[1.02] transition-transform flex items-center gap-2">
@@ -530,7 +530,7 @@ export default function PropertyDetail() {
             <div className="mb-6">
               <p className="text-terracotta font-inter text-[32px] font-semibold mb-1">{formatPrice(property.priceEUR)}</p>
               {pricePerM2 > 0 && <p className="text-text-secondary text-[14px] font-inter mb-2">{new Intl.NumberFormat('fr-FR').format(pricePerM2)} €/m²</p>}
-              <h1 className="font-playfair text-[28px] font-medium text-midnight mb-2">{property.title}</h1>
+              <h1 className="font-display text-[28px] font-medium text-midnight mb-2">{property.title}</h1>
               <div className="flex items-center gap-2 text-text-secondary text-[15px] font-inter mb-2">
                 <MapPin size={16} /> <span>{property.neighborhood}, Marrakech</span>
               </div>
@@ -553,7 +553,7 @@ export default function PropertyDetail() {
             </div>
 
             <div className="mb-8">
-              <h3 className="font-playfair text-[22px] font-semibold text-midnight mb-3">{t('description')}</h3>
+              <h3 className="font-display text-[22px] font-semibold text-midnight mb-3">{t('description')}</h3>
               <div className="relative">
                 <p className="text-text-primary text-[16px] font-inter leading-[1.7] whitespace-pre-line">{descriptionShort}</p>
                 {shouldTruncate && !descriptionExpanded && <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-cream to-transparent" />}
@@ -569,7 +569,7 @@ export default function PropertyDetail() {
 
             {property.highlights.length > 0 && (
               <div className="mb-8 bg-white rounded-card border border-border-warm p-6">
-                <h3 className="font-playfair text-[22px] font-semibold text-midnight mb-4">{t('whatMakesItUnique')}</h3>
+                <h3 className="font-display text-[22px] font-semibold text-midnight mb-4">{t('whatMakesItUnique')}</h3>
                 <ul className="space-y-3">
                   {property.highlights.map((h, i) => (
                     <li key={i} className="flex items-start gap-3">
@@ -583,7 +583,7 @@ export default function PropertyDetail() {
 
             {property.amenities.length > 0 && (
               <div className="mb-8 bg-cream-warm rounded-card p-6">
-                <h3 className="font-playfair text-[22px] font-semibold text-midnight mb-4">{t('amenitiesAndServices')}</h3>
+                <h3 className="font-display text-[22px] font-semibold text-midnight mb-4">{t('amenitiesAndServices')}</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
                   {property.amenities.map(a => <AmenityItem key={a} label={a} />)}
                 </div>
@@ -591,7 +591,7 @@ export default function PropertyDetail() {
             )}
 
             <div className="mb-8">
-              <h3 className="font-playfair text-[22px] font-semibold text-midnight mb-2">{t('location')}</h3>
+              <h3 className="font-display text-[22px] font-semibold text-midnight mb-2">{t('location')}</h3>
               <p className="text-text-secondary text-[15px] font-inter mb-1">{property.neighborhood}, Marrakech</p>
               <p className="text-gold text-[13px] font-inter mb-4">{t('exactAddressOnRequest')}</p>
               <LocationMap property={property} />
@@ -609,7 +609,7 @@ export default function PropertyDetail() {
       {similarProperties.length > 0 && (
         <section className="bg-cream-warm py-12">
           <div className="max-w-[1280px] mx-auto px-4 lg:px-6">
-            <h3 className="font-playfair text-[28px] font-medium text-midnight text-center mb-2">{t('similarProperties')}</h3>
+            <h3 className="font-display text-[28px] font-medium text-midnight text-center mb-2">{t('similarProperties')}</h3>
             <p className="text-text-secondary text-[16px] font-inter text-center mb-8">{t('similarPropertiesDesc')}</p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {similarProperties.map(p => <PropertyCard key={p.slug} property={p} />)}
@@ -625,7 +625,7 @@ export default function PropertyDetail() {
 
       <section className="bg-white py-12">
         <div className="max-w-[1280px] mx-auto px-4 lg:px-6">
-          <h3 className="font-playfair text-[28px] font-medium text-midnight text-center mb-2">{t('buyingGuide')}</h3>
+          <h3 className="font-display text-[28px] font-medium text-midnight text-center mb-2">{t('buyingGuide')}</h3>
           <p className="text-text-secondary text-[16px] font-inter text-center mb-8">{t('buyingGuideDesc')}</p>
           <div className="flex flex-wrap justify-center gap-3">
             {guideLinks.map(link => (

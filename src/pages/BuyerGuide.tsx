@@ -299,7 +299,7 @@ export default function BuyerGuide() {
             <span className="text-white/80">Achat au Maroc</span>
           </p>
 
-          <h1 className="hero-title font-playfair text-[42px] md:text-[48px] font-medium text-white leading-tight max-w-[700px] mx-auto mb-6">
+          <h1 className="hero-title font-display text-[42px] md:text-[48px] font-medium text-white leading-tight max-w-[700px] mx-auto mb-6">
             Guide d&rsquo;achat immobilier au Maroc
           </h1>
           <p className="hero-subtitle text-white/75 text-[17px] md:text-[18px] font-inter max-w-[640px] mx-auto mb-4 leading-relaxed">
@@ -370,7 +370,7 @@ export default function BuyerGuide() {
                 <p className="gsap-fade text-terracotta text-[12px] font-inter font-medium uppercase tracking-[0.3px] mb-3">
                   Introduction
                 </p>
-                <h2 className="gsap-fade font-playfair text-[28px] md:text-[32px] font-medium text-midnight mb-6">
+                <h2 className="gsap-fade font-display text-[28px] md:text-[32px] font-medium text-midnight mb-6">
                   Pourquoi acheter &agrave; Marrakech ?
                 </h2>
                 <div className="gsap-fade text-text-secondary text-[16px] font-inter leading-[1.7] space-y-4">
@@ -410,7 +410,7 @@ export default function BuyerGuide() {
                 <p className="gsap-fade text-terracotta text-[12px] font-inter font-medium uppercase tracking-[0.3px] mb-3">
                   &Eacute;tape par &eacute;tape
                 </p>
-                <h2 className="gsap-fade font-playfair text-[28px] md:text-[32px] font-medium text-midnight mb-4">
+                <h2 className="gsap-fade font-display text-[28px] md:text-[32px] font-medium text-midnight mb-4">
                   Le processus d&rsquo;achat en 5 &eacute;tapes
                 </h2>
                 <p className="gsap-fade text-text-secondary text-[16px] font-inter leading-[1.7] mb-8">
@@ -430,13 +430,13 @@ export default function BuyerGuide() {
                     >
                       {/* Number circle */}
                       <div className="relative z-10 w-[38px] h-[38px] rounded-full bg-terracotta text-white flex items-center justify-center shrink-0">
-                        <span className="font-playfair text-[16px] font-semibold">
+                        <span className="font-display text-[16px] font-semibold">
                           {index + 1}
                         </span>
                       </div>
                       {/* Content */}
                       <div className="pt-1">
-                        <h4 className="font-playfair text-[18px] font-semibold text-midnight mb-2">
+                        <h4 className="font-display text-[18px] font-semibold text-midnight mb-2">
                           {step.title}
                         </h4>
                         <p className="text-text-secondary text-[15px] font-inter leading-[1.7]">
@@ -453,7 +453,7 @@ export default function BuyerGuide() {
                 <p className="gsap-fade text-terracotta text-[12px] font-inter font-medium uppercase tracking-[0.3px] mb-3">
                   Formalit&eacute;s
                 </p>
-                <h2 className="gsap-fade font-playfair text-[28px] md:text-[32px] font-medium text-midnight mb-6">
+                <h2 className="gsap-fade font-display text-[28px] md:text-[32px] font-medium text-midnight mb-6">
                   Notaire ou Adoul : qui choisir ?
                 </h2>
                 <p className="gsap-fade text-text-secondary text-[16px] font-inter leading-[1.7] mb-8">
@@ -469,7 +469,7 @@ export default function BuyerGuide() {
                       <div className="w-10 h-10 rounded-full bg-cream-warm flex items-center justify-center text-terracotta">
                         <Landmark size={20} />
                       </div>
-                      <h3 className="font-playfair text-[20px] font-semibold text-midnight">
+                      <h3 className="font-display text-[20px] font-semibold text-midnight">
                         Le notaire
                       </h3>
                     </div>
@@ -488,7 +488,7 @@ export default function BuyerGuide() {
                       <div className="w-10 h-10 rounded-full bg-cream-warm flex items-center justify-center text-palm">
                         <FileText size={20} />
                       </div>
-                      <h3 className="font-playfair text-[20px] font-semibold text-midnight">
+                      <h3 className="font-display text-[20px] font-semibold text-midnight">
                         L&rsquo;Adoul
                       </h3>
                     </div>
@@ -519,7 +519,7 @@ export default function BuyerGuide() {
                 <p className="gsap-fade text-terracotta text-[12px] font-inter font-medium uppercase tracking-[0.3px] mb-3">
                   Budget
                 </p>
-                <h2 className="gsap-fade font-playfair text-[28px] md:text-[32px] font-medium text-midnight mb-6">
+                <h2 className="gsap-fade font-display text-[28px] md:text-[32px] font-medium text-midnight mb-6">
                   Les frais d&rsquo;acquisition
                 </h2>
                 <p className="gsap-fade text-text-secondary text-[16px] font-inter leading-[1.7] mb-6">
@@ -583,7 +583,7 @@ export default function BuyerGuide() {
                 <p className="gsap-fade text-terracotta text-[12px] font-inter font-medium uppercase tracking-[0.3px] mb-3">
                   Financement
                 </p>
-                <h2 className="gsap-fade font-playfair text-[28px] md:text-[32px] font-medium text-midnight mb-4">
+                <h2 className="gsap-fade font-display text-[28px] md:text-[32px] font-medium text-midnight mb-4">
                   Le cr&eacute;dit immobilier au Maroc pour les &eacute;trangers
                 </h2>
                 <p className="gsap-fade text-text-secondary text-[16px] font-inter leading-[1.7] mb-8">
@@ -625,7 +625,7 @@ export default function BuyerGuide() {
                 </div>
 
                 {/* Banks list */}
-                <h3 className="gsap-fade font-playfair text-[20px] font-semibold text-midnight mb-4">
+                <h3 className="gsap-fade font-display text-[20px] font-semibold text-midnight mb-4">
                   Principales banques
                 </h3>
                 <div className="gsap-fade grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
@@ -643,7 +643,7 @@ export default function BuyerGuide() {
                 </div>
 
                 {/* Required documents */}
-                <h3 className="gsap-fade font-playfair text-[20px] font-semibold text-midnight mb-4">
+                <h3 className="gsap-fade font-display text-[20px] font-semibold text-midnight mb-4">
                   Documents requis
                 </h3>
                 <ul className="gsap-fade space-y-2">
@@ -667,7 +667,7 @@ export default function BuyerGuide() {
                 <p className="gsap-fade text-terracotta text-[12px] font-inter font-medium uppercase tracking-[0.3px] mb-3">
                   Imp&ocirc;ts
                 </p>
-                <h2 className="gsap-fade font-playfair text-[28px] md:text-[32px] font-medium text-midnight mb-4">
+                <h2 className="gsap-fade font-display text-[28px] md:text-[32px] font-medium text-midnight mb-4">
                   La fiscalit&eacute; immobili&egrave;re au Maroc
                 </h2>
                 <p className="gsap-fade text-text-secondary text-[16px] font-inter leading-[1.7] mb-8">
@@ -730,7 +730,7 @@ export default function BuyerGuide() {
                 <p className="gsap-fade text-terracotta text-[12px] font-inter font-medium uppercase tracking-[0.3px] mb-3">
                   S&eacute;curit&eacute;
                 </p>
-                <h2 className="gsap-fade font-playfair text-[28px] md:text-[32px] font-medium text-midnight mb-6">
+                <h2 className="gsap-fade font-display text-[28px] md:text-[32px] font-medium text-midnight mb-6">
                   Pr&eacute;cautions &agrave; prendre
                 </h2>
                 <p className="gsap-fade text-text-secondary text-[16px] font-inter leading-[1.7] mb-6">
@@ -784,7 +784,7 @@ export default function BuyerGuide() {
                 <p className="gsap-fade text-terracotta text-[12px] font-inter font-medium uppercase tracking-[0.3px] mb-3">
                   Rentabilit&eacute;
                 </p>
-                <h2 className="gsap-fade font-playfair text-[28px] md:text-[32px] font-medium text-midnight mb-4">
+                <h2 className="gsap-fade font-display text-[28px] md:text-[32px] font-medium text-midnight mb-4">
                   La gestion locative
                 </h2>
                 <p className="gsap-fade text-text-secondary text-[16px] font-inter leading-[1.7] mb-8">
@@ -795,7 +795,7 @@ export default function BuyerGuide() {
 
                 <div className="gsap-fade space-y-6 mb-8">
                   <div>
-                    <h3 className="font-playfair text-[20px] font-semibold text-midnight mb-2">
+                    <h3 className="font-display text-[20px] font-semibold text-midnight mb-2">
                       Location saisonni&egrave;re
                     </h3>
                     <p className="text-text-secondary text-[15px] font-inter leading-[1.7]">
@@ -807,7 +807,7 @@ export default function BuyerGuide() {
                     </p>
                   </div>
                   <div>
-                    <h3 className="font-playfair text-[20px] font-semibold text-midnight mb-2">
+                    <h3 className="font-display text-[20px] font-semibold text-midnight mb-2">
                       Location longue dur&eacute;e
                     </h3>
                     <p className="text-text-secondary text-[15px] font-inter leading-[1.7]">
@@ -818,7 +818,7 @@ export default function BuyerGuide() {
                     </p>
                   </div>
                   <div>
-                    <h3 className="font-playfair text-[20px] font-semibold text-midnight mb-2">
+                    <h3 className="font-display text-[20px] font-semibold text-midnight mb-2">
                       Conciergerie
                     </h3>
                     <p className="text-text-secondary text-[15px] font-inter leading-[1.7]">
@@ -847,7 +847,7 @@ export default function BuyerGuide() {
       {/* ═══════ Download CTA ═══════ */}
       <section ref={ctaRef} className="bg-terracotta py-16 px-6">
         <div className="max-w-[600px] mx-auto text-center">
-          <h3 className="cta-fade font-playfair text-[26px] md:text-[28px] font-medium text-white mb-3">
+          <h3 className="cta-fade font-display text-[26px] md:text-[28px] font-medium text-white mb-3">
             T&eacute;l&eacute;chargez notre guide complet
           </h3>
           <p className="cta-fade text-white/80 text-[16px] font-inter mb-8 leading-relaxed">
@@ -880,7 +880,7 @@ export default function BuyerGuide() {
       {/* ═══════ Related Articles ═══════ */}
       <section ref={relatedRef} className="bg-cream-warm py-16 px-6">
         <div className="max-w-[1100px] mx-auto">
-          <h3 className="font-playfair text-[28px] font-medium text-midnight mb-8">
+          <h3 className="font-display text-[28px] font-medium text-midnight mb-8">
             Articles connexes
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -902,7 +902,7 @@ export default function BuyerGuide() {
                   <span className="bg-palm text-white text-[11px] font-semibold px-2 py-1 rounded mb-3 inline-block uppercase">
                     {article.category}
                   </span>
-                  <h4 className="font-playfair text-[16px] font-medium text-text-primary mb-2 line-clamp-2 group-hover:text-terracotta transition-colors">
+                  <h4 className="font-display text-[16px] font-medium text-text-primary mb-2 line-clamp-2 group-hover:text-terracotta transition-colors">
                     {article.title}
                   </h4>
                   <p className="text-text-secondary text-[13px] font-inter">

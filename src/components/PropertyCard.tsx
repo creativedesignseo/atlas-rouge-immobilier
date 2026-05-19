@@ -85,7 +85,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
       {/* Content */}
       <Link to={propertyPath} className="block p-5">
         {/* Price — the loudest element, editorial serif */}
-        <p className="font-playfair text-[24px] font-medium text-terracotta tabular-nums leading-none mb-3">
+        <p className="font-display text-[24px] font-medium text-terracotta tabular-nums leading-none mb-3">
           {priceDisplay}
         </p>
 
@@ -95,7 +95,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
         </p>
 
         {/* Title — editorial, slightly larger than before */}
-        <h3 className="font-playfair text-[18px] font-medium text-ink leading-snug truncate mb-4 group-hover:text-terracotta transition-colors duration-300 ease-premium">
+        <h3 className="font-display text-[18px] font-medium text-ink leading-snug truncate mb-4 group-hover:text-terracotta transition-colors duration-300 ease-premium">
           {property.title}
         </h3>
 

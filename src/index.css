@@ -1,4 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+/*
+ * Type system inspired by chrifiahills.com (their stack: Nobel + Charter).
+ *
+ * - Display (headlines, hero, prices, big numbers):
+ *     Schibsted Grotesk — Norwegian editorial grotesk, refined and contemporary.
+ *     Replaces the classic-template Playfair feel with something modern.
+ *
+ * - Editorial body (long-form copy, property descriptions, hero subtitles):
+ *     Newsreader — variable serif by Production Type, optical sizing, elegant
+ *     italics. Used for paragraphs where reading needs to feel slow & quality.
+ *
+ * - UI (nav, buttons, forms, badges, metadata, all interactive surfaces):
+ *     Inter — kept because it's the gold standard for UI legibility.
+ *
+ * Playfair is still imported as a fallback so any leftover `font-display`
+ * usage doesn't break; new code should use `font-display` or `font-serif`.
+ */
+@import url('https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -31,19 +48,32 @@
   body {
     @apply bg-cream font-inter text-text-primary;
     font-family: 'Inter', sans-serif;
-    /* Premium text rendering: improves serif headlines + small caps without
-       being heavy on perf. optimizeLegibility kicks in only above 20px. */
+    /* Premium text rendering: kerning + ligatures + contextual alternates.
+       optimizeLegibility kicks in above 20px. Critical for refined display. */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
   }
 
-  /* Playfair displays better with optical kerning. Tabular nums for prices/stats
-     so numbers are aligned (a premium signal — bad numerics look amateur). */
+  /*
+   * Headings default to Schibsted Grotesk (display).
+   * Tight tracking (-0.02em) at large sizes — large grotesk reads better tight.
+   * letter-spacing 0 at small sizes — refined enough.
+   */
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Schibsted Grotesk', system-ui, sans-serif;
     @apply text-ink;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'ss01' 1;
+    letter-spacing: -0.015em;
+  }
+
+  /* Newsreader for long-form prose — applied via prose-* classes OR
+     explicit font-serif. Italics here are elegant; we keep them styled. */
+  .font-serif em,
+  .font-serif i {
+    font-family: 'Newsreader', Georgia, serif;
+    font-style: italic;
     font-feature-settings: 'kern' 1, 'liga' 1, 'dlig' 1;
   }
 

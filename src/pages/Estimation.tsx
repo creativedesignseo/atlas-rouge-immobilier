@@ -56,7 +56,7 @@ export default function Estimation() {
       <section className="bg-midnight pt-16 md:pt-24 pb-16 md:pb-20">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-12 text-center">
           <SectionReveal y={40}>
-            <h1 className="font-playfair text-[36px] md:text-[48px] font-medium text-white leading-[1.1] tracking-[-0.3px] mb-4">
+            <h1 className="font-display text-[36px] md:text-[48px] font-medium text-white leading-[1.1] tracking-[-0.3px] mb-4">
               {t('hero.title')}
             </h1>
           </SectionReveal>
@@ -93,7 +93,7 @@ export default function Estimation() {
             <div className="w-12 h-12 rounded-lg bg-palm/10 flex items-center justify-center mb-5">
               <UserCheck size={24} className="text-palm" />
             </div>
-            <h2 className="font-playfair text-[24px] font-medium text-midnight mb-2">
+            <h2 className="font-display text-[24px] font-medium text-midnight mb-2">
               {t('expert.title')}
             </h2>
             <p className="font-inter text-[14px] text-text-secondary mb-6">
@@ -160,7 +160,7 @@ export default function Estimation() {
       <section className="bg-cream-warm py-16 md:py-20">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
           <SectionReveal y={30}>
-            <h2 className="font-playfair text-[28px] md:text-[36px] font-medium text-midnight text-center mb-12">
+            <h2 className="font-display text-[28px] md:text-[36px] font-medium text-midnight text-center mb-12">
               {t('steps.heading')}
             </h2>
           </SectionReveal>
@@ -181,7 +181,7 @@ export default function Estimation() {
                 <span className="inline-block w-8 h-8 rounded-full bg-terracotta text-white font-inter text-[14px] font-semibold leading-8 mb-3">
                   {number}
                 </span>
-                <h3 className="font-playfair text-[20px] font-semibold text-midnight mb-2">
+                <h3 className="font-display text-[20px] font-semibold text-midnight mb-2">
                   {title}
                 </h3>
                 <p className="font-inter text-[14px] text-text-secondary leading-[1.7]">
@@ -197,7 +197,7 @@ export default function Estimation() {
       <section className="bg-white py-16 md:py-20">
         <div className="max-w-[800px] mx-auto px-6 lg:px-12 text-center">
           <SectionReveal y={30}>
-            <h2 className="font-playfair text-[28px] md:text-[36px] font-medium text-midnight mb-4">
+            <h2 className="font-display text-[28px] md:text-[36px] font-medium text-midnight mb-4">
               {t('cta.title')}
             </h2>
             <p className="font-inter text-[16px] text-text-secondary mb-8 max-w-[560px] mx-auto">

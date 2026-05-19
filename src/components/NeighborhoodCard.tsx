@@ -56,7 +56,7 @@ export default function NeighborhoodCard({ neighborhood }: NeighborhoodCardProps
         )}
 
         {/* Name — editorial */}
-        <h3 className="font-playfair text-[28px] md:text-[30px] font-medium text-white leading-none tracking-editorial mb-2">
+        <h3 className="font-display text-[28px] md:text-[30px] font-medium text-white leading-none tracking-editorial mb-2">
           {neighborhood.name}
         </h3>
 

@@ -232,7 +232,7 @@ function PropertyCardList({ property }: { property: Property }) {
           </div>
           <p className="text-text-secondary text-[13px] font-inter">{property.neighborhood}, {property.city}</p>
           <Link to={path(`/property/${property.slug}`)}>
-            <h3 className="font-playfair text-[18px] font-medium text-midnight mt-1 mb-2 hover:text-terracotta transition-colors">{property.title}</h3>
+            <h3 className="font-display text-[18px] font-medium text-midnight mt-1 mb-2 hover:text-terracotta transition-colors">{property.title}</h3>
           </Link>
           <p className="text-text-secondary text-[14px] font-inter line-clamp-2 mb-3">{property.description}</p>
           <div className="flex items-center gap-5 text-text-secondary text-[13px] font-inter mb-3">
@@ -552,7 +552,7 @@ function PropertyCardGrid({ property, isHovered = false }: { property: Property;
         <p className="text-terracotta font-inter text-[18px] font-semibold mb-1">{priceDisplay}</p>
         <p className="text-text-secondary text-[13px] font-inter mb-1">{property.neighborhood}, {property.city}</p>
         <Link to={path(`/property/${property.slug}`)}>
-          <h3 className="font-playfair text-[16px] font-medium text-text-primary truncate mb-3 hover:text-terracotta transition-colors">{property.title}</h3>
+          <h3 className="font-display text-[16px] font-medium text-text-primary truncate mb-3 hover:text-terracotta transition-colors">{property.title}</h3>
         </Link>
         <div className="flex items-center gap-4 text-text-secondary text-[13px] font-inter">
           <span className="flex items-center gap-1"><Maximize size={15} />{property.surface} m²</span>
@@ -864,7 +864,7 @@ export default function SearchPage() {
               <p className="hidden lg:block text-[13px] text-text-secondary mb-1">
                 {t('breadcrumb.home')} &gt; {pageTitle} &gt; {locationLabel}
               </p>
-              <h1 className="font-playfair text-[20px] md:text-[24px] font-medium text-midnight leading-tight">
+              <h1 className="font-display text-[20px] md:text-[24px] font-medium text-midnight leading-tight">
                 {resultsLabel}
               </h1>
             </div>
@@ -1142,7 +1142,7 @@ export default function SearchPage() {
           ) : filtered.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <MapPin size={64} className="text-sand/60 mb-4" />
-              <h3 className="font-playfair text-[22px] font-semibold text-midnight mb-2">{t('noResults')}</h3>
+              <h3 className="font-display text-[22px] font-semibold text-midnight mb-2">{t('noResults')}</h3>
               <p className="text-text-secondary text-[15px] font-inter max-w-md mb-6">
                 Essayez d'élargir votre recherche ou de modifier vos filtres pour trouver plus de résultats.
               </p>
