@@ -34,7 +34,7 @@ export default function Favorites() {
           <SectionReveal y={30}>
             <div className="flex items-center gap-3 mb-3">
               <Heart size={28} className="text-terracotta" />
-              <h1 className="font-playfair text-[32px] md:text-[40px] font-medium text-midnight leading-[1.1]">
+              <h1 className="font-display text-[32px] md:text-[40px] font-medium text-midnight leading-[1.1]">
                 {t('myFavorites')}
               </h1>
             </div>
@@ -69,7 +69,7 @@ export default function Favorites() {
               <div className="w-20 h-20 rounded-full bg-cream-warm flex items-center justify-center mb-6">
                 <Heart size={36} className="text-border-warm" />
               </div>
-              <h2 className="font-playfair text-[24px] font-medium text-midnight mb-3">
+              <h2 className="font-display text-[24px] font-medium text-midnight mb-3">
                 {t('noFavorites')}
               </h2>
               <p className="font-inter text-[15px] text-text-secondary mb-8 max-w-[400px]">

@@ -156,7 +156,7 @@ export default function Contact() {
           </nav>
 
           <SectionReveal y={40}>
-            <h1 className="font-playfair text-[36px] md:text-[48px] font-medium text-midnight leading-[1.1] tracking-[-0.3px] mb-4">
+            <h1 className="font-display text-[36px] md:text-[48px] font-medium text-midnight leading-[1.1] tracking-[-0.3px] mb-4">
               {t('title')}
             </h1>
           </SectionReveal>
@@ -175,7 +175,7 @@ export default function Contact() {
           <div className="flex flex-col-reverse md:flex-row gap-12 md:gap-16">
             {/* ── Left: Form ── */}
             <div ref={formRef} className="md:w-[60%]">
-              <h3 className="font-playfair text-[24px] font-medium text-midnight mb-6">
+              <h3 className="font-display text-[24px] font-medium text-midnight mb-6">
                 {t('form.title')}
               </h3>
 
@@ -315,7 +315,7 @@ export default function Contact() {
 
             {/* ── Right: Contact Info ── */}
             <div ref={infoRef} className="md:w-[40%]">
-              <h3 className="font-playfair text-[24px] font-medium text-midnight mb-8">
+              <h3 className="font-display text-[24px] font-medium text-midnight mb-8">
                 {t('info.title') || 'Nos coordonnées'}
               </h3>
 
@@ -469,7 +469,7 @@ export default function Contact() {
           <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-terracotta flex items-center justify-center shadow-lg">
             <MapPin size={24} className="text-white" />
           </div>
-          <p className="font-playfair text-[18px] text-white mb-1">
+          <p className="font-display text-[18px] text-white mb-1">
             {settings?.company_name || 'Atlas Rouge Immobilier'}
           </p>
           <p className="font-inter text-[13px] text-white/60">
@@ -482,7 +482,7 @@ export default function Contact() {
       <section className="bg-cream-warm py-16 md:py-20">
         <div className="max-w-[720px] mx-auto px-6 lg:px-12">
           <SectionReveal y={30}>
-            <h3 className="font-playfair text-[28px] font-medium text-midnight text-center mb-8">
+            <h3 className="font-display text-[28px] font-medium text-midnight text-center mb-8">
               {t('faq.title')}
             </h3>
           </SectionReveal>

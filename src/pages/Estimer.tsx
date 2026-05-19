@@ -16,7 +16,7 @@ export default function Estimer() {
             <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-terracotta/10 flex items-center justify-center">
               <Calculator size={28} className="text-terracotta" />
             </div>
-            <h1 className="font-playfair text-[36px] md:text-[48px] font-medium text-midnight leading-[1.1] tracking-[-0.3px] mb-4">
+            <h1 className="font-display text-[36px] md:text-[48px] font-medium text-midnight leading-[1.1] tracking-[-0.3px] mb-4">
               {t('intro.title')}
             </h1>
           </SectionReveal>
@@ -46,11 +46,11 @@ export default function Estimer() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
               <div className="p-6">
                 <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-cream-warm flex items-center justify-center">
-                  <span className="font-playfair text-[20px] font-semibold text-terracotta">
+                  <span className="font-display text-[20px] font-semibold text-terracotta">
                     1
                   </span>
                 </div>
-                <h3 className="font-playfair text-[18px] font-semibold text-midnight mb-2">
+                <h3 className="font-display text-[18px] font-semibold text-midnight mb-2">
                   {t('steps.step1.title')}
                 </h3>
                 <p className="font-inter text-[14px] text-text-secondary leading-[1.7]">
@@ -60,11 +60,11 @@ export default function Estimer() {
 
               <div className="p-6">
                 <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-cream-warm flex items-center justify-center">
-                  <span className="font-playfair text-[20px] font-semibold text-terracotta">
+                  <span className="font-display text-[20px] font-semibold text-terracotta">
                     2
                   </span>
                 </div>
-                <h3 className="font-playfair text-[18px] font-semibold text-midnight mb-2">
+                <h3 className="font-display text-[18px] font-semibold text-midnight mb-2">
                   {t('steps.step2.title')}
                 </h3>
                 <p className="font-inter text-[14px] text-text-secondary leading-[1.7]">
@@ -74,11 +74,11 @@ export default function Estimer() {
 
               <div className="p-6">
                 <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-cream-warm flex items-center justify-center">
-                  <span className="font-playfair text-[20px] font-semibold text-terracotta">
+                  <span className="font-display text-[20px] font-semibold text-terracotta">
                     3
                   </span>
                 </div>
-                <h3 className="font-playfair text-[18px] font-semibold text-midnight mb-2">
+                <h3 className="font-display text-[18px] font-semibold text-midnight mb-2">
                   {t('steps.step3.title')}
                 </h3>
                 <p className="font-inter text-[14px] text-text-secondary leading-[1.7]">

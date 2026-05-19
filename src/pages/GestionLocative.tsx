@@ -92,7 +92,7 @@ export default function GestionLocative() {
       <section className="bg-midnight pt-16 md:pt-24 pb-16 md:pb-20">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-12 text-center">
           <SectionReveal y={40}>
-            <h1 className="font-playfair text-[36px] md:text-[48px] font-medium text-white leading-[1.1] tracking-[-0.3px] mb-4">
+            <h1 className="font-display text-[36px] md:text-[48px] font-medium text-white leading-[1.1] tracking-[-0.3px] mb-4">
               Gestion locative à Marrakech
             </h1>
           </SectionReveal>
@@ -111,7 +111,7 @@ export default function GestionLocative() {
         <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
           <SectionReveal y={30}>
             <div className="text-center mb-12">
-              <h2 className="font-playfair text-[28px] md:text-[36px] font-medium text-midnight mb-3">
+              <h2 className="font-display text-[28px] md:text-[36px] font-medium text-midnight mb-3">
                 Nos services de gestion
               </h2>
               <p className="font-inter text-[16px] text-text-secondary max-w-[560px] mx-auto">
@@ -134,7 +134,7 @@ export default function GestionLocative() {
                 <div className="w-12 h-12 rounded-lg bg-palm/10 flex items-center justify-center mb-4">
                   <Icon size={24} className="text-palm" />
                 </div>
-                <h3 className="font-playfair text-[20px] font-semibold text-midnight mb-2">
+                <h3 className="font-display text-[20px] font-semibold text-midnight mb-2">
                   {title}
                 </h3>
                 <p className="font-inter text-[14px] text-text-secondary leading-[1.7]">
@@ -151,7 +151,7 @@ export default function GestionLocative() {
         <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
           <SectionReveal y={30}>
             <div className="text-center mb-12">
-              <h2 className="font-playfair text-[28px] md:text-[36px] font-medium text-midnight mb-3">
+              <h2 className="font-display text-[28px] md:text-[36px] font-medium text-midnight mb-3">
                 Nos formules
               </h2>
               <p className="font-inter text-[16px] text-text-secondary max-w-[560px] mx-auto">
@@ -175,7 +175,7 @@ export default function GestionLocative() {
                 }`}
               >
                 <h3
-                  className={`font-playfair text-[22px] font-semibold mb-2 ${
+                  className={`font-display text-[22px] font-semibold mb-2 ${
                     tier.highlighted ? 'text-white' : 'text-midnight'
                   }`}
                 >
@@ -183,7 +183,7 @@ export default function GestionLocative() {
                 </h3>
                 <div className="mb-1">
                   <span
-                    className={`font-playfair text-[48px] font-semibold ${
+                    className={`font-display text-[48px] font-semibold ${
                       tier.highlighted ? 'text-terracotta' : 'text-terracotta'
                     }`}
                   >
@@ -242,7 +242,7 @@ export default function GestionLocative() {
       <section className="bg-white py-16 md:py-20">
         <div className="max-w-[800px] mx-auto px-6 lg:px-12 text-center">
           <SectionReveal y={30}>
-            <h2 className="font-playfair text-[28px] md:text-[36px] font-medium text-midnight mb-4">
+            <h2 className="font-display text-[28px] md:text-[36px] font-medium text-midnight mb-4">
               Louez votre bien en confiance
             </h2>
             <p className="font-inter text-[16px] text-text-secondary mb-8 max-w-[560px] mx-auto">

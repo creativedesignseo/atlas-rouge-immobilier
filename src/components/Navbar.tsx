@@ -53,7 +53,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-[72px]">
           {/* Logo */}
           <Link to={`/${lang}/`} className="flex flex-col shrink-0">
-            <span className="font-playfair text-[22px] font-semibold text-terracotta leading-tight">
+            <span className="font-display text-[22px] font-semibold text-terracotta leading-tight">
               Atlas Rouge Immobilier
             </span>
             <span className="text-text-secondary text-[12px] font-inter">

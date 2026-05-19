@@ -46,7 +46,7 @@ export default function AdminSidebar() {
       >
         {/* Logo */}
         <div className="p-6 border-b border-white/10">
-          <h1 className="text-white font-playfair text-xl font-semibold tracking-wide">
+          <h1 className="text-white font-display text-xl font-semibold tracking-wide">
             Atlas Rouge
           </h1>
           <p className="text-white/50 text-xs mt-1">{t('login.subtitle')}</p>

@@ -260,7 +260,7 @@ export default function Home() {
           <div className="max-w-[800px] mx-auto">
             <h1
               ref={heroTitleRef}
-              className="font-playfair text-[32px] md:text-[48px] lg:text-[52px] font-medium text-white leading-[1.1] tracking-[-0.5px] mb-4 md:mb-5"
+              className="font-display text-[32px] md:text-[48px] lg:text-[52px] font-medium text-white leading-[1.1] tracking-[-0.5px] mb-4 md:mb-5"
             >
               {t('hero.title')}
             </h1>
@@ -288,7 +288,7 @@ export default function Home() {
             <span className="text-terracotta text-[12px] font-inter font-medium uppercase tracking-[2px]">
               {t('neighborhoods.tagline')}
             </span>
-            <h2 className="font-playfair text-[32px] md:text-[40px] font-medium text-midnight mt-3 mb-4">
+            <h2 className="font-display text-[32px] md:text-[40px] font-medium text-midnight mt-3 mb-4">
               {t('neighborhoods.title')}
             </h2>
             <p className="text-text-secondary text-[16px] font-inter max-w-[600px] mx-auto">
@@ -310,7 +310,7 @@ export default function Home() {
             <span className="text-palm text-[12px] font-inter font-medium uppercase tracking-[2px]">
               {t('featured.tagline')}
             </span>
-            <h2 className="font-playfair text-[32px] md:text-[40px] font-medium text-midnight mt-3 mb-4">
+            <h2 className="font-display text-[32px] md:text-[40px] font-medium text-midnight mt-3 mb-4">
               {t('featured.title')}
             </h2>
             <p className="text-text-secondary text-[16px] font-inter max-w-[600px] mx-auto">
@@ -338,7 +338,7 @@ export default function Home() {
       <section ref={categoriesRef} className="bg-white py-16 md:py-24">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
           <div className="section-header text-center mb-10">
-            <h2 className="font-playfair text-[32px] md:text-[40px] font-medium text-midnight">
+            <h2 className="font-display text-[32px] md:text-[40px] font-medium text-midnight">
               {t('categories.subtitle')}
             </h2>
           </div>
@@ -368,7 +368,7 @@ export default function Home() {
             <span className="text-terracotta text-[12px] font-inter font-medium uppercase tracking-[2px]">
               {t('services.title')}
             </span>
-            <h2 className="font-playfair text-[32px] md:text-[40px] font-medium text-midnight mt-3 mb-4">
+            <h2 className="font-display text-[32px] md:text-[40px] font-medium text-midnight mt-3 mb-4">
               {t('services.subtitle')}
             </h2>
           </div>
@@ -394,7 +394,7 @@ export default function Home() {
               <span className="text-palm text-[12px] font-inter font-medium uppercase tracking-[2px]">
                 {t('trust.tagline')}
               </span>
-              <h2 className="font-playfair text-[32px] md:text-[40px] font-medium text-midnight mt-3 mb-6">
+              <h2 className="font-display text-[32px] md:text-[40px] font-medium text-midnight mt-3 mb-6">
                 {t('trust.title')}
               </h2>
               <p className="text-text-primary text-[16px] font-inter leading-[1.7] mb-8">
@@ -404,7 +404,7 @@ export default function Home() {
               {/* Stats — claims verificables, no marketing inflado */}
               <div className="flex flex-wrap gap-8 md:gap-12">
                 <div>
-                  <span className="font-playfair text-[32px] font-medium text-terracotta">
+                  <span className="font-display text-[32px] font-medium text-terracotta">
                     <AnimatedCounter target={13} />
                   </span>
                   <p className="text-text-secondary text-[14px] font-inter mt-1">
@@ -412,7 +412,7 @@ export default function Home() {
                   </p>
                 </div>
                 <div>
-                  <span className="font-playfair text-[32px] font-medium text-terracotta">
+                  <span className="font-display text-[32px] font-medium text-terracotta">
                     <AnimatedCounter target={12} suffix="+" />
                   </span>
                   <p className="text-text-secondary text-[14px] font-inter mt-1">
@@ -420,7 +420,7 @@ export default function Home() {
                   </p>
                 </div>
                 <div>
-                  <span className="font-playfair text-[32px] font-medium text-terracotta">
+                  <span className="font-display text-[32px] font-medium text-terracotta">
                     <AnimatedCounter target={3} />
                   </span>
                   <p className="text-text-secondary text-[14px] font-inter mt-1">
@@ -451,7 +451,7 @@ export default function Home() {
         className="bg-midnight py-16 md:py-24 flex items-center justify-center"
       >
         <div className="max-w-[700px] mx-auto px-6 text-center section-header">
-          <h2 className="font-playfair text-[32px] md:text-[40px] font-medium text-white mb-4">
+          <h2 className="font-display text-[32px] md:text-[40px] font-medium text-white mb-4">
             {t('cta.title')}
           </h2>
           <p className="text-white/75 text-[16px] font-inter mb-8">
@@ -481,7 +481,7 @@ export default function Home() {
             <span className="text-terracotta text-[12px] font-inter font-medium uppercase tracking-[2px]">
               {t('blog.title')}
             </span>
-            <h2 className="font-playfair text-[32px] md:text-[40px] font-medium text-midnight mt-3 mb-4">
+            <h2 className="font-display text-[32px] md:text-[40px] font-medium text-midnight mt-3 mb-4">
               {t('blog.subtitle')}
             </h2>
           </div>
@@ -504,7 +504,7 @@ export default function Home() {
                   <span className="text-terracotta text-[11px] font-inter font-medium uppercase">
                     {article.category}
                   </span>
-                  <h3 className="font-playfair text-[18px] font-medium text-text-primary mt-2 mb-2 line-clamp-2 group-hover:text-terracotta transition-colors">
+                  <h3 className="font-display text-[18px] font-medium text-text-primary mt-2 mb-2 line-clamp-2 group-hover:text-terracotta transition-colors">
                     {article.title}
                   </h3>
                   <p className="text-text-secondary text-[12px] font-inter">

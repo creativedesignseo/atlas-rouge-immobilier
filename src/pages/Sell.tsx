@@ -230,7 +230,7 @@ export default function Sell() {
             <span>{t('breadcrumb.sell')}</span>
           </p>
 
-          <h1 className="hero-title font-playfair text-[42px] md:text-[48px] font-medium text-midnight leading-tight max-w-[700px] mx-auto mb-6">
+          <h1 className="hero-title font-display text-[42px] md:text-[48px] font-medium text-midnight leading-tight max-w-[700px] mx-auto mb-6">
             {t('hero.title')}
           </h1>
           <p className="hero-subtitle text-text-secondary text-[17px] md:text-[18px] font-inter max-w-[560px] mx-auto mb-8 leading-relaxed">
@@ -263,7 +263,7 @@ export default function Sell() {
             <div className="w-12 h-12 text-palm mb-4">
               <Users size={48} strokeWidth={1.5} />
             </div>
-            <h3 className="font-playfair text-[28px] font-medium text-text-primary mb-4">
+            <h3 className="font-display text-[28px] font-medium text-text-primary mb-4">
               {t('features.sell.title')}
             </h3>
             <p className="text-text-secondary text-[16px] font-inter leading-[1.7] mb-6">
@@ -313,7 +313,7 @@ export default function Sell() {
           <p className="text-terracotta text-[12px] font-inter font-medium uppercase tracking-[0.3px] text-center mb-3">
             {t('howItWorks.label')}
           </p>
-          <h2 className="hiw-title font-playfair text-[36px] md:text-[40px] font-medium text-midnight text-center mb-16">
+          <h2 className="hiw-title font-display text-[36px] md:text-[40px] font-medium text-midnight text-center mb-16">
             {t('howItWorks.title')}
           </h2>
 
@@ -332,11 +332,11 @@ export default function Sell() {
                     a bg-cream-warm "cap" on the digits hiding the line under
                     them so it never overlaps the glyphs. */}
                 <div className="relative h-[60px] flex items-center justify-center mb-3">
-                  <span className="font-playfair text-[48px] font-semibold text-terracotta/30 leading-none bg-cream-warm px-3 relative z-10">
+                  <span className="font-display text-[48px] font-semibold text-terracotta/30 leading-none bg-cream-warm px-3 relative z-10">
                     {number}
                   </span>
                 </div>
-                <h4 className="font-playfair text-[20px] font-semibold text-midnight mb-2">
+                <h4 className="font-display text-[20px] font-semibold text-midnight mb-2">
                   {t(`howItWorks.steps.${idx + 1}.title`)}
                 </h4>
                 <p className="text-text-secondary text-[14px] font-inter leading-relaxed">
@@ -351,7 +351,7 @@ export default function Sell() {
       {/* ═══════ FAQ Accordion ═══════ */}
       <section ref={faqRef} className="bg-white py-16 md:py-24 px-6">
         <div className="max-w-[720px] mx-auto">
-          <h2 className="faq-title font-playfair text-[36px] md:text-[40px] font-medium text-midnight text-center mb-12">
+          <h2 className="faq-title font-display text-[36px] md:text-[40px] font-medium text-midnight text-center mb-12">
             {t('faq.title')}
           </h2>
           <div>

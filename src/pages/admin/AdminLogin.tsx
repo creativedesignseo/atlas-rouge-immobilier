@@ -50,7 +50,7 @@ export default function AdminLogin() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <h1 className="text-white font-playfair text-3xl font-bold tracking-wide">
+          <h1 className="text-white font-display text-3xl font-bold tracking-wide">
             Atlas Rouge
           </h1>
           <p className="text-white/60 mt-2">Panneau d'administration</p>

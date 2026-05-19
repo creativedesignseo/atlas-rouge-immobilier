@@ -55,8 +55,27 @@ module.exports = {
         },
       },
       fontFamily: {
-        playfair: ['Playfair Display', 'serif'],
-        inter: ['Inter', 'sans-serif'],
+        /*
+         * Editorial type system (inspired by chrifiahills.com).
+         *
+         * `display` — Schibsted Grotesk, refined Norwegian sans for headlines,
+         *             hero, prices, big numbers. Replaces Playfair for the
+         *             "loud" voice. Use for H1-H4 and any large editorial type.
+         *
+         * `serif`   — Newsreader variable serif for long-form prose & elegant
+         *             subtitles. Beautiful italics. Use for property
+         *             descriptions, blog body, about-page paragraphs.
+         *
+         * `inter`   — kept for UI (nav, buttons, forms, badges, metadata).
+         *
+         * `playfair` is kept as a legacy fallback only — any remaining
+         *            `font-playfair` className still works, but new code
+         *            should use `font-display` or `font-serif`.
+         */
+        display: ['Schibsted Grotesk', 'system-ui', '-apple-system', 'sans-serif'],
+        serif: ['Newsreader', 'Charter', 'Georgia', 'serif'],
+        inter: ['Inter', 'system-ui', 'sans-serif'],
+        playfair: ['Playfair Display', 'Newsreader', 'Georgia', 'serif'],
       },
       borderRadius: {
         'card': '16px',

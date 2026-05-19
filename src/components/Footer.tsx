@@ -98,7 +98,7 @@ export default function Footer() {
         <div className="border-t border-white/10 mt-12 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-              <span className="font-playfair text-[18px] font-semibold text-terracotta">
+              <span className="font-display text-[18px] font-semibold text-terracotta">
                 Atlas Rouge
               </span>
               <span className="text-white/40 text-[12px]">|</span>

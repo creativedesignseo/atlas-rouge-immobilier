@@ -172,7 +172,7 @@ export default function Blog() {
             <span>{t('breadcrumb.blog')}</span>
           </p>
 
-          <h1 className="hero-title font-playfair text-[38px] md:text-[44px] font-medium text-midnight leading-tight mb-4">
+          <h1 className="hero-title font-display text-[38px] md:text-[44px] font-medium text-midnight leading-tight mb-4">
             {t('hero.title')}
           </h1>
           <p className="hero-subtitle text-text-secondary text-[16px] font-inter max-w-[600px] mx-auto mb-8 leading-relaxed">
@@ -219,7 +219,7 @@ export default function Blog() {
                   <span className="bg-palm text-white text-[11px] font-semibold px-2 py-1 rounded mb-4 inline-block self-start uppercase tracking-wide">
                     {t(`categories.${t('featured.category')}`)}
                   </span>
-                  <h2 className="font-playfair text-[22px] md:text-[28px] font-medium text-midnight leading-snug mb-4">
+                  <h2 className="font-display text-[22px] md:text-[28px] font-medium text-midnight leading-snug mb-4">
                     {t('featured.title')}
                   </h2>
                   <p className="text-text-secondary text-[15px] md:text-[16px] font-inter leading-[1.7] mb-4 line-clamp-3">
@@ -280,7 +280,7 @@ export default function Blog() {
                       {t(`categories.${categoryKey}`)}
                     </span>
 
-                    <h3 className="font-playfair text-[16px] font-medium text-text-primary mb-2 line-clamp-2 group-hover:text-terracotta transition-colors leading-snug">
+                    <h3 className="font-display text-[16px] font-medium text-text-primary mb-2 line-clamp-2 group-hover:text-terracotta transition-colors leading-snug">
                       {t(`articles.${article.key}.title`)}
                     </h3>
 
@@ -307,7 +307,7 @@ export default function Blog() {
       {/* ═══════ Newsletter CTA ═══════ */}
       <section ref={newsletterRef} className="bg-midnight py-16 px-6">
         <div className="max-w-[600px] mx-auto text-center">
-          <h3 className="nl-fade font-playfair text-[26px] md:text-[28px] font-medium text-white mb-3">
+          <h3 className="nl-fade font-display text-[26px] md:text-[28px] font-medium text-white mb-3">
             {t('newsletter.title')}
           </h3>
           <p className="nl-fade text-white/75 text-[16px] font-inter mb-8 leading-relaxed">
