@@ -11,6 +11,19 @@ interface PropertyCardProps {
   property: Property
 }
 
+/**
+ * Premium real-estate listing card.
+ *
+ * Design intent (editorial / Sotheby's-like):
+ * - No border. Depth comes from a layered shadow that lifts subtly on hover.
+ * - Price is the loudest element, set in Playfair (editorial serif) — that's
+ *   what a luxury buyer reads first.
+ * - Badge uses uppercase + tracked letters, the classic premium signal.
+ * - Stats are compact, separated by a hairline dot — easier to scan than icons
+ *   stacked next to numbers.
+ * - The whole card is one anchor target. We removed the "see more →" link
+ *   because the entire surface already navigates to the listing.
+ */
 export default function PropertyCard({ property }: PropertyCardProps) {
   const { toggleFavorite, isFavorite } = useFavorites()
   const { formatPrice } = useCurrency()
@@ -18,107 +31,126 @@ export default function PropertyCard({ property }: PropertyCardProps) {
   const { t } = useTranslation('property')
   const { t: tc } = useTranslation('common')
 
-  const image = getImageUrl(property.images[0] || 'property-01.jpg', { width: 600, height: 450, resize: 'cover' })
+  const image = getImageUrl(property.images[0] || 'property-01.jpg', { width: 800, height: 600, resize: 'cover' })
   const priceDisplay = formatPrice(property.priceEUR)
   const propertyPath = path(`/property/${property.slug}`)
+  const fav = isFavorite(property.slug)
 
   return (
-    <div className="bg-white rounded-card border border-border-warm shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-250 overflow-hidden group">
-      {/* Image */}
-      <div className="relative aspect-[4/3] overflow-hidden">
-        <Link to={propertyPath}>
-          <img
-            src={image}
-            alt={property.title}
-            className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-400"
-            loading="lazy"
-          />
-        </Link>
+    <article className="group relative bg-white rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-500 ease-premium">
+      {/* Image wrapper — clickable surface */}
+      <Link to={propertyPath} className="block relative aspect-[4/3] overflow-hidden bg-cream-warm">
+        <img
+          src={image}
+          alt={property.title}
+          className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-700 ease-premium"
+          loading="lazy"
+        />
 
-        {/* Transaction badge */}
-        <span className="absolute top-3 left-3 bg-palm text-white text-[11px] font-semibold px-2 py-1 rounded">
-          {property.transaction === 'sale' ? t('forSale') : t('forRent')}
-        </span>
+        {/* Tonal overlay only on hover — adds depth, lifts subtitle readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-ink/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-premium" />
 
-        {/* Exclusive badge */}
-        {property.isExclusive && (
-          <span className="absolute top-3 left-[70px] bg-gold text-white text-[11px] font-semibold px-2 py-1 rounded">
-            {t('exclusiveListing')}
+        {/* Badges row (top-left) — uppercase, tracked, restrained */}
+        <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
+          <span className="bg-ink/90 backdrop-blur-sm text-white text-[10px] font-semibold uppercase tracking-eyebrow px-2.5 py-1 rounded-full">
+            {property.transaction === 'sale' ? t('forSale') : t('forRent')}
           </span>
-        )}
+          {property.isExclusive && (
+            <span className="bg-gold text-ink text-[10px] font-semibold uppercase tracking-eyebrow px-2.5 py-1 rounded-full">
+              {t('exclusiveListing')}
+            </span>
+          )}
+        </div>
 
-        {/* Photo count */}
-        <span className="absolute top-3 right-14 bg-black/50 text-white text-[11px] font-medium px-2 py-1 rounded flex items-center gap-1">
-          <Camera size={12} />
+        {/* Photo count (bottom-left) — minimalist counter */}
+        <span className="absolute bottom-3 left-3 bg-ink/70 backdrop-blur-sm text-white text-[11px] font-medium px-2 py-1 rounded-full flex items-center gap-1 tabular-nums">
+          <Camera size={12} strokeWidth={1.8} />
           {property.images.length}
         </span>
+      </Link>
 
-        {/* Favorite button */}
-        <button
-          onClick={() => toggleFavorite(property.slug)}
-          className="absolute top-3 right-3 w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md hover:scale-105 transition-transform"
-          aria-label={isFavorite(property.slug) ? tc('favoriteRemoved') : tc('favoriteAdded')}
-        >
-          <Heart
-            size={18}
-            className={isFavorite(property.slug) ? 'fill-terracotta text-terracotta' : 'text-text-secondary'}
-          />
-        </button>
-      </div>
+      {/* Favorite — separate button, outside the Link so it doesn't trigger nav */}
+      <button
+        onClick={() => toggleFavorite(property.slug)}
+        className="absolute top-3 right-3 w-9 h-9 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-soft hover:scale-110 active:scale-95 transition-transform duration-200 ease-premium"
+        aria-label={fav ? tc('favoriteRemoved') : tc('favoriteAdded')}
+      >
+        <Heart
+          size={17}
+          strokeWidth={1.8}
+          className={fav ? 'fill-terracotta text-terracotta' : 'text-stone'}
+        />
+      </button>
 
       {/* Content */}
-      <div className="p-4">
-        <p className="text-terracotta font-inter text-[18px] font-semibold mb-1">
+      <Link to={propertyPath} className="block p-5">
+        {/* Price — the loudest element, editorial serif */}
+        <p className="font-playfair text-[24px] font-medium text-terracotta tabular-nums leading-none mb-3">
           {priceDisplay}
         </p>
 
-        <p className="text-text-secondary text-[13px] font-inter mb-1">
-          {property.neighborhood}, {property.city}
+        {/* Neighborhood, city — small caps treatment */}
+        <p className="text-stone text-[11px] font-inter font-medium uppercase tracking-eyebrow mb-2">
+          {property.neighborhood} · {property.city}
         </p>
 
-        <Link to={propertyPath}>
-          <h3 className="font-playfair text-[16px] font-medium text-text-primary truncate mb-3 hover:text-terracotta transition-colors">
-            {property.title}
-          </h3>
-        </Link>
+        {/* Title — editorial, slightly larger than before */}
+        <h3 className="font-playfair text-[18px] font-medium text-ink leading-snug truncate mb-4 group-hover:text-terracotta transition-colors duration-300 ease-premium">
+          {property.title}
+        </h3>
 
-        <div className="flex items-center gap-4 text-text-secondary text-[13px] font-inter">
-          <span className="flex items-center gap-1">
-            <Maximize size={15} />
+        {/* Stats — separated by hairline dot, compact, scannable */}
+        <div className="flex items-center gap-3 text-stone text-[13px] font-inter tabular-nums">
+          <span className="flex items-center gap-1.5">
+            <Maximize size={14} strokeWidth={1.6} />
             {property.surface} {tc('sqm')}
           </span>
           {property.bedrooms > 0 && (
-            <span className="flex items-center gap-1">
-              <Bed size={15} />
-              {property.bedrooms}
-            </span>
+            <>
+              <span aria-hidden className="text-stone/40">·</span>
+              <span className="flex items-center gap-1.5">
+                <Bed size={14} strokeWidth={1.6} />
+                {property.bedrooms}
+              </span>
+            </>
           )}
           {property.bathrooms > 0 && (
-            <span className="flex items-center gap-1">
-              <Bath size={15} />
-              {property.bathrooms}
-            </span>
+            <>
+              <span aria-hidden className="text-stone/40">·</span>
+              <span className="flex items-center gap-1.5">
+                <Bath size={14} strokeWidth={1.6} />
+                {property.bathrooms}
+              </span>
+            </>
           )}
         </div>
 
-        <div className="flex flex-wrap gap-1.5 mt-3">
-          {property.amenities.slice(0, 3).map((amenity) => (
-            <span key={amenity} className="bg-cream-warm text-text-secondary text-[11px] px-2 py-0.5 rounded-full">
-              {amenity}
-            </span>
-          ))}
-        </div>
+        {/* Amenities — only top 3, refined chips */}
+        {property.amenities.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mt-4 pt-4 border-t border-border-subtle">
+            {property.amenities.slice(0, 3).map((amenity) => (
+              <span
+                key={amenity}
+                className="text-stone text-[11px] font-inter font-medium tracking-wide"
+              >
+                {amenity}
+              </span>
+            )).reduce<React.ReactNode[]>((acc, item, idx) => {
+              if (idx === 0) return [item]
+              return [...acc, (
+                <span key={`dot-${idx}`} aria-hidden className="text-stone/30">·</span>
+              ), item]
+            }, [])}
+          </div>
+        )}
 
-        {property.surface > 0 && (
-          <p className="text-text-secondary text-[12px] font-inter mt-3">
+        {/* Price-per-sqm — tertiary info, only if relevant */}
+        {property.surface > 0 && property.pricePerSqm > 0 && (
+          <p className="text-stone/70 text-[11px] font-inter tabular-nums mt-3">
             {new Intl.NumberFormat('fr-FR').format(property.pricePerSqm)} €{tc('perSqm')}
           </p>
         )}
-
-        <Link to={propertyPath} className="inline-block mt-3 text-terracotta text-[14px] font-inter font-medium hover:underline">
-          {tc('seeMore')} →
-        </Link>
-      </div>
-    </div>
+      </Link>
+    </article>
   )
 }

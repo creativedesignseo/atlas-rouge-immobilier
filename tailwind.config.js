@@ -5,16 +5,21 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        // Brand accents (used sparingly to preserve their value)
         terracotta: '#B5533A',
         palm: '#315C45',
-        midnight: '#172033',
         gold: '#C8A96A',
         sand: '#D8C3A5',
+        // Refined neutral system (editorial real estate)
+        midnight: '#172033',  // deep blue-ink reserved for big headlines on dark
+        ink: '#0F1419',       // primary text & H tags — sharper than text-primary
+        stone: '#5A5249',     // refined warm gray for metadata (more elegant than #6E6259)
         cream: '#FAF7F1',
         'cream-warm': '#F8F3EA',
         'text-primary': '#1E1E1E',
         'text-secondary': '#6E6259',
         'border-warm': '#E8DED2',
+        'border-subtle': '#EFE8DE',  // even softer than border-warm, for delicate dividers
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -64,10 +69,19 @@ module.exports = {
         xs: "calc(var(--radius) - 6px)",
       },
       boxShadow: {
-        'card': '0 2px 12px rgba(0,0,0,0.04)',
-        'card-hover': '0 8px 32px rgba(0,0,0,0.08)',
-        'search': '0 4px 24px rgba(0,0,0,0.08)',
+        // Layered shadows — premium feel comes from STACK not blur radius
+        'card': '0 1px 2px rgba(15,20,25,0.04), 0 4px 12px -4px rgba(15,20,25,0.06)',
+        'card-hover': '0 1px 3px rgba(15,20,25,0.06), 0 16px 40px -12px rgba(15,20,25,0.18)',
+        'search': '0 1px 3px rgba(15,20,25,0.05), 0 8px 32px -8px rgba(15,20,25,0.12)',
+        'soft': '0 1px 2px rgba(15,20,25,0.04)',
         xs: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+      },
+      letterSpacing: {
+        'editorial': '-0.02em',  // for big editorial headlines (tighter)
+        'eyebrow': '0.18em',     // for tiny uppercase eyebrows (tagline)
+      },
+      transitionTimingFunction: {
+        'premium': 'cubic-bezier(0.22, 1, 0.36, 1)',  // refined ease-out
       },
       keyframes: {
         "accordion-down": {
