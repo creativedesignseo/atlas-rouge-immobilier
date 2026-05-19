@@ -69,6 +69,9 @@ export default function AdminBlogForm() {
   const isEdit = Boolean(routeSlug)
 
   // Estado del post (campos no traducibles)
+  // editingId: id del post existente en modo edit. Crítico para que el upsert
+  // resuelva el conflicto por id (en lugar de fallar por slug único).
+  const [editingId, setEditingId] = useState<string | undefined>(undefined)
   const [slug, setSlug] = useState('')
   const [slugTouched, setSlugTouched] = useState(false)
   const [status, setStatus] = useState<BlogStatus>('draft')
@@ -129,6 +132,7 @@ export default function AdminBlogForm() {
   }, [isEdit, routeSlug])
 
   function hydrateFromPost(post: BlogPost) {
+    setEditingId(post.id)
     setSlug(post.slug)
     setSlugTouched(true)
     setStatus(post.status)
@@ -205,6 +209,7 @@ export default function AdminBlogForm() {
     setSaving(true)
     try {
       await upsertPost({
+        id: editingId, // crítico: sin esto, el upsert intenta INSERT y choca con slug único
         slug: slug.trim(),
         status: finalStatus,
         coverImage: coverImage.trim() || null,
