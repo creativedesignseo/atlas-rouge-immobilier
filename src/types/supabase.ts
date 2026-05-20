@@ -49,6 +49,18 @@ export type Database = {
         Update: BlogPostTranslationUpdate
         Relationships: []
       }
+      estimation_requests: {
+        Row: EstimationRequestRow
+        Insert: EstimationRequestInsert
+        Update: EstimationRequestUpdate
+        Relationships: []
+      }
+      newsletter_subscribers: {
+        Row: NewsletterSubscriberRow
+        Insert: NewsletterSubscriberInsert
+        Update: NewsletterSubscriberUpdate
+        Relationships: []
+      }
     }
     Views: Record<string, never>
     Functions: Record<string, never>
@@ -208,3 +220,41 @@ export type BlogPostTranslationInsert = Omit<BlogPostTranslationRow, 'id' | 'cre
   id?: string
 }
 export type BlogPostTranslationUpdate = Partial<BlogPostTranslationInsert>
+
+// ============================================================================
+// Leads (004_leads.sql) — estimation requests + newsletter subscribers
+// ============================================================================
+
+export type EstimationRequestRow = {
+  id: string
+  name: string
+  phone: string
+  email: string | null
+  preferred_date: string | null
+  property_address: string | null
+  notes: string | null
+  source_lang: string | null
+  status: 'new' | 'contacted' | 'scheduled' | 'closed'
+  assigned_to_agent_id: string | null
+  created_at: string
+}
+
+export type EstimationRequestInsert = Partial<Pick<EstimationRequestRow, 'id' | 'status' | 'assigned_to_agent_id'>> &
+  Omit<EstimationRequestRow, 'id' | 'status' | 'assigned_to_agent_id' | 'created_at'>
+
+export type EstimationRequestUpdate = Partial<EstimationRequestInsert>
+
+export type NewsletterSubscriberRow = {
+  id: string
+  email: string
+  source_lang: string | null
+  source_page: string | null
+  confirmed: boolean
+  unsubscribed_at: string | null
+  created_at: string
+}
+
+export type NewsletterSubscriberInsert = Partial<Pick<NewsletterSubscriberRow, 'id' | 'confirmed' | 'unsubscribed_at'>> &
+  Omit<NewsletterSubscriberRow, 'id' | 'confirmed' | 'unsubscribed_at' | 'created_at'>
+
+export type NewsletterSubscriberUpdate = Partial<NewsletterSubscriberInsert>

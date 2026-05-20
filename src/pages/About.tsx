@@ -12,6 +12,15 @@ import {
   ChevronRight,
 } from 'lucide-react'
 import SectionReveal from '@/components/SectionReveal'
+import { supabase, isSupabaseConfigured } from '@/lib/supabase'
+
+interface TeamMember {
+  id: string
+  name: string
+  role: string
+  bio: string
+  photoUrl: string | null
+}
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -81,29 +90,7 @@ function StatCard({
   )
 }
 
-/* ─── Team member data ─── */
-const teamMembers = [
-  {
-    name: 'Sophie Martin',
-    role: 'Fondatrice & Directrice',
-    bio: 'Passionn\u00E9e par l\u2019immobilier et le Maroc, Sophie a fond\u00E9 Atlas Rouge pour accompagner les Fran\u00E7ais dans leur projet marrakchi.',
-  },
-  {
-    name: 'Karim Benali',
-    role: 'Responsable Commercial',
-    bio: 'Expert du march\u00E9 local, Karim conna\u00EEt chaque quartier de Marrakech et sait d\u00E9nicher les perles rares.',
-  },
-  {
-    name: 'L\u00E9a Dubois',
-    role: 'Conseill\u00E8re Immobili\u00E8re',
-    bio: '\u00C0 l\u2019\u00E9coute et r\u00E9active, L\u00E9a accompagne chaque client avec patience et professionnalisme.',
-  },
-  {
-    name: 'Youssef Alaoui',
-    role: 'Responsable Gestion Locative',
-    bio: 'Youssef veille sur chaque bien g\u00E9r\u00E9 comme s\u2019il \u00E9tait le sien, de la recherche de locataires aux \u00E9tats des lieux.',
-  },
-]
+/* Equipo cargado dinámicamente desde tabla agents — ver About() abajo */
 
 /* ─── Value cards data ─── */
 const values = [
@@ -133,6 +120,31 @@ export default function About() {
   const heroRef = useRef<HTMLDivElement>(null)
   const heroBgRef = useRef<HTMLDivElement>(null)
   const statsSectionRef = useRef<HTMLElement>(null)
+
+  // Equipo desde tabla `agents` — antes era hardcoded con nombres ficticios
+  const [team, setTeam] = useState<TeamMember[]>([])
+  useEffect(() => {
+    if (!isSupabaseConfigured) return
+    supabase
+      .from('agents')
+      .select('id, name, role, bio, photo_url')
+      .eq('is_active', true)
+      .order('created_at', { ascending: true })
+      .then(({ data }) => {
+        if (!data) return
+        setTeam(
+          data
+            .filter((a) => a.name?.trim())
+            .map((a) => ({
+              id: a.id,
+              name: a.name!,
+              role: a.role === 'admin' ? 'Directora' : a.role || 'Conseiller',
+              bio: a.bio || '',
+              photoUrl: a.photo_url,
+            })),
+        )
+      })
+  }, [])
 
   /* Hero entrance animations */
   useGSAP(
@@ -210,23 +222,30 @@ export default function About() {
     { scope: storyRef }
   )
 
-  /* Team section animations */
+  /* Team section animations — fromTo para que las cards siempre acaben visibles
+     incluso si el fetch del equipo tarda o falla */
   const teamRef = useRef<HTMLDivElement>(null)
   useGSAP(
     () => {
       if (!teamRef.current) return
-      gsap.from('.team-card', {
-        y: 30,
-        opacity: 0,
-        duration: 0.7,
-        ease: 'power3.out',
-        stagger: 0.1,
-        scrollTrigger: {
-          trigger: teamRef.current,
-          start: 'top 85%',
-          once: true,
+      const cards = teamRef.current.querySelectorAll('.team-card')
+      if (!cards.length) return
+      gsap.fromTo(
+        cards,
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.7,
+          ease: 'power3.out',
+          stagger: 0.1,
+          scrollTrigger: {
+            trigger: teamRef.current,
+            start: 'top 90%',
+            once: true,
+          },
         },
-      })
+      )
     },
     { scope: teamRef }
   )
@@ -408,37 +427,67 @@ export default function About() {
 
           <div
             ref={teamRef}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+            className={`grid gap-6 ${
+              team.length === 1
+                ? 'max-w-[360px] mx-auto'
+                : team.length === 2
+                  ? 'grid-cols-1 sm:grid-cols-2 max-w-[760px] mx-auto'
+                  : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'
+            }`}
           >
-            {teamMembers.map((member) => (
-              <div
-                key={member.name}
-                className="team-card bg-white rounded-card p-6 text-center shadow-card hover:shadow-card-hover transition-shadow duration-250"
-              >
-                <div className="w-[120px] h-[120px] mx-auto mb-4 rounded-full overflow-hidden border-[3px] border-white shadow-md">
-                  <img
-                    src="/team-portrait.jpg"
-                    alt={member.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <h3 className="font-display text-[20px] font-semibold text-midnight mb-1">
-                  {member.name}
-                </h3>
-                <p className="font-inter text-[14px] text-text-secondary mb-3">
-                  {member.role}
-                </p>
-                <p className="font-inter text-[13px] text-text-secondary leading-[1.6] mb-4">
-                  {member.bio}
-                </p>
-                <Link
-                  to={path('/contact')}
-                  className="inline-block font-inter text-[14px] text-terracotta font-medium hover:underline"
+            {team.length === 0 ? (
+              // Skeleton mientras carga
+              [0, 1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="team-card bg-white rounded-card p-6 text-center shadow-card animate-pulse"
                 >
-                  Contacter
-                </Link>
-              </div>
-            ))}
+                  <div className="w-[120px] h-[120px] mx-auto mb-4 rounded-full bg-stone/10" />
+                  <div className="h-4 w-2/3 mx-auto bg-stone/10 rounded mb-2" />
+                  <div className="h-3 w-1/2 mx-auto bg-stone/10 rounded mb-3" />
+                  <div className="h-3 w-full bg-stone/10 rounded" />
+                </div>
+              ))
+            ) : (
+              team.map((member) => (
+                <div
+                  key={member.id}
+                  className="team-card bg-white rounded-card p-6 text-center shadow-card hover:shadow-card-hover transition-shadow duration-250"
+                >
+                  <div className="w-[120px] h-[120px] mx-auto mb-4 rounded-full overflow-hidden border-[3px] border-white shadow-md bg-cream-warm">
+                    {member.photoUrl ? (
+                      <img
+                        src={member.photoUrl}
+                        alt={member.name}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-terracotta/15 text-terracotta font-display text-[36px] font-semibold">
+                        {member.name.slice(0, 1).toUpperCase()}
+                      </div>
+                    )}
+                  </div>
+                  <h3 className="font-display text-[20px] font-semibold text-midnight mb-1">
+                    {member.name}
+                  </h3>
+                  <p className="font-inter text-[14px] text-text-secondary mb-3 capitalize">
+                    {member.role}
+                  </p>
+                  {member.bio && (
+                    <p className="font-inter text-[13px] text-text-secondary leading-[1.6] mb-4">
+                      {member.bio}
+                    </p>
+                  )}
+                  <Link
+                    to={path('/contact')}
+                    className="inline-block font-inter text-[14px] text-terracotta font-medium hover:underline"
+                  >
+                    Contacter
+                  </Link>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </section>

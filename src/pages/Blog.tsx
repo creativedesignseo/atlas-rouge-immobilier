@@ -9,6 +9,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Clock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { listPosts, type BlogPost, type BlogCategory } from '@/services/blog.service'
+import { subscribeNewsletter } from '@/services/leads.service'
+import { toast } from 'sonner'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -26,6 +28,25 @@ export default function Blog() {
   const { t } = useTranslation('blog')
   const [activeCategory, setActiveCategory] = useState<CategoryFilter>('all')
   const [email, setEmail] = useState('')
+  const [nlSubmitting, setNlSubmitting] = useState(false)
+  const [nlSubscribed, setNlSubscribed] = useState(false)
+
+  async function handleNewsletterSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (!email.trim()) return
+    setNlSubmitting(true)
+    const result = await subscribeNewsletter(email, lang, '/blog')
+    setNlSubmitting(false)
+    if (result.success) {
+      setNlSubscribed(true)
+      setEmail('')
+      toast.success(t('newsletter.successToast', '¡Suscripción confirmada!'))
+    } else {
+      toast.error(
+        result.error || t('newsletter.errorGeneric', 'No se pudo suscribir'),
+      )
+    }
+  }
   const [posts, setPosts] = useState<BlogPost[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -281,30 +302,52 @@ export default function Blog() {
         </section>
       )}
 
-      {/* ═══════ Newsletter (UI only; backend TBD) ═══════ */}
-      <section ref={newsletterRef} className="bg-midnight py-16 px-6">
+      {/* ═══════ Newsletter — conectado a Supabase (newsletter_subscribers) ═══════ */}
+      <section ref={newsletterRef} className="bg-midnight py-14 sm:py-16 px-5 sm:px-6">
         <div className="max-w-[600px] mx-auto text-center">
-          <h3 className="nl-fade font-display text-[26px] md:text-[28px] font-medium text-white mb-3">
+          <h3 className="nl-fade font-display text-[24px] sm:text-[26px] md:text-[28px] font-medium text-white mb-3 leading-tight">
             {t('newsletter.title')}
           </h3>
-          <p className="nl-fade text-white/75 text-[16px] font-inter mb-8 leading-relaxed">
+          <p className="nl-fade text-white/75 text-[15px] sm:text-[16px] font-inter mb-7 sm:mb-8 leading-relaxed">
             {t('newsletter.subtitle')}
           </p>
-          <div className="nl-fade flex flex-col sm:flex-row gap-3 max-w-[480px] mx-auto mb-4">
-            <input
-              type="email"
-              placeholder={t('newsletter.placeholder')}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 h-[48px] px-4 rounded-lg bg-white font-inter text-[14px] text-text-primary placeholder:text-text-secondary/60 focus:outline-none focus:ring-2 focus:ring-white/50"
-            />
-            <button
-              onClick={() => alert(t('newsletter.alertSoon'))}
-              className="h-[48px] px-6 bg-terracotta text-white font-inter text-[14px] font-semibold rounded-lg hover:bg-terracotta/90 transition-colors"
+
+          {nlSubscribed ? (
+            <div className="nl-fade max-w-[480px] mx-auto bg-white/10 border border-white/20 rounded-lg p-5 text-white">
+              <p className="font-inter text-[15px] font-medium mb-1">
+                {t('newsletter.successTitle', '¡Bienvenido!')}
+              </p>
+              <p className="font-inter text-[13px] text-white/70">
+                {t(
+                  'newsletter.successText',
+                  'Recibirás nuestros próximos artículos en tu correo.',
+                )}
+              </p>
+            </div>
+          ) : (
+            <form
+              onSubmit={handleNewsletterSubmit}
+              className="nl-fade flex flex-col sm:flex-row gap-3 max-w-[480px] mx-auto mb-4"
             >
-              {t('newsletter.submit')}
-            </button>
-          </div>
+              <input
+                type="email"
+                required
+                placeholder={t('newsletter.placeholder')}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="flex-1 h-[48px] px-4 rounded-lg bg-white font-inter text-[14px] text-text-primary placeholder:text-text-secondary/60 focus:outline-none focus:ring-2 focus:ring-white/50"
+              />
+              <button
+                type="submit"
+                disabled={nlSubmitting}
+                className="h-[48px] min-h-[48px] px-6 bg-terracotta hover:bg-terracotta/90 active:bg-terracotta/80 text-white font-inter text-[14px] font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {nlSubmitting
+                  ? t('newsletter.submitting', 'Enviando…')
+                  : t('newsletter.submit')}
+              </button>
+            </form>
+          )}
           <p className="nl-fade text-white/50 text-[12px] font-inter">{t('newsletter.disclaimer')}</p>
         </div>
       </section>

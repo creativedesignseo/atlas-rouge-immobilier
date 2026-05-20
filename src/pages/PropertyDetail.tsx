@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLang } from '@/hooks/useLang'
@@ -9,8 +9,9 @@ import {
   TreePine, Info, FileText, Calculator,
   Landmark, Percent, Briefcase
 } from 'lucide-react'
-import maplibregl from 'maplibre-gl'
-import 'maplibre-gl/dist/maplibre-gl.css'
+// MapLibre se carga lazy desde components/property/LocationMap.tsx
+// → ahorra ~1 MB de JS en la primera carga si el usuario no llega al mapa
+const LocationMap = lazy(() => import('@/components/property/LocationMap'))
 import { getPropertyBySlug, getSimilarProperties } from '@/services/property.service'
 import { submitContactForm } from '@/services/contact.service'
 import { useFavorites } from '@/hooks/useFavorites'
@@ -66,16 +67,6 @@ const guideLinks = [
   { labelKey: 'gestion', href: '/guide-achat-maroc#gestion', icon: <Briefcase size={20} /> },
 ]
 
-function canUseWebGL() {
-  if (typeof document === 'undefined') return false
-  const canvas = document.createElement('canvas')
-  return Boolean(
-    canvas.getContext('webgl2') ||
-    canvas.getContext('webgl') ||
-    canvas.getContext('experimental-webgl')
-  )
-}
-
 /* ───────────────────── small icon components ───────────────────── */
 
 function WindIcon() { return (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2" /><path d="M9.6 4.6A2 2 0 1 1 11 8H2" /><path d="M12.6 19.4A2 2 0 1 0 14 16H2" /></svg>) }
@@ -117,80 +108,6 @@ function Lightbox({ images, startIndex, onClose }: { images: string[]; startInde
       <div className="text-center w-full px-4">
         <img src={images[current]} alt={`Photo ${current + 1}`} className="max-w-[95vw] max-h-[80vh] object-contain rounded-lg mx-auto" draggable={false} />
         <p className="text-white/60 text-[14px] mt-3 font-inter">{current + 1} / {images.length}</p>
-      </div>
-    </div>
-  )
-}
-
-/* ───────────────────── Location Map (MapLibre GL) ───────────────────── */
-
-function LocationMap({ property }: { property: Property }) {
-  const mapContainer = useRef<HTMLDivElement>(null)
-  const map = useRef<maplibregl.Map | null>(null)
-  const [mapError, setMapError] = useState(false)
-  const { t } = useTranslation('property')
-
-  useEffect(() => {
-    if (!mapContainer.current) return
-    if (!canUseWebGL()) {
-      setMapError(true)
-      return
-    }
-
-    try {
-      map.current = new maplibregl.Map({
-        container: mapContainer.current,
-        style: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
-        center: [property.longitude, property.latitude],
-        zoom: 14,
-        interactive: true,
-        attributionControl: false,
-      })
-    } catch (error) {
-      console.error('Failed to initialize property detail map:', error)
-      setMapError(true)
-      map.current = null
-      return
-    }
-
-    map.current.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right')
-    map.current.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right')
-    map.current.on('error', (event) => {
-      console.error('Property detail map error:', event.error)
-    })
-
-    const el = document.createElement('div')
-    el.innerHTML = `<div style="width: 80px; height: 80px; background: rgba(181,83,58,0.2); border: 2px solid #B5533A; border-radius: 50%; display: flex; align-items: center; justify-content: center;"><div style="width: 12px; height: 12px; background: #B5533A; border-radius: 50%;"></div></div>`
-    const marker = new maplibregl.Marker({ element: el, anchor: 'center' }).setLngLat([property.longitude, property.latitude]).addTo(map.current)
-
-    return () => {
-      marker.remove()
-      map.current?.remove()
-      map.current = null
-    }
-  }, [property.latitude, property.longitude])
-
-  return (
-    <div className="relative w-full h-[400px] rounded-xl overflow-hidden">
-      {mapError ? (
-        <div className="w-full h-full bg-cream-warm flex items-center justify-center p-6 text-center">
-          <div>
-            <MapPin size={36} className="mx-auto text-terracotta mb-3" />
-            <p className="font-inter text-[15px] font-semibold text-midnight">{property.neighborhood}, Marrakech</p>
-            <p className="font-inter text-[13px] text-text-secondary mt-1">{t('exactAddressOnRequest')}</p>
-          </div>
-        </div>
-      ) : (
-        <div ref={mapContainer} className="w-full h-full" />
-      )}
-      <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between pointer-events-none">
-        <div className="bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-md">
-          <p className="text-midnight font-inter text-[14px] font-medium">{property.neighborhood}, Marrakech</p>
-          <p className="text-text-secondary text-[12px] font-inter mt-1">{t('exactAddressOnRequest')}</p>
-        </div>
-        <button className="bg-terracotta text-white text-[13px] font-medium px-4 py-2 rounded-lg hover:bg-terracotta/90 transition-colors pointer-events-auto shadow-md">
-          {t('getExactAddress')}
-        </button>
       </div>
     </div>
   )
@@ -405,6 +322,64 @@ export default function PropertyDetail() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug, currentLang])
 
+  // Update document.title + meta description + JSON-LD when property loads.
+  // Críticos para SEO y para que se vea bien al compartir en social.
+  useEffect(() => {
+    if (!property) return
+    const prevTitle = document.title
+    document.title = `${property.title} | Atlas Rouge Immobilier`
+
+    // Meta description: usa primer trozo de description (200 chars max)
+    const desc = (property.description || '').replace(/\s+/g, ' ').trim().slice(0, 200)
+    let metaDesc = document.querySelector('meta[name="description"]')
+    const prevDesc = metaDesc?.getAttribute('content') || ''
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta')
+      metaDesc.setAttribute('name', 'description')
+      document.head.appendChild(metaDesc)
+    }
+    if (desc) metaDesc.setAttribute('content', desc)
+
+    // JSON-LD schema.org/RealEstateListing
+    const jsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'RealEstateListing',
+      name: property.title,
+      description: property.description?.slice(0, 500),
+      url: typeof window !== 'undefined' ? window.location.href : '',
+      image: property.images?.[0],
+      offers: {
+        '@type': 'Offer',
+        price: property.priceEUR,
+        priceCurrency: 'EUR',
+        availability: 'https://schema.org/InStock',
+      },
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: property.neighborhood,
+        addressRegion: 'Marrakech-Safi',
+        addressCountry: 'MA',
+      },
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: property.latitude,
+        longitude: property.longitude,
+      },
+    }
+    const existing = document.querySelector('script#property-jsonld')
+    const script = existing || document.createElement('script')
+    script.setAttribute('type', 'application/ld+json')
+    script.setAttribute('id', 'property-jsonld')
+    script.textContent = JSON.stringify(jsonLd)
+    if (!existing) document.head.appendChild(script)
+
+    return () => {
+      document.title = prevTitle
+      if (prevDesc) metaDesc?.setAttribute('content', prevDesc)
+      document.querySelector('script#property-jsonld')?.remove()
+    }
+  }, [property])
+
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
   const [descriptionExpanded, setDescriptionExpanded] = useState(false)
@@ -594,7 +569,13 @@ export default function PropertyDetail() {
               <h3 className="font-display text-[22px] font-semibold text-midnight mb-2">{t('location')}</h3>
               <p className="text-text-secondary text-[15px] font-inter mb-1">{property.neighborhood}, Marrakech</p>
               <p className="text-gold text-[13px] font-inter mb-4">{t('exactAddressOnRequest')}</p>
-              <LocationMap property={property} />
+              <Suspense
+                fallback={
+                  <div className="w-full h-[320px] sm:h-[400px] rounded-xl bg-cream-warm animate-pulse" />
+                }
+              >
+                <LocationMap property={property} />
+              </Suspense>
             </div>
           </div>
 

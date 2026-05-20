@@ -9,6 +9,8 @@ import AdminLayout from './components/admin/AdminLayout'
 import AdminLogin from './pages/admin/AdminLogin'
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from './i18n'
 import { getAllSlugsForKey } from './lib/routes'
+import { FavoritesProvider } from './hooks/useFavorites'
+import CookieBanner from './components/CookieBanner'
 
 const Home = lazy(() => import('./pages/Home'))
 const SearchPage = lazy(() => import('./pages/Search'))
@@ -83,8 +85,9 @@ function LangDetector() {
 
 export default function App() {
   return (
-    <>
+    <FavoritesProvider>
       <Toaster position="top-right" richColors />
+      <CookieBanner />
       <Routes>
         {/* Root: detect language and redirect */}
         <Route path="/" element={<LangDetector />} />
@@ -168,6 +171,6 @@ export default function App() {
         {/* Catch-all: redirect to language detection */}
         <Route path="*" element={<LangDetector />} />
       </Routes>
-    </>
+    </FavoritesProvider>
   )
 }

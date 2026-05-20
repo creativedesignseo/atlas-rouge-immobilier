@@ -66,5 +66,11 @@
   "saved_plural": "sauvegardés",
   "properties_one": "{{count}} bien",
   "properties_other": "{{count}} biens",
-  "tagline": "Immobilier Marrakech"
+  "tagline": "Immobilier Marrakech",
+  "cookies": {
+    "title": "Acceptez-vous les cookies ?",
+    "body": "Nous utilisons des cookies pour mesurer l'audience et améliorer l'expérience. Sans eux, le site fonctionne, simplement nous ne pouvons pas analyser votre visite.",
+    "accept": "Accepter",
+    "reject": "Refuser"
+  }
 }

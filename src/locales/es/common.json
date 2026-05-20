@@ -66,5 +66,11 @@
   "saved_plural": "guardados",
   "properties_one": "{{count}} propiedad",
   "properties_other": "{{count}} propiedades",
-  "tagline": "Inmobiliaria Marrakech"
+  "tagline": "Inmobiliaria Marrakech",
+  "cookies": {
+    "title": "¿Aceptas las cookies?",
+    "body": "Usamos cookies para medir el tráfico y mejorar la experiencia. Sin ellas el sitio funciona igual, solo que no podemos analizar lo que ves.",
+    "accept": "Aceptar",
+    "reject": "Rechazar"
+  }
 }

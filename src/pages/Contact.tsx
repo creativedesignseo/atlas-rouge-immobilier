@@ -102,44 +102,58 @@ export default function Contact() {
     }
   }
 
-  /* Form field stagger animation */
+  /* Form field stagger animation — usa fromTo para garantizar estado final
+     incluso si ScrollTrigger no se dispara (bug crítico que dejaba el form
+     invisible en móvil). */
   useGSAP(
     () => {
       if (!formRef.current) return
-      gsap.from('.form-field', {
-        y: 15,
-        opacity: 0,
-        duration: 0.5,
-        ease: 'power3.out',
-        stagger: 0.06,
-        scrollTrigger: {
-          trigger: formRef.current,
-          start: 'top 85%',
-          once: true,
+      const fields = formRef.current.querySelectorAll('.form-field')
+      if (!fields.length) return
+      gsap.fromTo(
+        fields,
+        { y: 15, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.5,
+          ease: 'power3.out',
+          stagger: 0.06,
+          scrollTrigger: {
+            trigger: formRef.current,
+            start: 'top 90%',
+            once: true,
+          },
         },
-      })
+      )
     },
-    { scope: formRef }
+    { scope: formRef },
   )
 
-  /* Info block stagger animation */
+  /* Info block stagger animation — mismo fix */
   useGSAP(
     () => {
       if (!infoRef.current) return
-      gsap.from('.info-block', {
-        y: 20,
-        opacity: 0,
-        duration: 0.6,
-        ease: 'power3.out',
-        stagger: 0.08,
-        scrollTrigger: {
-          trigger: infoRef.current,
-          start: 'top 85%',
-          once: true,
+      const blocks = infoRef.current.querySelectorAll('.info-block')
+      if (!blocks.length) return
+      gsap.fromTo(
+        blocks,
+        { y: 20, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+          ease: 'power3.out',
+          stagger: 0.08,
+          scrollTrigger: {
+            trigger: infoRef.current,
+            start: 'top 90%',
+            once: true,
+          },
         },
-      })
+      )
     },
-    { scope: infoRef }
+    { scope: infoRef },
   )
 
   return (

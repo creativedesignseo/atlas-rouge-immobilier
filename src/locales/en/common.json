@@ -66,5 +66,11 @@
   "saved_plural": "saved",
   "properties_one": "{{count}} property",
   "properties_other": "{{count}} properties",
-  "tagline": "Real Estate Marrakech"
+  "tagline": "Real Estate Marrakech",
+  "cookies": {
+    "title": "Cookies, OK?",
+    "body": "We use cookies to measure traffic and improve the experience. Without them the site still works, we just cannot analyse your visit.",
+    "accept": "Accept",
+    "reject": "Reject"
+  }
 }

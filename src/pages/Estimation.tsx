@@ -11,17 +11,53 @@ import {
   Search,
   Send,
   Phone,
+  Check,
 } from 'lucide-react'
 import SectionReveal from '@/components/SectionReveal'
+import { submitEstimationRequest } from '@/services/leads.service'
+import { toast } from 'sonner'
 
 export default function Estimation() {
   const { t } = useTranslation('estimation')
-  const { path } = useLang()
+  const { path, lang } = useLang()
   const [expertForm, setExpertForm] = useState({
     name: '',
     phone: '',
     date: '',
   })
+  const [submitting, setSubmitting] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (!expertForm.name.trim() || !expertForm.phone.trim()) {
+      toast.error(
+        t('expert.errorMissing', 'Por favor introduce nombre y teléfono'),
+      )
+      return
+    }
+    setSubmitting(true)
+    const result = await submitEstimationRequest(
+      {
+        name: expertForm.name,
+        phone: expertForm.phone,
+        preferredDate: expertForm.date || undefined,
+      },
+      lang,
+    )
+    setSubmitting(false)
+    if (result.success) {
+      setSubmitted(true)
+      toast.success(
+        t('expert.successToast', 'Solicitud enviada — te contactamos pronto'),
+      )
+    } else {
+      toast.error(
+        result.error ||
+          t('expert.errorGeneric', 'No se pudo enviar. Inténtalo de nuevo.'),
+      )
+    }
+  }
 
   const steps = [
     {
@@ -100,58 +136,80 @@ export default function Estimation() {
               {t('expert.subtitle')}
             </p>
 
-            <form className="space-y-4">
-              <div>
-                <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
-                  {t('expert.nameLabel')}
-                </label>
-                <input
-                  type="text"
-                  value={expertForm.name}
-                  onChange={(e) =>
-                    setExpertForm((s) => ({ ...s, name: e.target.value }))
-                  }
-                  className="w-full h-12 px-4 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors"
-                  placeholder={t('expert.namePlaceholder')}
-                />
+            {submitted ? (
+              <div className="flex items-start gap-3 bg-green-50 border border-green-200 rounded-lg p-5">
+                <Check size={22} className="text-green-600 shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-inter text-[15px] font-medium text-green-800 mb-1">
+                    {t('expert.successTitle', '¡Solicitud recibida!')}
+                  </p>
+                  <p className="font-inter text-[14px] text-green-700">
+                    {t(
+                      'expert.successText',
+                      'Un asesor te contactará en menos de 24 horas para fijar la visita.',
+                    )}
+                  </p>
+                </div>
               </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
+                    {t('expert.nameLabel')} *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={expertForm.name}
+                    onChange={(e) =>
+                      setExpertForm((s) => ({ ...s, name: e.target.value }))
+                    }
+                    className="w-full h-12 px-4 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors"
+                    placeholder={t('expert.namePlaceholder')}
+                  />
+                </div>
 
-              <div>
-                <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
-                  {t('expert.phoneLabel')}
-                </label>
-                <input
-                  type="tel"
-                  value={expertForm.phone}
-                  onChange={(e) =>
-                    setExpertForm((s) => ({ ...s, phone: e.target.value }))
-                  }
-                  className="w-full h-12 px-4 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors"
-                  placeholder={t('expert.phonePlaceholder')}
-                />
-              </div>
+                <div>
+                  <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
+                    {t('expert.phoneLabel')} *
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    value={expertForm.phone}
+                    onChange={(e) =>
+                      setExpertForm((s) => ({ ...s, phone: e.target.value }))
+                    }
+                    className="w-full h-12 px-4 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors"
+                    placeholder={t('expert.phonePlaceholder')}
+                  />
+                </div>
 
-              <div>
-                <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
-                  {t('expert.dateLabel')}
-                </label>
-                <input
-                  type="date"
-                  value={expertForm.date}
-                  onChange={(e) =>
-                    setExpertForm((s) => ({ ...s, date: e.target.value }))
-                  }
-                  className="w-full h-12 px-4 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors"
-                />
-              </div>
+                <div>
+                  <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
+                    {t('expert.dateLabel')}
+                  </label>
+                  <input
+                    type="date"
+                    value={expertForm.date}
+                    onChange={(e) =>
+                      setExpertForm((s) => ({ ...s, date: e.target.value }))
+                    }
+                    className="w-full h-12 px-4 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors"
+                  />
+                </div>
 
-              <button
-                type="button"
-                className="w-full h-12 bg-palm text-white font-inter text-[14px] font-semibold rounded-lg hover:scale-[1.01] active:scale-[0.99] transition-transform"
-              >
-                {t('expert.submit')}
-              </button>
-            </form>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="w-full h-12 min-h-[48px] bg-palm text-white font-inter text-[14px] font-semibold rounded-lg hover:scale-[1.01] active:scale-[0.99] transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {submitting
+                    ? t('expert.submitting', 'Enviando…')
+                    : t('expert.submit')}
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </section>

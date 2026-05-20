@@ -24,7 +24,8 @@
     "phone": "Phone",
     "email": "Email",
     "hours": "Opening hours",
-    "hoursValue": "Monday to Saturday, 9am – 7pm"
+    "hoursValue": "Monday to Saturday, 9am – 7pm",
+    "title": "Our details"
   },
   "faq": {
     "title": "Frequently asked questions",

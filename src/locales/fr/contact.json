@@ -24,7 +24,8 @@
     "phone": "Téléphone",
     "email": "E-mail",
     "hours": "Horaires d'ouverture",
-    "hoursValue": "Lundi au samedi, 9h – 19h"
+    "hoursValue": "Lundi au samedi, 9h – 19h",
+    "title": "Nos coordonnées"
   },
   "faq": {
     "title": "Questions fréquentes",
