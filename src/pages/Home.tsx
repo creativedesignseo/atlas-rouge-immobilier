@@ -131,36 +131,37 @@ export default function Home() {
       .catch((err) => console.error('Failed to load blog posts:', err))
   }, [i18n.language])
 
-  // Hero entrance animations
+  // Hero entrance animations — fromTo defensivo (sin scrollTrigger porque
+  // están above-the-fold, se animan al montar)
   useGSAP(
     () => {
       if (!heroTitleRef.current) return
-      gsap.from(heroTitleRef.current, {
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        delay: 0.2,
-      })
-      gsap.from(heroSubtitleRef.current, {
-        y: 30,
-        opacity: 0,
-        duration: 0.7,
-        ease: 'power3.out',
-        delay: 0.4,
-      })
-      gsap.from(heroSearchRef.current, {
-        y: 20,
-        opacity: 0,
-        duration: 0.6,
-        ease: 'power3.out',
-        delay: 0.6,
-      })
+      gsap.fromTo(
+        heroTitleRef.current,
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 0.2 },
+      )
+      if (heroSubtitleRef.current) {
+        gsap.fromTo(
+          heroSubtitleRef.current,
+          { y: 30, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out', delay: 0.4 },
+        )
+      }
+      if (heroSearchRef.current) {
+        gsap.fromTo(
+          heroSearchRef.current,
+          { y: 20, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out', delay: 0.6 },
+        )
+      }
     },
-    { scope: heroRef }
+    { scope: heroRef },
   )
 
-  // Section reveal animations
+  // Section reveal animations — usar fromTo + clearProps para garantizar
+  // que aunque ScrollTrigger no dispare, los elementos NUNCA se queden
+  // en opacity:0. Bug crítico que dejaba secciones enteras invisibles.
   useGSAP(
     () => {
       const sections = [
@@ -176,59 +177,74 @@ export default function Home() {
         if (!section) return
         const header = section.querySelector('.section-header')
         const content = section.querySelector('.section-content')
-        if (header) {
-          gsap.from(header.children, {
-            y: 30,
-            opacity: 0,
-            duration: 0.7,
-            ease: 'power3.out',
-            stagger: 0.1,
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 85%',
-              once: true,
+        if (header && header.children.length) {
+          gsap.fromTo(
+            header.children,
+            { y: 30, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.7,
+              ease: 'power3.out',
+              stagger: 0.1,
+              clearProps: 'transform',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top 90%',
+                once: true,
+              },
             },
-          })
+          )
         }
-        if (content) {
-          gsap.from(content.children, {
-            y: 40,
-            opacity: 0,
-            duration: 0.7,
-            ease: 'power3.out',
-            stagger: 0.12,
-            scrollTrigger: {
-              trigger: content,
-              start: 'top 85%',
-              once: true,
+        if (content && content.children.length) {
+          gsap.fromTo(
+            content.children,
+            { y: 40, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.7,
+              ease: 'power3.out',
+              stagger: 0.12,
+              clearProps: 'transform',
+              scrollTrigger: {
+                trigger: content,
+                start: 'top 95%',
+                once: true,
+              },
             },
-          })
+          )
         }
       })
     },
-    { scope: heroRef }
+    // sin scope → la animación puede tocar elementos de cualquier ref
   )
 
-  // Trust section image
+  // Trust section image — fromTo defensivo
   useGSAP(
     () => {
       if (!trustRef.current) return
       const img = trustRef.current.querySelector('.trust-image')
       if (img) {
-        gsap.from(img, {
-          x: 40,
-          opacity: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: trustRef.current,
-            start: 'top 85%',
-            once: true,
+        gsap.fromTo(
+          img,
+          { x: 40, opacity: 0 },
+          {
+            x: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: 'power3.out',
+            clearProps: 'transform',
+            scrollTrigger: {
+              trigger: trustRef.current,
+              start: 'top 90%',
+              once: true,
+            },
           },
-        })
+        )
       }
     },
-    { scope: trustRef }
+    { scope: trustRef },
   )
 
   return (

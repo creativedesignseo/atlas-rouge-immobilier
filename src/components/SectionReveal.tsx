@@ -32,21 +32,30 @@ export default function SectionReveal({
         ? containerRef.current.querySelectorAll(selector)
         : containerRef.current.children
 
-      gsap.from(targets, {
-        y,
-        opacity: 0,
-        duration: 0.7,
-        ease: 'power3.out',
-        stagger,
-        delay,
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top 85%',
-          once: true,
+      if (!targets.length) return
+
+      // fromTo + clearProps → si ScrollTrigger no se dispara, los elementos
+      // NUNCA se quedan en opacity:0. Bug que dejaba secciones invisibles.
+      gsap.fromTo(
+        targets,
+        { y, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.7,
+          ease: 'power3.out',
+          stagger,
+          delay,
+          clearProps: 'transform',
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 95%',
+            once: true,
+          },
         },
-      })
+      )
     },
-    { scope: containerRef }
+    { scope: containerRef },
   )
 
   return (

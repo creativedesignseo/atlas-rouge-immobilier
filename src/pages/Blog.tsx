@@ -79,27 +79,37 @@ export default function Blog() {
   const featuredPost = activeCategory === 'all' && filteredPosts.length > 0 ? filteredPosts[0] : null
   const gridPosts = featuredPost ? filteredPosts.slice(1) : filteredPosts
 
-  /* Hero animations */
+  /* Hero animations — fromTo defensivo en cada paso de la timeline */
   useGSAP(
     () => {
       if (!heroRef.current) return
       const tl = gsap.timeline()
-      tl.from(heroRef.current!.querySelector('.hero-title'), {
-        y: 40,
-        opacity: 0,
-        duration: 0.7,
-        ease: 'power3.out',
-      })
-        .from(
-          heroRef.current!.querySelector('.hero-subtitle'),
-          { y: 30, opacity: 0, duration: 0.6, ease: 'power3.out' },
+      const title = heroRef.current.querySelector('.hero-title')
+      const subtitle = heroRef.current.querySelector('.hero-subtitle')
+      const chips = heroRef.current.querySelectorAll('.hero-chip')
+      if (title) {
+        tl.fromTo(
+          title,
+          { y: 40, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' },
+        )
+      }
+      if (subtitle) {
+        tl.fromTo(
+          subtitle,
+          { y: 30, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' },
           '-=0.45',
         )
-        .from(
-          heroRef.current!.querySelectorAll('.hero-chip'),
-          { y: 15, opacity: 0, duration: 0.4, stagger: 0.05, ease: 'power3.out' },
+      }
+      if (chips.length) {
+        tl.fromTo(
+          chips,
+          { y: 15, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.4, stagger: 0.05, ease: 'power3.out' },
           '-=0.3',
         )
+      }
     },
     { scope: heroRef },
   )
@@ -108,14 +118,11 @@ export default function Blog() {
   useGSAP(
     () => {
       if (!newsletterRef.current) return
-      gsap.from(newsletterRef.current!.querySelectorAll('.nl-fade'), {
-        y: 30,
-        opacity: 0,
-        duration: 0.7,
-        ease: 'power3.out',
-        stagger: 0.1,
-        scrollTrigger: { trigger: newsletterRef.current, start: 'top 85%', once: true },
-      })
+      gsap.fromTo(
+        newsletterRef.current!.querySelectorAll('.nl-fade'),
+        { y: 30, opacity: 0 },
+        { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', stagger: 0.1, scrollTrigger: { trigger: newsletterRef.current, start: 'top 85%', once: true } },
+      )
     },
     { scope: newsletterRef },
   )

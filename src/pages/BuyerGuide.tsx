@@ -202,14 +202,11 @@ export default function BuyerGuide() {
   useGSAP(
     () => {
       if (!tocRef.current) return
-      gsap.from(tocRef.current!.querySelectorAll('.toc-link'), {
-        opacity: 0,
-        x: -10,
-        duration: 0.4,
-        stagger: 0.05,
-        ease: 'power3.out',
-        delay: 0.3,
-      })
+      gsap.fromTo(
+        tocRef.current!.querySelectorAll('.toc-link'),
+        { opacity: 0, x: -10 },
+        { opacity: 1, x: 0, duration: 0.4, stagger: 0.05, ease: 'power3.out', delay: 0.3 },
+      )
     },
     { scope: tocRef }
   )
@@ -221,18 +218,15 @@ export default function BuyerGuide() {
       const sections =
         contentRef.current!.querySelectorAll('.guide-section')
       sections.forEach((section) => {
-        gsap.from(section.querySelectorAll('.gsap-fade'), {
-          y: 30,
-          opacity: 0,
-          duration: 0.7,
-          ease: 'power3.out',
-          stagger: 0.1,
-          scrollTrigger: {
+        gsap.fromTo(
+          section.querySelectorAll('.gsap-fade'),
+          { y: 30, opacity: 0 },
+          { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', stagger: 0.1, scrollTrigger: {
             trigger: section,
             start: 'top 85%',
             once: true,
-          },
-        })
+          } },
+        )
       })
     },
     { scope: contentRef }
@@ -242,18 +236,15 @@ export default function BuyerGuide() {
   useGSAP(
     () => {
       if (!ctaRef.current) return
-      gsap.from(ctaRef.current!.querySelectorAll('.cta-fade'), {
-        y: 30,
-        opacity: 0,
-        duration: 0.7,
-        ease: 'power3.out',
-        stagger: 0.1,
-        scrollTrigger: {
+      gsap.fromTo(
+        ctaRef.current!.querySelectorAll('.cta-fade'),
+        { y: 30, opacity: 0 },
+        { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', stagger: 0.1, scrollTrigger: {
           trigger: ctaRef.current,
           start: 'top 85%',
           once: true,
-        },
-      })
+        } },
+      )
     },
     { scope: ctaRef }
   )
@@ -262,18 +253,15 @@ export default function BuyerGuide() {
   useGSAP(
     () => {
       if (!relatedRef.current) return
-      gsap.from(relatedRef.current!.querySelectorAll('.related-card'), {
-        y: 40,
-        opacity: 0,
-        duration: 0.7,
-        ease: 'power3.out',
-        stagger: 0.12,
-        scrollTrigger: {
+      gsap.fromTo(
+        relatedRef.current!.querySelectorAll('.related-card'),
+        { y: 40, opacity: 0 },
+        { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', stagger: 0.12, scrollTrigger: {
           trigger: relatedRef.current,
           start: 'top 85%',
           once: true,
-        },
-      })
+        } },
+      )
     },
     { scope: relatedRef }
   )

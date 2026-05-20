@@ -104,32 +104,23 @@ export default function Sell() {
   useGSAP(
     () => {
       if (!featureCardsRef.current) return
-      gsap.from(featureCardsRef.current!.querySelectorAll('.feature-card'), {
-        y: 40,
-        opacity: 0,
-        duration: 0.7,
-        ease: 'power3.out',
-        stagger: 0.15,
-        scrollTrigger: {
+      gsap.fromTo(
+        featureCardsRef.current!.querySelectorAll('.feature-card'),
+        { y: 40, opacity: 0 },
+        { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', stagger: 0.15, scrollTrigger: {
           trigger: featureCardsRef.current,
           start: 'top 85%',
           once: true,
-        },
-      })
-      gsap.from(
+        } },
+      )
+      gsap.fromTo(
         featureCardsRef.current!.querySelectorAll('.feature-check'),
-        {
-          opacity: 0,
-          x: -10,
-          duration: 0.4,
-          stagger: 0.06,
-          delay: 0.5,
-          scrollTrigger: {
+        { opacity: 0, x: -10 },
+        { opacity: 1, x: 0, duration: 0.4, stagger: 0.06, delay: 0.5, scrollTrigger: {
             trigger: featureCardsRef.current,
             start: 'top 85%',
             once: true,
-          },
-        }
+          } },
       )
     },
     { scope: featureCardsRef }
@@ -139,29 +130,24 @@ export default function Sell() {
   useGSAP(
     () => {
       if (!howItWorksRef.current) return
-      gsap.from(howItWorksRef.current!.querySelector('.hiw-title'), {
-        y: 30,
-        opacity: 0,
-        duration: 0.7,
-        ease: 'power3.out',
-        scrollTrigger: {
+      gsap.fromTo(
+        howItWorksRef.current!.querySelector('.hiw-title'),
+        { y: 30, opacity: 0 },
+        { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', scrollTrigger: {
           trigger: howItWorksRef.current,
           start: 'top 85%',
           once: true,
-        },
-      })
-      gsap.from(howItWorksRef.current!.querySelectorAll('.hiw-step'), {
-        y: 30,
-        opacity: 0,
-        duration: 0.6,
-        ease: 'power3.out',
-        stagger: 0.15,
-        scrollTrigger: {
+        } },
+      )
+      gsap.fromTo(
+        howItWorksRef.current!.querySelectorAll('.hiw-step'),
+        { y: 30, opacity: 0 },
+        { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', stagger: 0.15, scrollTrigger: {
           trigger: howItWorksRef.current,
           start: 'top 85%',
           once: true,
-        },
-      })
+        } },
+      )
       // Progress line traces left → right as the user scrolls through the
       // steps. `scrub` ties the line growth directly to scroll position so
       // it feels like a recorrido (the line "follows" the reader's eye).
@@ -186,29 +172,24 @@ export default function Sell() {
   useGSAP(
     () => {
       if (!faqRef.current) return
-      gsap.from(faqRef.current!.querySelector('.faq-title'), {
-        y: 30,
-        opacity: 0,
-        duration: 0.7,
-        ease: 'power3.out',
-        scrollTrigger: {
+      gsap.fromTo(
+        faqRef.current!.querySelector('.faq-title'),
+        { y: 30, opacity: 0 },
+        { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', scrollTrigger: {
           trigger: faqRef.current,
           start: 'top 85%',
           once: true,
-        },
-      })
-      gsap.from(faqRef.current!.querySelectorAll('.faq-item'), {
-        y: 15,
-        opacity: 0,
-        duration: 0.5,
-        ease: 'power3.out',
-        stagger: 0.06,
-        scrollTrigger: {
+        } },
+      )
+      gsap.fromTo(
+        faqRef.current!.querySelectorAll('.faq-item'),
+        { y: 15, opacity: 0 },
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', stagger: 0.06, scrollTrigger: {
           trigger: faqRef.current,
           start: 'top 85%',
           once: true,
-        },
-      })
+        } },
+      )
     },
     { scope: faqRef }
   )

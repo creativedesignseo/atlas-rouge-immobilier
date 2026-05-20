@@ -150,27 +150,21 @@ export default function About() {
   useGSAP(
     () => {
       if (!heroRef.current) return
-      gsap.from('.about-hero-h1', {
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        delay: 0.2,
-      })
-      gsap.from('.about-hero-tagline', {
-        y: 30,
-        opacity: 0,
-        duration: 0.6,
-        ease: 'power3.out',
-        delay: 0.4,
-      })
-      gsap.from('.about-hero-mission', {
-        y: 20,
-        opacity: 0,
-        duration: 0.5,
-        ease: 'power3.out',
-        delay: 0.55,
-      })
+      gsap.fromTo(
+        '.about-hero-h1',
+        { y: 40, opacity: 0 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', delay: 0.2 },
+      )
+      gsap.fromTo(
+        '.about-hero-tagline',
+        { y: 30, opacity: 0 },
+        { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.4 },
+      )
+      gsap.fromTo(
+        '.about-hero-mission',
+        { y: 20, opacity: 0 },
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', delay: 0.55 },
+      )
     },
     { scope: heroRef }
   )
@@ -195,29 +189,24 @@ export default function About() {
   useGSAP(
     () => {
       if (!storyRef.current) return
-      gsap.from('.story-text > *', {
-        y: 30,
-        opacity: 0,
-        duration: 0.7,
-        ease: 'power3.out',
-        stagger: 0.1,
-        scrollTrigger: {
+      gsap.fromTo(
+        '.story-text > *',
+        { y: 30, opacity: 0 },
+        { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', stagger: 0.1, scrollTrigger: {
           trigger: storyRef.current,
           start: 'top 80%',
           once: true,
-        },
-      })
-      gsap.from('.story-image-wrap', {
-        x: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
+        } },
+      )
+      gsap.fromTo(
+        '.story-image-wrap',
+        { x: 40, opacity: 0 },
+        { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: {
           trigger: storyRef.current,
           start: 'top 80%',
           once: true,
-        },
-      })
+        } },
+      )
     },
     { scope: storyRef }
   )
