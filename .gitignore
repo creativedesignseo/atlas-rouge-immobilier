@@ -46,3 +46,4 @@ atlas-rouge-immobilier-v4/
 .netlify/functions/
 deno.lock
 source-images/
+.claude/worktrees/
