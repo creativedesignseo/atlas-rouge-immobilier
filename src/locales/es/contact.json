@@ -17,7 +17,8 @@
     "sending": "Enviando...",
     "successTitle": "¡Mensaje enviado!",
     "successText": "Gracias. Le responderemos en las próximas 24 horas.",
-    "errorText": "Ha ocurrido un error. Por favor, inténtelo de nuevo."
+    "errorText": "Ha ocurrido un error. Por favor, inténtelo de nuevo.",
+    "consent": "Acepto que Atlas Rouge se ponga en contacto conmigo sobre mi solicitud."
   },
   "info": {
     "address": "Dirección",
@@ -25,7 +26,8 @@
     "email": "Correo electrónico",
     "hours": "Horario de atención",
     "hoursValue": "Lunes a sábado, 9h – 19h",
-    "title": "Nuestros datos"
+    "title": "Nuestros datos",
+    "followUs": "Síguenos"
   },
   "faq": {
     "title": "Preguntas frecuentes",

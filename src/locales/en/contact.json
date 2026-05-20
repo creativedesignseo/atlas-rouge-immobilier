@@ -17,7 +17,8 @@
     "sending": "Sending...",
     "successTitle": "Message sent!",
     "successText": "Thank you. We will get back to you within 24 hours.",
-    "errorText": "An error occurred. Please try again."
+    "errorText": "An error occurred. Please try again.",
+    "consent": "I agree to be contacted by Atlas Rouge regarding my enquiry."
   },
   "info": {
     "address": "Address",
@@ -25,7 +26,8 @@
     "email": "Email",
     "hours": "Opening hours",
     "hoursValue": "Monday to Saturday, 9am – 7pm",
-    "title": "Our details"
+    "title": "Our details",
+    "followUs": "Follow us"
   },
   "faq": {
     "title": "Frequently asked questions",

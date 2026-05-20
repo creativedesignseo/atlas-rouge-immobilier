@@ -17,7 +17,8 @@
     "sending": "Envoi en cours...",
     "successTitle": "Message envoyé !",
     "successText": "Merci. Nous vous répondrons dans les 24 heures.",
-    "errorText": "Une erreur est survenue. Veuillez réessayer."
+    "errorText": "Une erreur est survenue. Veuillez réessayer.",
+    "consent": "J'accepte d'être recontacté(e) par Atlas Rouge concernant ma demande."
   },
   "info": {
     "address": "Adresse",
@@ -25,7 +26,8 @@
     "email": "E-mail",
     "hours": "Horaires d'ouverture",
     "hoursValue": "Lundi au samedi, 9h – 19h",
-    "title": "Nos coordonnées"
+    "title": "Nos coordonnées",
+    "followUs": "Suivez-nous"
   },
   "faq": {
     "title": "Questions fréquentes",

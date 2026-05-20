@@ -333,16 +333,14 @@ export default function Contact() {
                 {t('info.title') || 'Nos coordonnées'}
               </h3>
 
-              <div className="space-y-6">
+              <div className="space-y-7">
                 <div className="info-block flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-cream-warm flex items-center justify-center shrink-0">
-                    <MapPin size={20} className="text-terracotta" />
-                  </div>
+                  <MapPin size={22} strokeWidth={2.25} className="text-terracotta shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-inter text-[12px] font-medium text-text-secondary uppercase tracking-[0.3px] mb-0.5">
+                    <p className="font-inter text-[12px] font-medium text-text-secondary uppercase tracking-[0.3px] mb-1">
                       {t('info.address')}
                     </p>
-                    <p className="font-inter text-[15px] text-text-primary">
+                    <p className="font-inter text-[15px] text-text-primary leading-relaxed">
                       {settings?.address || '123 Boulevard Mohamed VI, Guéliz'}
                       <br />
                       {settings?.city_postal || '40000 Marrakech, Maroc'}
@@ -351,11 +349,9 @@ export default function Contact() {
                 </div>
 
                 <div className="info-block flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-cream-warm flex items-center justify-center shrink-0">
-                    <Phone size={20} className="text-terracotta" />
-                  </div>
+                  <Phone size={22} strokeWidth={2.25} className="text-terracotta shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-inter text-[12px] font-medium text-text-secondary uppercase tracking-[0.3px] mb-0.5">
+                    <p className="font-inter text-[12px] font-medium text-text-secondary uppercase tracking-[0.3px] mb-1">
                       {t('info.phone')}
                     </p>
                     <a
@@ -368,11 +364,9 @@ export default function Contact() {
                 </div>
 
                 <div className="info-block flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-cream-warm flex items-center justify-center shrink-0">
-                    <MessageCircle size={20} className="text-terracotta" />
-                  </div>
+                  <MessageCircle size={22} strokeWidth={2.25} className="text-terracotta shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-inter text-[12px] font-medium text-text-secondary uppercase tracking-[0.3px] mb-0.5">
+                    <p className="font-inter text-[12px] font-medium text-text-secondary uppercase tracking-[0.3px] mb-1">
                       WhatsApp
                     </p>
                     <a
@@ -387,11 +381,9 @@ export default function Contact() {
                 </div>
 
                 <div className="info-block flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-cream-warm flex items-center justify-center shrink-0">
-                    <Mail size={20} className="text-terracotta" />
-                  </div>
+                  <Mail size={22} strokeWidth={2.25} className="text-terracotta shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-inter text-[12px] font-medium text-text-secondary uppercase tracking-[0.3px] mb-0.5">
+                    <p className="font-inter text-[12px] font-medium text-text-secondary uppercase tracking-[0.3px] mb-1">
                       {t('info.email')}
                     </p>
                     <a
@@ -404,40 +396,46 @@ export default function Contact() {
                 </div>
 
                 <div className="info-block flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-cream-warm flex items-center justify-center shrink-0">
-                    <Clock size={20} className="text-terracotta" />
-                  </div>
+                  <Clock size={22} strokeWidth={2.25} className="text-terracotta shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-inter text-[12px] font-medium text-text-secondary uppercase tracking-[0.3px] mb-0.5">
+                    <p className="font-inter text-[12px] font-medium text-text-secondary uppercase tracking-[0.3px] mb-1">
                       {t('info.hours')}
                     </p>
-                    <p className="font-inter text-[15px] text-text-primary">
+                    <p className="font-inter text-[15px] text-text-primary leading-relaxed">
                       {settings?.hours_weekday || t('info.hoursValue')}
-                      <br />
-                      {settings?.hours_saturday || ''}
+                      {settings?.hours_saturday && (
+                        <>
+                          <br />
+                          {settings.hours_saturday}
+                        </>
+                      )}
                     </p>
                   </div>
                 </div>
 
-                {/* Social links */}
-                <div className="info-block pt-4 border-t border-border-warm">
+                {/* Social links — sin fondo, solo el icono */}
+                <div className="info-block pt-5 border-t border-border-warm">
                   <p className="font-inter text-[12px] font-medium text-text-secondary uppercase tracking-[0.3px] mb-3">
-                    {t('info.followUs') || 'Suivez-nous'}
+                    {t('info.followUs', 'Síguenos')}
                   </p>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-5">
                     <a
                       href={settings?.instagram_url || '#'}
-                      className="w-10 h-10 rounded-lg bg-cream-warm flex items-center justify-center hover:bg-terracotta hover:text-white text-text-secondary transition-colors"
+                      className="text-text-secondary hover:text-terracotta transition-colors"
                       aria-label="Instagram"
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
-                      <Instagram size={18} />
+                      <Instagram size={22} strokeWidth={2.25} />
                     </a>
                     <a
                       href={settings?.facebook_url || '#'}
-                      className="w-10 h-10 rounded-lg bg-cream-warm flex items-center justify-center hover:bg-terracotta hover:text-white text-text-secondary transition-colors"
+                      className="text-text-secondary hover:text-terracotta transition-colors"
                       aria-label="Facebook"
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
-                      <Facebook size={18} />
+                      <Facebook size={22} strokeWidth={2.25} />
                     </a>
                   </div>
                 </div>
