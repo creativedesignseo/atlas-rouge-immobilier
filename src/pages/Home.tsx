@@ -74,6 +74,17 @@ const serviceIcons: Record<string, React.ReactNode> = {
   support: <Users size={40} />,
 }
 
+// Destino de cada service card. Las rutas se traducen automáticamente
+// vía path() según el idioma activo (canonical keys de src/lib/routes.ts).
+const serviceLinks: Record<string, string> = {
+  buy: '/buy',
+  sell: '/sell',
+  rent: '/rent',
+  estimate: '/valuation',
+  management: '/propertyManagement',
+  support: '/contact',
+}
+
 function AnimatedCounter({ target, suffix = '', duration = 1.5 }: { target: number; suffix?: string; duration?: number }) {
   const ref = useRef<HTMLSpanElement>(null)
   const [hasTriggered, setHasTriggered] = useState(false)
@@ -379,6 +390,7 @@ export default function Home() {
                 icon={serviceIcons[key]}
                 title={t(`services.${key}.title`)}
                 description={t(`services.${key}.description`)}
+                to={path(serviceLinks[key])}
               />
             ))}
           </div>
