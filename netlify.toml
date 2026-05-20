@@ -5,30 +5,7 @@
   function = "img-proxy"
   path = "/img/*"
 
-# Reescritura de meta tags OG para previews sociales (WhatsApp/FB/Twitter/etc.)
-# Lee el slug de la URL, consulta Supabase y inyecta título + descripción +
-# cover image específicos del artículo o propiedad antes de servir el HTML.
-[[edge_functions]]
-  function = "og-rewrite"
-  path = "/fr/conseils-immobiliers/*"
-[[edge_functions]]
-  function = "og-rewrite"
-  path = "/es/consejos-inmobiliarios/*"
-[[edge_functions]]
-  function = "og-rewrite"
-  path = "/en/real-estate-tips/*"
-[[edge_functions]]
-  function = "og-rewrite"
-  path = "/fr/property/*"
-[[edge_functions]]
-  function = "og-rewrite"
-  path = "/fr/propriete/*"
-[[edge_functions]]
-  function = "og-rewrite"
-  path = "/es/propiedad/*"
-[[edge_functions]]
-  function = "og-rewrite"
-  path = "/en/property/*"
+# og-rewrite: configurado en su propio archivo .ts vía export const config
 
 # Stale chunks (e.g. Search-XXX.js from a previous deploy) must NOT fall
 # back to /index.html — that returns HTML with a wrong MIME type and the

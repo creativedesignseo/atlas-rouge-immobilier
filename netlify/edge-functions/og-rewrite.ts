@@ -15,7 +15,7 @@
 // permite SELECT en posts publicados y properties).
 // ----------------------------------------------------------------------------
 
-import type { Config } from '@netlify/edge-functions'
+import type { Config, Context } from '@netlify/edge-functions'
 
 const SUPABASE_URL = 'https://slxlkbrqcjabsfuhlwdf.supabase.co'
 const ANON_KEY =
@@ -225,35 +225,39 @@ function rewriteMetaTags(html: string, og: OgData, canonicalUrl: string, lang: s
   return out
 }
 
-export default async function handler(request: Request, context: { next: () => Promise<Response> }) {
+export default async function handler(request: Request, context: Context) {
   const url = new URL(request.url)
   const pathname = url.pathname
 
-  // Solo procesar HTML — dejar pasar todo lo demás
-  const accept = request.headers.get('accept') || ''
-  if (!accept.includes('text/html')) {
-    return context.next()
-  }
+  // Marcar siempre que la función corrió (debug)
+  const debug = `og-rewrite:run path=${pathname}`
 
-  // Resolver datos OG desde Supabase
-  const og = await resolveOgData(pathname, url.origin)
-  if (!og) {
-    return context.next()
-  }
-
-  // Pedir el HTML original y reescribir meta tags
+  // Pedir el HTML del origen primero
   const response = await context.next()
   const ct = response.headers.get('content-type') || ''
   if (!ct.includes('text/html')) {
     return response
   }
+
+  // Resolver datos OG desde Supabase
+  const og = await resolveOgData(pathname, url.origin)
+  if (!og) {
+    const r = new Response(await response.text(), { status: response.status, headers: response.headers })
+    r.headers.set('x-og-rewrite', `${debug} no-match`)
+    return r
+  }
+
   const html = await response.text()
   const rewritten = rewriteMetaTags(html, og, url.toString(), pathname.split('/')[1] || 'fr')
 
-  return new Response(rewritten, {
+  const out = new Response(rewritten, {
     status: response.status,
     headers: response.headers,
   })
+  out.headers.set('x-og-rewrite', `${debug} hit`)
+  // Forzar no-cache para que el CDN no sirva HTML viejo de antes del rewrite
+  out.headers.set('cache-control', 'public, max-age=0, must-revalidate')
+  return out
 }
 
 export const config: Config = {
