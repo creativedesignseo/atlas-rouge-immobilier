@@ -4,6 +4,55 @@
 
 ---
 
+## Intervención: Claude Opus 4.7 — 2026-05-20 (service cards clicables en Home)
+
+Autor: Claude Opus 4.7 (1M context).
+
+### Contexto
+
+El usuario reportó que la sección "Nuestros servicios / Acompañamiento completo para su proyecto inmobiliario en Marrakech" en la Home **no hacía nada al hacer clic**. Las 6 cards (Comprar, Vender, Alquilar, Estimación, Gestión, Acompañamiento) eran `<div>` estáticos sin navegación.
+
+### Cambios
+
+1. **`src/components/ServiceCard.tsx`**:
+   - Acepta nueva prop opcional `to?: string`
+   - Si se provee, renderiza `<Link to={to}>` en vez de `<div>`
+   - Añadida flecha `ArrowUpRight` (lucide) con micro-animación en hover (translate-x + translate-y)
+   - Title cambia a `text-terracotta` en hover (refuerza interactividad)
+   - Misma estructura visual; backward-compatible (sin `to` sigue siendo div)
+
+2. **`src/pages/Home.tsx`**:
+   - Nuevo map `serviceLinks: Record<string, string>` con canonical keys de `src/lib/routes.ts`:
+     - buy → `/buy`, sell → `/sell`, rent → `/rent`
+     - estimate → `/valuation`, management → `/propertyManagement`, support → `/contact`
+   - `<ServiceCard>` recibe `to={path(serviceLinks[key])}` → traducción automática de slug por idioma
+
+### Resultado en ES
+
+| Card | URL |
+|------|-----|
+| Comprar | `/es/comprar` |
+| Vender | `/es/vender` |
+| Alquilar | `/es/alquilar` |
+| Estimación | `/es/valoracion` |
+| Gestión de alquileres | `/es/gestion-alquileres` |
+| Acompañamiento | `/es/contacto` |
+
+### Estado técnico
+
+- ✅ Build verde (`npm run build` — 4.97s)
+- ✅ tsc --noEmit limpio
+- ✅ Commit `aade409c` directo en `main` + push a `origin/main`
+- ✅ Netlify build triggered manualmente (deploy_id `6a0da96b745abe3a6fa505af`)
+- ⚠️ Worktree `.claude/worktrees/brave-noyce-d41564` quedó out-of-sync (los edits se aplicaron sobre el clone principal, no la worktree). No bloqueante.
+
+### Pendiente del backlog
+
+- Plan i18n a medio terminar (sesión 2026-05-01): registrar namespaces `about/blog/estimation/services/amenities/errors` en `src/i18n.ts` + traducir About, Sell, BuyerGuide, Estimation, GestionLocative, Favorites, NotFound, PropertyDetail
+- Blog CMS quedó funcional en sesión anterior (commit `7376317f` — merge fix bug guardado) pero esta entrada del HANDOFF no se actualizó en su momento. Resumen: blog Supabase + TipTap operativo, INSERT/UPDATE separados en `blog.service.ts`, verificado end-to-end con agent-browser
+
+---
+
 ## Intervención: Claude Sonnet 4.6 — 2026-05-01 (quinta sesión — ejecución plan i18n, parcial)
 
 Autor: Claude Sonnet 4.6.
