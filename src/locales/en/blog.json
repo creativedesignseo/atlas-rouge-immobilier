@@ -111,5 +111,12 @@
   "cta": {
     "title": "Have a real estate project in Marrakech?",
     "subtitle": "Let's talk. We support you at every step."
+  },
+  "inlineCta": {
+    "eyebrow": "Atlas Rouge pause",
+    "title": "Invest in Marrakech with expert guidance",
+    "description": "Discover our selection of villas, riads and apartments hand-picked by our local advisors. Market analysis, taxation and legal support included.",
+    "primary": "Browse available properties",
+    "secondary": "Talk to an advisor"
   }
 }

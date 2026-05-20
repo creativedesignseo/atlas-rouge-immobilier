@@ -111,5 +111,12 @@
   "cta": {
     "title": "Vous avez un projet immobilier à Marrakech ?",
     "subtitle": "Parlons-en. Nous vous accompagnons à chaque étape."
+  },
+  "inlineCta": {
+    "eyebrow": "Pause Atlas Rouge",
+    "title": "Investissez à Marrakech avec un accompagnement expert",
+    "description": "Découvrez notre sélection de villas, riads et appartements choisis par nos conseillers locaux. Analyse de marché, fiscalité et accompagnement juridique inclus.",
+    "primary": "Voir les biens disponibles",
+    "secondary": "Parler à un conseiller"
   }
 }
