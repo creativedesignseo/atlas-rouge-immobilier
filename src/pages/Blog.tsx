@@ -156,11 +156,36 @@ export default function Blog() {
         </div>
       </section>
 
-      {/* ═══════ Loading / empty state ═══════ */}
+      {/* ═══════ Loading — skeleton editorial (no spinner aislado) ═══════ */}
       {loading && (
-        <section className="bg-white py-20 px-6">
-          <div className="max-w-[600px] mx-auto text-center text-stone font-inter">
-            <div className="inline-block w-8 h-8 border-2 border-terracotta border-t-transparent rounded-full animate-spin" />
+        <section className="bg-white py-10 sm:py-12 px-5 sm:px-6">
+          <div className="max-w-[1100px] mx-auto space-y-8 animate-pulse">
+            {/* Featured skeleton */}
+            <div className="bg-cream-warm rounded-card overflow-hidden border border-border-warm">
+              <div className="aspect-video sm:aspect-[16/8] bg-stone/10" />
+              <div className="p-5 sm:p-7 space-y-3">
+                <div className="h-3 w-16 bg-stone/15 rounded" />
+                <div className="h-5 w-3/4 bg-stone/15 rounded" />
+                <div className="h-3 w-full bg-stone/10 rounded" />
+                <div className="h-3 w-2/3 bg-stone/10 rounded" />
+              </div>
+            </div>
+            {/* Grid skeleton — 3 cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+              {[0, 1, 2].map((i) => (
+                <div
+                  key={i}
+                  className="bg-cream-warm rounded-card overflow-hidden border border-border-warm"
+                >
+                  <div className="aspect-[16/10] bg-stone/10" />
+                  <div className="p-5 space-y-2.5">
+                    <div className="h-2.5 w-12 bg-stone/15 rounded" />
+                    <div className="h-4 w-5/6 bg-stone/15 rounded" />
+                    <div className="h-4 w-2/3 bg-stone/15 rounded" />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
       )}
@@ -204,6 +229,10 @@ export default function Blog() {
                     })}
                     alt={featuredPost.title}
                     className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                    // LCP candidate en /blog → prioridad alta, eager load
+                    loading="eager"
+                    fetchPriority="high"
+                    decoding="async"
                   />
                 </div>
 

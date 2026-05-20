@@ -169,12 +169,24 @@ export interface ListPostsOptions {
   publishedOnly?: boolean
   category?: BlogCategory
   limit?: number
+  /**
+   * Por defecto NO se trae el campo `content` (ProseMirror JSON puede
+   * pesar 10-50 KB por traducción). El listado solo necesita meta + excerpt.
+   * Pasa `true` solo si necesitas el cuerpo completo (admin, p.ej.).
+   */
+  includeContent?: boolean
 }
 
 /** Listado de posts (public-facing por defecto). */
 export async function listPosts(options: ListPostsOptions = {}): Promise<BlogPost[]> {
-  const { publishedOnly = true, category, limit } = options
+  const { publishedOnly = true, category, limit, includeContent = false } = options
   if (!isSupabaseConfigured) return []
+
+  // El listado público NO necesita el `content` (cuerpo del artículo).
+  // Excluirlo reduce el payload en ~10-50 KB por post — clave en móvil.
+  const translationFields = includeContent
+    ? 'locale, title, excerpt, content, seo_title, seo_description'
+    : 'locale, title, excerpt, seo_title, seo_description'
 
   let query = supabase
     .from('blog_posts')
@@ -183,7 +195,7 @@ export async function listPosts(options: ListPostsOptions = {}): Promise<BlogPos
       id, slug, status, cover_image, category, read_time_min,
       author_id, guest_author, published_at, created_at, updated_at,
       agent:agents!blog_posts_author_id_fkey ( id, name, photo_url, role, bio ),
-      translations:blog_post_translations ( locale, title, excerpt, content, seo_title, seo_description )
+      translations:blog_post_translations ( ${translationFields} )
     `,
     )
     .order('published_at', { ascending: false, nullsFirst: false })
@@ -225,7 +237,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   return data ? mapDbToPost(data as unknown as DbBlogPostRow) : null
 }
 
-/** Posts relacionados (misma categoría, excluyendo el actual). */
+/** Posts relacionados (misma categoría, excluyendo el actual). Sin `content`. */
 export async function getRelatedPosts(
   postId: string,
   category: BlogCategory,
@@ -239,7 +251,7 @@ export async function getRelatedPosts(
       id, slug, status, cover_image, category, read_time_min,
       author_id, guest_author, published_at, created_at, updated_at,
       agent:agents!blog_posts_author_id_fkey ( id, name, photo_url, role, bio ),
-      translations:blog_post_translations ( locale, title, excerpt, content, seo_title, seo_description )
+      translations:blog_post_translations ( locale, title, excerpt, seo_title, seo_description )
     `,
     )
     .eq('status', 'published')
