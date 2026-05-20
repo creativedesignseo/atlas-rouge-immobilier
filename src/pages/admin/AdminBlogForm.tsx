@@ -14,6 +14,7 @@ import {
   type BlogPost,
 } from '@/services/blog.service'
 import RichTextEditor from '@/components/blog/RichTextEditor'
+import { getImageUrl } from '@/lib/storage'
 import type { SupportedLanguage } from '@/i18n'
 
 const CATEGORIES: BlogCategory[] = [
@@ -473,7 +474,7 @@ export default function AdminBlogForm() {
             {coverImage ? (
               <div className="mt-3 aspect-video bg-cream-warm rounded-md overflow-hidden">
                 <img
-                  src={`/${coverImage}`}
+                  src={getImageUrl(coverImage, { width: 400, height: 225, resize: 'cover' })}
                   alt="cover"
                   className="w-full h-full object-cover"
                   onError={(e) => {
