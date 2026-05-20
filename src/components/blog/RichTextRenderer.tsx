@@ -5,6 +5,69 @@ import { ArrowRight, MessageCircle } from 'lucide-react'
 import { useLang } from '@/hooks/useLang'
 
 // ============================================================================
+// TOC helpers — extracción de H2/H3 del contenido para sidebar de navegación
+// ============================================================================
+
+/** Convierte texto a slug ASCII estable, usado como anchor id en los H2/H3. */
+export function slugifyHeading(text: string): string {
+  return text
+    .toString()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, 60)
+}
+
+/** Extrae texto plano de los nodos inline. */
+function extractText(nodes: unknown[]): string {
+  if (!Array.isArray(nodes)) return ''
+  return nodes
+    .map((n) => {
+      const node = n as { type?: string; text?: string }
+      return node.type === 'text' && node.text ? node.text : ''
+    })
+    .join('')
+}
+
+export interface TocItem {
+  id: string
+  text: string
+  level: 2 | 3
+}
+
+/** Devuelve los H2 y H3 del documento ProseMirror para construir el TOC. */
+export function extractToc(content: unknown): TocItem[] {
+  if (!content || typeof content !== 'object') return []
+  const doc = content as { type?: string; content?: Array<{ type?: string; attrs?: { level?: number }; content?: unknown[] }> }
+  if (doc.type !== 'doc' || !doc.content) return []
+  const items: TocItem[] = []
+  const seen = new Set<string>()
+  for (const node of doc.content) {
+    if (node.type !== 'heading') continue
+    const level = node.attrs?.level
+    if (level !== 2 && level !== 3) continue
+    const text = extractText(node.content || []).trim()
+    if (!text) continue
+    let id = slugifyHeading(text)
+    if (!id) continue
+    // De-duplicar si dos H2 tienen el mismo slug
+    let unique = id
+    let n = 2
+    while (seen.has(unique)) {
+      unique = `${id}-${n++}`
+    }
+    seen.add(unique)
+    items.push({ id: unique, text, level: level as 2 | 3 })
+  }
+  return items
+}
+
+// ============================================================================
 // Tipos — ProseMirror JSON (subset que produce nuestro RichTextEditor)
 // ============================================================================
 
@@ -85,6 +148,11 @@ function renderBlock(node: BlockNode, key: number | string): ReactNode {
     case 'heading': {
       const level = node.attrs.level
       const text = renderInline(node.content)
+      // Slug-id en H2 y H3 para que el TOC pueda enlazarlos (scroll spy)
+      const plainText = (node.content || [])
+        .map((c) => (c as { type?: string; text?: string }).text || '')
+        .join('')
+      const id = level === 2 || level === 3 ? slugifyHeading(plainText) : undefined
       if (level === 1)
         return (
           <h1
@@ -98,7 +166,8 @@ function renderBlock(node: BlockNode, key: number | string): ReactNode {
         return (
           <h2
             key={key}
-            className="font-display text-ink text-[22px] sm:text-[26px] md:text-[32px] font-medium tracking-tight leading-[1.2] mt-10 sm:mt-12 md:mt-14 mb-3 md:mb-4 pt-3 md:pt-2 border-t border-border-warm/70"
+            id={id}
+            className="font-display text-ink text-[22px] sm:text-[26px] md:text-[32px] font-medium tracking-tight leading-[1.2] mt-10 sm:mt-12 md:mt-14 mb-3 md:mb-4 pt-3 md:pt-2 border-t border-border-warm/70 scroll-mt-24"
           >
             {text}
           </h2>
@@ -107,7 +176,8 @@ function renderBlock(node: BlockNode, key: number | string): ReactNode {
         return (
           <h3
             key={key}
-            className="font-display text-ink text-[18px] sm:text-[20px] md:text-[22px] font-semibold tracking-tight leading-snug mt-7 sm:mt-9 md:mt-10 mb-2 md:mb-3"
+            id={id}
+            className="font-display text-ink text-[18px] sm:text-[20px] md:text-[22px] font-semibold tracking-tight leading-snug mt-7 sm:mt-9 md:mt-10 mb-2 md:mb-3 scroll-mt-24"
           >
             {text}
           </h3>

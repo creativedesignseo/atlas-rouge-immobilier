@@ -118,5 +118,8 @@
     "description": "Découvrez notre sélection de villas, riads et appartements choisis par nos conseillers locaux. Analyse de marché, fiscalité et accompagnement juridique inclus.",
     "primary": "Voir les biens disponibles",
     "secondary": "Parler à un conseiller"
+  },
+  "toc": {
+    "title": "Sur cette page"
   }
 }

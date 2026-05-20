@@ -118,5 +118,8 @@
     "description": "Discover our selection of villas, riads and apartments hand-picked by our local advisors. Market analysis, taxation and legal support included.",
     "primary": "Browse available properties",
     "secondary": "Talk to an advisor"
+  },
+  "toc": {
+    "title": "On this page"
   }
 }
