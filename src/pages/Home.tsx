@@ -23,6 +23,7 @@ import {
 } from 'lucide-react'
 import { getFeaturedProperties } from '@/services/property.service'
 import { getNeighborhoods } from '@/services/neighborhood.service'
+import { listPosts, type BlogPost } from '@/services/blog.service'
 import type { Property } from '@/data/properties'
 import type { Neighborhood } from '@/data/neighborhoods'
 import PropertyCard from '@/components/PropertyCard'
@@ -44,26 +45,6 @@ const categories = [
 
 const serviceKeys = ['buy', 'sell', 'rent', 'estimate', 'management', 'support'] as const
 
-const blogArticles = [
-  {
-    image: 'blog-pricing.jpg',
-    category: 'March\u00E9',
-    title: 'Prix de l\u2019immobilier \u00E0 Marrakech : tendances 2024',
-    date: '15 Jan 2024',
-  },
-  {
-    image: 'blog-neighborhood.jpg',
-    category: 'Quartiers',
-    title: 'Choisir son quartier : Gu\u00E9liz vs Hivernage',
-    date: '8 Jan 2024',
-  },
-  {
-    image: 'guide-buyer.jpg',
-    category: 'Achat',
-    title: 'Notaire ou Adoul : qui choisir pour votre acte ?',
-    date: '2 Jan 2024',
-  },
-]
 
 const serviceIcons: Record<string, React.ReactNode> = {
   buy: <KeyRound size={40} />,
@@ -119,7 +100,8 @@ function AnimatedCounter({ target, suffix = '', duration = 1.5 }: { target: numb
 }
 
 export default function Home() {
-  const { t } = useTranslation('home')
+  const { t, i18n } = useTranslation('home')
+  const { t: tBlog } = useTranslation('blog')
   const { path } = useLang()
   const heroRef = useRef<HTMLDivElement>(null)
   const heroTitleRef = useRef<HTMLHeadingElement>(null)
@@ -135,6 +117,7 @@ export default function Home() {
 
   const [featuredProperties, setFeaturedProperties] = useState<Property[]>([])
   const [neighborhoodsList, setNeighborhoodsList] = useState<Neighborhood[]>([])
+  const [latestPosts, setLatestPosts] = useState<BlogPost[]>([])
 
   useEffect(() => {
     getFeaturedProperties(3)
@@ -143,7 +126,10 @@ export default function Home() {
     getNeighborhoods()
       .then(setNeighborhoodsList)
       .catch((err) => console.error('Failed to load neighborhoods:', err))
-  }, [])
+    listPosts({ publishedOnly: true, limit: 3 })
+      .then(setLatestPosts)
+      .catch((err) => console.error('Failed to load blog posts:', err))
+  }, [i18n.language])
 
   // Hero entrance animations
   useGSAP(
@@ -487,47 +473,73 @@ export default function Home() {
       </section>
 
       {/* ====== BLOG TEASER ====== */}
-      <section ref={blogRef} className="bg-cream-warm py-16 md:py-24">
-        <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
-          <div className="section-header text-center mb-12">
-            <span className="text-terracotta text-[12px] font-inter font-medium uppercase tracking-[2px]">
-              {t('blog.title')}
-            </span>
-            <h2 className="font-display text-[32px] md:text-[40px] font-medium text-midnight mt-3 mb-4">
-              {t('blog.subtitle')}
-            </h2>
-          </div>
-          <div className="section-content grid grid-cols-1 md:grid-cols-3 gap-6">
-            {blogArticles.map((article, idx) => (
+      {latestPosts.length > 0 && (
+        <section ref={blogRef} className="bg-cream-warm py-14 sm:py-16 md:py-24">
+          <div className="max-w-[1280px] mx-auto px-5 sm:px-6 lg:px-12">
+            <div className="section-header text-center mb-10 sm:mb-12">
+              <span className="text-terracotta text-[11.5px] sm:text-[12px] font-inter font-medium uppercase tracking-[2px]">
+                {t('blog.title')}
+              </span>
+              <h2 className="font-display text-[26px] sm:text-[32px] md:text-[40px] font-medium text-midnight mt-3 mb-4 leading-tight">
+                {t('blog.subtitle')}
+              </h2>
+            </div>
+            <div className="section-content grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+              {latestPosts.map((post) => {
+                const localeMap = { fr: 'fr-FR', es: 'es-ES', en: 'en-US' } as const
+                const lang2 = (i18n.language?.slice(0, 2) || 'fr') as keyof typeof localeMap
+                const fmtDate = post.publishedAt
+                  ? new Date(post.publishedAt).toLocaleDateString(localeMap[lang2] || 'fr-FR', {
+                      day: 'numeric',
+                      month: 'short',
+                      year: 'numeric',
+                    })
+                  : ''
+                return (
+                  <Link
+                    key={post.id}
+                    to={path(`/blog/${post.slug}`)}
+                    className="bg-white rounded-card overflow-hidden shadow-card hover:shadow-card-hover active:shadow-card transition-all duration-250 group"
+                  >
+                    <div className="aspect-video overflow-hidden">
+                      <img
+                        src={getImageUrl(post.coverImage || 'blog-pricing.jpg', {
+                          width: 600,
+                          height: 400,
+                          resize: 'cover',
+                        })}
+                        alt={post.title}
+                        className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-400"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="p-4 sm:p-5">
+                      <span className="text-terracotta text-[10.5px] sm:text-[11px] font-inter font-medium uppercase tracking-wide">
+                        {tBlog(`categories.${post.category}`, post.category)}
+                      </span>
+                      <h3 className="font-display text-[17px] sm:text-[18px] font-medium text-text-primary mt-2 mb-2 line-clamp-2 group-hover:text-terracotta transition-colors leading-snug">
+                        {post.title}
+                      </h3>
+                      <p className="text-text-secondary text-[12px] font-inter">{fmtDate}</p>
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
+
+            {/* Link a todo el blog */}
+            <div className="text-center mt-8 sm:mt-10">
               <Link
-                key={idx}
-                to={path('/conseils-immobiliers')}
-                className="bg-white rounded-card overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-250 group"
+                to={path('/blog')}
+                className="inline-flex items-center gap-2 min-h-[44px] px-5 py-3 text-text-primary hover:text-terracotta font-inter text-[14px] font-medium transition-colors"
               >
-                <div className="aspect-video overflow-hidden">
-                  <img
-                    src={getImageUrl(article.image, { width: 600, height: 400, resize: 'cover' })}
-                    alt={article.title}
-                    className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-400"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="p-4">
-                  <span className="text-terracotta text-[11px] font-inter font-medium uppercase">
-                    {article.category}
-                  </span>
-                  <h3 className="font-display text-[18px] font-medium text-text-primary mt-2 mb-2 line-clamp-2 group-hover:text-terracotta transition-colors">
-                    {article.title}
-                  </h3>
-                  <p className="text-text-secondary text-[12px] font-inter">
-                    {article.date}
-                  </p>
-                </div>
+                {t('blog.seeAll', 'Ver todos los artículos')}
+                <ArrowRight size={16} />
               </Link>
-            ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Ken Burns animation style */}
       <style>{`
