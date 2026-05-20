@@ -177,6 +177,27 @@ export interface ListPostsOptions {
   includeContent?: boolean
 }
 
+/**
+ * Race una promesa contra un timeout. Si la promesa no resuelve antes del
+ * timeout, rechaza con un Error('TIMEOUT'). Crítico para queries Supabase
+ * que ocasionalmente se cuelgan en móvil sin red 4G estable.
+ */
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const id = setTimeout(() => reject(new Error('TIMEOUT')), ms)
+    promise.then(
+      (v) => {
+        clearTimeout(id)
+        resolve(v)
+      },
+      (e) => {
+        clearTimeout(id)
+        reject(e)
+      },
+    )
+  })
+}
+
 /** Listado de posts (public-facing por defecto). */
 export async function listPosts(options: ListPostsOptions = {}): Promise<BlogPost[]> {
   const { publishedOnly = true, category, limit, includeContent = false } = options
@@ -205,19 +226,28 @@ export async function listPosts(options: ListPostsOptions = {}): Promise<BlogPos
   if (category) query = query.eq('category', category)
   if (limit) query = query.limit(limit)
 
-  const { data, error } = await query
-  if (error) {
-    console.error('[blog.service] listPosts:', error)
+  // Timeout defensivo: si la query no responde en 12 s, devolvemos [] en vez
+  // de dejar el componente colgado con el skeleton forever. Esto pasa
+  // ocasionalmente en móvil con redes inestables o cuando el navegador
+  // pone la pestaña en background.
+  try {
+    const { data, error } = await withTimeout(Promise.resolve(query), 12000)
+    if (error) {
+      console.error('[blog.service] listPosts:', error)
+      return []
+    }
+    return ((data as unknown as DbBlogPostRow[]) || []).map((row) => mapDbToPost(row))
+  } catch (err) {
+    console.error('[blog.service] listPosts timeout/error:', err)
     return []
   }
-  return ((data as unknown as DbBlogPostRow[]) || []).map((row) => mapDbToPost(row))
 }
 
 /** Un post por slug (incluye todas las traducciones — útil en admin). */
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   if (!isSupabaseConfigured) return null
 
-  const { data, error } = await supabase
+  const query = supabase
     .from('blog_posts')
     .select(
       `
@@ -230,11 +260,17 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
     .eq('slug', slug)
     .maybeSingle()
 
-  if (error) {
-    console.error('[blog.service] getPostBySlug:', error)
+  try {
+    const { data, error } = await withTimeout(Promise.resolve(query), 12000)
+    if (error) {
+      console.error('[blog.service] getPostBySlug:', error)
+      return null
+    }
+    return data ? mapDbToPost(data as unknown as DbBlogPostRow) : null
+  } catch (err) {
+    console.error('[blog.service] getPostBySlug timeout/error:', err)
     return null
   }
-  return data ? mapDbToPost(data as unknown as DbBlogPostRow) : null
 }
 
 /** Posts relacionados (misma categoría, excluyendo el actual). Sin `content`. */
@@ -244,7 +280,7 @@ export async function getRelatedPosts(
   limit = 3,
 ): Promise<BlogPost[]> {
   if (!isSupabaseConfigured) return []
-  const { data, error } = await supabase
+  const query = supabase
     .from('blog_posts')
     .select(
       `
@@ -260,11 +296,17 @@ export async function getRelatedPosts(
     .order('published_at', { ascending: false, nullsFirst: false })
     .limit(limit)
 
-  if (error) {
-    console.error('[blog.service] getRelatedPosts:', error)
+  try {
+    const { data, error } = await withTimeout(Promise.resolve(query), 12000)
+    if (error) {
+      console.error('[blog.service] getRelatedPosts:', error)
+      return []
+    }
+    return ((data as unknown as DbBlogPostRow[]) || []).map((row) => mapDbToPost(row))
+  } catch (err) {
+    console.error('[blog.service] getRelatedPosts timeout/error:', err)
     return []
   }
-  return ((data as unknown as DbBlogPostRow[]) || []).map((row) => mapDbToPost(row))
 }
 
 // ============================================================================
