@@ -4,6 +4,86 @@
 
 ---
 
+## Intervención: Claude Opus 4.7 — 2026-05-20 (auditoría completa + hardening producción)
+
+Autor: Claude Opus 4.7 (1M context).
+
+### Contexto
+
+Petición del usuario: revisión exhaustiva pre-launch — dynamism de datos, velocidad, mapa, formularios, seguridad, SEO. Después: "ponme esto en producción, no me hagas preguntas".
+
+### Auditoría realizada
+
+1. **Inventario** — 14 rutas públicas (todas lazy) + 8 rutas admin
+2. **Métricas en prod (móvil real)** — FCP 5.8s home (poor), 14 supabase queries en /buy con 12 duplicados de favorites
+3. **Bundle** — total 3.1 MB, main 754 KB, maplibre 1.0 MB (chunk separado), tipografía 120 KB CSS
+4. **RLS** — bien diseñada en blog_posts, contact_submissions, agents
+5. **Bloqueantes encontrados** — form de contacto invisible en móvil, datos de contacto placeholder, info.title sin traducir, estimation form muerto, newsletter es alert(), favorites N+1, no notificaciones de leads, About con equipo inventado, sin GA4, sin cookies, sin hreflang, sin security headers
+
+### Fixes aplicados (commit `75ef1ff6`)
+
+**Bloqueantes:**
+- `Contact.tsx` — GSAP opacity fix con fromTo + querySelectorAll defensivo (era el bug que dejaba el form invisible)
+- `Contact info.title` — traducciones añadidas en FR/ES/EN
+- `About.tsx` — equipo dinámico desde tabla agents (eliminados los 4 nombres ficticios) + skeleton + layout adaptativo según count
+- `Estimation.tsx` — form ahora INSERTa en estimation_requests (nueva tabla)
+- `Blog.tsx` newsletter — INSERTa en newsletter_subscribers (nueva tabla, upsert idempotente)
+- `useFavorites` — convertido a `FavoritesProvider` (Context) mounted en App. Eliminado N+1: 12 fetches → 1.
+
+**Performance:**
+- `LocationMap` extraído a su componente lazy (React.lazy + Suspense) — ahorra 1 MB en PropertyDetail
+- `PropertyDetail` — document.title + meta description + JSON-LD `RealEstateListing` dinámicos
+- Skeleton loaders en /blog y team de About
+
+**SEO + seguridad + RGPD:**
+- `netlify.toml` — security headers (HSTS, CSP, X-Frame-Options, Referrer-Policy, Permissions-Policy) + Cache-Control immutable para /assets/*
+- `index.html` — hreflang fr/es/en/x-default + canonical actualizado al dominio real
+- `CookieBanner` — RGPD básico, persistencia localStorage, 3 idiomas, mobile-first, emite evento `atlasrouge:cookie-consent` para futuros GA4/GTM
+- `notify-lead.js` Netlify function — Resend (si RESEND_API_KEY) + Telegram (si TELEGRAM_BOT_TOKEN+CHAT_ID), fallback a logs. `submitContactForm` y `submitEstimationRequest` la disparan best-effort
+
+### ⚠️ ACCIONES MANUALES PENDIENTES — bloquean producción al 100%
+
+1. **APLICAR migración `004_leads.sql` en Supabase Studio**
+   Path: `supabase/migrations/004_leads.sql`
+   Tablas: `estimation_requests`, `newsletter_subscribers` (con RLS)
+   Mientras no se aplique: formulario de estimación y newsletter fallarán con "table not found"
+
+2. **Actualizar `site_settings` con datos reales del cliente Khalid**
+   En Supabase Studio → tabla site_settings, UPDATE las filas:
+   - `agent_name`: "Sophie Martin" → nombre real (¿Khalid? ¿Sofia?)
+   - `phone`: "+212 524 00 00 00" → teléfono real
+   - `whatsapp`: "+212 600 00 00 00" → WhatsApp real
+   - `email`: "contact@atlasrouge.immo" → email real
+   - `address`: "123 Boulevard Mohamed VI, Guéliz" → dirección real
+
+3. **Configurar env vars en Netlify para notificaciones de leads**
+   Sin estas, los formularios guardan en BD pero NO se notifica a nadie:
+   - `RESEND_API_KEY` — para email (https://resend.com gratis hasta 100/día)
+   - `AGENT_NOTIFY_EMAIL` — email destino (ej. sofia@atlasrouge.ma)
+   - `AGENT_NOTIFY_FROM` — remitente verificado en Resend
+   - O alternativamente:
+   - `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` — para notificación instantánea
+
+4. **GA4 / GTM** — añadir IDs cuando se decidan
+   El CookieBanner ya emite el evento; falta wiring del script.
+
+### Pendientes nice-to-have (no bloquean launch)
+
+- BuyerGuide/Sell FAQ/GestionLocative/Estimation steps siguen hardcoded (admin no puede editar)
+- Sitemap dinámico (incluir propiedades + posts) — actualmente estático
+- TipTap admin chunk 395 KB — considerar editor más ligero
+- Search `select=*` en properties — overfetch leve, no crítico con 12 propiedades
+
+### Estado técnico
+
+- ✅ Build verde (tsc + vite)
+- ✅ Push a `main` (commit `75ef1ff6`)
+- ✅ Netlify deploy triggered (`6a0dfe371ed04e674eaaccd9`)
+- ✅ Auditoría documentada en este HANDOFF
+- ⚠️ Migración 004_leads.sql pendiente de aplicar en Studio
+
+---
+
 ## Intervención: Claude Opus 4.7 — 2026-05-20 (service cards clicables en Home)
 
 Autor: Claude Opus 4.7 (1M context).
