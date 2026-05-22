@@ -18,7 +18,16 @@
     "successTitle": "Message sent!",
     "successText": "Thank you. We will get back to you within 24 hours.",
     "errorText": "An error occurred. Please try again.",
-    "consent": "I agree to be contacted by Atlas Rouge regarding my enquiry."
+    "consent": "I agree to be contacted by Atlas Rouge regarding my enquiry.",
+    "consentRequired": "Accept the privacy policy to continue.",
+    "errorGeneric": "Could not send the message. Please try again.",
+    "subjects": {
+      "buy": "Buying",
+      "sell": "Selling",
+      "rent": "Renting",
+      "estimate": "Estimation",
+      "other": "Other"
+    }
   },
   "info": {
     "address": "Address",

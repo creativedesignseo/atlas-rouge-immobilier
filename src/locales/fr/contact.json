@@ -18,7 +18,16 @@
     "successTitle": "Message envoyé !",
     "successText": "Merci. Nous vous répondrons dans les 24 heures.",
     "errorText": "Une erreur est survenue. Veuillez réessayer.",
-    "consent": "J'accepte d'être recontacté(e) par Atlas Rouge concernant ma demande."
+    "consent": "J'accepte d'être recontacté(e) par Atlas Rouge concernant ma demande.",
+    "consentRequired": "Acceptez la politique de confidentialité pour continuer.",
+    "errorGeneric": "Impossible d'envoyer le message. Réessayez dans un instant.",
+    "subjects": {
+      "buy": "Achat",
+      "sell": "Vente",
+      "rent": "Location",
+      "estimate": "Estimation",
+      "other": "Autre"
+    }
   },
   "info": {
     "address": "Adresse",

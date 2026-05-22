@@ -18,7 +18,6 @@ import { useFavorites } from '@/hooks/useFavorites'
 import { useCurrency } from '@/hooks/useCurrency'
 import { useSiteSettings } from '@/hooks/useSiteSettings'
 import PropertyCard from '@/components/PropertyCard'
-import { cn } from '@/lib/utils'
 import { getImageUrl } from '@/lib/storage'
 import type { Property } from '@/data/properties'
 
@@ -131,9 +130,16 @@ function ContactPanel({ property, settings }: { property: Property; settings: Re
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!formData.name || !formData.email || !formData.message || !acceptedTerms) return
-    setSubmitting(true)
     setError('')
+    // Mensajes de error visibles — antes los early returns eran mudos
+    if (!formData.name.trim()) { setError(t('contact.errorName', 'Indica tu nombre.')); return }
+    if (!formData.email.trim() && !formData.phone.trim()) {
+      setError(t('contact.errorContact', 'Indica un email o teléfono para que podamos contestarte.'))
+      return
+    }
+    if (!formData.message.trim()) { setError(t('contact.errorMessage', 'Escribe un mensaje.')); return }
+    if (!acceptedTerms) { setError(t('contact.errorTerms', 'Acepta la política de privacidad para continuar.')); return }
+    setSubmitting(true)
     const result = await submitContactForm({
       name: formData.name,
       email: formData.email,
@@ -178,32 +184,94 @@ function ContactPanel({ property, settings }: { property: Property; settings: Re
         </div>
       </div>
 
-      <form className="space-y-3" onSubmit={handleSubmit}>
-        <input type="text" placeholder={`${t('contact.namePlaceholder')} *`} required value={formData.name}
-          onChange={e => setFormData(f => ({ ...f, name: e.target.value }))}
-          className="w-full h-11 border border-border-warm rounded-lg px-4 text-[14px] focus:border-terracotta focus:outline-none" />
-        <input type="email" placeholder={`${t('contact.emailPlaceholder')} *`} required value={formData.email}
-          onChange={e => setFormData(f => ({ ...f, email: e.target.value }))}
-          className="w-full h-11 border border-border-warm rounded-lg px-4 text-[14px] focus:border-terracotta focus:outline-none" />
-        <input type="tel" placeholder={t('contact.phonePlaceholder')} value={formData.phone}
-          onChange={e => setFormData(f => ({ ...f, phone: e.target.value }))}
-          className="w-full h-11 border border-border-warm rounded-lg px-4 text-[14px] focus:border-terracotta focus:outline-none" />
-        <textarea placeholder={`${t('contact.messagePlaceholder')} *`} required rows={4} value={formData.message}
-          onChange={e => setFormData(f => ({ ...f, message: e.target.value }))}
-          className="w-full border border-border-warm rounded-lg px-4 py-3 text-[14px] focus:border-terracotta focus:outline-none resize-none" />
+      {/* Form layout estilo Idealista: mensaje arriba, email full-width,
+          teléfono + nombre lado a lado, política, botón prominente */}
+      <form className="space-y-4" onSubmit={handleSubmit} noValidate>
+        {/* Mensaje — protagonista del form */}
+        <div>
+          <label className="block font-inter text-[13px] font-semibold text-text-primary mb-1.5">
+            {t('contact.messageLabel', 'Mensaje')} <span className="text-terracotta">*</span>
+          </label>
+          <textarea
+            required
+            rows={4}
+            value={formData.message}
+            onChange={e => setFormData(f => ({ ...f, message: e.target.value }))}
+            placeholder={t('contact.messagePlaceholder')}
+            className="w-full px-3.5 py-3 border-2 border-border-warm rounded-xl text-[14px] font-inter text-text-primary placeholder:text-text-secondary/60 focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/15 transition-colors resize-none"
+          />
+        </div>
 
-        {error && <p className="text-red-600 text-[13px] font-inter">{error}</p>}
+        {/* Email full-width */}
+        <div>
+          <label className="block font-inter text-[13px] font-semibold text-text-primary mb-1.5">
+            {t('contact.emailLabel', 'Tu email')} <span className="text-terracotta">*</span>
+          </label>
+          <input
+            type="email"
+            value={formData.email}
+            onChange={e => setFormData(f => ({ ...f, email: e.target.value }))}
+            placeholder={t('contact.emailPlaceholder')}
+            className="w-full h-12 px-3.5 border-2 border-border-warm rounded-xl text-[14px] font-inter text-text-primary placeholder:text-text-secondary/60 focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/15 transition-colors"
+          />
+        </div>
 
-        <label className="flex items-start gap-2 cursor-pointer">
-          <div onClick={() => setAcceptedTerms(!acceptedTerms)}
-            className={cn('w-4 h-4 border rounded flex items-center justify-center flex-shrink-0 mt-0.5 cursor-pointer', acceptedTerms ? 'bg-terracotta border-terracotta' : 'border-border-warm')}>
-            {acceptedTerms && <Check size={10} className="text-white" />}
+        {/* Teléfono + Nombre lado a lado */}
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="block font-inter text-[13px] font-semibold text-text-primary mb-1.5">
+              {t('contact.phoneLabel', 'Teléfono')}
+            </label>
+            <input
+              type="tel"
+              value={formData.phone}
+              onChange={e => setFormData(f => ({ ...f, phone: e.target.value }))}
+              placeholder={t('contact.phonePlaceholder')}
+              className="w-full h-12 px-3.5 border-2 border-border-warm rounded-xl text-[14px] font-inter text-text-primary placeholder:text-text-secondary/60 focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/15 transition-colors"
+            />
           </div>
-          <span className="text-[12px] text-text-secondary font-inter leading-tight">{t('iAcceptTerms')}</span>
+          <div>
+            <label className="block font-inter text-[13px] font-semibold text-text-primary mb-1.5">
+              {t('contact.nameLabel', 'Nombre')} <span className="text-terracotta">*</span>
+            </label>
+            <input
+              type="text"
+              required
+              value={formData.name}
+              onChange={e => setFormData(f => ({ ...f, name: e.target.value }))}
+              placeholder={t('contact.namePlaceholder')}
+              className="w-full h-12 px-3.5 border-2 border-border-warm rounded-xl text-[14px] font-inter text-text-primary placeholder:text-text-secondary/60 focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/15 transition-colors"
+            />
+          </div>
+        </div>
+
+        {/* Política de privacidad — checkbox grande, label clicable */}
+        <label className="flex items-start gap-2.5 cursor-pointer pt-1">
+          <input
+            type="checkbox"
+            checked={acceptedTerms}
+            onChange={e => { setAcceptedTerms(e.target.checked); if (e.target.checked) setError('') }}
+            className="mt-0.5 w-5 h-5 accent-terracotta cursor-pointer shrink-0"
+          />
+          <span className="text-[13px] text-text-secondary font-inter leading-snug">
+            {t('iAcceptTerms')}
+          </span>
         </label>
 
-        <button type="submit" disabled={!acceptedTerms || submitting}
-          className="w-full h-12 bg-terracotta text-white font-inter text-[14px] font-semibold rounded-lg hover:scale-[1.02] transition-transform disabled:opacity-50 disabled:cursor-not-allowed">
+        {/* Error visible — antes el form fallaba en silencio */}
+        {error && (
+          <div className="flex items-start gap-2.5 bg-red-50 border border-red-200 rounded-xl px-3.5 py-2.5">
+            <span className="inline-block w-5 h-5 rounded-full bg-red-500 text-white text-[11px] font-bold leading-[20px] text-center shrink-0">!</span>
+            <p className="font-inter text-[13px] text-red-700 leading-snug">{error}</p>
+          </div>
+        )}
+
+        {/* Botón submit — más prominente */}
+        <button
+          type="submit"
+          disabled={submitting}
+          className="w-full min-h-[52px] bg-terracotta hover:bg-terracotta/90 active:bg-terracotta/80 text-white font-inter text-[14.5px] font-semibold rounded-xl transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+        >
           {submitting ? t('contact.sending') : t('sendMyRequest')}
         </button>
       </form>

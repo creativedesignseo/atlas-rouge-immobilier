@@ -85,9 +85,17 @@ export default function Contact() {
   const formRef = useRef<HTMLDivElement>(null)
   const infoRef = useRef<HTMLDivElement>(null)
 
+  // Error visible cuando el usuario olvida marcar el consentimiento
+  // o cuando Supabase devuelve error. Antes era un early return mudo.
+  const [submitError, setSubmitError] = useState<string | null>(null)
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!formState.consent) return
+    setSubmitError(null)
+    if (!formState.consent) {
+      setSubmitError(t('form.consentRequired', 'Acepta la política de privacidad para continuar.'))
+      return
+    }
     setSubmitting(true)
     const result = await submitContactForm({
       name: formState.name,
@@ -99,6 +107,8 @@ export default function Contact() {
     setSubmitting(false)
     if (result.success) {
       setSubmitted(true)
+    } else {
+      setSubmitError(result.error || t('form.errorGeneric', 'No se pudo enviar. Inténtalo de nuevo.'))
     }
   }
 
@@ -194,10 +204,10 @@ export default function Contact() {
               </h3>
 
               {submitted ? (
-                <div className="flex items-start gap-3 bg-green-50 border border-green-200 rounded-lg p-5">
-                  <Check size={22} className="text-green-600 shrink-0 mt-0.5" />
+                <div className="flex items-start gap-3 bg-green-50 border border-green-200 rounded-xl p-6">
+                  <Check size={24} className="text-green-600 shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-inter text-[15px] font-medium text-green-800 mb-1">
+                    <p className="font-inter text-[16px] font-semibold text-green-800 mb-1">
                       {t('form.successTitle')}
                     </p>
                     <p className="font-inter text-[14px] text-green-700">
@@ -206,26 +216,28 @@ export default function Contact() {
                   </div>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+                  {/* Mensaje primero — protagonista del form (layout Idealista) */}
                   <div className="form-field">
-                    <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
-                      {t('form.name')} *
+                    <label className="block font-inter text-[14px] font-semibold text-text-primary mb-2">
+                      {t('form.message')} <span className="text-terracotta">*</span>
                     </label>
-                    <input
-                      type="text"
+                    <textarea
                       required
-                      value={formState.name}
+                      rows={5}
+                      value={formState.message}
                       onChange={(e) =>
-                        setFormState((s) => ({ ...s, name: e.target.value }))
+                        setFormState((s) => ({ ...s, message: e.target.value }))
                       }
-                      className="w-full h-12 px-4 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors"
-                      placeholder={t('form.namePlaceholder')}
+                      className="w-full px-4 py-3.5 border-2 border-border-warm rounded-xl font-inter text-[15px] text-text-primary placeholder:text-text-secondary/60 focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/15 transition-colors resize-none"
+                      placeholder={t('form.messagePlaceholder')}
                     />
                   </div>
 
+                  {/* Email full-width */}
                   <div className="form-field">
-                    <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
-                      {t('form.email')} *
+                    <label className="block font-inter text-[14px] font-semibold text-text-primary mb-2">
+                      {t('form.email')} <span className="text-terracotta">*</span>
                     </label>
                     <input
                       type="email"
@@ -234,92 +246,99 @@ export default function Contact() {
                       onChange={(e) =>
                         setFormState((s) => ({ ...s, email: e.target.value }))
                       }
-                      className="w-full h-12 px-4 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors"
+                      className="w-full h-[52px] px-4 border-2 border-border-warm rounded-xl font-inter text-[15px] text-text-primary placeholder:text-text-secondary/60 focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/15 transition-colors"
                       placeholder={t('form.emailPlaceholder')}
                     />
                   </div>
 
-                  <div className="form-field">
-                    <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
-                      {t('form.phone')}
-                    </label>
-                    <input
-                      type="tel"
-                      value={formState.phone}
-                      onChange={(e) =>
-                        setFormState((s) => ({ ...s, phone: e.target.value }))
-                      }
-                      className="w-full h-12 px-4 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors"
-                      placeholder={t('form.phonePlaceholder')}
-                    />
+                  {/* Teléfono + Nombre en una fila (lado a lado en sm+) */}
+                  <div className="form-field grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block font-inter text-[14px] font-semibold text-text-primary mb-2">
+                        {t('form.phone')}
+                      </label>
+                      <input
+                        type="tel"
+                        value={formState.phone}
+                        onChange={(e) =>
+                          setFormState((s) => ({ ...s, phone: e.target.value }))
+                        }
+                        className="w-full h-[52px] px-4 border-2 border-border-warm rounded-xl font-inter text-[15px] text-text-primary placeholder:text-text-secondary/60 focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/15 transition-colors"
+                        placeholder={t('form.phonePlaceholder')}
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-inter text-[14px] font-semibold text-text-primary mb-2">
+                        {t('form.name')} <span className="text-terracotta">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={formState.name}
+                        onChange={(e) =>
+                          setFormState((s) => ({ ...s, name: e.target.value }))
+                        }
+                        className="w-full h-[52px] px-4 border-2 border-border-warm rounded-xl font-inter text-[15px] text-text-primary placeholder:text-text-secondary/60 focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/15 transition-colors"
+                        placeholder={t('form.namePlaceholder')}
+                      />
+                    </div>
                   </div>
 
+                  {/* Asunto opcional, compacto (no es el protagonista) */}
                   <div className="form-field">
-                    <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
-                      {t('form.subject')} *
+                    <label className="block font-inter text-[14px] font-semibold text-text-primary mb-2">
+                      {t('form.subject')}
                     </label>
                     <select
                       value={formState.subject}
                       onChange={(e) =>
-                        setFormState((s) => ({
-                          ...s,
-                          subject: e.target.value,
-                        }))
+                        setFormState((s) => ({ ...s, subject: e.target.value }))
                       }
-                      className="w-full h-12 px-4 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors bg-white"
+                      className="w-full h-[52px] px-4 border-2 border-border-warm rounded-xl font-inter text-[15px] text-text-primary focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/15 transition-colors bg-white"
                     >
-                      <option value="buy">{t('form.subject')}</option>
-                      <option value="sell">Vente</option>
-                      <option value="rent">Location</option>
-                      <option value="estimate">Estimation</option>
-                      <option value="other">Autre</option>
+                      <option value="buy">{t('form.subjects.buy', 'Compra')}</option>
+                      <option value="sell">{t('form.subjects.sell', 'Venta')}</option>
+                      <option value="rent">{t('form.subjects.rent', 'Alquiler')}</option>
+                      <option value="estimate">{t('form.subjects.estimate', 'Estimación')}</option>
+                      <option value="other">{t('form.subjects.other', 'Otro')}</option>
                     </select>
                   </div>
 
-                  <div className="form-field">
-                    <label className="block font-inter text-[13px] font-medium text-text-primary mb-1.5">
-                      {t('form.message')} *
-                    </label>
-                    <textarea
-                      required
-                      rows={5}
-                      value={formState.message}
-                      onChange={(e) =>
-                        setFormState((s) => ({
-                          ...s,
-                          message: e.target.value,
-                        }))
-                      }
-                      className="w-full px-4 py-3 border border-border-warm rounded-lg font-inter text-[14px] focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/20 transition-colors resize-none"
-                      placeholder={t('form.messagePlaceholder')}
-                    />
-                  </div>
-
-                  <div className="form-field flex items-start gap-3">
+                  {/* Política — checkbox grande + texto legible */}
+                  <div className={`form-field flex items-start gap-3 ${submitError && !formState.consent ? 'animate-pulse' : ''}`}>
                     <input
                       type="checkbox"
                       id="consent"
                       checked={formState.consent}
-                      onChange={(e) =>
-                        setFormState((s) => ({
-                          ...s,
-                          consent: e.target.checked,
-                        }))
-                      }
-                      className="mt-1 w-4 h-4 accent-terracotta"
+                      onChange={(e) => {
+                        setFormState((s) => ({ ...s, consent: e.target.checked }))
+                        if (e.target.checked) setSubmitError(null)
+                      }}
+                      className="mt-0.5 w-5 h-5 accent-terracotta cursor-pointer"
                     />
                     <label
                       htmlFor="consent"
-                      className="font-inter text-[13px] text-text-secondary leading-[1.5]"
+                      className="font-inter text-[14px] text-text-secondary leading-[1.55] cursor-pointer"
                     >
                       {t('form.consent')}
                     </label>
                   </div>
 
+                  {/* Error visible — antes el form fallaba en silencio */}
+                  {submitError && (
+                    <div className="flex items-start gap-2.5 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+                      <span className="inline-block w-5 h-5 rounded-full bg-red-500 text-white text-[12px] font-bold leading-[20px] text-center shrink-0">!</span>
+                      <p className="font-inter text-[13.5px] text-red-700 leading-snug">
+                        {submitError}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Botón submit — más grande, prominente */}
                   <button
                     type="submit"
-                    disabled={!formState.consent || submitting}
-                    className="form-field w-full h-12 bg-terracotta text-white font-inter text-[14px] font-semibold rounded-lg hover:scale-[1.01] active:scale-[0.99] transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={submitting}
+                    className="form-field w-full min-h-[56px] bg-terracotta hover:bg-terracotta/90 active:bg-terracotta/80 text-white font-inter text-[15px] font-semibold rounded-xl transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {submitting ? t('form.sending') : t('form.send')}
                   </button>
