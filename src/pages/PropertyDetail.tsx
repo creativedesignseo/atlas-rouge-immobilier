@@ -185,64 +185,64 @@ function ContactPanel({ property, settings }: { property: Property; settings: Re
         </div>
       </div>
 
-      {/* Form layout estilo Idealista: mensaje arriba, email full-width,
-          teléfono + nombre lado a lado, política, botón prominente */}
-      <form className="space-y-4" onSubmit={handleSubmit} noValidate>
-        {/* Mensaje — protagonista del form */}
+      {/* Form minimalista — stack vertical, una caja por línea
+          orden: mensaje → email → teléfono → nombre → consentimiento */}
+      <form className="space-y-3.5" onSubmit={handleSubmit} noValidate>
+        {/* Mensaje */}
         <div>
-          <label className="block font-inter text-[13px] font-semibold text-text-primary mb-1.5">
-            {t('contact.messageLabel', 'Mensaje')} <span className="text-terracotta">*</span>
+          <label className="block font-inter text-[12.5px] font-medium text-text-secondary mb-1.5 uppercase tracking-wide">
+            {t('contact.messageLabel', 'Mensaje')}
           </label>
           <textarea
             required
-            rows={4}
+            rows={3}
             value={formData.message}
             onChange={e => setFormData(f => ({ ...f, message: e.target.value }))}
             placeholder={t('contact.messagePlaceholder')}
-            className="w-full px-3.5 py-3 border-2 border-border-warm rounded-xl text-[14px] font-inter text-text-primary placeholder:text-text-secondary/60 focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/15 transition-colors resize-none"
+            className="w-full px-3.5 py-3 border border-border-warm rounded-xl text-[14.5px] font-inter text-text-primary placeholder:text-text-secondary/50 focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/30 transition-colors resize-none"
           />
         </div>
 
-        {/* Email full-width */}
+        {/* Email */}
         <div>
-          <label className="block font-inter text-[13px] font-semibold text-text-primary mb-1.5">
-            {t('contact.emailLabel', 'Tu email')} <span className="text-terracotta">*</span>
+          <label className="block font-inter text-[12.5px] font-medium text-text-secondary mb-1.5 uppercase tracking-wide">
+            {t('contact.emailLabel', 'Tu email')}
           </label>
           <input
             type="email"
             value={formData.email}
             onChange={e => setFormData(f => ({ ...f, email: e.target.value }))}
             placeholder={t('contact.emailPlaceholder')}
-            className="w-full h-12 px-3.5 border-2 border-border-warm rounded-xl text-[14px] font-inter text-text-primary placeholder:text-text-secondary/60 focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/15 transition-colors"
+            className="w-full h-12 px-3.5 border border-border-warm rounded-xl text-[14.5px] font-inter text-text-primary placeholder:text-text-secondary/50 focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/30 transition-colors"
           />
         </div>
 
-        {/* Teléfono + Nombre lado a lado */}
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="block font-inter text-[13px] font-semibold text-text-primary mb-1.5">
-              {t('contact.phoneLabel', 'Teléfono')}
-            </label>
-            <PhoneField
-              value={formData.phone}
-              onChange={(v) => setFormData(f => ({ ...f, phone: v }))}
-              placeholder={t('contact.phonePlaceholder')}
-              size="md"
-            />
-          </div>
-          <div>
-            <label className="block font-inter text-[13px] font-semibold text-text-primary mb-1.5">
-              {t('contact.nameLabel', 'Nombre')} <span className="text-terracotta">*</span>
-            </label>
-            <input
-              type="text"
-              required
-              value={formData.name}
-              onChange={e => setFormData(f => ({ ...f, name: e.target.value }))}
-              placeholder={t('contact.namePlaceholder')}
-              className="w-full h-12 px-3.5 border-2 border-border-warm rounded-xl text-[14px] font-inter text-text-primary placeholder:text-text-secondary/60 focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/15 transition-colors"
-            />
-          </div>
+        {/* Teléfono — full-width para que el dropdown del país respire */}
+        <div>
+          <label className="block font-inter text-[12.5px] font-medium text-text-secondary mb-1.5 uppercase tracking-wide">
+            {t('contact.phoneLabel', 'Teléfono')}
+          </label>
+          <PhoneField
+            value={formData.phone}
+            onChange={(v) => setFormData(f => ({ ...f, phone: v }))}
+            placeholder={t('contact.phonePlaceholder')}
+            size="md"
+          />
+        </div>
+
+        {/* Nombre — full-width */}
+        <div>
+          <label className="block font-inter text-[12.5px] font-medium text-text-secondary mb-1.5 uppercase tracking-wide">
+            {t('contact.nameLabel', 'Nombre')}
+          </label>
+          <input
+            type="text"
+            required
+            value={formData.name}
+            onChange={e => setFormData(f => ({ ...f, name: e.target.value }))}
+            placeholder={t('contact.namePlaceholder')}
+            className="w-full h-12 px-3.5 border border-border-warm rounded-xl text-[14.5px] font-inter text-text-primary placeholder:text-text-secondary/50 focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/30 transition-colors"
+          />
         </div>
 
         {/* Política de privacidad — checkbox grande, label clicable */}
