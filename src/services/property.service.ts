@@ -23,6 +23,28 @@ function getCurrentLanguage(): SupportedLanguage {
   return SUPPORTED_LANGUAGES.includes(lang) ? lang : 'en'
 }
 
+/**
+ * Race una promesa contra un timeout. Si la promesa no resuelve antes del
+ * timeout, rechaza con un Error('TIMEOUT'). Crítico para queries Supabase
+ * que ocasionalmente se cuelgan en móvil sin red 4G estable o cuando el
+ * navegador despierta de background.
+ */
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const id = setTimeout(() => reject(new Error('TIMEOUT')), ms)
+    promise.then(
+      (v) => {
+        clearTimeout(id)
+        resolve(v)
+      },
+      (e) => {
+        clearTimeout(id)
+        reject(e)
+      },
+    )
+  })
+}
+
 function localizedString(row: Record<string, unknown>, field: 'title' | 'description', lang: SupportedLanguage): string {
   const localized = row[`${field}_${lang}`]
   const french = row[`${field}_fr`]
@@ -113,17 +135,22 @@ async function fetchProperties(filters: PropertyFilters): Promise<Property[]> {
     default: query = query.order('is_featured', { ascending: false })
   }
 
-  const { data, error } = await query
-  if (error) {
-    console.error('Supabase error:', error)
+  try {
+    const { data, error } = await withTimeout(Promise.resolve(query), 12000)
+    if (error) {
+      console.error('Supabase error:', error)
+      return applyMockFilters(mockProperties, filters)
+    }
+    return (data || []).map((row: Record<string, unknown>) => {
+      const neighborhoodName = row.neighborhoods && typeof row.neighborhoods === 'object'
+        ? (row.neighborhoods as Record<string, unknown>).name as string
+        : ''
+      return mapDbToProperty({ ...row, neighborhood_name: neighborhoodName })
+    })
+  } catch (err) {
+    console.error('[property.service] fetchProperties timeout/error:', err)
     return applyMockFilters(mockProperties, filters)
   }
-  return (data || []).map((row: Record<string, unknown>) => {
-    const neighborhoodName = row.neighborhoods && typeof row.neighborhoods === 'object'
-      ? (row.neighborhoods as Record<string, unknown>).name as string
-      : ''
-    return mapDbToProperty({ ...row, neighborhood_name: neighborhoodName })
-  })
 }
 
 export async function getProperties(filters: PropertyFilters = {}): Promise<Property[]> {
@@ -145,22 +172,27 @@ async function fetchPropertyBySlug(slug: string): Promise<Property | null> {
     return mockProperties.find((p) => p.slug === slug) || null
   }
 
-  const { data, error } = await supabase
+  const query = supabase
     .from('properties')
     .select(`*, neighborhoods(name)`)
     .eq('slug', slug)
     .single()
 
-  if (error || !data) {
-    console.error('Supabase error:', error)
+  try {
+    const { data, error } = await withTimeout(Promise.resolve(query), 12000)
+    if (error || !data) {
+      console.error('Supabase error:', error)
+      return mockProperties.find((p) => p.slug === slug) || null
+    }
+    const row = data as Record<string, unknown>
+    const neighborhoodName = row.neighborhoods && typeof row.neighborhoods === 'object'
+      ? (row.neighborhoods as Record<string, unknown>).name as string
+      : ''
+    return mapDbToProperty({ ...row, neighborhood_name: neighborhoodName })
+  } catch (err) {
+    console.error('[property.service] fetchPropertyBySlug timeout/error:', err)
     return mockProperties.find((p) => p.slug === slug) || null
   }
-
-  const row = data as Record<string, unknown>
-  const neighborhoodName = row.neighborhoods && typeof row.neighborhoods === 'object'
-    ? (row.neighborhoods as Record<string, unknown>).name as string
-    : ''
-  return mapDbToProperty({ ...row, neighborhood_name: neighborhoodName })
 }
 
 export async function getPropertyBySlug(slug: string): Promise<Property | null> {
@@ -179,23 +211,28 @@ async function fetchFeaturedProperties(limit: number): Promise<Property[]> {
     return mockProperties.filter((p) => p.isFeatured).slice(0, limit)
   }
 
-  const { data, error } = await supabase
+  const query = supabase
     .from('properties')
     .select(`*, neighborhoods(name)`)
     .eq('is_featured', true)
     .limit(limit)
 
-  if (error || !data) {
-    console.error('Supabase error:', error)
+  try {
+    const { data, error } = await withTimeout(Promise.resolve(query), 12000)
+    if (error || !data) {
+      console.error('Supabase error:', error)
+      return mockProperties.filter((p) => p.isFeatured).slice(0, limit)
+    }
+    return data.map((row: Record<string, unknown>) => {
+      const neighborhoodName = row.neighborhoods && typeof row.neighborhoods === 'object'
+        ? (row.neighborhoods as Record<string, unknown>).name as string
+        : ''
+      return mapDbToProperty({ ...row, neighborhood_name: neighborhoodName })
+    })
+  } catch (err) {
+    console.error('[property.service] fetchFeaturedProperties timeout/error:', err)
     return mockProperties.filter((p) => p.isFeatured).slice(0, limit)
   }
-
-  return data.map((row: Record<string, unknown>) => {
-    const neighborhoodName = row.neighborhoods && typeof row.neighborhoods === 'object'
-      ? (row.neighborhoods as Record<string, unknown>).name as string
-      : ''
-    return mapDbToProperty({ ...row, neighborhood_name: neighborhoodName })
-  })
 }
 
 export async function getFeaturedProperties(limit = 3): Promise<Property[]> {
@@ -210,31 +247,33 @@ export async function getFeaturedProperties(limit = 3): Promise<Property[]> {
 }
 
 export async function getSimilarProperties(property: Property, limit = 3): Promise<Property[]> {
-  if (!isSupabaseConfigured) {
-    return mockProperties
+  const fallback = () =>
+    mockProperties
       .filter((p) => p.slug !== property.slug && (p.type === property.type || p.neighborhood === property.neighborhood))
       .slice(0, limit)
-  }
 
-  const { data, error } = await supabase
+  if (!isSupabaseConfigured) return fallback()
+
+  const query = supabase
     .from('properties')
     .select(`*, neighborhoods(name)`)
     .neq('slug', property.slug)
     .or(`type.eq.${property.type},neighborhoods.name.eq.${property.neighborhood}`)
     .limit(limit)
 
-  if (error || !data) {
-    return mockProperties
-      .filter((p) => p.slug !== property.slug && (p.type === property.type || p.neighborhood === property.neighborhood))
-      .slice(0, limit)
+  try {
+    const { data, error } = await withTimeout(Promise.resolve(query), 12000)
+    if (error || !data) return fallback()
+    return data.map((row: Record<string, unknown>) => {
+      const neighborhoodName = row.neighborhoods && typeof row.neighborhoods === 'object'
+        ? (row.neighborhoods as Record<string, unknown>).name as string
+        : ''
+      return mapDbToProperty({ ...row, neighborhood_name: neighborhoodName })
+    })
+  } catch (err) {
+    console.error('[property.service] getSimilarProperties timeout/error:', err)
+    return fallback()
   }
-
-  return data.map((row: Record<string, unknown>) => {
-    const neighborhoodName = row.neighborhoods && typeof row.neighborhoods === 'object'
-      ? (row.neighborhoods as Record<string, unknown>).name as string
-      : ''
-    return mapDbToProperty({ ...row, neighborhood_name: neighborhoodName })
-  })
 }
 
 function applyMockFilters(properties: Property[], filters: PropertyFilters): Property[] {
