@@ -19,6 +19,7 @@ import {
   Facebook,
 } from 'lucide-react'
 import SectionReveal from '@/components/SectionReveal'
+import PhoneField from '@/components/forms/PhoneField'
 import { useSiteSettings } from '@/hooks/useSiteSettings'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -257,14 +258,11 @@ export default function Contact() {
                       <label className="block font-inter text-[14px] font-semibold text-text-primary mb-2">
                         {t('form.phone')}
                       </label>
-                      <input
-                        type="tel"
+                      <PhoneField
                         value={formState.phone}
-                        onChange={(e) =>
-                          setFormState((s) => ({ ...s, phone: e.target.value }))
-                        }
-                        className="w-full h-[52px] px-4 border-2 border-border-warm rounded-xl font-inter text-[15px] text-text-primary placeholder:text-text-secondary/60 focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/15 transition-colors"
+                        onChange={(v) => setFormState((s) => ({ ...s, phone: v }))}
                         placeholder={t('form.phonePlaceholder')}
+                        size="lg"
                       />
                     </div>
                     <div>

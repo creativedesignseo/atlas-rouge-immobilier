@@ -14,6 +14,7 @@ import {
 const LocationMap = lazy(() => import('@/components/property/LocationMap'))
 import { getPropertyBySlug, getSimilarProperties } from '@/services/property.service'
 import { submitContactForm } from '@/services/contact.service'
+import PhoneField from '@/components/forms/PhoneField'
 import { useFavorites } from '@/hooks/useFavorites'
 import { useCurrency } from '@/hooks/useCurrency'
 import { useSiteSettings } from '@/hooks/useSiteSettings'
@@ -222,12 +223,11 @@ function ContactPanel({ property, settings }: { property: Property; settings: Re
             <label className="block font-inter text-[13px] font-semibold text-text-primary mb-1.5">
               {t('contact.phoneLabel', 'Teléfono')}
             </label>
-            <input
-              type="tel"
+            <PhoneField
               value={formData.phone}
-              onChange={e => setFormData(f => ({ ...f, phone: e.target.value }))}
+              onChange={(v) => setFormData(f => ({ ...f, phone: v }))}
               placeholder={t('contact.phonePlaceholder')}
-              className="w-full h-12 px-3.5 border-2 border-border-warm rounded-xl text-[14px] font-inter text-text-primary placeholder:text-text-secondary/60 focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/15 transition-colors"
+              size="md"
             />
           </div>
           <div>
