@@ -96,7 +96,12 @@
     "placeholder": "Votre adresse email",
     "submit": "S'inscrire",
     "disclaimer": "Désinscription à tout moment. Aucun spam.",
-    "alertSoon": "Inscription bientôt disponible !"
+    "alertSoon": "Inscription bientôt disponible !",
+    "successToast": "Inscription confirmée !",
+    "errorGeneric": "Impossible de s’inscrire.",
+    "successTitle": "Bienvenue !",
+    "successText": "Vous recevrez nos prochains articles dans votre boîte mail.",
+    "submitting": "Envoi en cours…"
   },
   "by": "Par",
   "emptyState": {

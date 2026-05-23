@@ -38,7 +38,15 @@
     "whatsapp": "Contactez via WhatsApp",
     "call": "Appelez-nous",
     "orReachUs": "Ou contactez-nous directement",
-    "optional": "optionnel"
+    "optional": "optionnel",
+    "nameLabel": "Nom",
+    "emailLabel": "Email",
+    "phoneLabel": "Téléphone",
+    "messageLabel": "Message",
+    "errorName": "Veuillez indiquer votre nom.",
+    "errorContact": "Indiquez un email ou un téléphone pour que nous puissions vous répondre.",
+    "errorMessage": "Écrivez un message.",
+    "errorTerms": "Acceptez la politique de confidentialité pour continuer."
   },
   "readMore": "Lire la suite",
   "showLess": "Réduire",

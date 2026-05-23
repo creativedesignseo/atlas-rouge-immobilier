@@ -38,7 +38,15 @@
     "whatsapp": "Contact via WhatsApp",
     "call": "Call us",
     "orReachUs": "Or reach us directly",
-    "optional": "optional"
+    "optional": "optional",
+    "nameLabel": "Name",
+    "emailLabel": "Email",
+    "phoneLabel": "Phone",
+    "messageLabel": "Message",
+    "errorName": "Please enter your name.",
+    "errorContact": "Provide an email or phone so we can get back to you.",
+    "errorMessage": "Please write a message.",
+    "errorTerms": "Accept the privacy policy to continue."
   },
   "readMore": "Read more",
   "showLess": "Show less",

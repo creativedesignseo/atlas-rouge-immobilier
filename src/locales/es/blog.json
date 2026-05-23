@@ -96,7 +96,12 @@
     "placeholder": "Su correo electrónico",
     "submit": "Suscribirme",
     "disclaimer": "Cancele su suscripción en cualquier momento. Sin spam.",
-    "alertSoon": "¡La suscripción estará disponible próximamente!"
+    "alertSoon": "¡La suscripción estará disponible próximamente!",
+    "successToast": "¡Suscripción confirmada!",
+    "errorGeneric": "No se pudo suscribir.",
+    "successTitle": "¡Bienvenido!",
+    "successText": "Recibirás nuestros próximos artículos en tu correo.",
+    "submitting": "Enviando…"
   },
   "by": "Por",
   "emptyState": {

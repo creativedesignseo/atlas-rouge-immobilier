@@ -16,7 +16,13 @@
     "phoneLabel": "Phone",
     "phonePlaceholder": "+212 6 XX XX XX XX",
     "dateLabel": "Preferred date",
-    "submit": "Request a visit"
+    "submit": "Request a visit",
+    "errorMissing": "Please enter a name and phone number.",
+    "successToast": "Request sent — we will get back to you shortly.",
+    "errorGeneric": "Could not send. Please try again.",
+    "submitting": "Sending…",
+    "successTitle": "Request received!",
+    "successText": "An advisor will get back to you within 24 hours to schedule a visit."
   },
   "steps": {
     "heading": "How it works",

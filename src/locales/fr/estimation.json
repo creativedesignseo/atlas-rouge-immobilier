@@ -16,7 +16,13 @@
     "phoneLabel": "Téléphone",
     "phonePlaceholder": "+212 6 XX XX XX XX",
     "dateLabel": "Date souhaitée",
-    "submit": "Demander une visite"
+    "submit": "Demander une visite",
+    "errorMissing": "Veuillez indiquer un nom et un téléphone.",
+    "successToast": "Demande envoyée — nous vous contactons rapidement.",
+    "errorGeneric": "Envoi impossible. Veuillez réessayer.",
+    "submitting": "Envoi en cours…",
+    "successTitle": "Demande reçue !",
+    "successText": "Un conseiller vous contactera sous 24h pour fixer la visite."
   },
   "steps": {
     "heading": "Comment ça marche ?",

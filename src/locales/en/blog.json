@@ -96,7 +96,12 @@
     "placeholder": "Your email address",
     "submit": "Subscribe",
     "disclaimer": "Unsubscribe anytime. No spam.",
-    "alertSoon": "Subscription coming soon!"
+    "alertSoon": "Subscription coming soon!",
+    "successToast": "Subscription confirmed!",
+    "errorGeneric": "Could not subscribe.",
+    "successTitle": "Welcome!",
+    "successText": "You will receive our next articles in your inbox.",
+    "submitting": "Sending…"
   },
   "by": "By",
   "emptyState": {

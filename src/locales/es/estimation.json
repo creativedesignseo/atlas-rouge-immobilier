@@ -16,7 +16,13 @@
     "phoneLabel": "Teléfono",
     "phonePlaceholder": "+212 6 XX XX XX XX",
     "dateLabel": "Fecha deseada",
-    "submit": "Solicitar una visita"
+    "submit": "Solicitar una visita",
+    "errorMissing": "Por favor introduce nombre y teléfono.",
+    "successToast": "Solicitud enviada — te contactamos pronto.",
+    "errorGeneric": "No se pudo enviar. Inténtalo de nuevo.",
+    "submitting": "Enviando…",
+    "successTitle": "¡Solicitud recibida!",
+    "successText": "Un asesor te contactará en menos de 24 horas para fijar la visita."
   },
   "steps": {
     "heading": "¿Cómo funciona?",
