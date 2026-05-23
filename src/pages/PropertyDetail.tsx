@@ -185,28 +185,34 @@ function ContactPanel({ property, settings }: { property: Property; settings: Re
         </div>
       </div>
 
-      {/* Form minimalista — stack vertical, una caja por línea
-          orden: mensaje → email → teléfono → nombre → consentimiento */}
+      {/* Form minimalista — orden cognitivo profesional:
+          1. Nombre (identificarse — compromiso bajo)
+          2. Email (canal principal)
+          3. Teléfono (opcional)
+          4. Mensaje (el cuerpo, donde se invierte más esfuerzo)
+          5. Consentimiento RGPD
+          6. Submit
+          (Patrón Idealista / Rightmove / Sotheby's / James Edition) */}
       <form className="space-y-3.5" onSubmit={handleSubmit} noValidate>
-        {/* Mensaje */}
+        {/* Nombre */}
         <div>
           <label className="block font-inter text-[12.5px] font-medium text-text-secondary mb-1.5 uppercase tracking-wide">
-            {t('contact.messageLabel', 'Mensaje')}
+            {t('contact.nameLabel', 'Nombre')}
           </label>
-          <textarea
+          <input
+            type="text"
             required
-            rows={3}
-            value={formData.message}
-            onChange={e => setFormData(f => ({ ...f, message: e.target.value }))}
-            placeholder={t('contact.messagePlaceholder')}
-            className="w-full px-3.5 py-3 border border-border-warm rounded-xl text-[14.5px] font-inter text-text-primary placeholder:text-text-secondary/50 focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/30 transition-colors resize-none"
+            value={formData.name}
+            onChange={e => setFormData(f => ({ ...f, name: e.target.value }))}
+            placeholder={t('contact.namePlaceholder')}
+            className="w-full h-12 px-3.5 border border-border-warm rounded-xl text-[14.5px] font-inter text-text-primary placeholder:text-text-secondary/50 focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/30 transition-colors"
           />
         </div>
 
         {/* Email */}
         <div>
           <label className="block font-inter text-[12.5px] font-medium text-text-secondary mb-1.5 uppercase tracking-wide">
-            {t('contact.emailLabel', 'Tu email')}
+            {t('contact.emailLabel', 'Email')}
           </label>
           <input
             type="email"
@@ -220,7 +226,10 @@ function ContactPanel({ property, settings }: { property: Property; settings: Re
         {/* Teléfono — full-width para que el dropdown del país respire */}
         <div>
           <label className="block font-inter text-[12.5px] font-medium text-text-secondary mb-1.5 uppercase tracking-wide">
-            {t('contact.phoneLabel', 'Teléfono')}
+            {t('contact.phoneLabel', 'Teléfono')}{' '}
+            <span className="text-text-secondary/60 normal-case font-normal tracking-normal">
+              ({t('contact.optional', 'opcional')})
+            </span>
           </label>
           <PhoneField
             value={formData.phone}
@@ -230,18 +239,18 @@ function ContactPanel({ property, settings }: { property: Property; settings: Re
           />
         </div>
 
-        {/* Nombre — full-width */}
+        {/* Mensaje */}
         <div>
           <label className="block font-inter text-[12.5px] font-medium text-text-secondary mb-1.5 uppercase tracking-wide">
-            {t('contact.nameLabel', 'Nombre')}
+            {t('contact.messageLabel', 'Mensaje')}
           </label>
-          <input
-            type="text"
+          <textarea
             required
-            value={formData.name}
-            onChange={e => setFormData(f => ({ ...f, name: e.target.value }))}
-            placeholder={t('contact.namePlaceholder')}
-            className="w-full h-12 px-3.5 border border-border-warm rounded-xl text-[14.5px] font-inter text-text-primary placeholder:text-text-secondary/50 focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/30 transition-colors"
+            rows={4}
+            value={formData.message}
+            onChange={e => setFormData(f => ({ ...f, message: e.target.value }))}
+            placeholder={t('contact.messagePlaceholder')}
+            className="w-full px-3.5 py-3 border border-border-warm rounded-xl text-[14.5px] font-inter text-text-primary placeholder:text-text-secondary/50 focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta/30 transition-colors resize-none"
           />
         </div>
 
@@ -266,34 +275,42 @@ function ContactPanel({ property, settings }: { property: Property; settings: Re
           </div>
         )}
 
-        {/* Botón submit — más prominente */}
+        {/* Botón submit — único CTA primario del form */}
         <button
           type="submit"
           disabled={submitting}
-          className="w-full min-h-[52px] bg-terracotta hover:bg-terracotta/90 active:bg-terracotta/80 text-white font-inter text-[14.5px] font-semibold rounded-xl transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+          className="w-full min-h-[52px] bg-terracotta hover:bg-terracotta/90 active:bg-terracotta/80 text-white font-inter text-[14.5px] font-semibold rounded-xl transition-colors disabled:opacity-60 disabled:cursor-not-allowed mt-1"
         >
           {submitting ? t('contact.sending') : t('sendMyRequest')}
         </button>
       </form>
 
-      <div className="mt-4 space-y-2">
-        <button className="w-full h-10 border border-terracotta text-terracotta font-inter text-[13px] font-medium rounded-lg hover:bg-terracotta/5 transition-colors">
-          {t('requestVisit')}
-        </button>
-        <button className="w-full h-10 border border-border-warm text-text-primary font-inter text-[13px] font-medium rounded-lg hover:bg-cream transition-colors">
-          {t('scheduleCallback')}
-        </button>
-      </div>
-
-      <div className="flex gap-2 mt-4">
-        <a href={`https://wa.me/${whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer"
-          className="flex-1 flex items-center justify-center gap-2 h-10 bg-[#25D366] text-white font-inter text-[13px] font-medium rounded-lg hover:opacity-90 transition-opacity">
-          <MessageCircle size={16} /> WhatsApp
-        </a>
-        <a href={`tel:${phone.replace(/\s/g, '')}`}
-          className="flex-1 flex items-center justify-center gap-2 h-10 border border-border-warm text-text-primary font-inter text-[13px] font-medium rounded-lg hover:bg-cream transition-colors">
-          <Phone size={16} /> {t('call')}
-        </a>
+      {/* Vías alternativas — discretas, separadas del form por un divider */}
+      <div className="mt-6 pt-5 border-t border-border-warm">
+        <p className="font-inter text-[11px] uppercase tracking-wider text-text-secondary text-center mb-3">
+          {t('contact.orReachUs', 'O contacta directamente')}
+        </p>
+        <div className="flex gap-2">
+          <a
+            href={`https://wa.me/${whatsapp.replace(/\D/g, '')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 flex items-center justify-center gap-2 min-h-[44px] text-text-primary hover:text-[#25D366] active:bg-cream-warm font-inter text-[13.5px] font-medium rounded-lg transition-colors"
+            aria-label="WhatsApp"
+          >
+            <MessageCircle size={17} strokeWidth={2.25} className="text-[#25D366]" />
+            WhatsApp
+          </a>
+          <span className="w-px bg-border-warm self-stretch my-1" />
+          <a
+            href={`tel:${phone.replace(/\s/g, '')}`}
+            className="flex-1 flex items-center justify-center gap-2 min-h-[44px] text-text-primary hover:text-terracotta active:bg-cream-warm font-inter text-[13.5px] font-medium rounded-lg transition-colors"
+            aria-label="Llamar"
+          >
+            <Phone size={17} strokeWidth={2.25} className="text-terracotta" />
+            {t('call')}
+          </a>
+        </div>
       </div>
     </div>
   )

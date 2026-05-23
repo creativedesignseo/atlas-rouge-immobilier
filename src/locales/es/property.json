@@ -36,7 +36,9 @@
     "successTitle": "¡Mensaje enviado!",
     "successText": "Le responderemos en 24 horas.",
     "whatsapp": "Contactar vía WhatsApp",
-    "call": "Llámenos"
+    "call": "Llámenos",
+    "orReachUs": "O contacta directamente",
+    "optional": "opcional"
   },
   "readMore": "Leer más",
   "showLess": "Mostrar menos",

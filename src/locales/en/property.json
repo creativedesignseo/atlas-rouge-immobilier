@@ -36,7 +36,9 @@
     "successTitle": "Message sent!",
     "successText": "We will get back to you within 24 hours.",
     "whatsapp": "Contact via WhatsApp",
-    "call": "Call us"
+    "call": "Call us",
+    "orReachUs": "Or reach us directly",
+    "optional": "optional"
   },
   "readMore": "Read more",
   "showLess": "Show less",
