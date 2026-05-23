@@ -1,8 +1,7 @@
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from '@/hooks/useAuth'
-import i18n from './i18n'
-import { resolveInitialLanguage } from '@/lib/geoLanguage'
+import './i18n'
 import './index.css'
 import App from './App.tsx'
 
@@ -26,12 +25,10 @@ function recoverFromStaleChunk(reason: unknown) {
 window.addEventListener('error', (e) => recoverFromStaleChunk(e.error || e.message))
 window.addEventListener('unhandledrejection', (e) => recoverFromStaleChunk(e.reason))
 
-// Refine initial language via Geo-IP on the very first visit (no localStorage
-// entry yet). Non-blocking: if a different language is resolved, i18next
-// swaps strings reactively.
-resolveInitialLanguage(i18n.language).then((geoLang) => {
-  if (geoLang) i18n.changeLanguage(geoLang)
-})
+// NOTA: la geo-IP detection se movió al LangDetector component
+// (src/App.tsx) — solo aplica cuando la URL NO contiene /:lang.
+// Antes, esto corría asíncrono y pisaba el idioma de la URL después
+// del primer render, causando que /es/... mostrara inglés.
 
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>

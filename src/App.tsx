@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect } from 'react'
+import { Suspense, lazy, useEffect, useState } from 'react'
 import { Routes, Route, Outlet, Navigate, useParams, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Toaster } from '@/components/ui/sonner'
@@ -11,6 +11,7 @@ import { SUPPORTED_LANGUAGES, type SupportedLanguage } from './i18n'
 import { getAllSlugsForKey } from './lib/routes'
 import { FavoritesProvider } from './hooks/useFavorites'
 import CookieBanner from './components/CookieBanner'
+import { resolveInitialLanguage } from './lib/geoLanguage'
 
 const Home = lazy(() => import('./pages/Home'))
 const SearchPage = lazy(() => import('./pages/Search'))
@@ -55,32 +56,79 @@ function AdminLayoutWrapper() {
   )
 }
 
-// Sets the i18n language based on the :lang URL param
+// Sets the i18n language based on the :lang URL param.
+// CRÍTICO: el cambio debe ocurrir SÍNCRONO antes de que se rendericen los
+// hijos, NO en useEffect (que corre después). Si esperáramos al effect,
+// los componentes que leen t() en su primer render verían el idioma viejo
+// (típicamente 'en' por detección) y mostrarían fallback inglés. Bug
+// recurrente reportado por cliente: 'Hello, I am interested...' en /es/.
 function LangWrapper() {
   const { lang } = useParams<{ lang: string }>()
   const { i18n } = useTranslation()
   const navigate = useNavigate()
 
+  // Si la URL trae un idioma soportado y no coincide con i18n, lo cambiamos
+  // INMEDIATAMENTE — en el render actual. i18n.changeLanguage es síncrono
+  // cuando los recursos están bundleados (lo están en este proyecto).
+  const urlLangValid = lang && SUPPORTED_LANGUAGES.includes(lang as SupportedLanguage)
+  if (urlLangValid && i18n.language !== lang) {
+    i18n.changeLanguage(lang)
+  }
+
+  // Actualizar <html lang="..."> + redirigir si URL inválida
   useEffect(() => {
-    if (!lang || !SUPPORTED_LANGUAGES.includes(lang as SupportedLanguage)) {
-      navigate(`/en/`, { replace: true })
+    if (!urlLangValid) {
+      navigate('/fr/', { replace: true })
       return
     }
-    if (i18n.language !== lang) {
-      i18n.changeLanguage(lang)
-    }
-    document.documentElement.lang = lang
-  }, [lang, i18n, navigate])
+    document.documentElement.lang = lang!
+  }, [lang, urlLangValid, navigate])
+
+  // Bloquear render hasta que i18n esté en el idioma correcto.
+  // En la práctica esto pasa en el mismo tick porque changeLanguage es
+  // síncrono, pero es defensivo: garantiza que ningún hijo vea EN cuando
+  // la URL dice ES.
+  if (urlLangValid && i18n.language !== lang) {
+    return null
+  }
 
   return <Outlet />
 }
 
-// Detects browser language and redirects to /:lang/
+// Detecta idioma desde browser/geo y redirige a /:lang/.
+// Solo se monta cuando la URL NO contiene /:lang (raíz /, o 404).
+// Fallback FR (no EN) — idioma base del proyecto.
 function LangDetector() {
   const { i18n } = useTranslation()
-  const detected = i18n.language?.slice(0, 2) as SupportedLanguage
-  const lang = SUPPORTED_LANGUAGES.includes(detected) ? detected : 'en'
-  return <Navigate to={`/${lang}/`} replace />
+  const [resolved, setResolved] = useState<SupportedLanguage | null>(null)
+
+  useEffect(() => {
+    let cancelled = false
+    // 1) browser language
+    const browserLang = (i18n.language?.slice(0, 2) || 'fr') as SupportedLanguage
+    const fromBrowser = SUPPORTED_LANGUAGES.includes(browserLang) ? browserLang : 'fr'
+
+    // 2) refinar con geo-IP (con timeout corto para no bloquear)
+    Promise.race([
+      resolveInitialLanguage(fromBrowser),
+      new Promise<string | null>((res) => setTimeout(() => res(null), 1500)),
+    ])
+      .then((geo) => {
+        if (cancelled) return
+        const final = (geo && SUPPORTED_LANGUAGES.includes(geo as SupportedLanguage))
+          ? (geo as SupportedLanguage)
+          : fromBrowser
+        setResolved(final)
+      })
+      .catch(() => {
+        if (!cancelled) setResolved(fromBrowser)
+      })
+
+    return () => { cancelled = true }
+  }, [i18n.language])
+
+  if (!resolved) return null  // spinner-less mientras decide (rápido: ~ms)
+  return <Navigate to={`/${resolved}/`} replace />
 }
 
 export default function App() {

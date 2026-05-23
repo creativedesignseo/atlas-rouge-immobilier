@@ -90,16 +90,22 @@ i18n
       },
     },
     defaultNS: 'common',
-    fallbackLng: 'en',
+    // Fallback francés: idioma base del proyecto (cliente francés, contenido
+    // original FR). Si una clave falta en ES o EN, vemos francés, NUNCA
+    // inglés (que era el bug recurrente reportado).
+    fallbackLng: 'fr',
     supportedLngs: SUPPORTED_LANGUAGES,
     interpolation: {
       escapeValue: false,
     },
     detection: {
-      // Order: URL param first, then localStorage, then browser
-      order: ['path', 'localStorage', 'navigator'],
+      // URL primero — la SPA está organizada por /:lang/ y eso debe ganar.
+      // Eliminado localStorage: cuando un visitante venía de un share link
+      // /es/... y tenía 'en' cacheado de visita anterior, el cache pisaba
+      // la URL → idioma inconsistente. La URL es la verdad única.
+      order: ['path', 'navigator'],
       lookupFromPathIndex: 0,
-      caches: ['localStorage'],
+      caches: [], // no cachear — confiar solo en URL + browser
     },
     // All resources are bundled (no remote loading), so Suspense should never
     // need to wait. Disabling explicitly avoids any chance of the Layout

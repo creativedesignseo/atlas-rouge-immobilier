@@ -123,7 +123,7 @@ interface AgentInfo {
 }
 
 function ContactPanel({ property, settings }: { property: Property; settings: Record<string, string> | null }) {
-  const { t } = useTranslation('property')
+  const { t, i18n } = useTranslation('property')
   const phone = settings?.phone || '+212 524 00 00 00'
   const whatsapp = settings?.whatsapp || '+212 600 00 00 00'
   const defaultMessage = t('contact.defaultMessage', { title: property.title })
@@ -156,6 +156,26 @@ function ContactPanel({ property, settings }: { property: Property; settings: Re
   }, [])
 
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: defaultMessage })
+
+  // Si el usuario no ha tocado el mensaje, re-aplicamos el defaultMessage
+  // traducido al idioma actual. Esto arregla el bug que dejaba el mensaje
+  // en EN cuando i18n se hidrataba con el idioma incorrecto en el primer
+  // render y luego cambiaba.
+  useEffect(() => {
+    setFormData((prev) => {
+      // Si el user ha escrito algo distinto al defaultMessage anterior,
+      // respetamos su texto (no machaquemos su edición). Sólo actualizamos
+      // si el message actual aún es uno de los defaultMessage traducidos.
+      const isStillDefault =
+        prev.message === defaultMessage ||
+        prev.message === '' ||
+        // Permite reemplazar si el message vigente es la versión en otro
+        // idioma — comprueba que sigue la plantilla "...(title)..."
+        (prev.message.includes(property.title) && prev.message.endsWith('?'))
+      return isStillDefault ? { ...prev, message: defaultMessage } : prev
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i18n.language, property.title])
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
