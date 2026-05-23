@@ -14,6 +14,7 @@ import {
 const LocationMap = lazy(() => import('@/components/property/LocationMap'))
 import { getPropertyBySlug, getSimilarProperties } from '@/services/property.service'
 import { submitContactForm } from '@/services/contact.service'
+import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 import PhoneField from '@/components/forms/PhoneField'
 import { useFavorites } from '@/hooks/useFavorites'
 import { useCurrency } from '@/hooks/useCurrency'
@@ -115,13 +116,44 @@ function Lightbox({ images, startIndex, onClose }: { images: string[]; startInde
 
 /* ───────────────────── Contact Panel ───────────────────── */
 
+interface AgentInfo {
+  name: string
+  role: string
+  photoUrl: string | null
+}
+
 function ContactPanel({ property, settings }: { property: Property; settings: Record<string, string> | null }) {
   const { t } = useTranslation('property')
-  const agentName = settings?.agent_name || 'Sophie Martin'
-  const agentTitle = settings?.agent_title || t('agent')
   const phone = settings?.phone || '+212 524 00 00 00'
   const whatsapp = settings?.whatsapp || '+212 600 00 00 00'
   const defaultMessage = t('contact.defaultMessage', { title: property.title })
+
+  // Agente real desde la tabla `agents` — el primer agent activo (Sofia
+  // hoy; admin si en el futuro hay más). Reemplaza al placeholder "Sophie
+  // Martin / Conseillère immobilière" que estaba hardcoded en site_settings.
+  const [agent, setAgent] = useState<AgentInfo | null>(null)
+  useEffect(() => {
+    if (!isSupabaseConfigured) return
+    supabase
+      .from('agents')
+      .select('name, role, photo_url')
+      .eq('is_active', true)
+      .order('created_at', { ascending: true })
+      .limit(1)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (!data || !data.name) return
+        setAgent({
+          name: data.name,
+          role:
+            data.role === 'admin'
+              ? t('agentRole.admin', 'Directora')
+              : data.role || t('agent', 'Asesor'),
+          photoUrl: data.photo_url,
+        })
+      })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: defaultMessage })
   const [acceptedTerms, setAcceptedTerms] = useState(false)
@@ -176,12 +208,31 @@ function ContactPanel({ property, settings }: { property: Property; settings: Re
     <div className="bg-white rounded-card border border-border-warm shadow-[0_4px_24px_rgba(0,0,0,0.06)] p-6">
       <h3 className="font-display text-[18px] font-semibold text-midnight mb-1">Atlas Rouge Immobilier</h3>
       <div className="flex items-center gap-3 mb-5">
-        <div className="w-12 h-12 rounded-full bg-cream-warm flex items-center justify-center">
-          <User size={22} className="text-text-secondary" />
-        </div>
-        <div>
-          <p className="font-inter text-[14px] font-semibold text-text-primary">{agentName}</p>
-          <p className="font-inter text-[13px] text-text-secondary">{agentTitle}</p>
+        {agent?.photoUrl ? (
+          <img
+            src={agent.photoUrl}
+            alt={agent.name}
+            className="w-12 h-12 rounded-full object-cover shrink-0"
+            loading="lazy"
+          />
+        ) : (
+          <div className="w-12 h-12 rounded-full bg-cream-warm flex items-center justify-center shrink-0">
+            {agent?.name ? (
+              <span className="font-display text-[18px] font-semibold text-terracotta">
+                {agent.name.slice(0, 1).toUpperCase()}
+              </span>
+            ) : (
+              <User size={22} className="text-text-secondary" />
+            )}
+          </div>
+        )}
+        <div className="min-w-0">
+          <p className="font-inter text-[14px] font-semibold text-text-primary truncate">
+            {agent?.name || ' '}
+          </p>
+          <p className="font-inter text-[13px] text-text-secondary truncate capitalize">
+            {agent?.role || ' '}
+          </p>
         </div>
       </div>
 

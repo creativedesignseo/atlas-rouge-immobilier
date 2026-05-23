@@ -83,5 +83,8 @@
   "messageSent": "¡Mensaje enviado!",
   "messageSentDesc": "Su solicitud ha sido enviada. Le responderemos en 24 horas.",
   "errorOccurred": "Ocurrió un error. Por favor intente de nuevo.",
-  "viewMoreListings": "Ver más anuncios"
+  "viewMoreListings": "Ver más anuncios",
+  "agentRole": {
+    "admin": "Directora"
+  }
 }

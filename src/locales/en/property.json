@@ -83,5 +83,8 @@
   "messageSent": "Message sent!",
   "messageSentDesc": "Your request has been sent. We will get back to you within 24 hours.",
   "errorOccurred": "An error occurred. Please try again.",
-  "viewMoreListings": "View more listings"
+  "viewMoreListings": "View more listings",
+  "agentRole": {
+    "admin": "Director"
+  }
 }
