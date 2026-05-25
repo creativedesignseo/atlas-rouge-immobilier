@@ -134,7 +134,7 @@ export default function BlogPost() {
           {/* Meta — autor + fecha + lectura */}
           <div className="flex items-center justify-center flex-wrap gap-x-5 gap-y-2 text-text-secondary text-[13px] sm:text-[14px] font-inter">
             <span>
-              {t('by', 'Por')}{' '}
+              {t('by')}{' '}
               <span className="text-text-primary font-medium">{authorName}</span>
             </span>
             {formattedDate && (
@@ -182,7 +182,7 @@ export default function BlogPost() {
               <RichTextRenderer content={post.content} />
             ) : (
               <p className="font-serif italic text-stone/70">
-                {t('emptyContent', 'Contenido en preparación.')}
+                {t('emptyContent')}
               </p>
             )}
           </div>
@@ -228,7 +228,7 @@ export default function BlogPost() {
               {related.length > 0 && (
                 <div>
                   <p className="text-[10.5px] font-inter font-semibold text-terracotta uppercase tracking-[0.18em] mb-4">
-                    {t('related', 'Artículos relacionados')}
+                    {t('related')}
                   </p>
                   <ul className="space-y-4">
                     {related.map((r) => (
@@ -279,7 +279,7 @@ export default function BlogPost() {
               )}
               <div className="flex-1">
                 <p className="text-stone text-[10.5px] uppercase tracking-[0.18em] mb-1 font-inter">
-                  {t('aboutAuthor', 'Sobre el autor')}
+                  {t('aboutAuthor')}
                 </p>
                 <h3 className="font-display text-[20px] font-medium text-ink mb-2">
                   {post.author.name}
@@ -298,7 +298,7 @@ export default function BlogPost() {
         <section className="py-12 sm:py-16 md:py-20 px-5 sm:px-6 border-t border-border-subtle">
           <div className="max-w-[1100px] mx-auto">
             <h2 className="font-display text-[22px] sm:text-[26px] md:text-[32px] font-medium text-ink mb-6 sm:mb-8 text-center">
-              {t('related', 'Artículos relacionados')}
+              {t('related')}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
               {related.map((r) => (
@@ -338,10 +338,10 @@ export default function BlogPost() {
       <section className="bg-ink text-cream-warm py-12 sm:py-16 md:py-20 px-5 sm:px-6">
         <div className="max-w-[700px] mx-auto text-center">
           <h2 className="font-display text-[22px] sm:text-[26px] md:text-[32px] font-medium leading-tight mb-3 sm:mb-4">
-            {t('cta.title', '¿Tiene un proyecto inmobiliario en Marrakech?')}
+            {t('cta.title')}
           </h2>
           <p className="font-serif italic text-cream-warm/80 text-[15px] sm:text-[16px] md:text-[18px] mb-7 sm:mb-8 leading-relaxed">
-            {t('cta.subtitle', 'Hablemos. Le acompañamos en cada etapa del proceso.')}
+            {t('cta.subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 max-w-[420px] sm:max-w-none mx-auto">
             <Link
@@ -372,7 +372,7 @@ export default function BlogPost() {
             className="inline-flex items-center gap-2 min-h-[44px] text-stone hover:text-terracotta font-inter text-[14px] transition-colors"
           >
             <ChevronLeft size={16} />
-            {t('backToBlog', 'Volver al blog')}
+            {t('backToBlog')}
           </Link>
         </div>
       </div>

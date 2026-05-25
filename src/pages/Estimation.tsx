@@ -32,7 +32,7 @@ export default function Estimation() {
     e.preventDefault()
     if (!expertForm.name.trim() || !expertForm.phone.trim()) {
       toast.error(
-        t('expert.errorMissing', 'Por favor introduce nombre y teléfono'),
+        t('expert.errorMissing'),
       )
       return
     }
@@ -49,12 +49,12 @@ export default function Estimation() {
     if (result.success) {
       setSubmitted(true)
       toast.success(
-        t('expert.successToast', 'Solicitud enviada — te contactamos pronto'),
+        t('expert.successToast'),
       )
     } else {
       toast.error(
         result.error ||
-          t('expert.errorGeneric', 'No se pudo enviar. Inténtalo de nuevo.'),
+          t('expert.errorGeneric'),
       )
     }
   }
@@ -141,7 +141,7 @@ export default function Estimation() {
                 <Check size={22} className="text-green-600 shrink-0 mt-0.5" />
                 <div>
                   <p className="font-inter text-[15px] font-medium text-green-800 mb-1">
-                    {t('expert.successTitle', '¡Solicitud recibida!')}
+                    {t('expert.successTitle')}
                   </p>
                   <p className="font-inter text-[14px] text-green-700">
                     {t(
@@ -205,7 +205,7 @@ export default function Estimation() {
                   className="w-full h-12 min-h-[48px] bg-palm text-white font-inter text-[14px] font-semibold rounded-lg hover:scale-[1.01] active:scale-[0.99] transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {submitting
-                    ? t('expert.submitting', 'Enviando…')
+                    ? t('expert.submitting')
                     : t('expert.submit')}
                 </button>
               </form>

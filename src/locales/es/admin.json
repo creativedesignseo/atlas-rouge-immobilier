@@ -1,4 +1,20 @@
 {
+  "actions": {
+    "publish": "Publicar",
+    "unpublish": "Despublicar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "save": "Guardar",
+    "newArticle": "Nuevo artículo",
+    "editArticle": "Editar artículo",
+    "saveDraft": "Guardar borrador",
+    "viewSite": "Ver en el sitio",
+    "backToList": "Volver al blog",
+    "status": {
+      "published": "Publicado",
+      "draft": "Borrador"
+    }
+  },
   "login": {
     "title": "Atlas Rouge",
     "subtitle": "Panel de administración",

@@ -68,26 +68,23 @@ export default function CookieBanner() {
         <X size={16} />
       </button>
       <h3 className="font-display text-[17px] sm:text-[18px] font-medium mb-2 pr-6">
-        {t('cookies.title', '¿Aceptas cookies?')}
+        {t('cookies.title')}
       </h3>
       <p className="font-inter text-[13px] text-cream-warm/75 leading-relaxed mb-4">
-        {t(
-          'cookies.body',
-          'Usamos cookies para medir el tráfico y mejorar la experiencia. Sin ellas el sitio funciona igual, solo que no podemos analizar lo que ves.',
-        )}
+        {t('cookies.body')}
       </p>
       <div className="flex flex-col sm:flex-row gap-2.5">
         <button
           onClick={() => decide('accepted')}
           className="flex-1 min-h-[44px] bg-terracotta hover:bg-terracotta/90 active:bg-terracotta/80 text-white px-4 py-2.5 rounded-pill font-inter text-[13px] font-semibold transition-colors"
         >
-          {t('cookies.accept', 'Aceptar')}
+          {t('cookies.accept')}
         </button>
         <button
           onClick={() => decide('rejected')}
           className="flex-1 min-h-[44px] bg-transparent border border-cream-warm/30 hover:border-cream-warm/60 text-cream-warm px-4 py-2.5 rounded-pill font-inter text-[13px] font-medium transition-colors"
         >
-          {t('cookies.reject', 'Rechazar')}
+          {t('cookies.reject')}
         </button>
       </div>
     </div>

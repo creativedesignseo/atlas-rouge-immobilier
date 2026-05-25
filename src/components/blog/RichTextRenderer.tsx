@@ -295,23 +295,20 @@ function InlineCta() {
       className="my-10 sm:my-12 md:my-14 bg-cream-warm border border-border-warm rounded-card px-5 py-7 sm:px-7 sm:py-9 md:px-10 md:py-11"
     >
       <span className="block text-terracotta text-[10.5px] sm:text-[11px] font-inter font-semibold uppercase tracking-[2px] sm:tracking-[2.5px] mb-2.5 sm:mb-3">
-        {t('inlineCta.eyebrow', 'Pausa Atlas Rouge')}
+        {t('inlineCta.eyebrow')}
       </span>
       <h3 className="font-display text-ink text-[20px] sm:text-[24px] md:text-[28px] font-medium leading-tight mb-2.5 sm:mb-3">
-        {t('inlineCta.title', 'Invierta en Marrakech con acompañamiento experto')}
+        {t('inlineCta.title')}
       </h3>
       <p className="font-serif text-stone text-[15px] sm:text-[16px] md:text-[17px] leading-relaxed mb-5 sm:mb-6 max-w-[640px]">
-        {t(
-          'inlineCta.description',
-          'Descubra nuestra selección de villas, riads y apartamentos seleccionados por nuestros asesores locales. Análisis de mercado, fiscalidad y acompañamiento incluidos.',
-        )}
+        {t('inlineCta.description')}
       </p>
       <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3">
         <Link
           to={path('/buy')}
           className="inline-flex items-center justify-center gap-2 bg-ink hover:bg-ink/85 active:bg-ink/75 text-cream-warm w-full sm:w-auto min-h-[48px] px-5 py-3 rounded-pill font-inter text-[14px] font-semibold transition-colors"
         >
-          {t('inlineCta.primary', 'Ver propiedades disponibles')}
+          {t('inlineCta.primary')}
           <ArrowRight size={16} />
         </Link>
         <Link
@@ -319,7 +316,7 @@ function InlineCta() {
           className="inline-flex items-center justify-center gap-2 bg-white border border-border-warm hover:border-terracotta hover:text-terracotta active:bg-cream-warm/60 text-ink w-full sm:w-auto min-h-[48px] px-5 py-3 rounded-pill font-inter text-[14px] font-semibold transition-colors"
         >
           <MessageCircle size={16} />
-          {t('inlineCta.secondary', 'Hablar con un asesor')}
+          {t('inlineCta.secondary')}
         </Link>
       </div>
     </aside>

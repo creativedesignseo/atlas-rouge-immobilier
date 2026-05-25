@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { Save, ChevronLeft, Image as ImageIcon, X } from 'lucide-react'
 import { toast } from 'sonner'
 import { useAuth } from '@/hooks/useAuth'
@@ -65,6 +66,7 @@ interface TranslationDraft {
  */
 export default function AdminBlogForm() {
   const navigate = useNavigate()
+  const { t } = useTranslation('admin')
   const { slug: routeSlug } = useParams<{ slug?: string }>()
   const { agent } = useAuth()
   const isEdit = Boolean(routeSlug)
@@ -259,10 +261,10 @@ export default function AdminBlogForm() {
             className="inline-flex items-center gap-1.5 text-stone hover:text-ink font-inter text-[13px] mb-2 transition-colors"
           >
             <ChevronLeft size={14} />
-            Volver al blog
+            {t('actions.backToList')}
           </button>
           <h1 className="font-display text-[28px] md:text-[32px] font-medium text-ink">
-            {isEdit ? 'Editar artículo' : 'Nuevo artículo'}
+            {isEdit ? t('actions.editArticle') : t('actions.newArticle')}
           </h1>
         </div>
         <div className="flex items-center gap-2">
@@ -271,7 +273,7 @@ export default function AdminBlogForm() {
             disabled={saving}
             className="px-4 py-2.5 border border-border-warm rounded-lg font-inter text-[14px] font-medium text-ink hover:bg-cream-warm transition-colors disabled:opacity-50"
           >
-            Guardar borrador
+            {t('actions.saveDraft')}
           </button>
           <button
             onClick={() => handleSave('published')}
@@ -279,7 +281,7 @@ export default function AdminBlogForm() {
             className="inline-flex items-center gap-2 bg-terracotta text-white px-5 py-2.5 rounded-lg font-inter text-[14px] font-semibold hover:bg-terracotta/90 transition-colors disabled:opacity-50"
           >
             <Save size={15} />
-            {status === 'published' ? 'Guardar' : 'Publicar'}
+            {status === 'published' ? t('actions.save') : t('actions.publish')}
           </button>
         </div>
       </div>

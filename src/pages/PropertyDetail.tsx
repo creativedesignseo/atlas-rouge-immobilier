@@ -147,8 +147,8 @@ function ContactPanel({ property, settings }: { property: Property; settings: Re
           name: data.name,
           role:
             data.role === 'admin'
-              ? t('agentRole.admin', 'Directora')
-              : data.role || t('agent', 'Asesor'),
+              ? t('agentRole.admin')
+              : data.role || t('agent'),
           photoUrl: data.photo_url,
         })
       })
@@ -185,13 +185,13 @@ function ContactPanel({ property, settings }: { property: Property; settings: Re
     e.preventDefault()
     setError('')
     // Mensajes de error visibles — antes los early returns eran mudos
-    if (!formData.name.trim()) { setError(t('contact.errorName', 'Indica tu nombre.')); return }
+    if (!formData.name.trim()) { setError(t('contact.errorName')); return }
     if (!formData.email.trim() && !formData.phone.trim()) {
-      setError(t('contact.errorContact', 'Indica un email o teléfono para que podamos contestarte.'))
+      setError(t('contact.errorContact'))
       return
     }
-    if (!formData.message.trim()) { setError(t('contact.errorMessage', 'Escribe un mensaje.')); return }
-    if (!acceptedTerms) { setError(t('contact.errorTerms', 'Acepta la política de privacidad para continuar.')); return }
+    if (!formData.message.trim()) { setError(t('contact.errorMessage')); return }
+    if (!acceptedTerms) { setError(t('contact.errorTerms')); return }
     setSubmitting(true)
     const result = await submitContactForm({
       name: formData.name,
@@ -268,7 +268,7 @@ function ContactPanel({ property, settings }: { property: Property; settings: Re
         {/* Nombre */}
         <div>
           <label className="block font-inter text-[12.5px] font-medium text-text-secondary mb-1.5 uppercase tracking-wide">
-            {t('contact.nameLabel', 'Nombre')}
+            {t('contact.nameLabel')}
           </label>
           <input
             type="text"
@@ -283,7 +283,7 @@ function ContactPanel({ property, settings }: { property: Property; settings: Re
         {/* Email */}
         <div>
           <label className="block font-inter text-[12.5px] font-medium text-text-secondary mb-1.5 uppercase tracking-wide">
-            {t('contact.emailLabel', 'Email')}
+            {t('contact.emailLabel')}
           </label>
           <input
             type="email"
@@ -297,9 +297,9 @@ function ContactPanel({ property, settings }: { property: Property; settings: Re
         {/* Teléfono — full-width para que el dropdown del país respire */}
         <div>
           <label className="block font-inter text-[12.5px] font-medium text-text-secondary mb-1.5 uppercase tracking-wide">
-            {t('contact.phoneLabel', 'Teléfono')}{' '}
+            {t('contact.phoneLabel')}{' '}
             <span className="text-text-secondary/60 normal-case font-normal tracking-normal">
-              ({t('contact.optional', 'opcional')})
+              ({t('contact.optional')})
             </span>
           </label>
           <PhoneField
@@ -313,7 +313,7 @@ function ContactPanel({ property, settings }: { property: Property; settings: Re
         {/* Mensaje */}
         <div>
           <label className="block font-inter text-[12.5px] font-medium text-text-secondary mb-1.5 uppercase tracking-wide">
-            {t('contact.messageLabel', 'Mensaje')}
+            {t('contact.messageLabel')}
           </label>
           <textarea
             required
@@ -359,7 +359,7 @@ function ContactPanel({ property, settings }: { property: Property; settings: Re
       {/* Vías alternativas — discretas, separadas del form por un divider */}
       <div className="mt-6 pt-5 border-t border-border-warm">
         <p className="font-inter text-[11px] uppercase tracking-wider text-text-secondary text-center mb-3">
-          {t('contact.orReachUs', 'O contacta directamente')}
+          {t('contact.orReachUs')}
         </p>
         <div className="flex gap-2">
           <a

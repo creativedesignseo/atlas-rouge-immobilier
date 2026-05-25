@@ -549,7 +549,7 @@ export default function Home() {
                 to={path('/blog')}
                 className="inline-flex items-center gap-2 min-h-[44px] px-5 py-3 text-text-primary hover:text-terracotta font-inter text-[14px] font-medium transition-colors"
               >
-                {t('blog.seeAll', 'Ver todos los artículos')}
+                {t('blog.seeAll')}
                 <ArrowRight size={16} />
               </Link>
             </div>

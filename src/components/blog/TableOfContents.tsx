@@ -63,7 +63,7 @@ export default function TableOfContents({ content, scopeSelector = '.blog-prose'
 
   if (items.length === 0) return null
 
-  const eyebrow = t('toc.title', 'En esta página')
+  const eyebrow = t('toc.title')
   const activeItem = items.find((i) => i.id === activeId) || items[0]
 
   return (

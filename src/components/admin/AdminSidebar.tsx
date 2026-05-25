@@ -11,7 +11,7 @@ export default function AdminSidebar() {
   const navItems = [
     { path: '/admin', label: t('sidebar.dashboard'), icon: LayoutDashboard },
     { path: '/admin/properties', label: t('sidebar.properties'), icon: Home },
-    { path: '/admin/blog', label: t('sidebar.blog', 'Blog'), icon: BookOpen },
+    { path: '/admin/blog', label: t('sidebar.blog'), icon: BookOpen },
     { path: '/admin/contacts', label: t('sidebar.contacts'), icon: Mail },
     { path: '/admin/profile', label: t('sidebar.profile'), icon: UserCircle },
   ]

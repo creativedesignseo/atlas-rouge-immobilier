@@ -40,10 +40,10 @@ export default function Blog() {
     if (result.success) {
       setNlSubscribed(true)
       setEmail('')
-      toast.success(t('newsletter.successToast', '¡Suscripción confirmada!'))
+      toast.success(t('newsletter.successToast'))
     } else {
       toast.error(
-        result.error || t('newsletter.errorGeneric', 'No se pudo suscribir'),
+        result.error || t('newsletter.errorGeneric'),
       )
     }
   }
@@ -222,10 +222,10 @@ export default function Blog() {
         <section className="bg-white py-24 px-6">
           <div className="max-w-[600px] mx-auto text-center">
             <p className="font-serif italic text-stone text-[18px] mb-2">
-              {t('emptyState.title', 'Aún no hay artículos publicados.')}
+              {t('emptyState.title')}
             </p>
             <p className="text-stone/70 text-[14px] font-inter">
-              {t('emptyState.subtitle', 'Vuelve pronto — estamos preparando contenidos.')}
+              {t('emptyState.subtitle')}
             </p>
           </div>
         </section>
@@ -234,7 +234,7 @@ export default function Blog() {
       {!loading && filteredPosts.length === 0 && posts.length > 0 && (
         <section className="bg-white py-20 px-6">
           <div className="max-w-[600px] mx-auto text-center text-stone font-inter">
-            {t('emptyState.noCategory', 'No hay artículos en esta categoría todavía.')}
+            {t('emptyState.noCategory')}
           </div>
         </section>
       )}
@@ -286,7 +286,7 @@ export default function Blog() {
                   </p>
                   {(featuredPost.author?.name || featuredPost.guestAuthor) && (
                     <p className="text-stone/70 text-[12px] font-inter italic">
-                      {t('by', 'Por')} {featuredPost.author?.name || featuredPost.guestAuthor}
+                      {t('by')} {featuredPost.author?.name || featuredPost.guestAuthor}
                     </p>
                   )}
                 </div>
@@ -322,7 +322,7 @@ export default function Blog() {
           {nlSubscribed ? (
             <div className="nl-fade max-w-[480px] mx-auto bg-white/10 border border-white/20 rounded-lg p-5 text-white">
               <p className="font-inter text-[15px] font-medium mb-1">
-                {t('newsletter.successTitle', '¡Bienvenido!')}
+                {t('newsletter.successTitle')}
               </p>
               <p className="font-inter text-[13px] text-white/70">
                 {t(
@@ -350,7 +350,7 @@ export default function Blog() {
                 className="h-[48px] min-h-[48px] px-6 bg-terracotta hover:bg-terracotta/90 active:bg-terracotta/80 text-white font-inter text-[14px] font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {nlSubmitting
-                  ? t('newsletter.submitting', 'Enviando…')
+                  ? t('newsletter.submitting')
                   : t('newsletter.submit')}
               </button>
             </form>
@@ -430,7 +430,7 @@ function ArticleCard({
         </div>
         {(post.author?.name || post.guestAuthor) && (
           <p className="text-stone/60 text-[11px] font-inter italic mt-2">
-            {t('by', 'Por')} {post.author?.name || post.guestAuthor}
+            {t('by')} {post.author?.name || post.guestAuthor}
           </p>
         )}
       </div>

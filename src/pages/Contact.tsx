@@ -94,7 +94,7 @@ export default function Contact() {
     e.preventDefault()
     setSubmitError(null)
     if (!formState.consent) {
-      setSubmitError(t('form.consentRequired', 'Acepta la política de privacidad para continuar.'))
+      setSubmitError(t('form.consentRequired'))
       return
     }
     setSubmitting(true)
@@ -109,7 +109,7 @@ export default function Contact() {
     if (result.success) {
       setSubmitted(true)
     } else {
-      setSubmitError(result.error || t('form.errorGeneric', 'No se pudo enviar. Inténtalo de nuevo.'))
+      setSubmitError(result.error || t('form.errorGeneric'))
     }
   }
 
@@ -294,11 +294,11 @@ export default function Contact() {
                       }
                       className="w-full h-[52px] px-4 border-2 border-border-warm rounded-xl font-inter text-[15px] text-text-primary focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/15 transition-colors bg-white"
                     >
-                      <option value="buy">{t('form.subjects.buy', 'Compra')}</option>
-                      <option value="sell">{t('form.subjects.sell', 'Venta')}</option>
-                      <option value="rent">{t('form.subjects.rent', 'Alquiler')}</option>
-                      <option value="estimate">{t('form.subjects.estimate', 'Estimación')}</option>
-                      <option value="other">{t('form.subjects.other', 'Otro')}</option>
+                      <option value="buy">{t('form.subjects.buy')}</option>
+                      <option value="sell">{t('form.subjects.sell')}</option>
+                      <option value="rent">{t('form.subjects.rent')}</option>
+                      <option value="estimate">{t('form.subjects.estimate')}</option>
+                      <option value="other">{t('form.subjects.other')}</option>
                     </select>
                   </div>
 
@@ -433,7 +433,7 @@ export default function Contact() {
                 {/* Social links — sin fondo, solo el icono */}
                 <div className="info-block pt-5 border-t border-border-warm">
                   <p className="font-inter text-[12px] font-medium text-text-secondary uppercase tracking-[0.3px] mb-3">
-                    {t('info.followUs', 'Síguenos')}
+                    {t('info.followUs')}
                   </p>
                   <div className="flex items-center gap-5">
                     <a

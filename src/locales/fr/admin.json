@@ -1,4 +1,20 @@
 {
+  "actions": {
+    "publish": "Publier",
+    "unpublish": "Dépublier",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "save": "Enregistrer",
+    "newArticle": "Nouvel article",
+    "editArticle": "Modifier l'article",
+    "saveDraft": "Enregistrer brouillon",
+    "viewSite": "Voir sur le site",
+    "backToList": "Retour au blog",
+    "status": {
+      "published": "Publié",
+      "draft": "Brouillon"
+    }
+  },
   "login": {
     "title": "Atlas Rouge",
     "subtitle": "Panneau d'administration",

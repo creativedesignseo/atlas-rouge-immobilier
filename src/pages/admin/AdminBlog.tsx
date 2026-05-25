@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { Plus, Pencil, Trash2, ExternalLink, Search, FileText, Eye, EyeOff } from 'lucide-react'
 import { toast } from 'sonner'
 import { useAuth } from '@/hooks/useAuth'
@@ -19,6 +20,7 @@ type StatusFilter = 'all' | 'published' | 'draft'
  */
 export default function AdminBlog() {
   const navigate = useNavigate()
+  const { t } = useTranslation('admin')
   const { agent } = useAuth()
   const { lang } = useLang()
   const [posts, setPosts] = useState<BlogPost[]>([])
@@ -222,7 +224,7 @@ export default function AdminBlog() {
                           post.status === 'published' ? 'bg-palm' : 'bg-stone'
                         }`}
                       />
-                      {post.status === 'published' ? 'Publicado' : 'Borrador'}
+                      {post.status === 'published' ? t('actions.status.published') : t('actions.status.draft')}
                     </span>
                   </td>
                   <td className="px-5 py-4">
@@ -233,7 +235,7 @@ export default function AdminBlog() {
                           target="_blank"
                           rel="noopener noreferrer"
                           className="p-2 text-stone hover:text-ink hover:bg-cream-warm rounded-md transition-colors"
-                          title="Ver en el sitio"
+                          title={t('actions.viewSite')}
                         >
                           <ExternalLink size={15} />
                         </a>
@@ -242,14 +244,14 @@ export default function AdminBlog() {
                         onClick={() => handleTogglePublish(post)}
                         disabled={acting === post.id}
                         className="p-2 text-stone hover:text-ink hover:bg-cream-warm rounded-md transition-colors disabled:opacity-40"
-                        title={post.status === 'published' ? 'Despublicar' : 'Publicar'}
+                        title={post.status === 'published' ? t('actions.unpublish') : t('actions.publish')}
                       >
                         {post.status === 'published' ? <EyeOff size={15} /> : <Eye size={15} />}
                       </button>
                       <button
                         onClick={() => navigate(`/admin/blog/${post.slug}/edit`)}
                         className="p-2 text-stone hover:text-terracotta hover:bg-cream-warm rounded-md transition-colors"
-                        title="Editar"
+                        title={t('actions.edit')}
                       >
                         <Pencil size={15} />
                       </button>
@@ -257,7 +259,7 @@ export default function AdminBlog() {
                         onClick={() => handleDelete(post)}
                         disabled={acting === post.id}
                         className="p-2 text-stone hover:text-red-600 hover:bg-red-50 rounded-md transition-colors disabled:opacity-40"
-                        title="Eliminar"
+                        title={t('actions.delete')}
                       >
                         <Trash2 size={15} />
                       </button>
