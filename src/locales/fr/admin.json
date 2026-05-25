@@ -243,5 +243,26 @@
       "tooShort": "Le mot de passe doit contenir au moins 6 caractères",
       "mismatch": "Les mots de passe ne correspondent pas"
     }
+  },
+  "passwordReset": {
+    "title": "Mot de passe oublié",
+    "description": "Saisissez votre e-mail et nous vous enverrons un lien pour le réinitialiser.",
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "admin@atlasrouge.ma",
+    "emailRequired": "Veuillez saisir votre e-mail",
+    "submitRequest": "Envoyer le lien",
+    "sending": "Envoi en cours...",
+    "successTitle": "E-mail envoyé",
+    "successText": "Nous avons envoyé un lien à {{email}}. Vérifiez votre boîte de réception.",
+    "setNewTitle": "Nouveau mot de passe",
+    "newPasswordLabel": "Nouveau mot de passe",
+    "confirmPasswordLabel": "Confirmer le mot de passe",
+    "submitReset": "Changer le mot de passe",
+    "saving": "Enregistrement...",
+    "resetSuccess": "Mot de passe mis à jour avec succès",
+    "errorMismatch": "Les mots de passe ne correspondent pas",
+    "errorShort": "Minimum 8 caractères",
+    "genericError": "Une erreur s'est produite. Veuillez réessayer.",
+    "backToLogin": "Retour à la connexion"
   }
 }

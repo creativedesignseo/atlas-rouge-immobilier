@@ -243,5 +243,26 @@
       "tooShort": "La contraseña debe tener al menos 6 caracteres",
       "mismatch": "Las contraseñas no coinciden"
     }
+  },
+  "passwordReset": {
+    "title": "¿Olvidaste tu contraseña?",
+    "description": "Introduce tu email y te enviaremos un enlace para restablecerla.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "admin@atlasrouge.ma",
+    "emailRequired": "Por favor introduce tu email",
+    "submitRequest": "Enviar enlace",
+    "sending": "Enviando...",
+    "successTitle": "Email enviado",
+    "successText": "Hemos enviado un enlace a {{email}}. Revisa tu bandeja de entrada.",
+    "setNewTitle": "Nueva contraseña",
+    "newPasswordLabel": "Nueva contraseña",
+    "confirmPasswordLabel": "Repetir contraseña",
+    "submitReset": "Cambiar contraseña",
+    "saving": "Guardando...",
+    "resetSuccess": "Contraseña actualizada con éxito",
+    "errorMismatch": "Las contraseñas no coinciden",
+    "errorShort": "Mínimo 8 caracteres",
+    "genericError": "Ha ocurrido un error. Inténtalo de nuevo.",
+    "backToLogin": "Volver al login"
   }
 }

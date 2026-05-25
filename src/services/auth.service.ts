@@ -88,6 +88,38 @@ export async function updateAgent(userId: string, updates: AgentUpdate): Promise
   return { error: null }
 }
 
+/**
+ * Envía un email de recuperación de contraseña.
+ * El usuario llegará a /admin/reset-password con un token de recovery,
+ * y Supabase emitirá un evento PASSWORD_RECOVERY que el componente escucha.
+ */
+export async function requestPasswordReset(email: string): Promise<{ success: boolean; error?: string }> {
+  if (!isSupabaseConfigured) return { success: false, error: 'Supabase not configured' }
+  const trimmed = email?.trim()
+  if (!trimmed) return { success: false, error: 'Email required' }
+
+  const { error } = await supabase.auth.resetPasswordForEmail(trimmed, {
+    redirectTo: `${window.location.origin}/admin/reset-password`,
+  })
+  if (error) return { success: false, error: error.message }
+  return { success: true }
+}
+
+/**
+ * Establece una nueva contraseña usando la session activa de recovery
+ * (sin pedir la contraseña anterior — el flow es "olvidé contraseña").
+ * No confundir con updatePassword(current, new) que reautentica.
+ */
+export async function setNewPassword(newPassword: string): Promise<{ success: boolean; error?: string }> {
+  if (!isSupabaseConfigured) return { success: false, error: 'Supabase not configured' }
+  if (!newPassword || newPassword.length < 8) {
+    return { success: false, error: 'Password must be at least 8 characters' }
+  }
+  const { error } = await supabase.auth.updateUser({ password: newPassword })
+  if (error) return { success: false, error: error.message }
+  return { success: true }
+}
+
 export async function updatePassword(currentPassword: string, newPassword: string): Promise<{ error: string | null }> {
   if (!isSupabaseConfigured) return { error: 'Supabase not configured' }
 

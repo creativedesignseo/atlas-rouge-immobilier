@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Eye, EyeOff, Lock, Mail } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { signIn } from '@/services/auth.service'
@@ -112,6 +112,13 @@ export default function AdminLogin() {
                 'Se connecter'
               )}
             </button>
+
+            <Link
+              to="/admin/reset-password"
+              className="text-[13px] text-terracotta hover:underline block text-center"
+            >
+              {t('passwordReset.title')}
+            </Link>
           </div>
         </form>
 

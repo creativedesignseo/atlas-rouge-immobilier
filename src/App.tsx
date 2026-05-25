@@ -7,6 +7,7 @@ import NotFound from './pages/NotFound'
 import ProtectedRoute from './components/admin/ProtectedRoute'
 import AdminLayout from './components/admin/AdminLayout'
 import AdminLogin from './pages/admin/AdminLogin'
+import AdminPasswordReset from './pages/admin/AdminPasswordReset'
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from './i18n'
 import { getAllSlugsForKey } from './lib/routes'
 import { FavoritesProvider } from './hooks/useFavorites'
@@ -142,6 +143,7 @@ export default function App() {
 
         {/* Admin routes — no lang prefix, outside public layout */}
         <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/reset-password" element={<AdminPasswordReset />} />
         <Route path="/admin" element={<AdminLayoutWrapper />}>
           <Route index element={<AdminDashboard />} />
           <Route path="properties" element={<AdminProperties />} />

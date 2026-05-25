@@ -243,5 +243,26 @@
       "tooShort": "Password must be at least 6 characters long",
       "mismatch": "Passwords do not match"
     }
+  },
+  "passwordReset": {
+    "title": "Forgot your password?",
+    "description": "Enter your email and we'll send you a link to reset it.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "admin@atlasrouge.ma",
+    "emailRequired": "Please enter your email",
+    "submitRequest": "Send reset link",
+    "sending": "Sending...",
+    "successTitle": "Email sent",
+    "successText": "We've sent a reset link to {{email}}. Please check your inbox.",
+    "setNewTitle": "New password",
+    "newPasswordLabel": "New password",
+    "confirmPasswordLabel": "Confirm password",
+    "submitReset": "Change password",
+    "saving": "Saving...",
+    "resetSuccess": "Password updated successfully",
+    "errorMismatch": "Passwords do not match",
+    "errorShort": "Minimum 8 characters",
+    "genericError": "Something went wrong. Please try again.",
+    "backToLogin": "Back to login"
   }
 }
