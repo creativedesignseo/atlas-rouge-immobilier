@@ -34,10 +34,29 @@ export default function AdminLogin() {
       const { error } = await signIn({ email, password })
 
       if (error) {
-        toast.error(error.message === 'Invalid login credentials'
-          ? t('loginExtra.invalidCredentials')
-          : `${t('loginExtra.errorPrefix')}: ${error.message}`
-        )
+        let msg: string
+        switch (error.message) {
+          case 'Invalid login credentials':
+            msg = t('loginExtra.invalidCredentials')
+            break
+          case 'NO_AGENT_PROFILE':
+            // Auth ok pero el user no tiene fila en `agents`. No es problema
+            // de password — pedirle al admin que lo provisione.
+            msg = t('loginExtra.noAgentProfile', {
+              defaultValue:
+                'Tu cuenta existe pero no tiene perfil de administrador. Contacta con el responsable del sitio para que active tu acceso.',
+            })
+            break
+          case 'AGENT_INACTIVE':
+            msg = t('loginExtra.agentInactive', {
+              defaultValue:
+                'Tu cuenta está desactivada. Contacta con el responsable del sitio para reactivarla.',
+            })
+            break
+          default:
+            msg = `${t('loginExtra.errorPrefix')}: ${error.message}`
+        }
+        toast.error(msg)
       }
       // Navigation is handled by the useEffect above once agent data loads
     } finally {

@@ -36,11 +36,42 @@ export async function signIn({ email, password }: AuthCredentials): Promise<{ er
     return { error: { message: 'Supabase not configured', name: 'ConfigError' } as AuthError }
   }
   try {
-    const { error } = await withTimeout(
+    const { data, error } = await withTimeout(
       Promise.resolve(supabase.auth.signInWithPassword({ email, password })),
       12000,
     )
-    return { error }
+    if (error) return { error }
+
+    // Auth password OK, ahora valida que tenga perfil de agente activo.
+    // Si NO lo tiene, NO devolvemos "credenciales inválidas" porque
+    // eso engaña al user a creer que su password es malo. Devolvemos
+    // un error específico y forzamos signOut para que no quede sesión
+    // huérfana. Ver migración 005 — el trigger evita que esto pase con
+    // usuarios creados de aquí en adelante.
+    const userId = data.user?.id
+    if (userId) {
+      const agent = await getAgent(userId)
+      if (!agent) {
+        await supabase.auth.signOut().catch(() => {/* noop */})
+        return {
+          error: {
+            message: 'NO_AGENT_PROFILE',
+            name: 'NoAgentProfileError',
+          } as AuthError,
+        }
+      }
+      if (!agent.is_active) {
+        await supabase.auth.signOut().catch(() => {/* noop */})
+        return {
+          error: {
+            message: 'AGENT_INACTIVE',
+            name: 'AgentInactiveError',
+          } as AuthError,
+        }
+      }
+    }
+
+    return { error: null }
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Unknown error'
     return {
