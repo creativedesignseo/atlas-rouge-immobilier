@@ -74,8 +74,13 @@ export default function AdminPasswordReset() {
       setError(res.error || t('passwordReset.genericError'))
       return
     }
+    // Tras un cambio de password desde recovery, la session vieja queda
+    // en estado intermedio. Forzamos signOut y mandamos al login para
+    // que el user entre con su nueva password. Más predecible que
+    // intentar usar la session de recovery para navegar a /admin.
+    try { await supabase.auth.signOut() } catch {/* noop */}
     toast.success(t('passwordReset.resetSuccess'))
-    navigate('/admin', { replace: true })
+    navigate('/admin/login', { replace: true })
   }
 
   return (

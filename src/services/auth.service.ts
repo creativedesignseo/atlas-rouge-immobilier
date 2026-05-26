@@ -164,10 +164,10 @@ export async function setNewPassword(newPassword: string): Promise<{ success: bo
     return { success: false, error: 'Password must be at least 8 characters' }
   }
 
+  // Sanity check: debe existir una session de recovery activa antes de
+  // intentar updateUser. Si no, updateUser cuelga indefinidamente porque
+  // espera a una session que nunca llegará.
   try {
-    // Sanity check: debe existir una session de recovery activa antes de
-    // intentar updateUser. Si no, updateUser cuelga indefinidamente porque
-    // espera a una session que nunca llegará.
     const { data: sessionData } = await withTimeout(
       Promise.resolve(supabase.auth.getSession()),
       5000,
@@ -178,27 +178,60 @@ export async function setNewPassword(newPassword: string): Promise<{ success: bo
         error: 'Recovery session expired. Please request a new reset link.',
       }
     }
-
-    const { error } = await withTimeout(
-      Promise.resolve(supabase.auth.updateUser({ password: newPassword })),
-      15000,
-    )
-    if (error) {
-      console.error('setNewPassword updateUser error:', error)
-      return { success: false, error: error.message }
-    }
-    return { success: true }
   } catch (e) {
-    const msg = e instanceof Error ? e.message : 'Unknown error'
-    console.error('setNewPassword exception:', e)
-    if (msg === 'TIMEOUT') {
-      return {
-        success: false,
-        error: 'Request timed out. Check your connection and try again.',
-      }
+    console.error('setNewPassword getSession exception:', e)
+    return {
+      success: false,
+      error: 'Could not verify recovery session. Try requesting a new reset link.',
     }
-    return { success: false, error: msg }
   }
+
+  // Bug conocido de @supabase/auth-js: durante una recovery session,
+  // updateUser() responde 200 OK a nivel HTTP pero la promesa interna
+  // nunca resuelve porque el cliente intenta refrescar la session con un
+  // refresh_token que se acaba de invalidar. Solución: race entre el
+  // evento USER_UPDATED (autoritativo — Supabase confirma el cambio) y
+  // la propia promesa de updateUser. El primero que llegue gana.
+  return new Promise<{ success: boolean; error?: string }>((resolve) => {
+    let settled = false
+    const finish = (result: { success: boolean; error?: string }) => {
+      if (settled) return
+      settled = true
+      try { subscription.unsubscribe() } catch {/* noop */}
+      clearTimeout(timeoutId)
+      resolve(result)
+    }
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'USER_UPDATED') finish({ success: true })
+    })
+
+    const timeoutId = setTimeout(() => {
+      // Si llegamos aquí, ni el evento ni la promesa respondieron en 15s.
+      // En la práctica, si el servidor devolvió 200 el password ya está
+      // cambiado y solo hay que pedirle al user que vuelva a hacer login.
+      finish({
+        success: false,
+        error: 'No response in 15s. Your password may have been changed — try logging in again.',
+      })
+    }, 15000)
+
+    supabase.auth.updateUser({ password: newPassword }).then(
+      ({ error }) => {
+        if (error) {
+          console.error('setNewPassword updateUser error:', error)
+          finish({ success: false, error: error.message })
+        } else {
+          finish({ success: true })
+        }
+      },
+      (e) => {
+        console.error('setNewPassword updateUser exception:', e)
+        const msg = e instanceof Error ? e.message : 'Unknown error'
+        finish({ success: false, error: msg })
+      },
+    )
+  })
 }
 
 export async function updatePassword(currentPassword: string, newPassword: string): Promise<{ error: string | null }> {
