@@ -43,13 +43,14 @@ These are **owner actions** (Khalid). Cannot be done by Claude / agents.
       localhost:3000, localhost:5173, atlasrouge.com/auth/callback.
       `freecoche.com` removed.
 
-- [ ] **Apply migration `005_agents_auto_provisioning.sql`** in
-      Supabase Studio → SQL Editor → paste content of
-      `supabase/migrations/005_agents_auto_provisioning.sql` → Run.
-      Blocks: any new user invited from Supabase Dashboard stays
-      orphan until applied. See `docs/decisions/ADR-001` for context
-      and `docs/runbooks/login-no-puedo-entrar.md` for the support
-      runbook this unlocks.
+- [x] ~~**Apply migration `005_agents_auto_provisioning.sql`**~~ —
+      DONE 2026-05-26. Trigger `on_auth_user_created` applied and
+      verified end-to-end: created test user via Admin API → trigger
+      auto-inserted agents row (role='agent', is_active=false) →
+      DELETE cascaded correctly. Orphan-user gap permanently closed.
+      Hotfix during apply: initial migration used role='viewer' which
+      violated the CHECK constraint defined in migration 001; patched
+      to 'agent' (commit `f40cedff`).
 - [ ] **Apply migration `004_leads.sql`** in Supabase Studio.
 - [ ] **Update `site_settings`** with real phone, WhatsApp, email,
       physical address.

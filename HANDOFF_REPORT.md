@@ -42,13 +42,28 @@ Autor: Claude Opus 4.7 (1M context).
 | `b21781d6` | Carrera entre evento `USER_UPDATED` y promesa `updateUser` — workaround del deadlock auth-js durante recovery sessions |
 | `c352f646` | `signIn` distingue 3 códigos de error: invalid credentials / `NO_AGENT_PROFILE` / `AGENT_INACTIVE` + migración 005 (trigger orphan-user) |
 
-### Acción pendiente del owner (CRÍTICA)
+### Migración 005 — APLICADA y VERIFICADA
 
-⚠️ **Aplicar migración `005_agents_auto_provisioning.sql`** en
-Supabase Studio → SQL Editor. Hasta que se aplique, cualquier usuario
-nuevo invitado desde el Dashboard queda huérfano. Mientras tanto,
-existe el hotfix manual documentado en
-`docs/runbooks/login-no-puedo-entrar.md` Paso 3.
+✅ **`005_agents_auto_provisioning.sql`** aplicada en Supabase Studio
+el 2026-05-26 21:50 UTC. Test end-to-end exitoso:
+
+```
+Crear user vía Admin API   → trigger dispara
+agents row auto-creada     → name=Test-Orphan-…, role=agent, is_active=false
+DELETE user                → cascade limpia agents (0 filas residuales)
+```
+
+Hotfix durante el apply: la versión inicial usaba `role='viewer'`
+que violaba el CHECK constraint de migración 001 (solo permite
+`admin` o `agent`). Patcheado a `'agent'` en commit `f40cedff`.
+
+**Cualquier usuario nuevo invitado desde el Dashboard queda
+provisionado automáticamente** con role=agent + is_active=false.
+Para darle acceso real al panel, un admin existente debe activar:
+
+```sql
+UPDATE agents SET is_active=true, role='admin' WHERE email='nuevo@...';
+```
 
 ### Nueva estructura `docs/` (consultable por IA de soporte)
 
