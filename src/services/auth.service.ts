@@ -7,14 +7,49 @@ export interface AuthCredentials {
   password: string
 }
 
+/**
+ * Race una promesa contra un timeout. Si la promesa no resuelve antes del
+ * timeout, rechaza con Error('TIMEOUT'). Crítico para llamadas Supabase Auth
+ * que ocasionalmente se cuelgan sin resolver (por red móvil inestable o
+ * navegador despertando de background).
+ */
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const id = setTimeout(() => reject(new Error('TIMEOUT')), ms)
+    promise.then(
+      (v) => {
+        clearTimeout(id)
+        resolve(v)
+      },
+      (e) => {
+        clearTimeout(id)
+        reject(e)
+      },
+    )
+  })
+}
+
 export type Agent = AgentRow
 
 export async function signIn({ email, password }: AuthCredentials): Promise<{ error: AuthError | null }> {
   if (!isSupabaseConfigured) {
     return { error: { message: 'Supabase not configured', name: 'ConfigError' } as AuthError }
   }
-  const { error } = await supabase.auth.signInWithPassword({ email, password })
-  return { error }
+  try {
+    const { error } = await withTimeout(
+      Promise.resolve(supabase.auth.signInWithPassword({ email, password })),
+      12000,
+    )
+    return { error }
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Unknown error'
+    return {
+      error: {
+        message: msg === 'TIMEOUT' ? 'Login timed out. Check your connection.' : msg,
+        name: 'TimeoutError',
+      } as AuthError,
+    }
+  }
 }
 
 export async function signUp({ email, password }: AuthCredentials): Promise<{ error: AuthError | null; user: User | null }> {
@@ -98,11 +133,24 @@ export async function requestPasswordReset(email: string): Promise<{ success: bo
   const trimmed = email?.trim()
   if (!trimmed) return { success: false, error: 'Email required' }
 
-  const { error } = await supabase.auth.resetPasswordForEmail(trimmed, {
-    redirectTo: `${window.location.origin}/admin/reset-password`,
-  })
-  if (error) return { success: false, error: error.message }
-  return { success: true }
+  try {
+    const { error } = await withTimeout(
+      Promise.resolve(
+        supabase.auth.resetPasswordForEmail(trimmed, {
+          redirectTo: `${window.location.origin}/admin/reset-password`,
+        }),
+      ),
+      12000,
+    )
+    if (error) return { success: false, error: error.message }
+    return { success: true }
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Unknown error'
+    return {
+      success: false,
+      error: msg === 'TIMEOUT' ? 'Request timed out. Check your connection.' : msg,
+    }
+  }
 }
 
 /**
@@ -115,9 +163,42 @@ export async function setNewPassword(newPassword: string): Promise<{ success: bo
   if (!newPassword || newPassword.length < 8) {
     return { success: false, error: 'Password must be at least 8 characters' }
   }
-  const { error } = await supabase.auth.updateUser({ password: newPassword })
-  if (error) return { success: false, error: error.message }
-  return { success: true }
+
+  try {
+    // Sanity check: debe existir una session de recovery activa antes de
+    // intentar updateUser. Si no, updateUser cuelga indefinidamente porque
+    // espera a una session que nunca llegará.
+    const { data: sessionData } = await withTimeout(
+      Promise.resolve(supabase.auth.getSession()),
+      5000,
+    )
+    if (!sessionData?.session) {
+      return {
+        success: false,
+        error: 'Recovery session expired. Please request a new reset link.',
+      }
+    }
+
+    const { error } = await withTimeout(
+      Promise.resolve(supabase.auth.updateUser({ password: newPassword })),
+      15000,
+    )
+    if (error) {
+      console.error('setNewPassword updateUser error:', error)
+      return { success: false, error: error.message }
+    }
+    return { success: true }
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Unknown error'
+    console.error('setNewPassword exception:', e)
+    if (msg === 'TIMEOUT') {
+      return {
+        success: false,
+        error: 'Request timed out. Check your connection and try again.',
+      }
+    }
+    return { success: false, error: msg }
+  }
 }
 
 export async function updatePassword(currentPassword: string, newPassword: string): Promise<{ error: string | null }> {
