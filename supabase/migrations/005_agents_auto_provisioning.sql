@@ -10,7 +10,7 @@
 --
 -- Solución:
 --   Trigger en auth.users INSERT que crea automáticamente una fila en
---   `agents` con role='viewer' e is_active=false. Un admin existente
+--   `agents` con role='agent' e is_active=false. Un admin existente
 --   tiene que activar al nuevo usuario (cambiar is_active=true y/o role).
 --
 -- Beneficios:
@@ -48,7 +48,7 @@ BEGIN
     -- Nombre legible inicial: parte local del email capitalizada.
     -- El usuario lo edita después desde /admin/profile.
     initcap(split_part(NEW.email, '@', 1)),
-    'viewer',  -- Default seguro: NO admin
+    'agent',  -- Default seguro: NO admin
     false      -- Default seguro: inactivo hasta que otro admin lo active
   )
   ON CONFLICT (user_id) DO NOTHING;
@@ -104,7 +104,7 @@ SELECT
   u.id,
   u.email,
   initcap(split_part(u.email, '@', 1)),
-  'viewer',
+  'agent',
   false
 FROM auth.users u
 LEFT JOIN public.agents a ON a.user_id = u.id

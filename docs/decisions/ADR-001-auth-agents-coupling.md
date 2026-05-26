@@ -61,7 +61,7 @@ PostgreSQL en `AFTER INSERT ON auth.users`.**
 
 Detalles:
 
-- El trigger crea la fila con `role = 'viewer'` y `is_active = false`
+- El trigger crea la fila con `role = 'agent'` y `is_active = false`
   por defecto. **Nadie es admin automáticamente** — un admin existente
   debe activar al usuario nuevo con un UPDATE.
 - `ON CONFLICT (user_id) DO NOTHING` — el trigger es idempotente, no
@@ -134,7 +134,7 @@ exactamente que la fila no existe, no que esté oculta.
 - **El flujo de invitación queda dependiente del trigger.** Si alguien
   hace `DROP TRIGGER` sin reemplazarlo, volvemos al estado anterior.
   Mitigado con verificación en el runbook de soporte.
-- **`role = 'viewer'` por defecto requiere un paso manual de
+- **`role = 'agent'` por defecto requiere un paso manual de
   activación** cuando inivitas a un admin real. Es deliberado (default
   seguro) pero hay que documentar bien el flujo.
 
