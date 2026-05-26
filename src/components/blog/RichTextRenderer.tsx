@@ -53,7 +53,7 @@ export function extractToc(content: unknown): TocItem[] {
     if (level !== 2 && level !== 3) continue
     const text = extractText(node.content || []).trim()
     if (!text) continue
-    let id = slugifyHeading(text)
+    const id = slugifyHeading(text)
     if (!id) continue
     // De-duplicar si dos H2 tienen el mismo slug
     let unique = id
