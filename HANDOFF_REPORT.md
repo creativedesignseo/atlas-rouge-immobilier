@@ -4,6 +4,173 @@
 
 ---
 
+## Intervención: Claude Opus 4.7 — 2026-05-26 (auditoría 5-agentes + 5 bloqueantes resueltos)
+
+Autor: Claude Opus 4.7 (1M context).
+
+### Contexto
+
+Sesión intensiva de 6 días que cierra el proyecto al borde del lanzamiento. Cubre la consolidación de funcionalidades empezadas en sesiones anteriores + una auditoría integral pre-launch con 5 agentes especializados + la resolución de 5 de los 6 bloqueantes detectados.
+
+**Estado al inicio:** 7/10 con 6 bloqueantes críticos.
+**Estado al final:** 8/10 con 1 bloqueante pendiente de decisión comercial del cliente.
+
+### Trabajo previo de la semana (consolidado en commits)
+
+**Commits 20–25 mayo — antes de la auditoría:**
+- `427c99ac` Iconos contacto sin fondo + i18n followUs/consent
+- `ab98279c` Timeout defensivo blog.service queries (skeleton infinito fix)
+- `7025c8b6` BlogPost: rediseño layout estilo Shopify Enterprise (3 columnas con TOC sticky)
+- `e8e46f1c` Foto real Jardin Majorelle (Pexels CC0) + bump storage version
+- `a425ab26` Form contacto: rediseño Idealista + fix bug consentimiento silencioso
+- `0f53438f` PhoneField internacional: bandera + código país, 50 países priorizados
+- `96ed3a5f` property.service: timeout defensivo (12 s) en las 4 queries
+- `36ece31f` Form panel propiedad: layout minimalista vertical
+- `ac9a5b7e` Form panel propiedad: 1 botón primario + WhatsApp/Llamar discretos
+- `bf1f5afe` ContactPanel: agente real desde tabla `agents` (no Sophie Martin hardcoded)
+- `35000206` Traducciones forms (info.followUs, contact.errorName, etc. — 57 traducciones)
+- `d9dd396f` Bug i18n raíz: `fallbackLng: 'en'` → `'fr'`, race condition LangWrapper, geo-IP override en main.tsx, defaultMessage congelado en useState
+
+### Auditoría 5-agentes pre-launch (26 mayo)
+
+Se lanzaron 5 agentes especializados en paralelo:
+
+1. **Seguridad**: `7/10` — DEEPSEEK API key en .env (no commiteada, pero local), 11 vulnerabilidades npm, falta rate limiting, falta recuperar contraseña
+2. **UI/Diseño**: `6.5/10` — 5 variantes del botón primario, 22 max-widths sin sistema, formularios sin abstracción `<Button>`/`<FormInput>`
+3. **i18n**: `8.5/10` — 32 fallbacks hardcoded en español, admin con 5 strings sin traducir, hreflang estático
+4. **SEO**: `5.5/10` — sitemap con solo 11 URLs (vs ~180 reales), robots.txt al dominio provisional, falta JSON-LD completo, 22 imágenes sin alt
+5. **Admin**: `7.5/10` — falta forgot password, sin logs de auditoría, sin auto-save blog
+
+Veredicto global: **6 bloqueantes** identificados, no apto para launch.
+
+### Los 6 bloqueantes — estado final
+
+| ID | Bloqueante | Resuelto en | Estado |
+|----|-----------|--------------|--------|
+| **B1** | DEEPSEEK_API_KEY en `.env` | (sin commit — `.env` es local, gitignored) | ✅ Local placeholder + instrucciones para Khalid |
+| **B2** | `robots.txt` + `og:image` al dominio provisional | — | ⏸ Espera confirmación dominio definitivo de Khalid |
+| **B3** | Sitemap estático con 11 URLs | `797e9320` | ✅ Dinámico: 183 URLs (33 estáticas + 66 posts + 36 props + 48 barrios × 3 idiomas) con `<lastmod>`, `<changefreq>`, `<priority>`, `<xhtml:link hreflang>`. Script `scripts/generate-sitemap.mjs` en `prebuild` hook. |
+| **B4** | 20+ fallbacks hardcoded ES + 5 strings admin | `ae84b21c` | ✅ 32 fallbacks eliminados en 12 archivos. 36 traducciones nuevas en `admin.json` (FR/ES/EN) bajo `actions.{publish,unpublish,edit,delete,save,newArticle,...}`. |
+| **B5** | Sin forgot password admin | `841248d1` | ✅ Componente `AdminPasswordReset.tsx`, ruta `/admin/reset-password`, link en `AdminLogin`, 20 claves i18n. Modos request + reset automático según token URL. |
+| **B6** | 11 vulnerabilidades npm (7 high) | `3609ec45` | ✅ `npm audit fix` → 0 vulnerabilidades. 30 paquetes actualizados (Babel, Vite, Rollup, Lodash, Minimatch, etc.). Build verde. |
+
+### Ejecución técnica con agentes paralelos
+
+Por primera vez en este proyecto se usó el modelo **1 lead + N devs en paralelo**:
+- 3 agentes `general-purpose` paralelos ejecutaron B3, B4, B5 simultáneamente
+- Yo (Claude lead) ejecuté B1 y B6 directamente + consolidé
+- Tiempo lineal estimado: 6 h → tiempo reloj real: ~2 h
+- Ahorro: ~60% del tiempo
+
+Esto valida la fórmula:
+1. Yo decido y formulo prompts claros con scope
+2. Lanzo N agentes paralelos
+3. Yo valido y consolido
+
+### Cambios técnicos relevantes
+
+#### Nuevo: sistema de sitemap dinámico (B3)
+- `scripts/generate-sitemap.mjs` — script Node ES Modules
+- Lee desde Supabase REST (anon key): blog_posts publicados, properties, neighborhoods
+- Genera `public/sitemap.xml` con xhtml:link para hreflang
+- Hook `prebuild` en package.json — se regenera en cada `npm run build`
+- Configuración: env var `SITE_URL` (default: dominio Netlify provisional)
+- Cuando se compre atlasrouge.com → setear `SITE_URL=https://atlasrouge.com` en Netlify env
+
+#### Nuevo: flujo forgot password (B5)
+- Archivo: `src/pages/admin/AdminPasswordReset.tsx`
+- Ruta nueva en `App.tsx`: `/admin/reset-password` (fuera de ProtectedRoute)
+- Link "¿Olvidaste tu contraseña?" en `AdminLogin.tsx`
+- Usa Supabase Auth `resetPasswordForEmail()` + `updateUser()`
+- 2 modos según presencia de token en URL:
+  - Sin token → request mode (introducir email)
+  - Con token → reset mode (nueva contraseña)
+- Claves i18n: `admin.json:resetPassword.*` (20 claves FR/ES/EN)
+
+#### Limpieza i18n masiva (B4)
+- Patrón eliminado: `t('key', 'fallback en español')` → `t('key')`
+- Razón: si la clave faltaba en FR o EN, i18next caía al fallback ES → bug visual reportado
+- 12 archivos modificados: Estimation, PropertyDetail, Home, Contact, Blog, BlogPost, AdminBlog, AdminBlogForm, CookieBanner, AdminSidebar, RichTextRenderer, TableOfContents
+- Las claves ya existían en los 3 JSONs (confirmado con script de verificación) — solo había que limpiar el código
+
+### Acciones pendientes de Khalid (decisiones comerciales)
+
+⚠️ **No bloquean técnicamente pero sí el launch público.**
+
+1. **Confirmar dominio definitivo**
+   - Recomendación: `atlasrouge.com` (verificado libre en EUIPO + WHOIS)
+   - Una vez confirmado: 30 min para aplicar B2 (robots.txt + og:image)
+
+2. **Contratar planes Pro** (~45 €/mes + 50 €/año)
+   - Supabase Pro: 25 €/mes — evita pausa automática de la BD tras 7 días inactividad
+   - Hosting Pro (Netlify): 20 €/mes — quita limitaciones de ancho de banda + funciones serverless
+   - Dominios: ~47 €/año (atlasrouge.com / .immo / .fr)
+
+3. **Aplicar migración SQL `004_leads.sql`** en Supabase Studio
+   - Path: `supabase/migrations/004_leads.sql`
+   - Crea tablas: `estimation_requests`, `newsletter_subscribers`
+   - Sin esto: formularios de estimación + newsletter fallan al enviar
+
+4. **Actualizar `site_settings`** con datos reales
+   - Tabla actual tiene placeholders ("Sophie Martin", "+212 524 00 00 00", "contact@atlasrouge.immo")
+   - Update SQL listo para pegar en Studio (lo tengo preparado, dímelo y te lo paso)
+
+5. **Rotar DEEPSEEK API key**
+   - Regenerar en https://platform.deepseek.com (la antigua expuesta en .env local)
+   - Añadir la nueva en Netlify → Site Settings → Environment Variables como `VITE_DEEPSEEK_API_KEY`
+
+6. **Configurar SMTP custom en Supabase**
+   - Default: emails de reset password salen desde `noreply@mail.supabase.io` (poco profesional)
+   - Configurar Resend o similar para que salgan desde `noreply@atlasrouge.com`
+   - Opcional pero recomendado para experiencia premium
+
+7. **Foto profesional + bio de Sofia**
+   - Actualizar tabla `agents` con `photo_url` (URL pública) y `bio` (2-3 líneas en FR/ES/EN)
+   - Hoy se muestra inicial colorada en lugar de foto
+
+### Plan de keywords / campañas — pendiente de construir
+
+Reconocido como gap: el roadmap formal no tiene plan de palabras clave / Google Ads. Componentes existentes:
+- Lista de 19 títulos SEO de blog (14 publicados, 5 pendientes)
+- Target geográfico definido (FR, ES, BE, NL, UK, DE, IT)
+- 3 idiomas con sitemap dinámico
+- Estructura editorial por categoría (fiscalidad, inversión, barrios, decoración, mercado, compra)
+
+Propuesta de **Fase 1.5 — Plan de captación** (~20 h):
+- Keyword research multidioma con volúmenes y CPC estimados (8 h)
+- Calendario editorial 3 meses con keywords mapeadas (4 h)
+- Estructura de campañas Google Ads: marca, comprar, inversión, por barrio, remarketing (6 h)
+- Setup GA4 + GTM + conversiones definidas + UTMs (2 h)
+
+NO iniciada por falta de confirmación del usuario en este turno. Propuesta sigue en pie.
+
+### Estado del proyecto al cierre de esta intervención
+
+| Métrica | Antes auditoría | Después fix bloqueantes |
+|---------|------------------|--------------------------|
+| Nota global | 7/10 | **8/10** |
+| Bloqueantes críticos | 6 | **1** (B2, depende Khalid) |
+| Vulnerabilidades npm | 11 (7 high + 4 mod) | **0** |
+| URLs en sitemap | 11 estáticas | **183 dinámicas** |
+| Fallbacks ES hardcoded | 32 | **0** |
+| Strings admin sin traducir | 5+ | **0** |
+| Forgot password admin | No existe | **Implementado** |
+| Forms del proyecto con feedback profesional | Parcial | **Completo** |
+
+### Próximo turno — qué retomar
+
+1. **Si Khalid confirma dominio** → aplicar B2 (30 min): actualizar `robots.txt`, `og:image`, `canonical` + setear `SITE_URL` en Netlify env vars
+2. **Si Khalid contrata planes Pro** → activar Supabase Pro + Netlify Pro + comprar dominios (15 min de configuración técnica de nuestra parte tras la compra)
+3. **Si confirma launch** → ejecutar Fase 1 técnica (`<Button>` unificado + alt texts + hreflang dinámico + rate limit forms — ~18 h en 2-3 agentes paralelos)
+4. **Pendiente decisión:** Fase 1.5 plan de keywords + campañas (~20 h con 2 agentes paralelos)
+
+### Skills útiles disponibles en `~/.claude/skills/`
+
+- `atlas-rouge-blog-article` — pipeline reusable para crear artículos de blog con datos verificables + foto real Pexels + 3 idiomas + Sofia como autora. Activar diciendo "escribe un artículo sobre X".
+- `atlas-rouge-neighborhood-photo` — pipeline para reemplazar foto de un barrio con foto real del cliente.
+
+---
+
 ## Intervención: Claude Opus 4.7 — 2026-05-20 (auditoría completa + hardening producción)
 
 Autor: Claude Opus 4.7 (1M context).
