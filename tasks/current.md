@@ -36,6 +36,20 @@ These are **owner actions** (Khalid). Cannot be done by Claude / agents.
       → HTTP 200 with correct FR→EN+ES translation. Fallback
       `process.env.VITE_DEEPSEEK_API_KEY` removed from the function
       code.
+
+- [x] ~~**Supabase Site URL + Redirect URLs**~~ — DONE 2026-05-26.
+      Site URL set to `https://atlasrouge.com`. Redirect URLs
+      whitelist contains atlasrouge.com, www.atlasrouge.com,
+      localhost:3000, localhost:5173, atlasrouge.com/auth/callback.
+      `freecoche.com` removed.
+
+- [ ] **Apply migration `005_agents_auto_provisioning.sql`** in
+      Supabase Studio → SQL Editor → paste content of
+      `supabase/migrations/005_agents_auto_provisioning.sql` → Run.
+      Blocks: any new user invited from Supabase Dashboard stays
+      orphan until applied. See `docs/decisions/ADR-001` for context
+      and `docs/runbooks/login-no-puedo-entrar.md` for the support
+      runbook this unlocks.
 - [ ] **Apply migration `004_leads.sql`** in Supabase Studio.
 - [ ] **Update `site_settings`** with real phone, WhatsApp, email,
       physical address.

@@ -39,6 +39,14 @@ the higher source is silent on a question, fall back to the next.
    (Filled the `HANDOFF.md` slot; same role, different name.)
 2. **`docs/decisions/ADR-NNN-*.md`** — architectural decisions. Do not
    relitigate without a new ADR.
+   - `ADR-001` — acoplamiento `auth.users` ↔ `public.agents` (read
+     before touching any auth-related code).
+3. **`docs/runbooks/*.md`** — playbooks operativos para soporte. Cada
+   runbook cubre un síntoma de cliente con árbol de decisión paso a
+   paso. Si una IA está atendiendo un ticket, debe consultar el
+   runbook antes de actuar. Runbooks vigentes:
+   - `login-no-puedo-entrar.md` — usuario reporta que no puede acceder
+     al admin (incluye orphan user, password reset stuck, etc.)
 3. **`tasks/current.md`** — what is being worked on right now, P0/P1
    queue, blockers.
 4. **`progress/YYYY-MM-DD-*.md`** — what was done in past multi-step

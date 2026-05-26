@@ -4,6 +4,85 @@
 
 ---
 
+## Intervención: Claude Opus 4.7 — 2026-05-26 noche (harness + incidente orphan user)
+
+Autor: Claude Opus 4.7 (1M context).
+
+### Resumen ejecutivo
+
+1. **Arnés de ingeniería instalado** — `AGENTS.md` + `CLAUDE.md` +
+   `scripts/verify.sh` + `tasks/current.md` + 5 subagentes + 4 skills
+   bajo `.claude/`. Cualquier agente (humano o IA) que abra el repo
+   se orienta en 60 segundos.
+2. **B1 cerrado al 100%** — DEEPSEEK key rotada en plataforma,
+   `DEEPSEEK_API_KEY` 🔒 configurada en Netlify (sin VITE_ prefix),
+   `VITE_DEEPSEEK_API_KEY` eliminada, fallback en función Netlify
+   removido. Probado en producción: `POST translate-property` → 200 OK
+   con traducción FR→EN+ES correcta.
+3. **Supabase URL Configuration aplicada** — Site URL `atlasrouge.com`,
+   Redirect URLs limpiadas (atlasrouge.com/**, www, localhost:3000/5173,
+   auth/callback). `freecoche.com` removido.
+4. **Incidente "orphan user" diagnosticado y resuelto** — Jonatan no
+   podía entrar al admin pese a tener password correcto. Tres bugs en
+   cascada:
+   - Spinner infinito en password reset (Supabase auth-js deadlock
+     durante recovery session).
+   - Error message engañoso en login ("credenciales incorrectas"
+     cuando en realidad faltaba perfil de agente).
+   - Desacoplamiento estructural entre `auth.users` y `public.agents`.
+
+   Documentación completa creada en `progress/`, `docs/decisions/` y
+   `docs/runbooks/` (ver sección "Nueva estructura `docs/`" más abajo).
+
+### Bugs arreglados (commits)
+
+| Commit | Fix |
+|---|---|
+| `3a4fcd77` | `withTimeout` en `signIn`, `requestPasswordReset`, `setNewPassword` (defensiva ante red lenta o deadlocks del SDK) |
+| `b21781d6` | Carrera entre evento `USER_UPDATED` y promesa `updateUser` — workaround del deadlock auth-js durante recovery sessions |
+| `c352f646` | `signIn` distingue 3 códigos de error: invalid credentials / `NO_AGENT_PROFILE` / `AGENT_INACTIVE` + migración 005 (trigger orphan-user) |
+
+### Acción pendiente del owner (CRÍTICA)
+
+⚠️ **Aplicar migración `005_agents_auto_provisioning.sql`** en
+Supabase Studio → SQL Editor. Hasta que se aplique, cualquier usuario
+nuevo invitado desde el Dashboard queda huérfano. Mientras tanto,
+existe el hotfix manual documentado en
+`docs/runbooks/login-no-puedo-entrar.md` Paso 3.
+
+### Nueva estructura `docs/` (consultable por IA de soporte)
+
+```
+docs/
+├── decisions/
+│   └── ADR-001-auth-agents-coupling.md  ← contrato auth.users ↔ agents
+└── runbooks/
+    └── login-no-puedo-entrar.md         ← playbook soporte 5–10 min
+```
+
+Cualquier agente atendiendo un ticket de "no puedo entrar al admin"
+debe consultar el runbook ANTES de actuar. El árbol de decisión cubre
+los 4 escenarios habituales (usuario no existe / password mal / orphan
+user / caché del navegador) y especifica los comandos `curl` exactos
+contra la Admin API de Supabase para cada paso.
+
+### Hotfix manual aplicado durante esta sesión
+
+Jonatan (`creativedesignseo@gmail.com`, user_id
+`190dcf0c-7176-40f9-a333-c089975828c8`) ahora tiene fila en `agents`:
+
+```
+id:        3829a969-8453-4151-90ff-070cbabc7b22
+name:      Jonatan
+role:      admin
+is_active: true
+```
+
+Y el password está en `Marru.2025`. Si Jonatan lo cambia, el del repo
+queda desactualizado — actualizar este HANDOFF cuando ocurra.
+
+---
+
 ## Intervención: Claude Opus 4.7 — 2026-05-26 (auditoría 5-agentes + 5 bloqueantes resueltos)
 
 Autor: Claude Opus 4.7 (1M context).
