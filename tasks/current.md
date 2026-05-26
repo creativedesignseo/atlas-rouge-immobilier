@@ -27,9 +27,15 @@ These are **owner actions** (Khalid). Cannot be done by Claude / agents.
       Configuration. Set Site URL to `https://atlasrouge.com`. Keep
       `http://localhost:3000/**` and `http://localhost:5173/**` for
       dev. Remove `https://immobilier.freecoche.com/**` in 2-3 weeks.
-- [ ] **Rotate `DEEPSEEK_API_KEY`** — old key removed from `.env`
-      2026-05-26. Generate a new one at platform.deepseek.com and
-      add **only** to Netlify env vars, never to `.env` locally.
+- [x] ~~**Rotate `DEEPSEEK_API_KEY`**~~ — DONE 2026-05-26. Old key
+      `sk-d047f...8752` deleted on platform.deepseek.com. New key
+      configured in Netlify env vars as `DEEPSEEK_API_KEY` 🔒
+      (Specific scopes: Builds, Functions, Runtime · 4 deploy
+      contexts). `VITE_DEEPSEEK_API_KEY` also removed from Netlify.
+      Verified live: `POST /.netlify/functions/translate-property`
+      → HTTP 200 with correct FR→EN+ES translation. Fallback
+      `process.env.VITE_DEEPSEEK_API_KEY` removed from the function
+      code.
 - [ ] **Apply migration `004_leads.sql`** in Supabase Studio.
 - [ ] **Update `site_settings`** with real phone, WhatsApp, email,
       physical address.

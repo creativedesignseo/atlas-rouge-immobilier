@@ -39,7 +39,7 @@ exports.handler = async (event) => {
     return json(405, { error: 'Method not allowed' })
   }
 
-  const apiKey = process.env.DEEPSEEK_API_KEY || process.env.VITE_DEEPSEEK_API_KEY
+  const apiKey = process.env.DEEPSEEK_API_KEY
   if (!apiKey) {
     return json(500, { error: 'DeepSeek API key is not configured on the server' })
   }
