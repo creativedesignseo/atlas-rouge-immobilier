@@ -51,6 +51,18 @@ These are **owner actions** (Khalid). Cannot be done by Claude / agents.
       Hotfix during apply: initial migration used role='viewer' which
       violated the CHECK constraint defined in migration 001; patched
       to 'agent' (commit `f40cedff`).
+
+- [x] ~~**Leads pipeline (`estimation_requests` + `newsletter_subscribers`)**~~
+      — DONE 2026-05-26. Tables already existed from migration 004
+      (applied previously). Missing RLS policies added: anon can
+      INSERT, only active agents can SELECT/UPDATE. Verified
+      end-to-end via curl with the anon key:
+        POST /rest/v1/estimation_requests → HTTP 201 ✅
+        POST /rest/v1/newsletter_subscribers → HTTP 201 ✅
+      Frontend code (`leads.service.ts`) uses `.insert()` without
+      `.select()` so it does not trigger the RETURNING/SELECT
+      policy check that would fail for anon users. Form submissions
+      now reach the DB.
 - [ ] **Apply migration `004_leads.sql`** in Supabase Studio.
 - [ ] **Update `site_settings`** with real phone, WhatsApp, email,
       physical address.

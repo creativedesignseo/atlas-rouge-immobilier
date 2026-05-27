@@ -233,9 +233,37 @@ perfil de administrador", pasa al **Paso 3** de arriba.
 
 ---
 
+## Trampa común: error "violates RLS policy" en INSERT que SÍ debería estar permitido
+
+Si al hacer `POST /rest/v1/<tabla>` con la anon key obtienes:
+
+```json
+{"code":"42501","message":"new row violates row-level security policy for table \"X\""}
+```
+
+y verificas que la INSERT policy es PERMISSIVE con `with_check = true` para
+`anon` — **el problema casi seguro es `Prefer: return=representation`** en
+la petición.
+
+Cuando pides que la API devuelva la fila insertada, Postgres también evalúa
+las SELECT policies sobre la fila recién creada. Si las SELECT policies
+sólo permiten a `authenticated` (caso de `estimation_requests` y
+`newsletter_subscribers`), la lectura falla y todo el INSERT se reporta
+como RLS violation. Soluciones:
+
+- Para pruebas con `curl`: omite `Prefer: return=representation`.
+- Para código frontend: usa `.insert(...)` SIN `.select()` encadenado.
+- Si necesitas el ID devuelto al cliente, expón un RPC con
+  `SECURITY DEFINER` que haga el insert y devuelva solo el ID.
+
+Diagnóstico el 2026-05-26 durante el rollout de migración 004.
+
+---
+
 ## Última auditoría de este runbook
 
 **Fecha:** 2026-05-26
 **Por:** Claude + Jonatan
 **Estado:** ✅ Cubre el incidente del owner del 2026-05-26 al 100%.
+Cubre además la trampa RLS+RETURNING descubierta al rolear leads.
 Pendiente de validar contra futuros tickets.
