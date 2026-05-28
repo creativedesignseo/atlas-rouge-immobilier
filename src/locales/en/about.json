@@ -4,70 +4,50 @@
     "about": "About"
   },
   "hero": {
-    "title": "About Atlas Rouge Immobilier",
-    "subtitle": "Your trusted partner for real estate in Marrakech since 2015."
+    "title": "Atlas Rouge Immobilier",
+    "tagline": "Real estate in Marrakech, designed for international buyers",
+    "mission": "Guiding every buyer with expertise, transparency and passion throughout their property project in Morocco."
   },
   "story": {
-    "title": "Our story",
-    "p1": "Atlas Rouge Immobilier was born from a meeting between a passion for Morocco and European real estate expertise. Since 2015, we have been supporting international families in their acquisition projects in Marrakech.",
-    "p2": "Our bilingual team knows the local market inside out and understands European market codes. We are the bridge between two cultures.",
-    "p3": "Our mission: make your real estate project a serene, transparent and successful experience."
+    "eyebrow": "Our story",
+    "title": "A bridge between Europe and Morocco",
+    "p1": "Atlas Rouge Immobilier was founded in 2012 on a simple conviction: buying a property in Marrakech deserves guidance worthy of the occasion.",
+    "p2": "Founded by a French-Moroccan couple, our agency combines the rigour and transparency of European service with the warmth and intimate knowledge of Moroccan culture.",
+    "p3": "Over ten years, we have guided more than 800 families through their property project — from the first viewing to the handover of keys, including every administrative step along the way.",
+    "imageAlt": "The Atlas Rouge Immobilier team at the Marrakech head office",
+    "imageCaption": "The Atlas Rouge Immobilier team at the Marrakech head office"
   },
   "values": {
     "title": "Our values",
     "transparency": {
       "title": "Transparency",
-      "description": "We present properties with their strengths and weaknesses. No surprises."
+      "description": "No surprises. Every step is explained, every fee detailed. We believe trust is built on honesty."
     },
     "expertise": {
       "title": "Local expertise",
-      "description": "Over 10 years in Marrakech. We know every neighbourhood, every street."
+      "description": "We know Marrakech neighbourhood by neighbourhood, street by street. That intimate knowledge makes all the difference in your search."
     },
-    "support": {
-      "title": "Support",
-      "description": "From the first meeting to signing, we are by your side."
-    },
-    "network": {
-      "title": "Network",
-      "description": "Notaries, lawyers, architects, craftsmen. Our address book at your service."
-    }
-  },
-  "team": {
-    "title": "Our team",
-    "subtitle": "Passionate experts at your service.",
-    "members": {
-      "sophie": {
-        "name": "Sophie Martin",
-        "role": "Founder & Director",
-        "bio": "Passionate about real estate and Morocco, Sophie founded Atlas Rouge to support international clients in their Marrakech project."
-      },
-      "karim": {
-        "name": "Karim Benali",
-        "role": "Sales Manager",
-        "bio": "An expert on the Moroccan market, Karim is your dedicated contact for all villa and riad searches."
-      },
-      "amina": {
-        "name": "Amina Zerhouni",
-        "role": "Head of Legal",
-        "bio": "A specialist in Moroccan property law, Amina secures all your transactions from A to Z."
-      },
-      "thomas": {
-        "name": "Thomas Dubois",
-        "role": "Investment Advisor",
-        "bio": "Thomas guides you through rental investment opportunities and wealth management."
-      }
+    "commitment": {
+      "title": "Commitment",
+      "description": "Your project is our project. We stay by your side well beyond the signing, helping you settle in with peace of mind."
     }
   },
   "stats": {
+    "families": "Families guided",
+    "years": "Years of expertise",
     "properties": "Properties sold",
-    "clients": "Satisfied clients",
-    "years": "Years of experience",
-    "neighborhoods": "Neighbourhoods covered"
+    "satisfaction": "Satisfaction rate"
+  },
+  "team": {
+    "title": "Our team",
+    "subtitle": "Passionate advisors at your service",
+    "directorRole": "Director",
+    "defaultRole": "Advisor",
+    "contact": "Get in touch"
   },
   "cta": {
-    "title": "Ready to make your project happen?",
-    "subtitle": "Contact us to discuss your project, with no commitment.",
-    "contact": "Contact us",
-    "search": "View properties"
+    "title": "Ready to find your property?",
+    "subtitle": "Our team supports you at every stage of your property project in Marrakech.",
+    "appointment": "Book an appointment"
   }
 }

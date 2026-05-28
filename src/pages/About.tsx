@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useLang } from '@/hooks/useLang'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
@@ -92,30 +93,16 @@ function StatCard({
 
 /* Equipo cargado dinámicamente desde tabla agents — ver About() abajo */
 
-/* ─── Value cards data ─── */
+/* ─── Value cards data (icons + i18n keys) ─── */
 const values = [
-  {
-    icon: ShieldCheck,
-    title: 'Transparence',
-    description:
-      'Pas de surprise. Chaque \u00E9tape vous est expliqu\u00E9e, chaque frais d\u00E9taill\u00E9. Nous croyons que la confiance se construit par l\u2019honn\u00EAtet\u00E9.',
-  },
-  {
-    icon: MapPin,
-    title: 'Expertise locale',
-    description:
-      'Nous connaissons Marrakech quartier par quartier, rue par rue. Cette connaissance intime fait toute la diff\u00E9rence dans votre recherche.',
-  },
-  {
-    icon: Heart,
-    title: 'Engagement',
-    description:
-      'Votre projet est notre projet. Nous restons \u00E0 vos c\u00F4t\u00E9s bien au-del\u00E0 de la signature, pour vous aider \u00E0 vous installer sereinement.',
-  },
-]
+  { icon: ShieldCheck, key: 'transparency' },
+  { icon: MapPin, key: 'expertise' },
+  { icon: Heart, key: 'commitment' },
+] as const
 
 /* ═══════════════════════════════════════════ */
 export default function About() {
+  const { t } = useTranslation('about')
   const { path } = useLang()
   const heroRef = useRef<HTMLDivElement>(null)
   const heroBgRef = useRef<HTMLDivElement>(null)
@@ -138,13 +125,16 @@ export default function About() {
             .map((a) => ({
               id: a.id,
               name: a.name!,
-              role: a.role === 'admin' ? 'Directora' : a.role || 'Conseiller',
+              role:
+                a.role === 'admin'
+                  ? t('team.directorRole')
+                  : a.role || t('team.defaultRole'),
               bio: a.bio || '',
               photoUrl: a.photo_url,
             })),
         )
       })
-  }, [])
+  }, [t])
 
   /* Hero entrance animations */
   useGSAP(
@@ -265,21 +255,20 @@ export default function About() {
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 mb-6 text-white/60 font-inter text-[13px]">
             <Link to={path('/')} className="hover:text-white transition-colors">
-              Accueil
+              {t('breadcrumb.home')}
             </Link>
             <ChevronRight size={14} />
-            <span>À propos</span>
+            <span>{t('breadcrumb.about')}</span>
           </nav>
 
           <h1 className="about-hero-h1 font-display text-[42px] md:text-[56px] font-medium text-white leading-[1.1] tracking-[-0.5px] mb-4">
-            Atlas Rouge Immobilier
+            {t('hero.title')}
           </h1>
           <p className="about-hero-tagline font-inter text-[18px] md:text-[20px] text-white/80 mb-6 max-w-[600px]">
-            L&#8217;immobilier à Marrakech, pensé pour les Français
+            {t('hero.tagline')}
           </p>
           <p className="about-hero-mission font-inter text-[15px] md:text-[16px] text-white/70 max-w-[560px] leading-relaxed">
-            Accompagner chaque acheteur avec expertise, transparence et passion
-            dans son projet immobilier au Maroc.
+            {t('hero.mission')}
           </p>
         </div>
       </section>
@@ -294,27 +283,15 @@ export default function About() {
             {/* Text */}
             <div className="story-text md:w-[55%]">
               <span className="inline-block font-inter text-[12px] font-medium tracking-[0.3px] uppercase text-terracotta mb-3">
-                Notre histoire
+                {t('story.eyebrow')}
               </span>
               <h2 className="font-display text-[28px] md:text-[36px] font-medium text-midnight leading-[1.15] tracking-[-0.3px] mb-6">
-                Un pont entre la France et le Maroc
+                {t('story.title')}
               </h2>
               <div className="space-y-4 font-inter text-[16px] text-text-secondary leading-[1.8]">
-                <p>
-                  Atlas Rouge Immobilier est né en 2012 d&#8217;une conviction
-                  simple : acheter une propriété à Marrakech mérite un
-                  accompagnement à la hauteur de l&#8217;événement.
-                </p>
-                <p>
-                  Fondée par un couple franco-marocain, notre agence allie la
-                  rigueur et la transparence du service français à la chaleur
-                  et la connaissance intime de la culture marocaine.
-                </p>
-                <p>
-                  En dix ans, nous avons accompagné plus de 800 familles dans
-                  leur projet immobilier — de la première visite à la remise
-                  des clés, en passant par toutes les étapes administratives.
-                </p>
+                <p>{t('story.p1')}</p>
+                <p>{t('story.p2')}</p>
+                <p>{t('story.p3')}</p>
               </div>
             </div>
 
@@ -322,11 +299,11 @@ export default function About() {
             <div className="story-image-wrap md:w-[45%]">
               <img
                 src="/team-portrait.jpg"
-                alt="L&#8217;équipe Atlas Rouge Immobilier au siège de Marrakech"
+                alt={t('story.imageAlt')}
                 className="w-full rounded-card shadow-lg object-cover aspect-[4/3]"
               />
               <p className="font-inter text-[13px] text-text-secondary mt-3 text-center">
-                L&#8217;équipe Atlas Rouge Immobilier au siège de Marrakech
+                {t('story.imageCaption')}
               </p>
             </div>
           </div>
@@ -340,28 +317,28 @@ export default function About() {
             <StatCard
               target={800}
               suffix="+"
-              label="Familles accompagnées"
+              label={t('stats.families')}
               triggerRef={statsSectionRef}
             />
             <div className="hidden lg:block w-px bg-border-warm self-stretch mx-auto" />
             <StatCard
               target={12}
               suffix=""
-              label="Années d&#8217;expertise"
+              label={t('stats.years')}
               triggerRef={statsSectionRef}
             />
             <div className="hidden lg:block w-px bg-border-warm self-stretch mx-auto" />
             <StatCard
               target={3500}
               suffix="+"
-              label="Biens vendus"
+              label={t('stats.properties')}
               triggerRef={statsSectionRef}
             />
             <div className="hidden lg:block w-px bg-border-warm self-stretch mx-auto" />
             <StatCard
               target={98}
               suffix="%"
-              label="Taux de satisfaction"
+              label={t('stats.satisfaction')}
               triggerRef={statsSectionRef}
             />
           </div>
@@ -373,7 +350,7 @@ export default function About() {
         <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
           <SectionReveal>
             <h2 className="font-display text-[28px] md:text-[36px] font-medium text-midnight text-center mb-12 md:mb-16">
-              Nos valeurs
+              {t('values.title')}
             </h2>
           </SectionReveal>
 
@@ -382,19 +359,19 @@ export default function About() {
             stagger={0.12}
             y={40}
           >
-            {values.map(({ icon: Icon, title, description }) => (
+            {values.map(({ icon: Icon, key }) => (
               <div
-                key={title}
+                key={key}
                 className="bg-cream-warm rounded-card p-8 md:p-10 text-center hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-250"
               >
                 <div className="w-12 h-12 mx-auto mb-5 flex items-center justify-center">
                   <Icon size={40} className="text-terracotta" />
                 </div>
                 <h3 className="font-display text-[22px] font-semibold text-midnight mb-3">
-                  {title}
+                  {t(`values.${key}.title`)}
                 </h3>
                 <p className="font-inter text-[15px] text-text-secondary leading-[1.7]">
-                  {description}
+                  {t(`values.${key}.description`)}
                 </p>
               </div>
             ))}
@@ -407,10 +384,10 @@ export default function About() {
         <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
           <div className="text-center mb-12">
             <h2 className="font-display text-[28px] md:text-[36px] font-medium text-midnight mb-3">
-              Notre équipe
+              {t('team.title')}
             </h2>
             <p className="font-inter text-[16px] text-text-secondary">
-              Des conseillers passionnés à votre service
+              {t('team.subtitle')}
             </p>
           </div>
 
@@ -472,7 +449,7 @@ export default function About() {
                     to={path('/contact')}
                     className="inline-block font-inter text-[14px] text-terracotta font-medium hover:underline"
                   >
-                    Contacter
+                    {t('team.contact')}
                   </Link>
                 </div>
               ))
@@ -485,18 +462,17 @@ export default function About() {
       <section className="bg-terracotta py-16 md:py-20">
         <SectionReveal className="max-w-[800px] mx-auto px-6 lg:px-12 text-center">
           <h2 className="font-display text-[28px] md:text-[36px] font-medium text-white mb-4">
-            Prêt à trouver votre bien ?
+            {t('cta.title')}
           </h2>
           <p className="font-inter text-[16px] text-white/80 mb-8 max-w-[560px] mx-auto">
-            Notre équipe vous accompagne à chaque étape de votre projet
-            immobilier à Marrakech.
+            {t('cta.subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               to={path('/contact')}
               className="inline-block bg-white text-terracotta font-inter text-[14px] font-semibold px-8 py-3.5 rounded-lg hover:scale-[1.02] transition-transform"
             >
-              Prendre rendez-vous
+              {t('cta.appointment')}
             </Link>
             <a
               href="tel:+212524000000"

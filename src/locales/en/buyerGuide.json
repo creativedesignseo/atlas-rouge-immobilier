@@ -1,0 +1,253 @@
+{
+  "breadcrumb": {
+    "home": "Home",
+    "guides": "Guides",
+    "current": "Buying in Morocco"
+  },
+  "hero": {
+    "title": "Guide to buying property in Morocco",
+    "subtitle": "Everything you need to know to buy a property in Morocco with complete peace of mind.",
+    "updated": "Updated on 15 January 2024"
+  },
+  "toc": {
+    "label": "Contents",
+    "processus": "The buying process",
+    "notaire": "Notary or Adoul?",
+    "frais": "Acquisition costs",
+    "credit": "Mortgages in Morocco",
+    "fiscalite": "Taxation",
+    "precautions": "Precautions to take",
+    "gestion": "Rental management"
+  },
+  "intro": {
+    "eyebrow": "Introduction",
+    "title": "Why buy in Marrakech?",
+    "p1": "Every year, Marrakech attracts thousands of foreign buyers, particularly Europeans, drawn by its exceptional climate, rich culture and investment prospects. Nicknamed the “ochre city”, it offers a unique way of life blending Moroccan tradition with modernity.",
+    "p2": "The year-round sunny climate, with more than 300 days of sunshine, is one of its first attractions. Mild winters and hot but dry summers mean you can enjoy gardens, terraces and pools all year long.",
+    "p3": "Culturally, the UNESCO World Heritage Medina, the palaces, the Majorelle Gardens and the famous Jemaa el-Fna square offer an exceptional cultural setting. Moroccan cuisine, hammams, the souk: every day brings a new discovery.",
+    "p4": "On the investment side, prices per m² remain attractive compared with major European cities. With rental yields reaching up to 8% gross for seasonal lets, Marrakech represents an appealing financial opportunity."
+  },
+  "process": {
+    "eyebrow": "Step by step",
+    "title": "The 5-step buying process",
+    "intro": "Buying property in Morocco follows a well-established process that differs from the European system in certain respects. Here are the key steps.",
+    "steps": {
+      "compromis": {
+        "title": "Signing the preliminary agreement",
+        "body": "The preliminary sale agreement binds both seller and buyer. It sets the price, the deadlines and the conditions precedent (obtaining a loan, etc.). A 10% security deposit is paid."
+      },
+      "titre": {
+        "title": "Obtaining the land title",
+        "body": "The land title (titre foncier) is the single property registration document in Morocco. It certifies ownership of the property. Check that it exists and that it is not pledged or mortgaged."
+      },
+      "compte": {
+        "title": "Opening a bank account",
+        "body": "A Moroccan bank account is required for the deed of sale and the payments. Banks generally ask for a passport, proof of income and proof of address."
+      },
+      "acte": {
+        "title": "Signing the final deed",
+        "body": "The authenticated deed is signed before the notary or the Adoul. The balance of the price is paid and the keys are handed over. The deed is then registered."
+      },
+      "enregistrement": {
+        "title": "Registration and handover of keys",
+        "body": "The deed is registered with the land registry (conservation foncière). The registration duties are paid. The new land title is issued in the buyer’s name."
+      }
+    }
+  },
+  "notary": {
+    "eyebrow": "Formalities",
+    "title": "Notary or Adoul: who should you choose?",
+    "intro": "In Morocco, two professionals can draw up your deed of sale: the notary and the Adoul. Each offers advantages depending on your situation.",
+    "notaireCard": {
+      "title": "The notary",
+      "body": "The notary is a public officer who secures the transaction. They draft the authenticated deed, verify the title deeds and guarantee the legal validity of the act. Essential for complex purchases or when a loan is involved."
+    },
+    "adoulCard": {
+      "title": "The Adoul",
+      "body": "The Adoul is a civil-status officer authorised to draw up deeds. A faster and cheaper solution for cash purchases between private individuals. Their fees are around 0.5% compared with 1-1.5% for the notary."
+    },
+    "recommendation": {
+      "label": "Our recommendation:",
+      "text": "choose the notary if you are a foreign buyer or if the purchase amount exceeds €500,000. The Adoul may be sufficient for small cash transactions with a trusted seller."
+    }
+  },
+  "fees": {
+    "eyebrow": "Budget",
+    "title": "Acquisition costs",
+    "intro": "In addition to the purchase price, set aside a budget of 6 to 8% for related costs. Here is the breakdown.",
+    "table": {
+      "head": {
+        "item": "Item",
+        "rate": "Rate",
+        "notes": "Notes"
+      },
+      "rows": {
+        "enregistrement": {
+          "item": "Registration duties",
+          "rate": "4% of the price",
+          "notes": "Payable by the buyer"
+        },
+        "notaire": {
+          "item": "Notary fees",
+          "rate": "1 – 1.5%",
+          "notes": "Negotiable"
+        },
+        "adoul": {
+          "item": "Adoul fees",
+          "rate": "~0.5%",
+          "notes": "Cheaper than the notary"
+        },
+        "publicite": {
+          "item": "Land registration tax",
+          "rate": "1%",
+          "notes": "Mandatory"
+        },
+        "total": {
+          "item": "Estimated total",
+          "rate": "6 – 8% of the price",
+          "notes": "To be budgeted on top of the purchase price"
+        }
+      }
+    },
+    "highlight": {
+      "label": "The total budget to plan for is 106-108% of the purchase price.",
+      "text": "Allow an additional safety margin for any renovation work and furnishing."
+    }
+  },
+  "credit": {
+    "eyebrow": "Financing",
+    "title": "Mortgages in Morocco for foreigners",
+    "intro": "Moroccan banks grant loans to foreign nationals, subject to certain conditions. Here is what you need to know.",
+    "rates": {
+      "label": "Current interest rates:",
+      "value": "5.5% to 7%",
+      "suffix": "over 15-20 years",
+      "note": "Rates are slightly higher than those in Europe but remain competitive given the appreciation potential of the Moroccan property market."
+    },
+    "warning": {
+      "label": "Important:",
+      "text": "Moroccan banks generally require a down payment of 30-50% for non-residents. A few banks may go down to 20% for very strong profiles."
+    },
+    "banksTitle": "Main banks",
+    "banks": {
+      "attijariwafa": "Attijariwafa Bank",
+      "bmce": "BMCE Bank of Africa",
+      "populaire": "Banque Populaire",
+      "sgmaroc": "Société Générale Maroc",
+      "cih": "CIH Bank",
+      "bcp": "BCP"
+    },
+    "documentsTitle": "Required documents",
+    "documents": {
+      "passeport": "Valid passport",
+      "revenus": "Proof of income (last 3 years)",
+      "imposition": "Tax assessment from your home country",
+      "releves": "Bank statements",
+      "domicile": "Proof of address",
+      "patrimoine": "Statement of assets"
+    }
+  },
+  "tax": {
+    "eyebrow": "Taxes",
+    "title": "Property taxation in Morocco",
+    "intro": "Moroccan taxation has important specificities for foreign buyers. Understanding these rules allows you to optimise your investment.",
+    "table": {
+      "head": {
+        "tax": "Tax",
+        "resident": "Resident",
+        "nonResident": "Non-resident"
+      },
+      "rows": {
+        "tpi": {
+          "category": "Tax on property gains (TPI)",
+          "resident": "Exempt after 6 years",
+          "nonResident": "Exempt after 6 years"
+        },
+        "habitation": {
+          "category": "Housing tax",
+          "resident": "Varies by city",
+          "nonResident": "Varies by city"
+        },
+        "communaux": {
+          "category": "Municipal services tax",
+          "resident": "About 6.5% of the rent",
+          "nonResident": "About 6.5% of the rent"
+        },
+        "is": {
+          "category": "Corporate tax (rental income)",
+          "resident": "Progressive 10-31%",
+          "nonResident": "Flat rate 10%"
+        }
+      }
+    },
+    "info": {
+      "label": "Good news:",
+      "text": "the France-Morocco tax treaty avoids double taxation. Rental income is taxed in Morocco and exempt from the ISF wealth tax in France (subject to conditions). Consult a tax adviser to optimise your situation."
+    }
+  },
+  "precautions": {
+    "eyebrow": "Security",
+    "title": "Precautions to take",
+    "intro": "Buying property in Morocco is safe provided you follow a few essential precautions. Here is the checklist to observe before any signing.",
+    "checklist": {
+      "titre": "Verify the existence of the land title",
+      "proprietaire": "Make sure the seller is indeed the owner",
+      "gages": "Check for the absence of pledges or mortgages",
+      "diagnostic": "Have a technical survey carried out",
+      "servitudes": "Check for any easements",
+      "conformite": "Verify the compliance of the buildings",
+      "charges": "Check for unpaid charges and taxes",
+      "professionnel": "Get support from a professional"
+    },
+    "warning": {
+      "title": "Never sign a preliminary agreement without verifying the land title",
+      "text": "The land title is the only legal proof of ownership in Morocco. Verifying it with the land registry is essential before any payment."
+    }
+  },
+  "rental": {
+    "eyebrow": "Profitability",
+    "title": "Rental management",
+    "intro": "If you are considering letting your property, Marrakech offers excellent yield opportunities, particularly in seasonal rentals.",
+    "seasonal": {
+      "title": "Seasonal rental",
+      "body": "With more than 13 million visitors a year, Marrakech is a highly sought-after destination. Gross yields on seasonal rentals can reach 6% to 8%. Villas with pools and charming riads are the most in demand."
+    },
+    "longTerm": {
+      "title": "Long-term rental",
+      "body": "Long-term rental offers stable income with less day-to-day management. Contracts are generally signed for one renewable year. Gross yields: 4% to 6%."
+    },
+    "concierge": {
+      "title": "Concierge service",
+      "body": "Many concierge agencies in Marrakech offer full management of your property: welcome, cleaning, maintenance and promotion on booking platforms. Their fees range from 15% to 25% of the rental income."
+    },
+    "cta": "Discover our management services"
+  },
+  "download": {
+    "title": "Download our complete guide",
+    "subtitle": "A 24-page PDF with everything you need to know to buy in Morocco.",
+    "placeholder": "Your email address",
+    "button": "Download",
+    "alert": "Download coming soon!",
+    "disclaimer": "By downloading, you agree to receive our property advice. Unsubscribe at any time."
+  },
+  "related": {
+    "title": "Related articles",
+    "articles": {
+      "pricing": {
+        "category": "Market",
+        "title": "Property prices in Marrakech: 2024 trends",
+        "date": "15 Jan 2024"
+      },
+      "neighborhood": {
+        "category": "Neighbourhoods",
+        "title": "Choosing your neighbourhood in Marrakech: the complete guide",
+        "date": "8 Jan 2024"
+      },
+      "type": {
+        "category": "Buying",
+        "title": "Riad or villa: which property to choose in Marrakech?",
+        "date": "2 Jan 2024"
+      }
+    }
+  }
+}

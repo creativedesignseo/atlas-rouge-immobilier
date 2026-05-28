@@ -1,0 +1,253 @@
+{
+  "breadcrumb": {
+    "home": "Accueil",
+    "guides": "Guides",
+    "current": "Achat au Maroc"
+  },
+  "hero": {
+    "title": "Guide d’achat immobilier au Maroc",
+    "subtitle": "Tout ce que vous devez savoir pour acheter une propriété au Maroc en toute sérénité.",
+    "updated": "Mis à jour le 15 janvier 2024"
+  },
+  "toc": {
+    "label": "Sommaire",
+    "processus": "Le processus d’achat",
+    "notaire": "Notaire ou Adoul ?",
+    "frais": "Les frais d’acquisition",
+    "credit": "Le crédit immobilier au Maroc",
+    "fiscalite": "La fiscalité",
+    "precautions": "Les précautions à prendre",
+    "gestion": "Gestion locative"
+  },
+  "intro": {
+    "eyebrow": "Introduction",
+    "title": "Pourquoi acheter à Marrakech ?",
+    "p1": "Marrakech attire chaque année des milliers d’acheteurs étrangers, et notamment des Français, séduits par son climat exceptionnel, sa culture riche et ses perspectives d’investissement. Surnommée la « ville ocre », elle offre un cadre de vie unique entre tradition marocaine et modernité.",
+    "p2": "Le climat ensoleillé toute l’année, avec plus de 300 jours de soleil, est l’un des premiers attraits. Les hivers doux et les étés chauds mais secs permettent de profiter des jardins, terrasses et piscines en permanence.",
+    "p3": "Sur le plan culturel, la Médina classée au patrimoine de l’UNESCO, les palais, les jardins Majorelle, et la célèbre place Jemaa el-Fna offrent un environnement culturel d’exception. La cuisine marocaine, les hammams, le souk : chaque jour apporte sa découverte.",
+    "p4": "Côté investissement, les prix au m² restent attractifs comparés aux grandes métropoles européennes. Avec un rendement locatif pouvant atteindre 8% brut en saisonnier, Marrakech représente une opportunité financière intéressante."
+  },
+  "process": {
+    "eyebrow": "Étape par étape",
+    "title": "Le processus d’achat en 5 étapes",
+    "intro": "L’achat immobilier au Maroc suit un processus bien établi, différent du système français sur certains points. Voici les étapes clés.",
+    "steps": {
+      "compromis": {
+        "title": "Signature du compromis",
+        "body": "Le compromis de vente engage vendeur et acheteur. Il fixe le prix, les délais et les conditions suspensives (obtention de crédit, etc.). Versement d’un dépôt de garantie de 10%."
+      },
+      "titre": {
+        "title": "Obtention du titre foncier",
+        "body": "Le titre foncier est le document foncier unique au Maroc. Il atteste de la propriété du bien. Vérifiez qu’il existe et qu’il n’est pas gagé ou hypothéqué."
+      },
+      "compte": {
+        "title": "Ouverture d’un compte bancaire",
+        "body": "Un compte bancaire au Maroc est nécessaire pour l’acte d’achat et les paiements. Les banques demandent généralement un passeport, un justificatif de revenus et un justificatif de domicile."
+      },
+      "acte": {
+        "title": "Signature de l’acte définitif",
+        "body": "L’acte authentique est signé chez le notaire ou l’Adoul. Le solde du prix est versé et les clés sont remises. L’acte est ensuite enregistré."
+      },
+      "enregistrement": {
+        "title": "Enregistrement et remise des clés",
+        "body": "L’acte est enregistré auprès de la conservation foncière. Les droits d’enregistrement sont acquittés. Le nouveau titre foncier est établi au nom de l’acquéreur."
+      }
+    }
+  },
+  "notary": {
+    "eyebrow": "Formalités",
+    "title": "Notaire ou Adoul : qui choisir ?",
+    "intro": "Au Maroc, deux professionnels peuvent rédiger votre acte d’achat : le notaire et l’Adoul. Chacun présente des avantages selon votre situation.",
+    "notaireCard": {
+      "title": "Le notaire",
+      "body": "Le notaire est un officier ministériel qui sécurise la transaction. Il rédige l’acte authentique, vérifie les titres de propriété, et garantit la validité juridique de l’acte. Indispensable pour les achats complexes ou lors d’un recours au crédit."
+    },
+    "adoulCard": {
+      "title": "L’Adoul",
+      "body": "L’Adoul est un officier de l’état civil habilité à rédiger les actes. Solution plus rapide et moins coûteuse pour les achats au comptant entre particuliers. Ses honoraires sont d’environ 0.5% contre 1-1.5% pour le notaire."
+    },
+    "recommendation": {
+      "label": "Notre recommandation :",
+      "text": "optez pour le notaire si vous êtes acheteur étranger ou si le montant de l’achat est supérieur à 500 000 €. L’Adoul peut suffire pour les petites transactions au comptant avec un vendeur de confiance."
+    }
+  },
+  "fees": {
+    "eyebrow": "Budget",
+    "title": "Les frais d’acquisition",
+    "intro": "En plus du prix d’achat, prévoyez un budget de 6 à 8% pour les frais annexes. Voici le détail.",
+    "table": {
+      "head": {
+        "item": "Poste",
+        "rate": "Taux",
+        "notes": "Notes"
+      },
+      "rows": {
+        "enregistrement": {
+          "item": "Droits d’enregistrement",
+          "rate": "4% du prix",
+          "notes": "À la charge de l’acheteur"
+        },
+        "notaire": {
+          "item": "Honoraires de notaire",
+          "rate": "1 – 1.5%",
+          "notes": "Négociables"
+        },
+        "adoul": {
+          "item": "Frais d’Adoul",
+          "rate": "~0.5%",
+          "notes": "Moins cher que le notaire"
+        },
+        "publicite": {
+          "item": "Taxe de publicité foncière",
+          "rate": "1%",
+          "notes": "Obligatoire"
+        },
+        "total": {
+          "item": "Total estimé",
+          "rate": "6 – 8% du prix",
+          "notes": "À prévoir en plus du prix d’achat"
+        }
+      }
+    },
+    "highlight": {
+      "label": "Le budget total à prévoir est de 106-108% du prix d’achat.",
+      "text": "Prévoyez une marge de sécurité supplémentaire pour les éventuels travaux et l’ameublement."
+    }
+  },
+  "credit": {
+    "eyebrow": "Financement",
+    "title": "Le crédit immobilier au Maroc pour les étrangers",
+    "intro": "Les banques marocaines accordent des prêts aux ressortissants étrangers, sous certaines conditions. Voici ce qu’il faut savoir.",
+    "rates": {
+      "label": "Taux d’intérêt actuels :",
+      "value": "5.5% à 7%",
+      "suffix": "sur 15-20 ans",
+      "note": "Les taux sont légèrement supérieurs à ceux pratiqués en France mais restent compétitifs eu égard au potentiel de valorisation du marché immobilier marocain."
+    },
+    "warning": {
+      "label": "Attention :",
+      "text": "les banques marocaines exigent généralement un apport de 30-50% pour les non-résidents. Quelques banques peuvent descendre à 20% pour des profils très solides."
+    },
+    "banksTitle": "Principales banques",
+    "banks": {
+      "attijariwafa": "Attijariwafa Bank",
+      "bmce": "BMCE Bank of Africa",
+      "populaire": "Banque Populaire",
+      "sgmaroc": "Société Générale Maroc",
+      "cih": "CIH Bank",
+      "bcp": "BCP"
+    },
+    "documentsTitle": "Documents requis",
+    "documents": {
+      "passeport": "Passeport valide",
+      "revenus": "Justificatifs de revenus (3 dernières années)",
+      "imposition": "Avis d’imposition français",
+      "releves": "Relevés bancaires",
+      "domicile": "Justificatif de domicile",
+      "patrimoine": "Attestation de patrimoine"
+    }
+  },
+  "tax": {
+    "eyebrow": "Impôts",
+    "title": "La fiscalité immobilière au Maroc",
+    "intro": "La fiscalité marocaine présente des spécificités importantes pour les acheteurs étrangers. Comprendre ces règles vous permet d’optimiser votre investissement.",
+    "table": {
+      "head": {
+        "tax": "Taxe",
+        "resident": "Résident",
+        "nonResident": "Non-résident"
+      },
+      "rows": {
+        "tpi": {
+          "category": "Taxe sur les profits immobiliers (TPI)",
+          "resident": "Exonéré après 6 ans",
+          "nonResident": "Exonéré après 6 ans"
+        },
+        "habitation": {
+          "category": "Taxe d’habitation",
+          "resident": "Variable selon ville",
+          "nonResident": "Variable selon ville"
+        },
+        "communaux": {
+          "category": "Taxe de services communaux",
+          "resident": "Environ 6.5% du loyer",
+          "nonResident": "Environ 6.5% du loyer"
+        },
+        "is": {
+          "category": "IS (revenus locatifs)",
+          "resident": "Progressif 10-31%",
+          "nonResident": "Forfaitaire 10%"
+        }
+      }
+    },
+    "info": {
+      "label": "Bonne nouvelle :",
+      "text": "la convention fiscale France-Maroc évite la double imposition. Les revenus locatifs sont imposés au Maroc et exemptés d’ISF en France (sous conditions). Consultez un fiscaliste pour optimiser votre situation."
+    }
+  },
+  "precautions": {
+    "eyebrow": "Sécurité",
+    "title": "Précautions à prendre",
+    "intro": "L’achat immobilier au Maroc est sûr à condition de suivre quelques précautions essentielles. Voici la check-list à respecter avant toute signature.",
+    "checklist": {
+      "titre": "Vérifier l’existence du titre foncier",
+      "proprietaire": "S’assurer que le vendeur est bien le propriétaire",
+      "gages": "Vérifier l’absence de gages ou hypothèques",
+      "diagnostic": "Faire réaliser un diagnostic technique",
+      "servitudes": "Vérifier les servitudes éventuelles",
+      "conformite": "Contrôler la conformité des constructions",
+      "charges": "Vérifier les charges et taxes impayées",
+      "professionnel": "Se faire accompagner par un professionnel"
+    },
+    "warning": {
+      "title": "Ne signez jamais un compromis sans vérification du titre foncier",
+      "text": "Le titre foncier est la seule preuve légale de propriété au Maroc. Sa vérification auprès de la conservation foncière est indispensable avant tout versement."
+    }
+  },
+  "rental": {
+    "eyebrow": "Rentabilité",
+    "title": "La gestion locative",
+    "intro": "Si vous envisagez de louer votre bien, Marrakech offre d’excellentes opportunités de rendement, notamment en location saisonnière.",
+    "seasonal": {
+      "title": "Location saisonnière",
+      "body": "Avec plus de 13 millions de visiteurs par an, Marrakech est une destination très prisée. Les rendements bruts en location saisonnière peuvent atteindre 6% à 8%. Les villas avec piscine et les riads de charme sont les plus recherchés."
+    },
+    "longTerm": {
+      "title": "Location longue durée",
+      "body": "La location longue durée offre des revenus stables avec moins de gestion courante. Les contrats sont généralement signés pour un an renouvelable. Rendements bruts : 4% à 6%."
+    },
+    "concierge": {
+      "title": "Conciergerie",
+      "body": "De nombreuses agences de conciergerie à Marrakech proposent la gestion complète de votre bien : accueil, ménage, maintenance, et promotion sur les plateformes de réservation. Leurs honoraires varient de 15% à 25% des recettes locatives."
+    },
+    "cta": "Découvrir nos services de gestion"
+  },
+  "download": {
+    "title": "Téléchargez notre guide complet",
+    "subtitle": "Un PDF de 24 pages avec tout ce que vous devez savoir pour acheter au Maroc.",
+    "placeholder": "Votre adresse email",
+    "button": "Télécharger",
+    "alert": "Téléchargement bientôt disponible !",
+    "disclaimer": "En téléchargeant, vous acceptez de recevoir nos conseils immobiliers. Désinscription à tout moment."
+  },
+  "related": {
+    "title": "Articles connexes",
+    "articles": {
+      "pricing": {
+        "category": "Marché",
+        "title": "Prix de l’immobilier à Marrakech : tendances 2024",
+        "date": "15 Jan 2024"
+      },
+      "neighborhood": {
+        "category": "Quartiers",
+        "title": "Choisir son quartier à Marrakech : le guide complet",
+        "date": "8 Jan 2024"
+      },
+      "type": {
+        "category": "Achat",
+        "title": "Riad ou villa : quel bien choisir à Marrakech ?",
+        "date": "2 Jan 2024"
+      }
+    }
+  }
+}

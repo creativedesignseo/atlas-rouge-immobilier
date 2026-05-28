@@ -1,1 +1,78 @@
-{}
+{
+  "rental": {
+    "hero": {
+      "title": "Rental management in Marrakech",
+      "subtitle": "Let us manage your property's rental — we take care of everything. Stress-free, professional management from start to finish."
+    },
+    "services": {
+      "heading": "Our management services",
+      "subheading": "End-to-end support to rent out your property with complete peace of mind.",
+      "items": {
+        "tenantSearch": {
+          "title": "Tenant search",
+          "description": "Rigorous candidate selection, with thorough vetting of applications and guarantees."
+        },
+        "inventory": {
+          "title": "Inventory reports",
+          "description": "Drafting and managing legally compliant move-in and move-out inventory reports."
+        },
+        "rentGuarantee": {
+          "title": "Unpaid rent protection",
+          "description": "Rental protection insurance to safeguard your rental income."
+        },
+        "maintenance": {
+          "title": "Maintenance",
+          "description": "Coordination of plumbing, electrical, gardening and other interventions."
+        },
+        "taxFiling": {
+          "title": "Tax filing",
+          "description": "Support with your tax declarations in Morocco."
+        }
+      }
+    },
+    "pricing": {
+      "heading": "Our plans",
+      "subheading": "Choose the plan that fits your needs.",
+      "subtitle": "of monthly rent",
+      "choose": "Choose {{tier}}",
+      "tiers": {
+        "essential": {
+          "name": "Essential",
+          "price": "8%",
+          "features": {
+            "tenantSearch": "Tenant search",
+            "inventory": "Inventory reports",
+            "lease": "Lease drafting",
+            "rentCollection": "Rent collection"
+          }
+        },
+        "comfort": {
+          "name": "Comfort",
+          "price": "10%",
+          "features": {
+            "essentialPack": "Everything in the Essential pack",
+            "rentGuarantee": "Unpaid rent guarantee",
+            "maintenance": "Routine maintenance",
+            "recovery": "Reminders and debt recovery"
+          }
+        },
+        "premium": {
+          "name": "Premium",
+          "price": "12%",
+          "features": {
+            "comfortPack": "Everything in the Comfort pack",
+            "taxFiling": "Tax filing",
+            "damageInsurance": "Damage insurance",
+            "dedicatedAdvisor": "Dedicated advisor 24/7"
+          }
+        }
+      }
+    },
+    "cta": {
+      "heading": "Rent out your property with confidence",
+      "subtitle": "Let's talk about your rental management project. Our team will design a tailor-made solution for you.",
+      "appointment": "Book an appointment",
+      "phone": "+212 524 00 00 00"
+    }
+  }
+}

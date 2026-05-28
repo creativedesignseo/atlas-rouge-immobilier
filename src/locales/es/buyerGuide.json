@@ -1,0 +1,253 @@
+{
+  "breadcrumb": {
+    "home": "Inicio",
+    "guides": "Guías",
+    "current": "Comprar en Marruecos"
+  },
+  "hero": {
+    "title": "Guía para comprar una propiedad en Marruecos",
+    "subtitle": "Todo lo que necesitas saber para comprar una propiedad en Marruecos con total tranquilidad.",
+    "updated": "Actualizado el 15 de enero de 2024"
+  },
+  "toc": {
+    "label": "Índice",
+    "processus": "El proceso de compra",
+    "notaire": "¿Notario o Adoul?",
+    "frais": "Los gastos de adquisición",
+    "credit": "El crédito hipotecario en Marruecos",
+    "fiscalite": "La fiscalidad",
+    "precautions": "Las precauciones a tomar",
+    "gestion": "Gestión de alquileres"
+  },
+  "intro": {
+    "eyebrow": "Introducción",
+    "title": "¿Por qué comprar en Marrakech?",
+    "p1": "Marrakech atrae cada año a miles de compradores extranjeros, en particular europeos, seducidos por su clima excepcional, su rica cultura y sus perspectivas de inversión. Apodada la «ciudad ocre», ofrece un entorno de vida único entre la tradición marroquí y la modernidad.",
+    "p2": "El clima soleado durante todo el año, con más de 300 días de sol, es uno de sus primeros atractivos. Los inviernos suaves y los veranos cálidos pero secos permiten disfrutar de jardines, terrazas y piscinas de forma permanente.",
+    "p3": "En el plano cultural, la Medina declarada Patrimonio de la Humanidad por la UNESCO, los palacios, los jardines Majorelle y la célebre plaza Jemaa el-Fna ofrecen un entorno cultural excepcional. La cocina marroquí, los hammams, el zoco: cada día trae su propio descubrimiento.",
+    "p4": "En cuanto a la inversión, los precios por m² siguen siendo atractivos en comparación con las grandes metrópolis europeas. Con una rentabilidad por alquiler que puede alcanzar el 8% bruto en temporada, Marrakech representa una oportunidad financiera interesante."
+  },
+  "process": {
+    "eyebrow": "Paso a paso",
+    "title": "El proceso de compra en 5 pasos",
+    "intro": "La compra inmobiliaria en Marruecos sigue un proceso bien establecido, diferente del sistema europeo en algunos aspectos. Estos son los pasos clave.",
+    "steps": {
+      "compromis": {
+        "title": "Firma del contrato preliminar",
+        "body": "El contrato preliminar de venta vincula al vendedor y al comprador. Fija el precio, los plazos y las condiciones suspensivas (obtención del crédito, etc.). Se abona un depósito de garantía del 10%."
+      },
+      "titre": {
+        "title": "Obtención del título de propiedad",
+        "body": "El título de propiedad (titre foncier) es el documento registral único en Marruecos. Acredita la propiedad del inmueble. Comprueba que existe y que no está pignorado ni hipotecado."
+      },
+      "compte": {
+        "title": "Apertura de una cuenta bancaria",
+        "body": "Es necesaria una cuenta bancaria en Marruecos para la escritura de compra y los pagos. Los bancos suelen exigir un pasaporte, un justificante de ingresos y un justificante de domicilio."
+      },
+      "acte": {
+        "title": "Firma de la escritura definitiva",
+        "body": "La escritura pública se firma ante el notario o el Adoul. Se abona el resto del precio y se entregan las llaves. La escritura se registra a continuación."
+      },
+      "enregistrement": {
+        "title": "Registro y entrega de llaves",
+        "body": "La escritura se inscribe en el registro de la propiedad (conservation foncière). Se abonan los derechos de registro. El nuevo título de propiedad se expide a nombre del comprador."
+      }
+    }
+  },
+  "notary": {
+    "eyebrow": "Trámites",
+    "title": "Notario o Adoul: ¿a quién elegir?",
+    "intro": "En Marruecos, dos profesionales pueden redactar tu escritura de compra: el notario y el Adoul. Cada uno presenta ventajas según tu situación.",
+    "notaireCard": {
+      "title": "El notario",
+      "body": "El notario es un funcionario público que garantiza la seguridad de la transacción. Redacta la escritura pública, verifica los títulos de propiedad y garantiza la validez jurídica del acto. Es indispensable para las compras complejas o cuando se recurre a un crédito."
+    },
+    "adoulCard": {
+      "title": "El Adoul",
+      "body": "El Adoul es un fedatario del estado civil habilitado para redactar escrituras. Es una solución más rápida y económica para las compras al contado entre particulares. Sus honorarios son de aproximadamente el 0.5%, frente al 1-1.5% del notario."
+    },
+    "recommendation": {
+      "label": "Nuestra recomendación:",
+      "text": "opta por el notario si eres comprador extranjero o si el importe de la compra supera los 500 000 €. El Adoul puede bastar para pequeñas transacciones al contado con un vendedor de confianza."
+    }
+  },
+  "fees": {
+    "eyebrow": "Presupuesto",
+    "title": "Los gastos de adquisición",
+    "intro": "Además del precio de compra, prevé un presupuesto del 6 al 8% para los gastos adicionales. Este es el detalle.",
+    "table": {
+      "head": {
+        "item": "Concepto",
+        "rate": "Tipo",
+        "notes": "Notas"
+      },
+      "rows": {
+        "enregistrement": {
+          "item": "Derechos de registro",
+          "rate": "4% del precio",
+          "notes": "A cargo del comprador"
+        },
+        "notaire": {
+          "item": "Honorarios del notario",
+          "rate": "1 – 1.5%",
+          "notes": "Negociables"
+        },
+        "adoul": {
+          "item": "Gastos de Adoul",
+          "rate": "~0.5%",
+          "notes": "Más económico que el notario"
+        },
+        "publicite": {
+          "item": "Tasa de publicidad registral",
+          "rate": "1%",
+          "notes": "Obligatoria"
+        },
+        "total": {
+          "item": "Total estimado",
+          "rate": "6 – 8% del precio",
+          "notes": "A prever además del precio de compra"
+        }
+      }
+    },
+    "highlight": {
+      "label": "El presupuesto total a prever es del 106-108% del precio de compra.",
+      "text": "Prevé un margen de seguridad adicional para posibles reformas y el mobiliario."
+    }
+  },
+  "credit": {
+    "eyebrow": "Financiación",
+    "title": "El crédito hipotecario en Marruecos para extranjeros",
+    "intro": "Los bancos marroquíes conceden préstamos a los ciudadanos extranjeros, bajo ciertas condiciones. Esto es lo que debes saber.",
+    "rates": {
+      "label": "Tipos de interés actuales:",
+      "value": "5.5% a 7%",
+      "suffix": "a 15-20 años",
+      "note": "Los tipos son ligeramente superiores a los aplicados en Europa, pero siguen siendo competitivos teniendo en cuenta el potencial de revalorización del mercado inmobiliario marroquí."
+    },
+    "warning": {
+      "label": "Atención:",
+      "text": "los bancos marroquíes suelen exigir una aportación del 30-50% para los no residentes. Algunos bancos pueden bajar al 20% para perfiles muy solventes."
+    },
+    "banksTitle": "Principales bancos",
+    "banks": {
+      "attijariwafa": "Attijariwafa Bank",
+      "bmce": "BMCE Bank of Africa",
+      "populaire": "Banque Populaire",
+      "sgmaroc": "Société Générale Maroc",
+      "cih": "CIH Bank",
+      "bcp": "BCP"
+    },
+    "documentsTitle": "Documentos requeridos",
+    "documents": {
+      "passeport": "Pasaporte en vigor",
+      "revenus": "Justificantes de ingresos (3 últimos años)",
+      "imposition": "Declaración de la renta del país de origen",
+      "releves": "Extractos bancarios",
+      "domicile": "Justificante de domicilio",
+      "patrimoine": "Certificado de patrimonio"
+    }
+  },
+  "tax": {
+    "eyebrow": "Impuestos",
+    "title": "La fiscalidad inmobiliaria en Marruecos",
+    "intro": "La fiscalidad marroquí presenta particularidades importantes para los compradores extranjeros. Comprender estas reglas te permite optimizar tu inversión.",
+    "table": {
+      "head": {
+        "tax": "Impuesto",
+        "resident": "Residente",
+        "nonResident": "No residente"
+      },
+      "rows": {
+        "tpi": {
+          "category": "Impuesto sobre las plusvalías inmobiliarias (TPI)",
+          "resident": "Exento tras 6 años",
+          "nonResident": "Exento tras 6 años"
+        },
+        "habitation": {
+          "category": "Impuesto sobre la vivienda",
+          "resident": "Variable según la ciudad",
+          "nonResident": "Variable según la ciudad"
+        },
+        "communaux": {
+          "category": "Tasa de servicios municipales",
+          "resident": "Aproximadamente el 6.5% del alquiler",
+          "nonResident": "Aproximadamente el 6.5% del alquiler"
+        },
+        "is": {
+          "category": "IS (rentas del alquiler)",
+          "resident": "Progresivo 10-31%",
+          "nonResident": "Tipo fijo del 10%"
+        }
+      }
+    },
+    "info": {
+      "label": "Buena noticia:",
+      "text": "el convenio fiscal Francia-Marruecos evita la doble imposición. Las rentas del alquiler se gravan en Marruecos y quedan exentas del ISF en Francia (bajo ciertas condiciones). Consulta a un asesor fiscal para optimizar tu situación."
+    }
+  },
+  "precautions": {
+    "eyebrow": "Seguridad",
+    "title": "Precauciones a tomar",
+    "intro": "La compra inmobiliaria en Marruecos es segura siempre que se sigan algunas precauciones esenciales. Esta es la lista de comprobación que debes respetar antes de cualquier firma.",
+    "checklist": {
+      "titre": "Verificar la existencia del título de propiedad",
+      "proprietaire": "Asegurarse de que el vendedor es realmente el propietario",
+      "gages": "Comprobar la ausencia de pignoraciones o hipotecas",
+      "diagnostic": "Encargar un diagnóstico técnico",
+      "servitudes": "Verificar las posibles servidumbres",
+      "conformite": "Controlar la legalidad de las construcciones",
+      "charges": "Comprobar las cargas e impuestos impagados",
+      "professionnel": "Contar con el acompañamiento de un profesional"
+    },
+    "warning": {
+      "title": "Nunca firmes un contrato preliminar sin verificar el título de propiedad",
+      "text": "El título de propiedad es la única prueba legal de propiedad en Marruecos. Su verificación en el registro de la propiedad es indispensable antes de cualquier pago."
+    }
+  },
+  "rental": {
+    "eyebrow": "Rentabilidad",
+    "title": "La gestión de alquileres",
+    "intro": "Si te planteas alquilar tu propiedad, Marrakech ofrece excelentes oportunidades de rentabilidad, especialmente en el alquiler vacacional.",
+    "seasonal": {
+      "title": "Alquiler vacacional",
+      "body": "Con más de 13 millones de visitantes al año, Marrakech es un destino muy demandado. La rentabilidad bruta del alquiler vacacional puede alcanzar entre el 6% y el 8%. Las villas con piscina y los riads con encanto son los más buscados."
+    },
+    "longTerm": {
+      "title": "Alquiler de larga duración",
+      "body": "El alquiler de larga duración ofrece ingresos estables con menos gestión diaria. Los contratos suelen firmarse por un año renovable. Rentabilidad bruta: del 4% al 6%."
+    },
+    "concierge": {
+      "title": "Conserjería",
+      "body": "Numerosas agencias de conserjería en Marrakech ofrecen la gestión integral de tu propiedad: recepción, limpieza, mantenimiento y promoción en las plataformas de reservas. Sus honorarios varían entre el 15% y el 25% de los ingresos del alquiler."
+    },
+    "cta": "Descubrir nuestros servicios de gestión"
+  },
+  "download": {
+    "title": "Descarga nuestra guía completa",
+    "subtitle": "Un PDF de 24 páginas con todo lo que necesitas saber para comprar en Marruecos.",
+    "placeholder": "Tu dirección de correo electrónico",
+    "button": "Descargar",
+    "alert": "¡Descarga disponible próximamente!",
+    "disclaimer": "Al descargar, aceptas recibir nuestros consejos inmobiliarios. Puedes darte de baja en cualquier momento."
+  },
+  "related": {
+    "title": "Artículos relacionados",
+    "articles": {
+      "pricing": {
+        "category": "Mercado",
+        "title": "Precios inmobiliarios en Marrakech: tendencias 2024",
+        "date": "15 ene 2024"
+      },
+      "neighborhood": {
+        "category": "Barrios",
+        "title": "Elegir tu barrio en Marrakech: la guía completa",
+        "date": "8 ene 2024"
+      },
+      "type": {
+        "category": "Compra",
+        "title": "¿Riad o villa? ¿Qué propiedad elegir en Marrakech?",
+        "date": "2 ene 2024"
+      }
+    }
+  }
+}

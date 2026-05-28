@@ -4,70 +4,50 @@
     "about": "À propos"
   },
   "hero": {
-    "title": "À propos d'Atlas Rouge Immobilier",
-    "subtitle": "Votre partenaire de confiance pour l'immobilier à Marrakech depuis 2015."
+    "title": "Atlas Rouge Immobilier",
+    "tagline": "L'immobilier à Marrakech, pensé pour les Français",
+    "mission": "Accompagner chaque acheteur avec expertise, transparence et passion dans son projet immobilier au Maroc."
   },
   "story": {
-    "title": "Notre histoire",
-    "p1": "Atlas Rouge Immobilier est née de la rencontre entre la passion du Maroc et l'expertise immobilière européenne. Depuis 2015, nous accompagnons des familles francophones dans leur projet d'acquisition à Marrakech.",
-    "p2": "Notre équipe bilingue connaît le marché local sur le bout des doigts et les codes du marché européen. Nous sommes les ponts entre deux cultures.",
-    "p3": "Notre mission : faire de votre projet immobilier une expérience sereine, transparente et réussie."
+    "eyebrow": "Notre histoire",
+    "title": "Un pont entre la France et le Maroc",
+    "p1": "Atlas Rouge Immobilier est né en 2012 d'une conviction simple : acheter une propriété à Marrakech mérite un accompagnement à la hauteur de l'événement.",
+    "p2": "Fondée par un couple franco-marocain, notre agence allie la rigueur et la transparence du service français à la chaleur et la connaissance intime de la culture marocaine.",
+    "p3": "En dix ans, nous avons accompagné plus de 800 familles dans leur projet immobilier — de la première visite à la remise des clés, en passant par toutes les étapes administratives.",
+    "imageAlt": "L'équipe Atlas Rouge Immobilier au siège de Marrakech",
+    "imageCaption": "L'équipe Atlas Rouge Immobilier au siège de Marrakech"
   },
   "values": {
     "title": "Nos valeurs",
     "transparency": {
       "title": "Transparence",
-      "description": "Nous vous présentons les biens avec leurs forces et leurs faiblesses. Aucune surprise."
+      "description": "Pas de surprise. Chaque étape vous est expliquée, chaque frais détaillé. Nous croyons que la confiance se construit par l'honnêteté."
     },
     "expertise": {
       "title": "Expertise locale",
-      "description": "Plus de 10 ans à Marrakech. Nous connaissons chaque quartier, chaque rue."
+      "description": "Nous connaissons Marrakech quartier par quartier, rue par rue. Cette connaissance intime fait toute la différence dans votre recherche."
     },
-    "support": {
-      "title": "Accompagnement",
-      "description": "Du premier rendez-vous à la signature, nous sommes à vos côtés."
-    },
-    "network": {
-      "title": "Réseau",
-      "description": "Notaires, juristes, architectes, artisans. Notre carnet d'adresses à votre service."
-    }
-  },
-  "team": {
-    "title": "Notre équipe",
-    "subtitle": "Des experts passionnés à votre service.",
-    "members": {
-      "sophie": {
-        "name": "Sophie Martin",
-        "role": "Fondatrice & Directrice",
-        "bio": "Passionnée par l'immobilier et le Maroc, Sophie a fondé Atlas Rouge pour accompagner les francophones dans leur projet marrakchi."
-      },
-      "karim": {
-        "name": "Karim Benali",
-        "role": "Responsable Commercial",
-        "bio": "Expert du marché marocain, Karim est votre interlocuteur privilégié pour toutes vos recherches de villas et riads."
-      },
-      "amina": {
-        "name": "Amina Zerhouni",
-        "role": "Responsable Juridique",
-        "bio": "Spécialiste du droit immobilier marocain, Amina sécurise toutes vos transactions de A à Z."
-      },
-      "thomas": {
-        "name": "Thomas Dubois",
-        "role": "Conseiller Investissement",
-        "bio": "Thomas vous accompagne sur les opportunités d'investissement locatif et la gestion de patrimoine."
-      }
+    "commitment": {
+      "title": "Engagement",
+      "description": "Votre projet est notre projet. Nous restons à vos côtés bien au-delà de la signature, pour vous aider à vous installer sereinement."
     }
   },
   "stats": {
+    "families": "Familles accompagnées",
+    "years": "Années d'expertise",
     "properties": "Biens vendus",
-    "clients": "Clients satisfaits",
-    "years": "Années d'expérience",
-    "neighborhoods": "Quartiers couverts"
+    "satisfaction": "Taux de satisfaction"
+  },
+  "team": {
+    "title": "Notre équipe",
+    "subtitle": "Des conseillers passionnés à votre service",
+    "directorRole": "Directrice",
+    "defaultRole": "Conseiller",
+    "contact": "Contacter"
   },
   "cta": {
-    "title": "Prêt à concrétiser votre projet ?",
-    "subtitle": "Contactez-nous pour échanger sur votre projet, sans engagement.",
-    "contact": "Nous contacter",
-    "search": "Voir les biens"
+    "title": "Prêt à trouver votre bien ?",
+    "subtitle": "Notre équipe vous accompagne à chaque étape de votre projet immobilier à Marrakech.",
+    "appointment": "Prendre rendez-vous"
   }
 }

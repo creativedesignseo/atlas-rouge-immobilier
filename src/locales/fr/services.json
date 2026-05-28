@@ -1,1 +1,78 @@
-{}
+{
+  "rental": {
+    "hero": {
+      "title": "Gestion locative à Marrakech",
+      "subtitle": "Confiez-nous la location de votre bien, nous nous occupons de tout. Une gestion sereine et professionnelle de A à Z."
+    },
+    "services": {
+      "heading": "Nos services de gestion",
+      "subheading": "Une prise en charge complète pour louer votre bien en toute tranquillité.",
+      "items": {
+        "tenantSearch": {
+          "title": "Recherche de locataires",
+          "description": "Sélection rigoureuse des candidats, vérification des dossiers et garanties."
+        },
+        "inventory": {
+          "title": "État des lieux",
+          "description": "Rédaction et gestion des états des lieux d’entrée et de sortie conformes à la loi."
+        },
+        "rentGuarantee": {
+          "title": "Garanties loyers impayés",
+          "description": "Assurance protection locative pour sécuriser vos revenus fonciers."
+        },
+        "maintenance": {
+          "title": "Maintenance",
+          "description": "Coordination des interventions de plomberie, électricité, jardinage et plus."
+        },
+        "taxFiling": {
+          "title": "Déclaration fiscale",
+          "description": "Accompagnement dans vos déclarations fiscales au Maroc."
+        }
+      }
+    },
+    "pricing": {
+      "heading": "Nos formules",
+      "subheading": "Choisissez la formule qui correspond à vos besoins.",
+      "subtitle": "du loyer mensuel",
+      "choose": "Choisir {{tier}}",
+      "tiers": {
+        "essential": {
+          "name": "Essentiel",
+          "price": "8%",
+          "features": {
+            "tenantSearch": "Recherche de locataires",
+            "inventory": "État des lieux",
+            "lease": "Rédaction du bail",
+            "rentCollection": "Encaissement des loyers"
+          }
+        },
+        "comfort": {
+          "name": "Confort",
+          "price": "10%",
+          "features": {
+            "essentialPack": "Tout le pack Essentiel",
+            "rentGuarantee": "Garantie loyers impayés",
+            "maintenance": "Maintenance courante",
+            "recovery": "Relances et recouvrement"
+          }
+        },
+        "premium": {
+          "name": "Premium",
+          "price": "12%",
+          "features": {
+            "comfortPack": "Tout le pack Confort",
+            "taxFiling": "Déclaration fiscale",
+            "damageInsurance": "Assurance dommages",
+            "dedicatedAdvisor": "Conseiller dédié 24/7"
+          }
+        }
+      }
+    },
+    "cta": {
+      "heading": "Louez votre bien en confiance",
+      "subtitle": "Discutons de votre projet de gestion locative. Notre équipe vous propose une solution sur mesure.",
+      "appointment": "Prendre rendez-vous",
+      "phone": "+212 524 00 00 00"
+    }
+  }
+}

@@ -1,1 +1,78 @@
-{}
+{
+  "rental": {
+    "hero": {
+      "title": "Gestión de alquileres en Marrakech",
+      "subtitle": "Deje el alquiler de su propiedad en nuestras manos: nos encargamos de todo. Una gestión tranquila y profesional de principio a fin."
+    },
+    "services": {
+      "heading": "Nuestros servicios de gestión",
+      "subheading": "Un servicio integral para alquilar su propiedad con total tranquilidad.",
+      "items": {
+        "tenantSearch": {
+          "title": "Búsqueda de inquilinos",
+          "description": "Selección rigurosa de candidatos, verificación de expedientes y garantías."
+        },
+        "inventory": {
+          "title": "Inventario de la vivienda",
+          "description": "Redacción y gestión de los inventarios de entrada y salida conformes a la ley."
+        },
+        "rentGuarantee": {
+          "title": "Garantía de impago de alquileres",
+          "description": "Seguro de protección de alquiler para asegurar sus ingresos por arrendamiento."
+        },
+        "maintenance": {
+          "title": "Mantenimiento",
+          "description": "Coordinación de intervenciones de fontanería, electricidad, jardinería y más."
+        },
+        "taxFiling": {
+          "title": "Declaración fiscal",
+          "description": "Acompañamiento en sus declaraciones fiscales en Marruecos."
+        }
+      }
+    },
+    "pricing": {
+      "heading": "Nuestros planes",
+      "subheading": "Elija el plan que mejor se adapte a sus necesidades.",
+      "subtitle": "del alquiler mensual",
+      "choose": "Elegir {{tier}}",
+      "tiers": {
+        "essential": {
+          "name": "Esencial",
+          "price": "8%",
+          "features": {
+            "tenantSearch": "Búsqueda de inquilinos",
+            "inventory": "Inventario de la vivienda",
+            "lease": "Redacción del contrato de arrendamiento",
+            "rentCollection": "Cobro de los alquileres"
+          }
+        },
+        "comfort": {
+          "name": "Confort",
+          "price": "10%",
+          "features": {
+            "essentialPack": "Todo el pack Esencial",
+            "rentGuarantee": "Garantía de impago de alquileres",
+            "maintenance": "Mantenimiento ordinario",
+            "recovery": "Reclamaciones y recobro"
+          }
+        },
+        "premium": {
+          "name": "Premium",
+          "price": "12%",
+          "features": {
+            "comfortPack": "Todo el pack Confort",
+            "taxFiling": "Declaración fiscal",
+            "damageInsurance": "Seguro de daños",
+            "dedicatedAdvisor": "Asesor dedicado 24/7"
+          }
+        }
+      }
+    },
+    "cta": {
+      "heading": "Alquile su propiedad con confianza",
+      "subtitle": "Hablemos de su proyecto de gestión de alquileres. Nuestro equipo le propone una solución a medida.",
+      "appointment": "Pedir cita",
+      "phone": "+212 524 00 00 00"
+    }
+  }
+}
