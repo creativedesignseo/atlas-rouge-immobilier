@@ -9,6 +9,100 @@
 
 ---
 
+## Lee primero (paquete de transferencia de contexto)
+
+Para entender el proyecto sin depender de ningún chat previo, lee en este orden:
+
+1. **`PROJECT_CONTEXT.md`** — qué es, arquitectura, funcionalidades, decisiones técnicas.
+2. **`HANDOFF.md`** — estado actual, último trabajo, próximos pasos, qué revisar primero.
+3. **`TODO.md`** — tareas pendientes priorizadas con su estado.
+4. **`AUDIT_REPORT.md`** — auditoría de production-readiness (7 P0, roadmap).
+5. **`HANDOFF_REPORT.md`** — historial cronológico detallado (log largo, opcional).
+
+> ⚠️ `PROJECT_HANDBOOK.md`, `README.md`, `info.md` y `GITHUB_IDE_GUIDE.md`
+> están **desactualizados** (dicen URL `atlas-rouge-immobilier.netlify.app`
+> y "sitio francés"). La realidad es dominio **`atlasrouge.com`** y sitio
+> **trilingüe FR/ES/EN**. No los tomes como fuente de verdad.
+
+---
+
+## Qué es este proyecto (resumen de 30s)
+
+Sitio web **trilingüe (FR/ES/EN)** de una **agencia inmobiliaria de lujo en
+Marrakech** (Atlas Rouge Immobilier), dirigido a **inversores europeos**
+(sobre todo franceses). Es **lead-gen** (NO e-commerce): no hay pagos online;
+el objetivo es captar contactos vía formularios. Cliente final: **Khalid**
+(Francia). En **producción** en `atlasrouge.com` (Netlify).
+
+## Stack
+
+React 19.2 · Vite 7.2 · TypeScript 5.9 (strict) · Tailwind 3.4 · Supabase
+(Auth + RLS + Storage + Postgres) · i18next (react-i18next) · GSAP ·
+MapLibre GL · TipTap (editor blog) · Netlify (hosting + Functions + Edge).
+
+## Comandos principales
+
+```bash
+npm install            # instalar dependencias
+npm run dev            # servidor de desarrollo (Vite)
+npm run build          # tsc -b && vite build (typecheck + build prod)
+npm run lint           # eslint .
+npm run preview        # previsualizar el build
+bash scripts/verify.sh # pipeline de verificación del harness (lint+build)
+npx tsc -b --noEmit    # typecheck aislado (NO hay script `typecheck` aún)
+```
+> No existen scripts `test` ni `typecheck` en package.json (P1 pendiente).
+
+## Archivos y carpetas clave
+
+```
+src/i18n.ts                 # config i18next + registro de namespaces
+src/lib/supabase.ts         # cliente Supabase (anon key, RLS)
+src/services/*.ts           # capa de datos (auth, property, blog, leads, contact...)
+src/services/admin/*.ts     # operaciones de admin
+src/pages/*.tsx             # páginas públicas
+src/pages/admin/*.tsx       # panel admin (protegido por ProtectedRoute)
+src/locales/{fr,es,en}/*    # traducciones por namespace
+src/components/              # componentes UI
+supabase/migrations/*.sql   # esquema y RLS (aplicar a mano en Studio)
+netlify/functions/*.js      # notify-lead, translate-property (server-side)
+netlify/edge-functions/*.ts # img-proxy, og-rewrite
+scripts/verify.sh           # verificación local
+AUDIT_REPORT.md             # auditoría 13-agentes (P0-P3 + roadmap)
+```
+
+## Reglas para Claude al editar (project-specific)
+
+- **Nunca uses imágenes generadas por IA.** Solo fotos reales (Pexels CC0).
+- **Nunca inventes datos** (precios, fiscalidad, cifras): solo hechos
+  verificables. Para artículos de blog, investigar con WebSearch.
+- **Todo texto visible va por i18n** (`t('clave')`), nunca hardcoded.
+  Las 3 versiones FR/ES/EN deben tener el MISMO set de claves.
+- **No toques `.env*`** (gitignored). Secretos solo en Netlify env vars.
+- **Las migraciones SQL se aplican a mano** en Supabase Studio (la REST
+  API no ejecuta SQL crudo). Crea el archivo en `supabase/migrations/`
+  y pásale el SQL al owner para que lo pegue.
+- **`DEEPSEEK_API_KEY` sin prefijo `VITE_`** (es server-side; `VITE_*`
+  filtraría al bundle del navegador).
+
+## Cosas que Claude NO debe hacer
+
+- No borrar archivos ni hacer cambios destructivos sin permiso explícito.
+- No commitear sin que el owner lo pida.
+- No hacer deploy (Netlify auto-deploya al hacer push a `main`; avisar).
+- No tratar `PROJECT_HANDBOOK.md`/`README.md` como verdad (desactualizados).
+- No re-aplicar la migración 005 ni recrear el harness (ya están hechos).
+
+## Cómo proceder en futuras sesiones
+
+1. Lee `HANDOFF.md` + `TODO.md` + `AUDIT_REPORT.md`.
+2. Confirma con el owner qué P0 atacar (el más urgente: escalada de
+   privilegios, SQL listo en AUDIT_REPORT.md § P0-1).
+3. Trabaja, corre `bash scripts/verify.sh`, y al cerrar actualiza
+   `HANDOFF.md` + `TODO.md` + `tasks/current.md`.
+
+---
+
 ## Claude Code session start
 
 When a fresh Claude Code session opens this repo:
