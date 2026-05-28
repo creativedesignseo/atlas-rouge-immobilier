@@ -4,29 +4,56 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-05-26
+**Last updated:** 2026-05-26 (late — full saas-audit + i18n migration)
 
 ---
 
 ## Current state
 
-Site is **live in production** on Netlify (`atlasrouge.com`). The
-360° pre-launch audit (5 parallel agents: Security, UI, i18n, SEO,
-Admin) is complete and all 6 blockers (B1–B6) closed in commits up
-through `e9842646`. `origin/main` is in sync. Next phase = client
-hand-off: Khalid must complete several manual config tasks before
-the public marketing push.
+Site is **live in production** on Netlify (`atlasrouge.com`).
+`origin/main` in sync (last commit `8987f624`). verify.sh green.
+
+A **13-agent production-readiness audit** ran 2026-05-26 →
+`AUDIT_REPORT.md` at repo root. **Score 22/100 🛑** (mechanically
+harsh: 19.5 pts come from the N/A Payments area; the engineering
+foundation is strong — TS strict, 0 npm vulns, real service layer).
+**7 P0s** identified; 2 already fixed today (i18n). See the P0 list
+below and `AUDIT_REPORT.md` for the full P0-P3 + phased roadmap.
 
 ---
 
-## P0 — blocking ship / public launch
+## P0 — from the audit, blocking a clean public launch
 
-These are **owner actions** (Khalid). Cannot be done by Claude / agents.
+### Already fixed today
+- [x] ~~**UX-001/UX-002 — i18n of GestionLocative, BuyerGuide, About**~~
+      DONE 2026-05-26 (commit `593e47ae`). 218 keys translated FR/ES/EN
+      by 3 parallel subagents. Key parity verified, build green.
 
-- [ ] **Supabase Site URL + Redirect URLs** — Dashboard → Auth → URL
-      Configuration. Set Site URL to `https://atlasrouge.com`. Keep
-      `http://localhost:3000/**` and `http://localhost:5173/**` for
-      dev. Remove `https://immobilier.freecoche.com/**` in 2-3 weeks.
+### Still open (engineering — Claude can do)
+- [ ] **P0-1 · Privilege escalation (SEC-001/DB-001/ADM-001)** —
+      RLS policy `"Agent can update own row"` lacks `WITH CHECK`; any
+      agent can `update({role:'admin'})` from DevTools. SQL fix ready
+      in `AUDIT_REPORT.md` § P0-1. ~30 min via Supabase Studio.
+      **Highest-priority real security hole.**
+- [ ] **P0-4 · Canonical/hreflang static** — every interior page
+      declares the homepage canonical → SEO collapse risk. Needs
+      per-route head management (react-helmet-async or extend
+      og-rewrite edge fn).
+- [ ] **P0-5 · Migration drift** — base tables only in `schema.sql`,
+      not in numbered migrations → DB not reproducible. Create
+      `000_base_schema.sql`.
+- [ ] **Close open serverless functions** (SEC-002/003) —
+      `notify-lead` + `translate-property` have no auth, CORS `*`.
+      translate-property burns DeepSeek quota. Add JWT + CORS lockdown.
+
+### Still open (owner / legal — needs Khalid + lawyer)
+- [ ] **P0-2 · Privacy Policy (RGPD)** — none exists. Lawyer.
+- [ ] **P0-3 · Mentions Légales** — mandatory in France. Lawyer + RC/ICE.
+
+---
+
+## P0 — owner config (Khalid) — pre-launch
+
 - [x] ~~**Rotate `DEEPSEEK_API_KEY`**~~ — DONE 2026-05-26. Old key
       `sk-d047f...8752` deleted on platform.deepseek.com. New key
       configured in Netlify env vars as `DEEPSEEK_API_KEY` 🔒

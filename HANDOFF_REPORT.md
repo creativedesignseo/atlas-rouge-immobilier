@@ -4,6 +4,57 @@
 
 ---
 
+## Intervención: Claude Opus 4.7 — 2026-05-26 cierre (audit 13-agentes + i18n)
+
+Autor: Claude Opus 4.7 (1M context).
+
+### Resumen ejecutivo
+
+1. **Auditoría de production-readiness con 13 agentes** (`saas-audit`
+   full, read-only) → `AUDIT_REPORT.md` en la raíz. **Score 22/100 🛑**
+   — pero engañoso: 19,5 pts vienen del área Pagos (N/A en lead-gen).
+   La ingeniería de base es fuerte (TS estricto, 0 vulns npm, capa de
+   servicios real). El número refleja *cantidad* de P0 (7), no mala
+   artesanía. Ruta a 🟡 ≈ 1 sprint.
+2. **Migración i18n de 3 páginas** (commit `593e47ae`) con 3 agentes
+   implementadores en paralelo: About (`about`, 31), GestionLocative
+   (`services`, 40), BuyerGuide (`buyerGuide`, 147). 218 claves
+   FR/ES/EN con calidad editorial. Cierra los P0 de i18n (UX-001/002).
+
+### Los 7 P0 de la auditoría (estado)
+
+| P0 | Estado |
+|---|---|
+| UX-001/002 i18n 3 páginas en francés | ✅ resuelto hoy |
+| SEC-001/DB-001/ADM-001 escalada de privilegios (RLS) | ⏳ SQL listo, 30 min |
+| PERF-001 canonical/hreflang estáticos | ⏳ pendiente |
+| DB-002 drift de migraciones | ⏳ pendiente |
+| LEGAL-001 sin Política de Privacidad | ⏳ abogado |
+| LEGAL-002 sin Mentions Légales | ⏳ abogado + RC/ICE |
+| (SEC-002/003 funciones serverless abiertas — HIGH) | ⏳ pendiente |
+
+### Hallazgos que corrigen suposiciones previas (IMPORTANTE)
+
+- **El sitemap dinámico NUNCA llegó a `main`** — solo existe en el
+  worktree. En producción `sitemap.xml` está obsoleto (dominio
+  `.netlify.app`). Hay que fusionarlo (PERF-002).
+- **Las policies RLS de leads quedaron DUPLICADAS** (las viejas
+  `public_insert_*` + las nuevas). Limpiar con migración 006 (DB-003).
+- **`translate-property` sigue abierta sin auth** (CORS `*`). La
+  DEEPSEEK key estaba bien rotada; el problema es el endpoint público
+  → riesgo de coste (SEC-003).
+- **`schema.sql` está desincronizado** con las migraciones reales — no
+  representa producción. No usarlo como fuente de verdad (DB-016).
+
+### Estado al cierre
+
+- `origin/main` sync · último commit `8987f624` · verify.sh verde.
+- Tu acceso admin: `creativedesignseo@gmail.com` / `Marru.2025`.
+- Decisión editorial a validar con Khalid: "pensé pour les Français"
+  → adaptado a "compradores internacionales" en ES/EN.
+
+---
+
 ## Intervención: Claude Opus 4.7 — 2026-05-26 noche (harness + incidente orphan user)
 
 Autor: Claude Opus 4.7 (1M context).
