@@ -10,6 +10,7 @@ import ImageUploader from './ImageUploader'
 import { getNeighborhoods } from '@/services/neighborhood.service'
 import type { Neighborhood } from '@/data/neighborhoods'
 import { autoTranslateProperty } from '@/services/translation.service'
+import { amenityLabel } from '@/lib/amenities'
 import type { SupportedLanguage } from '@/i18n'
 
 const LANGS: SupportedLanguage[] = ['en', 'fr', 'es']
@@ -184,8 +185,70 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
     }
   }
 
+  // Build the source-content payload for the AI translator from form values.
+  const buildSourceContent = (values: PropertyFormValues) => {
+    const neighborhood = neighborhoods.find((item) => item.slug === values.neighborhood_id)
+    return {
+      title: (values.title || '').trim(),
+      description: (values.description || '').trim(),
+      highlights: values.highlights || [],
+      amenities: values.amenities || [],
+      transaction: values.transaction,
+      type: values.type,
+      city: values.city,
+      neighborhood: neighborhood?.name || '',
+      priceEUR: values.price_eur,
+      priceMAD: values.price_mad,
+      surface: values.surface,
+      landSurface: values.land_surface,
+      rooms: values.rooms,
+      bedrooms: values.bedrooms,
+      bathrooms: values.bathrooms,
+    }
+  }
+
+  // On save: guarantee every language has content. If the agent didn't press
+  // the "Auto-translate" button and ES/EN are still empty, generate them with
+  // AI before persisting. Mutates `data` in place. Never blocks saving — if the
+  // AI call fails we save anyway and the public site falls back to French.
+  const ensureTranslationsOnSave = async (data: PropertyFormValues) => {
+    const d = data as Record<string, unknown>
+    const str = (v: unknown) => (typeof v === 'string' ? v.trim() : '')
+    const arr = (v: unknown) => (Array.isArray(v) ? (v as string[]) : [])
+    const sourceTitle = str(data.title)
+    const sourceDescription = str(data.description)
+    if (!sourceTitle || !sourceDescription) return
+
+    // Seed the source-language columns from the base fields if empty.
+    if (!str(d[`title_${sourceLang}`])) d[`title_${sourceLang}`] = sourceTitle
+    if (!str(d[`description_${sourceLang}`])) d[`description_${sourceLang}`] = sourceDescription
+    if (arr(d[`highlights_${sourceLang}`]).length === 0) d[`highlights_${sourceLang}`] = data.highlights || []
+
+    // Which other languages still need a translation?
+    const targets = LANGS.filter((l) => l !== sourceLang).filter(
+      (l) => !str(d[`title_${l}`]) || !str(d[`description_${l}`]),
+    )
+    if (targets.length === 0) return
+
+    const toastId = toast.loading(t('propertyForm.autoTranslating'))
+    try {
+      const result = await autoTranslateProperty(buildSourceContent(data), sourceLang)
+      for (const [lang, content] of Object.entries(result)) {
+        if (!targets.includes(lang as SupportedLanguage)) continue
+        d[`title_${lang}`] = content.title
+        d[`description_${lang}`] = content.description
+        d[`highlights_${lang}`] = content.highlights
+      }
+      toast.success(t('propertyForm.autoTranslateSuccess'), { id: toastId })
+    } catch (error) {
+      // Don't block the save — fall back to French on the public site.
+      toast.error(error instanceof Error ? error.message : t('propertyForm.autoTranslateError'), { id: toastId })
+    }
+  }
+
   const handleFormSubmit = handleSubmit(async (data) => {
     try {
+      await ensureTranslationsOnSave(data)
       await onSubmit(data)
     } catch (error) {
       toast.error(error instanceof Error ? error.message : t('propertyEdit.saveError'))
@@ -205,24 +268,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
 
     setIsTranslating(true)
     try {
-      const neighborhood = neighborhoods.find((item) => item.slug === values.neighborhood_id)
-      const result = await autoTranslateProperty({
-        title,
-        description,
-        highlights: sourceHighlights,
-        amenities: values.amenities || [],
-        transaction: values.transaction,
-        type: values.type,
-        city: values.city,
-        neighborhood: neighborhood?.name || '',
-        priceEUR: values.price_eur,
-        priceMAD: values.price_mad,
-        surface: values.surface,
-        landSurface: values.land_surface,
-        rooms: values.rooms,
-        bedrooms: values.bedrooms,
-        bathrooms: values.bathrooms,
-      }, sourceLang)
+      const result = await autoTranslateProperty(buildSourceContent(values), sourceLang)
 
       // Source language gets the original content as-is.
       setValue(`title_${sourceLang}` as keyof PropertyFormValues, title as never)
@@ -269,7 +315,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
           className="flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors"
         >
           <ArrowLeft size={16} />
-          Retour à la liste
+          {t('propertyForm.backToList')}
         </button>
         <button
           type="submit"
@@ -319,7 +365,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
 
               <div>
                 <label className="block text-sm font-medium text-text-primary mb-1.5">
-                  Ville <span className="text-red-500">*</span>
+                  {t('propertyForm.city')} <span className="text-red-500">*</span>
                 </label>
                 <input
                   {...register('city')}
@@ -365,7 +411,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
                   {...register('neighborhood_id')}
                   className="w-full px-4 py-2.5 border border-border-warm rounded-xl focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta transition-colors bg-white"
                 >
-                  <option value="">-- Sélectionner --</option>
+                  <option value="">{t('propertyForm.selectOption')}</option>
                   {neighborhoods.map((n) => (
                     <option key={n.slug} value={n.slug}>{n.name}</option>
                   ))}
@@ -376,12 +422,12 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
 
           {/* Pricing */}
           <div className="bg-white rounded-2xl p-6 shadow-card border border-border-warm space-y-5">
-            <h3 className="font-semibold text-text-primary">Prix et surface</h3>
+            <h3 className="font-semibold text-text-primary">{t('propertyForm.pricingSection')}</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-medium text-text-primary mb-1.5">
-                  Prix EUR <span className="text-red-500">*</span>
+                  {t('propertyForm.price')} <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="number"
@@ -393,7 +439,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
 
               <div>
                 <label className="block text-sm font-medium text-text-primary mb-1.5">
-                  Prix MAD <span className="text-red-500">*</span>
+                  {t('propertyForm.priceMad')} <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="number"
@@ -404,7 +450,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
 
               <div>
                 <label className="block text-sm font-medium text-text-primary mb-1.5">
-                  Prix/m² (auto)
+                  {t('propertyForm.pricePerSqm')}
                 </label>
                 <input
                   type="number"
@@ -416,7 +462,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
 
               <div>
                 <label className="block text-sm font-medium text-text-primary mb-1.5">
-                  Surface (m²) <span className="text-red-500">*</span>
+                  {t('propertyForm.surface')} <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="number"
@@ -427,7 +473,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
 
               <div>
                 <label className="block text-sm font-medium text-text-primary mb-1.5">
-                  Surface terrain (m²)
+                  {t('propertyForm.landSurface')}
                 </label>
                 <input
                   type="number"
@@ -440,7 +486,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
 
           {/* Rooms */}
           <div className="bg-white rounded-2xl p-6 shadow-card border border-border-warm space-y-5">
-            <h3 className="font-semibold text-text-primary">Pièces</h3>
+            <h3 className="font-semibold text-text-primary">{t('propertyForm.roomsSection')}</h3>
 
             <div className="grid grid-cols-3 gap-4">
               <div>
@@ -472,11 +518,11 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
 
           {/* Description */}
           <div className="bg-white rounded-2xl p-6 shadow-card border border-border-warm space-y-5">
-            <h3 className="font-semibold text-text-primary">Description</h3>
+            <h3 className="font-semibold text-text-primary">{t('propertyForm.description')}</h3>
 
             <div>
               <label className="block text-sm font-medium text-text-primary mb-1.5">
-                Description <span className="text-red-500">*</span>
+                {t('propertyForm.description')} <span className="text-red-500">*</span>
               </label>
               <textarea
                 {...register('description')}
@@ -523,7 +569,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
 
             {/* Amenities */}
             <div>
-              <label className="block text-sm font-medium text-text-primary mb-2">Équipements</label>
+              <label className="block text-sm font-medium text-text-primary mb-2">{t('propertyForm.amenities')}</label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {amenitiesList.map((amenity) => {
                   const current = watch('amenities') || []
@@ -543,7 +589,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
                         onChange={() => toggleAmenity(amenity)}
                         className="w-4 h-4 accent-terracotta"
                       />
-                      <span className="text-sm">{amenity}</span>
+                      <span className="text-sm">{amenityLabel(amenity, t)}</span>
                     </label>
                   )
                 })}
@@ -579,7 +625,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
 
           {/* Options */}
           <div className="bg-white rounded-2xl p-6 shadow-card border border-border-warm space-y-4">
-            <h3 className="font-semibold text-text-primary">Options</h3>
+            <h3 className="font-semibold text-text-primary">{t('propertyForm.optionsSection')}</h3>
 
             <div className="grid grid-cols-2 gap-4">
               <Controller
@@ -593,7 +639,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
                       onChange={(e) => field.onChange(e.target.checked)}
                       className="w-5 h-5 accent-terracotta"
                     />
-                    <span className="text-sm">Propriété mise en avant</span>
+                    <span className="text-sm">{t('propertyForm.isFeatured')}</span>
                   </label>
                 )}
               />
@@ -609,7 +655,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
                       onChange={(e) => field.onChange(e.target.checked)}
                       className="w-5 h-5 accent-terracotta"
                     />
-                    <span className="text-sm">Exclusivité</span>
+                    <span className="text-sm">{t('propertyForm.isExclusive')}</span>
                   </label>
                 )}
               />
@@ -625,7 +671,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
                       onChange={(e) => field.onChange(e.target.checked)}
                       className="w-5 h-5 accent-terracotta"
                     />
-                    <span className="text-sm">Vidéo disponible</span>
+                    <span className="text-sm">{t('propertyForm.hasVideo')}</span>
                   </label>
                 )}
               />
@@ -641,7 +687,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
                       onChange={(e) => field.onChange(e.target.checked)}
                       className="w-5 h-5 accent-terracotta"
                     />
-                    <span className="text-sm">Visite 3D</span>
+                    <span className="text-sm">{t('propertyForm.has3dTour')}</span>
                   </label>
                 )}
               />
@@ -716,7 +762,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
                           </label>
                           <input
                             {...register(`title_${lang}` as keyof PropertyFormValues)}
-                            placeholder={`Title in ${lang.toUpperCase()}...`}
+                            placeholder={t('propertyForm.titleLangPlaceholder', { lang: lang.toUpperCase() })}
                             className="w-full px-3 py-2 text-sm border border-border-warm rounded-lg focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta"
                           />
                         </div>
@@ -728,7 +774,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
                           <textarea
                             {...register(`description_${lang}` as keyof PropertyFormValues)}
                             rows={5}
-                            placeholder={`Description in ${lang.toUpperCase()}...`}
+                            placeholder={t('propertyForm.descriptionLangPlaceholder', { lang: lang.toUpperCase() })}
                             className="w-full px-3 py-2 text-sm border border-border-warm rounded-lg focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta resize-none"
                           />
                         </div>
@@ -775,7 +821,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
           {/* Images */}
           <div className="bg-white rounded-2xl p-6 shadow-card border border-border-warm sticky top-6">
             <h3 className="font-semibold text-text-primary mb-4">
-              Images <span className="text-red-500">*</span>
+              {t('propertyForm.images')} <span className="text-red-500">*</span>
             </h3>
             <Controller
               name="images"

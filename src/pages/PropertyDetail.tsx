@@ -21,6 +21,7 @@ import { useCurrency } from '@/hooks/useCurrency'
 import { useSiteSettings } from '@/hooks/useSiteSettings'
 import PropertyCard from '@/components/PropertyCard'
 import { getImageUrl } from '@/lib/storage'
+import { amenityLabel } from '@/lib/amenities'
 import type { Property } from '@/data/properties'
 
 /* ───────────────────── constants ───────────────────── */
@@ -716,7 +717,7 @@ export default function PropertyDetail() {
               <div className="mb-8 bg-cream-warm rounded-card p-6">
                 <h3 className="font-display text-[22px] font-semibold text-midnight mb-4">{t('amenitiesAndServices')}</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
-                  {property.amenities.map(a => <AmenityItem key={a} label={a} />)}
+                  {property.amenities.map(a => <AmenityItem key={a} label={amenityLabel(a, t)} />)}
                 </div>
               </div>
             )}

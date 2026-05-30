@@ -72,7 +72,7 @@ export default function AdminLogin() {
           <h1 className="text-white font-display text-3xl font-bold tracking-wide">
             Atlas Rouge
           </h1>
-          <p className="text-white/60 mt-2">Panneau d'administration</p>
+          <p className="text-white/60 mt-2">{t('login.subtitle')}</p>
         </div>
 
         {/* Form */}
@@ -80,7 +80,7 @@ export default function AdminLogin() {
           <div className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-text-primary mb-2">
-                Email
+                {t('login.email')}
               </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" size={18} />
@@ -96,7 +96,7 @@ export default function AdminLogin() {
 
             <div>
               <label className="block text-sm font-medium text-text-primary mb-2">
-                Mot de passe
+                {t('login.password')}
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" size={18} />
@@ -125,10 +125,10 @@ export default function AdminLogin() {
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
                   <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  Connexion...
+                  {t('login.submitting')}
                 </span>
               ) : (
-                'Se connecter'
+                t('login.submit')
               )}
             </button>
 
@@ -143,7 +143,7 @@ export default function AdminLogin() {
 
         <p className="text-center text-white/40 text-sm mt-6">
           <button onClick={() => navigate('/')} className="hover:text-white/60 transition-colors">
-            ← Retour au site
+            {t('login.backToSite')}
           </button>
         </p>
       </div>

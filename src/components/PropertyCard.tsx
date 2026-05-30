@@ -5,6 +5,7 @@ import { useFavorites } from '@/hooks/useFavorites'
 import { useCurrency } from '@/hooks/useCurrency'
 import { useLang } from '@/hooks/useLang'
 import { getImageUrl } from '@/lib/storage'
+import { amenityLabel } from '@/lib/amenities'
 import type { Property } from '@/data/properties'
 
 interface PropertyCardProps {
@@ -133,7 +134,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
                 key={amenity}
                 className="text-stone text-[11px] font-inter font-medium tracking-wide"
               >
-                {amenity}
+                {amenityLabel(amenity, t)}
               </span>
             )).reduce<React.ReactNode[]>((acc, item, idx) => {
               if (idx === 0) return [item]

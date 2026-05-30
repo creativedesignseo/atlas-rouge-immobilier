@@ -14,6 +14,7 @@ import { useCurrency } from '@/hooks/useCurrency'
 import { useLang } from '@/hooks/useLang'
 import { getImageUrl } from '@/lib/storage'
 import { cn } from '@/lib/utils'
+import { amenityLabel } from '@/lib/amenities'
 import type { Property } from '@/data/properties'
 
 import mapboxgl, { MAPBOX_STYLE, canUseWebGL, hasMapboxToken } from '@/lib/mapbox'
@@ -233,7 +234,7 @@ function PropertyCardList({ property }: { property: Property }) {
         </div>
         <div className="flex items-center gap-2">
           {property.amenities.slice(0, 4).map(a => (
-            <span key={a} className="bg-cream-warm text-text-secondary text-[11px] px-2 py-0.5 rounded-full">{a}</span>
+            <span key={a} className="bg-cream-warm text-text-secondary text-[11px] px-2 py-0.5 rounded-full">{amenityLabel(a, t)}</span>
           ))}
         </div>
       </div>
@@ -551,7 +552,7 @@ function PropertyCardGrid({ property, isHovered = false }: { property: Property;
         </div>
         <div className="flex flex-wrap gap-1.5 mt-3">
           {property.amenities.slice(0, 3).map(a => (
-            <span key={a} className="bg-cream-warm text-text-secondary text-[11px] px-2 py-0.5 rounded-full">{a}</span>
+            <span key={a} className="bg-cream-warm text-text-secondary text-[11px] px-2 py-0.5 rounded-full">{amenityLabel(a, t)}</span>
           ))}
         </div>
         {property.surface > 0 && (
@@ -690,7 +691,7 @@ function MobileFilterDrawer({ filters, setFilters, onApply, onReset, resultCount
                 <div className={cn('w-4 h-4 border rounded flex items-center justify-center', filters.amenities.includes(a) ? 'bg-terracotta border-terracotta' : 'border-border-warm')}>
                   {filters.amenities.includes(a) && <Check size={10} className="text-white" />}
                 </div>
-                <span className="text-[13px] text-text-primary">{a}</span>
+                <span className="text-[13px] text-text-primary">{amenityLabel(a, t)}</span>
               </label>
             ))}
           </div>
@@ -1092,7 +1093,7 @@ export default function SearchPage() {
                     >
                       {filters.amenities.includes(a) && <Check size={10} className="text-white" />}
                     </div>
-                    <span className="text-[12px] text-text-primary">{a}</span>
+                    <span className="text-[12px] text-text-primary">{amenityLabel(a, t)}</span>
                   </label>
                 ))}
               </div>
