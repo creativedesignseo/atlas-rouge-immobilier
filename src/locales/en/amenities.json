@@ -31,5 +31,10 @@
   "meuble": "Furnished",
   "non-meuble": "Unfurnished",
   "patio": "Patio",
-  "balcon": "Balcony"
+  "balcon": "Balcony",
+  "salle-de-fitness": "Fitness room",
+  "domotique": "Home automation",
+  "vue-atlas": "Atlas view",
+  "oliveraie": "Olive grove",
+  "tennis": "Tennis court"
 }

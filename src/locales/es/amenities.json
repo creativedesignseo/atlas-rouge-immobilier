@@ -31,5 +31,10 @@
   "meuble": "Amueblado",
   "non-meuble": "Sin amueblar",
   "patio": "Patio",
-  "balcon": "Balcón"
+  "balcon": "Balcón",
+  "salle-de-fitness": "Gimnasio",
+  "domotique": "Domótica",
+  "vue-atlas": "Vistas al Atlas",
+  "oliveraie": "Olivar",
+  "tennis": "Pista de tenis"
 }
