@@ -4,7 +4,29 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-05-30 (Mapbox migration — code complete, blocked on Mapbox account)
+**Last updated:** 2026-05-30 (i18n admin + amenities desplegado; batch contenido pendiente service_role)
+
+---
+
+## i18n panel admin + amenities — 2026-05-30 ✅ DESPLEGADO Y VERIFICADO
+
+Commits `7a671e34` + `cbb235fa` en `main`. Detalle:
+`progress/2026-05-30-i18n-admin-amenities.md`.
+
+- [x] `PropertyForm` labels FR → i18n + auto-traducir al guardar (Parte B).
+- [x] `AdminLogin` → claves `login.*`.
+- [x] **Amenities** traducidas en TODA la web (admin + cards + filtros + ficha):
+      `amenities.json` poblado (16 de BD), helper `src/lib/amenities.ts`.
+- [x] Verificado en prod (Playwright): admin form y público 100% en ES,
+      `stillFrench: []`.
+
+### Pendiente relacionado
+- [ ] **Batch de CONTENIDO** (títulos/descr/highlights de inmuebles) — sigue
+      bloqueado esperando `SUPABASE_SERVICE_ROLE_KEY` en `.env.local` (RLS
+      bloquea UPDATE con login admin). Script listo:
+      `scripts/translate-existing-properties.mjs` (sin commitear aún, con
+      `package.json` translate:properties). Owner pone la key → corro
+      `npm run translate:properties`.
 
 ---
 

@@ -2,14 +2,31 @@
 
 > Documento de transferencia conciso para retomar el proyecto en otra sesión.
 > **Última actualización:** 2026-05-30
-> **Último commit en `main`:** `70af4956` (migración Mapbox, **desplegado** —
-> ver §1bis). ⚠️ El trabajo de **Phase 0** sigue en el working tree **sin
-> commitear y sin deploy** (ver §1); requiere SQL 006 + env vars Supabase
-> (non-VITE) en Netlify antes de publicarse, o rompería `translate-property`.
+> **Último commit en `main`:** `cbb235fa` (i18n admin + amenities, **desplegado**
+> — ver §1ter). Antes: `70af4956` Mapbox (§1bis). ⚠️ El trabajo de **Phase 0**
+> sigue en el working tree **sin commitear y sin deploy** (ver §1); requiere SQL
+> 006 + env vars Supabase (non-VITE) en Netlify antes de publicarse, o rompería
+> `translate-property`. El **batch de traducción de contenido** de inmuebles
+> espera la `service_role` key (ver §1ter).
 > Para el **historial cronológico detallado** ver `HANDOFF_REPORT.md`.
 > Para el **contexto completo** ver `PROJECT_CONTEXT.md`. Tareas en `TODO.md`.
 
 ---
+
+## 1ter. i18n panel admin + amenities (2026-05-30) — ✅ DESPLEGADO Y VERIFICADO
+
+- El formulario de admin tenía labels en francés hardcodeados y las **amenities**
+  se mostraban en francés crudo en TODA la web (admin + público) porque
+  `amenities.json` estaba vacío. Resuelto: commits `7a671e34` + `cbb235fa`.
+- Ahora: `PropertyForm` y `AdminLogin` 100% i18n; nuevo helper
+  `src/lib/amenities.ts` + `amenities.json` poblado (16 amenities reales);
+  `PropertyForm` también **auto-traduce al guardar** si faltan ES/EN.
+- Verificado en prod (Playwright): admin form y `/es/comprar` 100% en castellano.
+- ⏳ **Pendiente**: el **contenido** de los inmuebles (títulos/descr/highlights)
+  sigue en francés. Se traduce con el batch IA
+  (`scripts/translate-existing-properties.mjs`, listo pero sin commitear), que
+  necesita `SUPABASE_SERVICE_ROLE_KEY` en `.env.local` (el login admin no puede
+  escribir por RLS). Con la key → `npm run translate:properties`.
 
 ## 1bis. Migración de mapas a Mapbox (2026-05-30) — ✅ DESPLEGADO Y VERIFICADO
 
