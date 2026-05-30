@@ -19,6 +19,10 @@ Commits `7a671e34` + `cbb235fa` en `main`. Detalle:
       `amenities.json` poblado (16 de BD), helper `src/lib/amenities.ts`.
 - [x] Verificado en prod (Playwright): admin form y público 100% en ES,
       `stillFrench: []`.
+- [x] **Conmutador de idioma FR|ES|EN** en el panel de Traducciones de
+      `PropertyForm` (commit `28cc33cd`, desplegado): pestañas en vez de
+      acordeones, editable, badge `fuente` + punto verde si rellenado.
+      Verificado en prod (pestaña FR muestra el contenido francés).
 
 ### Pendiente relacionado
 - [ ] **Batch de CONTENIDO** (títulos/descr/highlights de inmuebles) — sigue

@@ -1,9 +1,10 @@
 # HANDOFF.md — Atlas Rouge Immobilier
 
 > Documento de transferencia conciso para retomar el proyecto en otra sesión.
-> **Última actualización:** 2026-05-30
-> **Último commit en `main`:** `cbb235fa` (i18n admin + amenities, **desplegado**
-> — ver §1ter). Antes: `70af4956` Mapbox (§1bis). ⚠️ El trabajo de **Phase 0**
+> **Última actualización:** 2026-05-31
+> **Último commit en `main`:** `28cc33cd` (conmutador de idioma FR|ES|EN en el
+> panel de Traducciones del admin, **desplegado** — ver §1ter). Antes:
+> `cbb235fa` i18n admin + amenities. Antes: `70af4956` Mapbox (§1bis). ⚠️ El trabajo de **Phase 0**
 > sigue en el working tree **sin commitear y sin deploy** (ver §1); requiere SQL
 > 006 + env vars Supabase (non-VITE) en Netlify antes de publicarse, o rompería
 > `translate-property`. El **batch de traducción de contenido** de inmuebles
@@ -22,6 +23,12 @@
   `src/lib/amenities.ts` + `amenities.json` poblado (16 amenities reales);
   `PropertyForm` también **auto-traduce al guardar** si faltan ES/EN.
 - Verificado en prod (Playwright): admin form y `/es/comprar` 100% en castellano.
+- **Conmutador de idioma** (commit `28cc33cd`): el panel de Traducciones del
+  admin pasó de 3 acordeones a un conmutador de pestañas FR|ES|EN (editable) para
+  revisar la traducción de la IA idioma por idioma. Verificado en prod.
+- ⚠️ Sutileza conocida: el "idioma fuente" del admin se decide por el idioma de
+  la UI (no por el idioma real del contenido). Si Sofia edita con la UI en ES un
+  inmueble escrito en FR, la pestaña ES sale vacía hasta traducir. (A revisar.)
 - ⏳ **Pendiente**: el **contenido** de los inmuebles (títulos/descr/highlights)
   sigue en francés. Se traduce con el batch IA
   (`scripts/translate-existing-properties.mjs`, listo pero sin commitear), que
