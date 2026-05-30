@@ -2,30 +2,30 @@
 
 > Documento de transferencia conciso para retomar el proyecto en otra sesión.
 > **Última actualización:** 2026-05-30
-> **Último commit en `main`:** `34af320b`. ⚠️ Hay trabajo de Phase 0 **+
-> migración de mapas a Mapbox** en el working tree **sin commitear y sin
-> deploy** (ver §1 y §1bis).
+> **Último commit en `main`:** `70af4956` (migración Mapbox, **desplegado** —
+> ver §1bis). ⚠️ El trabajo de **Phase 0** sigue en el working tree **sin
+> commitear y sin deploy** (ver §1); requiere SQL 006 + env vars Supabase
+> (non-VITE) en Netlify antes de publicarse, o rompería `translate-property`.
 > Para el **historial cronológico detallado** ver `HANDOFF_REPORT.md`.
 > Para el **contexto completo** ver `PROJECT_CONTEXT.md`. Tareas en `TODO.md`.
 
 ---
 
-## 1bis. Migración de mapas a Mapbox (2026-05-30) — CÓDIGO COMPLETO, FUNCIONA EN PROD
+## 1bis. Migración de mapas a Mapbox (2026-05-30) — ✅ DESPLEGADO Y VERIFICADO
 
 - El motor de mapas se migró de **MapLibre GL → Mapbox GL JS v3** (estilo
   **Standard, 2D plano**) en `Search.tsx` (MapView) y `LocationMap.tsx`, vía
-  nuevo `src/lib/mapbox.ts`. Build/lint verdes.
-- ✅ **Funciona en producción tal cual**: el token `atlasrouge v2` del owner está
-  **restringido por URL a `atlasrouge.com`** (lo correcto). Confirmado por curl:
-  tiles → 200 con Referer atlasrouge.com / www, → 403 solo desde localhost. El
-  403 que vi en la verificación local era SOLO por probar desde localhost, NO
-  un problema de cuenta ni de tarjeta (descartada esa hipótesis: taxi-luxride
-  usa Mapbox gratis en la misma cuenta).
-- **Para cerrarlo**: owner pone `VITE_MAPBOX_TOKEN` en `.env.local` (dev) +
-  Netlify (prod, 4 contexts) y se commitea/despliega. Para verificar en local
-  primero, añadir `localhost` a las URLs del token (o usar el Default public
-  token, sin restricción).
-- Detalle: `progress/2026-05-30-mapbox-migration.md` y `tasks/current.md`.
+  nuevo `src/lib/mapbox.ts`. **Commit `70af4956`, desplegado en
+  https://atlasrouge.com** (deploy Netlify OK, 40s).
+- ✅ **Verificado en vivo**: tiles `api.mapbox.com` → HTTP 200, 0 errores de
+  consola, basemap Mapbox Standard renderiza con los pines. El token
+  `atlasrouge v2` está restringido a `atlasrouge.com` (correcto); por eso en
+  localhost daba 403 (no era tarjeta — hipótesis errónea descartada).
+- `VITE_MAPBOX_TOKEN` está en Netlify env (all contexts), NO en el repo. CSP de
+  `netlify.toml` ampliada para Mapbox (connect-src + worker-src blob).
+- Pendiente menor (no bloquea): para dev local, owner añade `localhost` a las
+  URLs del token (o usa Default public token) + `VITE_MAPBOX_TOKEN` en
+  `.env.local`. Detalle: `progress/2026-05-30-mapbox-migration.md`.
 
 ---
 

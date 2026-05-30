@@ -54,4 +54,4 @@ source-images/
 
 # Playwright MCP verification artifacts (screenshots, console/network logs)
 .playwright-mcp/
-mapbox-search-verify.png
+mapbox-*-verify.png

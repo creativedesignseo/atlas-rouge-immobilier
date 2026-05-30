@@ -63,19 +63,22 @@ Tras investigación + decisiones del owner: usar **Mapbox Standard en 2D plano**
   cual** (el token está bien restringido a atlasrouge.com). El 403 era solo el
   artefacto de probar desde localhost.
 
-## Estado: CÓDIGO COMPLETO · FUNCIONA EN PROD · falta verificación local + deploy
-- Build/lint verdes. No commiteado ni desplegado (a la espera del owner).
+## Estado: ✅ DESPLEGADO Y VERIFICADO EN PRODUCCIÓN (2026-05-30)
+- Commit `70af4956` (solo Mapbox, sin Phase 0). Push a `main` → Netlify deploy
+  OK (40s). `VITE_MAPBOX_TOKEN` añadido a Netlify env (all contexts).
+- CSP en `netlify.toml` actualizada: `connect-src` + `api.mapbox.com`/
+  `events.mapbox.com`, `worker-src 'self' blob:`.
+- **Verificación en vivo** (Playwright sobre https://atlasrouge.com/fr/acheter
+  → vista Carte): tiles `api.mapbox.com/v4` y raster → **HTTP 200**, **0 errores
+  de consola**, basemap Mapbox Standard renderiza con los pines de precio.
 - Sin token, ambos mapas degradan al placeholder (guard `hasMapboxToken`).
+- LocationMap (ficha de propiedad) usa el mismo `@/lib/mapbox` → mismo resultado.
 
-## Próximo paso (para retomar)
-1. (Solo para verificar en LOCAL) owner añade `http://localhost:3000` y
-   `http://localhost:5173` a las URLs del token `atlasrouge v2` en Mapbox →
-   `VITE_MAPBOX_TOKEN=pk.… npm run dev` → `/fr/acheter` → botón "Carte" → tiles
-   cargan. (En prod no hace falta: ya está restringido a atlasrouge.com.)
-2. Owner: poner `VITE_MAPBOX_TOKEN` en `.env.local` (dev) y en Netlify (prod,
-   4 contexts). Alternativa para dev: usar el "Default public token" (sin
-   restricción de URL).
-3. Commit + push (Netlify auto-deploya `main`) → mapa Mapbox en vivo.
+## Pendiente menor (opcional, no bloquea prod)
+1. (Solo dev LOCAL) owner añade `http://localhost:3000`/`:5173` a las URLs del
+   token `atlasrouge v2`, o usa el "Default public token", y pone
+   `VITE_MAPBOX_TOKEN` en su `.env.local`. En prod ya funciona.
+2. Polish opcional: el chunk `mapbox` pesa ~1.8 MB; se podría code-splitear más.
 
 ## Alternativas a Mapbox (no necesarias, registradas por si acaso)
 MapTiler (100k/mes gratis, MapLibre, sin tarjeta — la mejor), Stadia Maps,

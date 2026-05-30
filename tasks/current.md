@@ -8,28 +8,23 @@
 
 ---
 
-## Mapbox migration — 2026-05-30 (CODE COMPLETE · FUNCIONA EN PROD)
+## Mapbox migration — 2026-05-30 ✅ DESPLEGADO Y VERIFICADO EN PROD
 
-Map engine migrated MapLibre GL → **Mapbox GL JS v3** (estilo **Standard 2D
-plano**) en `src/pages/Search.tsx` (MapView) y
-`src/components/property/LocationMap.tsx`, vía nuevo `src/lib/mapbox.ts`.
-Build/lint verdes. Detalle completo: `progress/2026-05-30-mapbox-migration.md`.
+Map engine migrado MapLibre GL → **Mapbox GL JS v3** (estilo **Standard 2D
+plano**) en `Search.tsx` (MapView) y `LocationMap.tsx`, vía `src/lib/mapbox.ts`.
+Commit `70af4956`, desplegado en https://atlasrouge.com. Detalle:
+`progress/2026-05-30-mapbox-migration.md`.
 
 - [x] Código: `maplibre-gl` → `mapbox-gl@3.24`, `src/lib/mapbox.ts`,
-      `src/vite-env.d.ts`, `.env.example`, guard `hasMapboxToken` + fallback
-      placeholder, `canUseWebGL` exige WebGL2.
-- [x] Diagnóstico verificación: el token `atlasrouge v2` está **restringido por
-      URL a atlasrouge.com** → en prod los tiles cargan (200, confirmado por
-      curl con Referer atlasrouge.com); el 403 era solo por probar en localhost.
-      NO era falta de tarjeta (hipótesis inicial errónea descartada).
-- [ ] (Opcional, solo dev local) **OWNER**: añadir `localhost:3000`/`5173` a
-      las URLs del token `atlasrouge v2`, o usar el Default public token.
-- [ ] **OWNER**: poner `VITE_MAPBOX_TOKEN` en `.env.local` (dev) y Netlify
-      (prod, 4 contexts).
-- [ ] Verificar en local (opcional) → commit + push (mapa Mapbox en vivo).
-
-> Token del owner `atlasrouge v2` (pk., usuario `adspubli`) recibido en chat y
-> validado. Restringido a atlasrouge.com. NO está commiteado en el repo.
+      `src/vite-env.d.ts`, `.env.example`, guard `hasMapboxToken` + fallback,
+      `canUseWebGL` exige WebGL2.
+- [x] CSP en `netlify.toml`: `connect-src` + api/events.mapbox.com,
+      `worker-src 'self' blob:`.
+- [x] `VITE_MAPBOX_TOKEN` en Netlify (all contexts). Token restringido a
+      atlasrouge.com (correcto). NO commiteado en el repo.
+- [x] Deploy + verificación en vivo: tiles HTTP 200, 0 errores, basemap OK.
+- [ ] (Opcional, solo dev local) owner añade `localhost` a las URLs del token o
+      usa el Default public token + `VITE_MAPBOX_TOKEN` en `.env.local`.
 
 ---
 
