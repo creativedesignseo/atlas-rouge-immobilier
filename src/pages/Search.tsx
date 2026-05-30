@@ -16,8 +16,7 @@ import { getImageUrl } from '@/lib/storage'
 import { cn } from '@/lib/utils'
 import type { Property } from '@/data/properties'
 
-import maplibregl from 'maplibre-gl'
-import 'maplibre-gl/dist/maplibre-gl.css'
+import mapboxgl, { MAPBOX_STYLE, canUseWebGL, hasMapboxToken } from '@/lib/mapbox'
 
 /* ───────────────────── types ───────────────────── */
 
@@ -145,16 +144,6 @@ const nbhdFallback = ['Guéliz', 'Hivernage', 'Palmeraie', 'Médina', 'Agdal', '
 
 /* ───────────────────── helper functions ───────────────────── */
 
-function canUseWebGL() {
-  if (typeof document === 'undefined') return false
-  const canvas = document.createElement('canvas')
-  return Boolean(
-    canvas.getContext('webgl2') ||
-    canvas.getContext('webgl') ||
-    canvas.getContext('experimental-webgl')
-  )
-}
-
 function getActiveFilterChips(
   filters: Filters,
   t: (key: string) => string,
@@ -259,9 +248,9 @@ function PropertyCardList({ property }: { property: Property }) {
 
 function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Property[]; hoveredId: string | null; onHover: (id: string | null) => void; onSelect?: (slug: string) => void }) {
   const mapContainer = useRef<HTMLDivElement>(null)
-  const map = useRef<maplibregl.Map | null>(null)
-  const markersRef = useRef<maplibregl.Marker[]>([])
-  const popupsRef = useRef<maplibregl.Popup[]>([])
+  const map = useRef<mapboxgl.Map | null>(null)
+  const markersRef = useRef<mapboxgl.Marker[]>([])
+  const popupsRef = useRef<mapboxgl.Popup[]>([])
   const [mapError, setMapError] = useState(false)
   const { formatPrice } = useCurrency()
   const { path } = useLang()
@@ -279,17 +268,18 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
 
   useEffect(() => {
     if (!mapContainer.current) return
-    if (!canUseWebGL()) {
+    if (!hasMapboxToken || !canUseWebGL()) {
       setMapError(true)
       return
     }
 
     try {
-      map.current = new maplibregl.Map({
+      map.current = new mapboxgl.Map({
         container: mapContainer.current,
-        style: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
+        style: MAPBOX_STYLE,
         center: [-7.98, 31.62],
         zoom: 11.5,
+        pitch: 0,
         interactive: true,
         attributionControl: false,
       })
@@ -300,8 +290,8 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
       return
     }
 
-    map.current.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right')
-    map.current.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right')
+    map.current.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right')
+    map.current.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'top-right')
     map.current.on('error', (event) => {
       console.error('Property map error:', event.error)
     })
@@ -316,7 +306,7 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
 
   useEffect(() => {
     if (!map.current || properties.length === 0) return
-    const bounds = new maplibregl.LngLatBounds()
+    const bounds = new mapboxgl.LngLatBounds()
     properties.forEach(p => bounds.extend([p.longitude, p.latitude]))
     if (!bounds.isEmpty()) {
       map.current.fitBounds(bounds, { padding: 60, maxZoom: 14, duration: 600 })
@@ -353,7 +343,7 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
         transition: all 0.2s ease;
       ">${priceLabel}</div>`
 
-      const marker = new maplibregl.Marker({ element: el, anchor: 'bottom', offset: [0, 4] })
+      const marker = new mapboxgl.Marker({ element: el, anchor: 'bottom', offset: [0, 4] })
         .setLngLat([p.longitude, p.latitude])
         .addTo(map.current!)
 
@@ -416,7 +406,7 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
 
       renderPopup()
 
-      const popup = new maplibregl.Popup({ closeButton: true, closeOnClick: false, offset: 18, maxWidth: '300px' })
+      const popup = new mapboxgl.Popup({ closeButton: true, closeOnClick: false, offset: 18, maxWidth: '300px' })
         .setDOMContent(popupContainer)
 
       el.addEventListener('mouseenter', () => {

@@ -1,44 +1,34 @@
 import { useEffect, useRef, useState } from 'react'
-import maplibregl from 'maplibre-gl'
-import 'maplibre-gl/dist/maplibre-gl.css'
+import mapboxgl, { MAPBOX_STYLE, canUseWebGL, hasMapboxToken } from '@/lib/mapbox'
 import { MapPin } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import type { Property } from '@/data/properties'
 
-function canUseWebGL() {
-  if (typeof document === 'undefined') return false
-  const canvas = document.createElement('canvas')
-  return Boolean(
-    canvas.getContext('webgl2') ||
-      canvas.getContext('webgl') ||
-      canvas.getContext('experimental-webgl'),
-  )
-}
-
 /**
- * Mapa de ubicación de una propiedad — MapLibre GL.
+ * Mapa de ubicación de una propiedad — Mapbox GL (estilo Standard, 2D plano).
  * Vive en su propio chunk (lazy import desde PropertyDetail) para evitar
  * cargar ~1 MB de JS si el usuario no llega a verlo above the fold.
  */
 export default function LocationMap({ property }: { property: Property }) {
   const mapContainer = useRef<HTMLDivElement>(null)
-  const map = useRef<maplibregl.Map | null>(null)
+  const map = useRef<mapboxgl.Map | null>(null)
   const [mapError, setMapError] = useState(false)
   const { t } = useTranslation('property')
 
   useEffect(() => {
     if (!mapContainer.current) return
-    if (!canUseWebGL()) {
+    if (!hasMapboxToken || !canUseWebGL()) {
       setMapError(true)
       return
     }
 
     try {
-      map.current = new maplibregl.Map({
+      map.current = new mapboxgl.Map({
         container: mapContainer.current,
-        style: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
+        style: MAPBOX_STYLE,
         center: [property.longitude, property.latitude],
         zoom: 14,
+        pitch: 0,
         interactive: true,
         attributionControl: false,
       })
@@ -50,11 +40,11 @@ export default function LocationMap({ property }: { property: Property }) {
     }
 
     map.current.addControl(
-      new maplibregl.AttributionControl({ compact: true }),
+      new mapboxgl.AttributionControl({ compact: true }),
       'bottom-right',
     )
     map.current.addControl(
-      new maplibregl.NavigationControl({ showCompass: false }),
+      new mapboxgl.NavigationControl({ showCompass: false }),
       'top-right',
     )
     map.current.on('error', (event) => {
@@ -63,7 +53,7 @@ export default function LocationMap({ property }: { property: Property }) {
 
     const el = document.createElement('div')
     el.innerHTML = `<div style="width: 80px; height: 80px; background: rgba(181,83,58,0.2); border: 2px solid #B5533A; border-radius: 50%; display: flex; align-items: center; justify-content: center;"><div style="width: 12px; height: 12px; background: #B5533A; border-radius: 50%;"></div></div>`
-    const marker = new maplibregl.Marker({ element: el, anchor: 'center' })
+    const marker = new mapboxgl.Marker({ element: el, anchor: 'center' })
       .setLngLat([property.longitude, property.latitude])
       .addTo(map.current)
 

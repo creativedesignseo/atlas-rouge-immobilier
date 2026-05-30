@@ -45,6 +45,13 @@ atlas-rouge-immobilier-v4/
 .netlify/edge-functions-import-map.json
 .netlify/functions/
 deno.lock
+
+# Generated on every build by scripts/generate-sitemap.mjs (prebuild)
+public/sitemap.xml
 source-images/
 .claude/worktrees/
 .saas-audit/
+
+# Playwright MCP verification artifacts (screenshots, console/network logs)
+.playwright-mcp/
+mapbox-search-verify.png

@@ -1,26 +1,58 @@
 # HANDOFF.md — Atlas Rouge Immobilier
 
 > Documento de transferencia conciso para retomar el proyecto en otra sesión.
-> **Última actualización:** 2026-05-26
+> **Última actualización:** 2026-05-30
+> **Último commit en `main`:** `34af320b`. ⚠️ Hay trabajo de Phase 0 **+
+> migración de mapas a Mapbox** en el working tree **sin commitear y sin
+> deploy** (ver §1 y §1bis).
 > Para el **historial cronológico detallado** ver `HANDOFF_REPORT.md`.
 > Para el **contexto completo** ver `PROJECT_CONTEXT.md`. Tareas en `TODO.md`.
+
+---
+
+## 1bis. Migración de mapas a Mapbox (2026-05-30) — CÓDIGO COMPLETO, FUNCIONA EN PROD
+
+- El motor de mapas se migró de **MapLibre GL → Mapbox GL JS v3** (estilo
+  **Standard, 2D plano**) en `Search.tsx` (MapView) y `LocationMap.tsx`, vía
+  nuevo `src/lib/mapbox.ts`. Build/lint verdes.
+- ✅ **Funciona en producción tal cual**: el token `atlasrouge v2` del owner está
+  **restringido por URL a `atlasrouge.com`** (lo correcto). Confirmado por curl:
+  tiles → 200 con Referer atlasrouge.com / www, → 403 solo desde localhost. El
+  403 que vi en la verificación local era SOLO por probar desde localhost, NO
+  un problema de cuenta ni de tarjeta (descartada esa hipótesis: taxi-luxride
+  usa Mapbox gratis en la misma cuenta).
+- **Para cerrarlo**: owner pone `VITE_MAPBOX_TOKEN` en `.env.local` (dev) +
+  Netlify (prod, 4 contexts) y se commitea/despliega. Para verificar en local
+  primero, añadir `localhost` a las URLs del token (o usar el Default public
+  token, sin restricción).
+- Detalle: `progress/2026-05-30-mapbox-migration.md` y `tasks/current.md`.
 
 ---
 
 ## 1. Estado actual (resumen)
 
 - Sitio **LIVE** en producción: `https://atlasrouge.com` (Netlify).
-- `origin/main` **sincronizado**, último commit `205bb1e3`. `verify.sh` verde.
+- `origin/main`, último commit `34af320b`. `verify.sh` verde.
 - Build OK (React 19 + Vite 7). Lint limpio (3 warnings cosméticos).
+- **Phase 0 (stop-the-bleed) IMPLEMENTADA el 2026-05-29** — código escrito y
+  `verify.sh` verde, pero ⚠️ **el SQL NO está aplicado en Supabase Studio y
+  NO se ha hecho deploy**. Son fixes **implementados, pendientes de aplicar
+  SQL + deploy**, NO resueltos en producción. Cubre: P0-1 escalada de
+  privilegios (migración `006`), P0-4 SEO canonical/hreflang + sitemap
+  dinámico, P0-5 drift de migraciones (`000_base_schema.sql`), cierre de
+  funciones serverless (auth JWT + CORS) y Error Boundary global. Detalle en
+  `progress/2026-05-29-phase0-security-seo.md`.
 - Se ejecutó una **auditoría de production-readiness de 13 agentes**
-  (`AUDIT_REPORT.md`): score 22/100, 7 P0 — **2 ya resueltos**, 5 abiertos.
+  (`AUDIT_REPORT.md`): score 22/100, 7 P0 — 2 resueltos (i18n, 2026-05-26),
+  3 de ingeniería implementados (pendientes apply/deploy), 2 legales abiertos.
 
 ## 2. Qué estábamos haciendo antes de cambiar de chat
 
-Sesión larga del 2026-05-26 con muchos frentes cerrados (ver §3). Lo último
-fue: **auditoría completa + migración i18n de 3 páginas** y el **cierre del
-harness**. El usuario quería preparar el paquete de transferencia de contexto
-(este archivo + CLAUDE.md + PROJECT_CONTEXT.md + TODO.md).
+Sesión del 2026-05-29: **implementación de la Phase 0** (seguridad + SEO)
+descrita en §1, dejada en el working tree pendiente de que el owner aplique
+el SQL `006` en Studio, verifique las env vars de Netlify y apruebe el commit
++ push. La sesión anterior (2026-05-26) cerró auditoría + migración i18n +
+harness + paquete de transferencia de contexto.
 
 ## 3. Últimos cambios importantes (commits de hoy)
 
@@ -38,38 +70,51 @@ harness**. El usuario quería preparar el paquete de transferencia de contexto
 
 ## 4. Problemas abiertos / bugs conocidos
 
-**Críticos (P0) — ver AUDIT_REPORT.md para detalle + fixes:**
-- 🛑 **Escalada de privilegios** (SEC-001/DB-001/ADM-001): la RLS
-  `"Agent can update own row"` no tiene `WITH CHECK` → cualquier agente puede
-  `update({role:'admin'})` desde DevTools. **SQL de fix listo** en AUDIT_REPORT
-  § P0-1. Es lo más urgente.
+**P0 de ingeniería — IMPLEMENTADOS 2026-05-29 (pendientes aplicar SQL + deploy,
+NO resueltos en producción):**
+- 🟡 **Escalada de privilegios** (SEC-001/DB-001/ADM-001): fix escrito en
+  migración `006_fix_agent_update_rls.sql` (`WITH CHECK` que congela
+  `role`/`is_active` + `search_path` en helpers, cubre DB-005) y `updateAgent()`
+  estrechado a `AgentSelfUpdate`. **⚠️ El SQL 006 todavía NO está pegado en
+  Studio** → en producción el agujero sigue abierto hasta aplicarlo.
+- 🟡 **Canonical/hreflang estáticos** (PERF-001): `og-rewrite.ts` ahora los
+  reescribe por ruta en `/fr/* /es/* /en/*`; sitemap dinámico vía
+  `scripts/generate-sitemap.mjs` + `prebuild` (cubre PERF-002). **⚠️ No
+  desplegado.**
+- 🟡 **Drift de migraciones** (DB-002): `000_base_schema.sql` idempotente. **⚠️
+  No re-aplicar sobre prod.**
+- 🟡 **Funciones serverless abiertas** (SEC-002/003): `translate-property`
+  exige sesión de agente activo (JWT) + CORS allowlist + rate-limit;
+  `notify-lead` CORS + origin check. **⚠️ No desplegado; necesita env vars en
+  Netlify.**
+- 🟡 **Sin Error Boundary** (ARCH-002): `ErrorBoundary.tsx` montado en
+  `main.tsx`. **⚠️ No desplegado.**
+
+**P0 legales — abiertos (owner + abogado):**
 - 🛑 **Sin Política de Privacidad ni Mentions Légales** (LEGAL-001/002):
   bloqueante para audiencia UE/Francia. Requiere abogado + datos de Khalid.
-- 🛑 **Canonical/hreflang estáticos** (PERF-001): toda página interna declara
-  el canonical de la home → riesgo de colapso SEO.
-- 🛑 **Drift de migraciones** (DB-002): tablas base solo en `schema.sql`, no en
-  migraciones numeradas → BD no reproducible.
 
-**Altos (P1):**
-- Funciones serverless `notify-lead` y `translate-property` **abiertas sin auth**
-  (SEC-002/003); `translate-property` quema cuota DeepSeek.
-- **Sitemap dinámico nunca llegó a `main`** (PERF-002) — el de producción está
-  obsoleto (dominio `.netlify.app`).
-- **Policies RLS de leads DUPLICADAS** (DB-003) — limpiar con migración 006.
+**Altos (P1) que siguen abiertos:**
 - **Leads sin UI en el admin** (ADM-003) — estimaciones/newsletter invisibles.
-- Sin tests (QA-001), sin Error Boundary (ARCH-002), sin scripts typecheck/test.
+- Sin tests (QA-001), sin scripts typecheck/test.
+- **DB-003 (RLS duplicadas de leads): NO aplica** — `004_leads.sql` ya define
+  las policies limpias; no hay duplicado que limpiar.
 
 ## 5. Próximos pasos recomendados (en orden)
 
-1. **P0-1 escalada de privilegios** — aplicar el SQL de AUDIT_REPORT § P0-1 en
-   Supabase Studio (~30 min). Es un agujero de seguridad real.
-2. **Migración 006** para limpiar las policies RLS duplicadas (DB-003) +
-   `search_path` en helpers (DB-005).
-3. **Canonical/hreflang dinámicos** (PERF-001) + **merge sitemap a main** (PERF-002).
-4. **`000_base_schema.sql`** para reproducibilidad (DB-002).
-5. **Cerrar funciones serverless** (auth + CORS) (SEC-002/003).
-6. En paralelo (owner): páginas legales con abogado, `site_settings` reales,
-   foto/bio Sofia, planes Pro. Ver TODO.md.
+1. **Cerrar Phase 0 (boundaries del owner):**
+   a. Aplicar `006_fix_agent_update_rls.sql` en Supabase Studio y **verificar
+      que un agente no-admin NO puede auto-promoverse** (`update({role:'admin'})`
+      desde DevTools debe ser rechazado).
+   b. Verificar env vars en Netlify: build/sitemap necesita
+      `SUPABASE_URL`/`SUPABASE_ANON_KEY` (o service key); las funciones
+      necesitan `SUPABASE_URL`/`SUPABASE_ANON_KEY` para validar el JWT.
+   c. Aprobar **commit + push** del working tree (Netlify auto-deploya `main`).
+   Solo tras esto los P0-1/P0-4/P0-5 quedan cerrados en producción.
+2. En paralelo (owner + abogado): páginas legales (P0-2/P0-3), `site_settings`
+   reales, foto/bio Sofia, planes Pro. Ver TODO.md.
+3. P1 de ingeniería: UI de leads en el admin (ADM-003), scripts
+   `typecheck`/`test` en `package.json`.
 
 ## 6. Archivos que la próxima sesión debe revisar primero
 

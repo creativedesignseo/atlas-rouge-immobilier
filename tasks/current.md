@@ -4,51 +4,117 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-05-26 (late — full saas-audit + i18n migration)
+**Last updated:** 2026-05-30 (Mapbox migration — code complete, blocked on Mapbox account)
+
+---
+
+## Mapbox migration — 2026-05-30 (CODE COMPLETE · FUNCIONA EN PROD)
+
+Map engine migrated MapLibre GL → **Mapbox GL JS v3** (estilo **Standard 2D
+plano**) en `src/pages/Search.tsx` (MapView) y
+`src/components/property/LocationMap.tsx`, vía nuevo `src/lib/mapbox.ts`.
+Build/lint verdes. Detalle completo: `progress/2026-05-30-mapbox-migration.md`.
+
+- [x] Código: `maplibre-gl` → `mapbox-gl@3.24`, `src/lib/mapbox.ts`,
+      `src/vite-env.d.ts`, `.env.example`, guard `hasMapboxToken` + fallback
+      placeholder, `canUseWebGL` exige WebGL2.
+- [x] Diagnóstico verificación: el token `atlasrouge v2` está **restringido por
+      URL a atlasrouge.com** → en prod los tiles cargan (200, confirmado por
+      curl con Referer atlasrouge.com); el 403 era solo por probar en localhost.
+      NO era falta de tarjeta (hipótesis inicial errónea descartada).
+- [ ] (Opcional, solo dev local) **OWNER**: añadir `localhost:3000`/`5173` a
+      las URLs del token `atlasrouge v2`, o usar el Default public token.
+- [ ] **OWNER**: poner `VITE_MAPBOX_TOKEN` en `.env.local` (dev) y Netlify
+      (prod, 4 contexts).
+- [ ] Verificar en local (opcional) → commit + push (mapa Mapbox en vivo).
+
+> Token del owner `atlasrouge v2` (pk., usuario `adspubli`) recibido en chat y
+> validado. Restringido a atlasrouge.com. NO está commiteado en el repo.
 
 ---
 
 ## Current state
 
 Site is **live in production** on Netlify (`atlasrouge.com`).
-`origin/main` in sync (last commit `8987f624`). verify.sh green.
+`origin/main` last commit `34af320b`. verify.sh green.
+
+⚠️ **There is unmerged, uncommitted Phase 0 work in the working tree**
+(2026-05-29). The code is written and verify.sh is green, but **the SQL
+has NOT been applied in Supabase Studio and NOTHING has been deployed**.
+These are fixes **implemented, pending SQL apply + deploy** — not yet
+live in production. See the section below.
 
 A **13-agent production-readiness audit** ran 2026-05-26 →
 `AUDIT_REPORT.md` at repo root. **Score 22/100 🛑** (mechanically
 harsh: 19.5 pts come from the N/A Payments area; the engineering
 foundation is strong — TS strict, 0 npm vulns, real service layer).
-**7 P0s** identified; 2 already fixed today (i18n). See the P0 list
-below and `AUDIT_REPORT.md` for the full P0-P3 + phased roadmap.
+**7 P0s** identified; 2 fixed 2026-05-26 (i18n), 3 engineering P0s
+implemented 2026-05-29 (pending apply/deploy), 2 legal P0s still owner-
+side. See the lists below and `AUDIT_REPORT.md` for the full roadmap.
 
 ---
 
-## P0 — from the audit, blocking a clean public launch
+## Phase 0 — implemented 2026-05-29 (pending SQL apply + deploy)
 
-### Already fixed today
+These are **code-complete and verify.sh-green**, but **not live**: the
+SQL must be pasted by the owner in Supabase Studio and the branch must
+be committed + pushed (Netlify auto-deploys `main`). Until then,
+production still has the original holes.
+
+- [~] **P0-1 · Privilege escalation (SEC-001/DB-001/ADM-001)** —
+      implemented. New migration `supabase/migrations/006_fix_agent_update_rls.sql`
+      (`WITH CHECK` via subquery that freezes `role`/`is_active` +
+      `SET search_path` on helpers `is_agent`/`is_admin_role`/
+      `is_active_agent`, covering DB-005). Also narrowed `updateAgent()`
+      in `src/services/auth.service.ts` to type `AgentSelfUpdate`
+      (`Pick` name/phone/bio/photo_url) so the client can no longer send
+      `role`/`is_active`. **⚠️ SQL 006 not yet applied in Studio.**
+- [~] **P0-4 · Canonical/hreflang dynamic** — implemented.
+      `netlify/edge-functions/og-rewrite.ts` now rewrites canonical +
+      hreflang per route on all pages (`config.path` widened to
+      `/fr/*`, `/es/*`, `/en/*`). New `scripts/generate-sitemap.mjs` +
+      `prebuild` in `package.json` generate a dynamic trilingual sitemap
+      (posts/properties/neighborhoods, domain `atlasrouge.com`, fault-
+      tolerant). `public/sitemap.xml` is now build output (gitignored,
+      no longer tracked). Closes PERF-002 too. **⚠️ Not deployed.**
+- [~] **P0-5 · Migration drift** — implemented. New
+      `supabase/migrations/000_base_schema.sql` (idempotent
+      `CREATE TABLE IF NOT EXISTS` for neighborhoods / properties /
+      contact_submissions / favorites / site_settings). Rebuilding from
+      `migrations/` no longer fails on 001. **Do not re-apply over prod.**
+- [~] **Close open serverless functions (SEC-002/003, P1 pulled
+      forward)** — implemented. `translate-property.js` now requires an
+      active-agent session (JWT validated against `/auth/v1/user` +
+      agents check) + CORS allowlist + best-effort rate-limit;
+      `notify-lead.js` gets CORS + OPTIONS + origin check;
+      `translation.service.ts` attaches the Bearer token. **⚠️ Not
+      deployed; needs Netlify env vars (see owner boundaries).**
+- [~] **Error Boundary (ARCH-002, P1 pulled forward)** — implemented.
+      New `src/components/ErrorBoundary.tsx` mounted in `main.tsx`, i18n
+      fallback (new keys in `src/locales/{fr,es,en}/errors.json`).
+
+### Owner boundaries to close this Phase 0 (next steps)
+- [ ] **Apply `supabase/migrations/006_fix_agent_update_rls.sql`** in
+      Supabase Studio, then **verify a non-admin agent cannot self-
+      promote** (`update({role:'admin'})` from DevTools must be rejected).
+- [ ] **Verify Netlify env vars**: the build/sitemap needs
+      `SUPABASE_URL` + `SUPABASE_ANON_KEY` (or service key); the
+      functions need `SUPABASE_URL` + `SUPABASE_ANON_KEY` to validate
+      the JWT. Without them the prebuild sitemap and the function auth
+      degrade.
+- [ ] **Approve commit + push** of the working-tree changes (Netlify
+      auto-deploys `main`).
+
+---
+
+## P0 — still open (owner / legal — needs Khalid + lawyer)
+- [ ] **P0-2 · Privacy Policy (RGPD)** — none exists. Lawyer.
+- [ ] **P0-3 · Mentions Légales** — mandatory in France. Lawyer + RC/ICE.
+
+### Already fixed 2026-05-26
 - [x] ~~**UX-001/UX-002 — i18n of GestionLocative, BuyerGuide, About**~~
       DONE 2026-05-26 (commit `593e47ae`). 218 keys translated FR/ES/EN
       by 3 parallel subagents. Key parity verified, build green.
-
-### Still open (engineering — Claude can do)
-- [ ] **P0-1 · Privilege escalation (SEC-001/DB-001/ADM-001)** —
-      RLS policy `"Agent can update own row"` lacks `WITH CHECK`; any
-      agent can `update({role:'admin'})` from DevTools. SQL fix ready
-      in `AUDIT_REPORT.md` § P0-1. ~30 min via Supabase Studio.
-      **Highest-priority real security hole.**
-- [ ] **P0-4 · Canonical/hreflang static** — every interior page
-      declares the homepage canonical → SEO collapse risk. Needs
-      per-route head management (react-helmet-async or extend
-      og-rewrite edge fn).
-- [ ] **P0-5 · Migration drift** — base tables only in `schema.sql`,
-      not in numbered migrations → DB not reproducible. Create
-      `000_base_schema.sql`.
-- [ ] **Close open serverless functions** (SEC-002/003) —
-      `notify-lead` + `translate-property` have no auth, CORS `*`.
-      translate-property burns DeepSeek quota. Add JWT + CORS lockdown.
-
-### Still open (owner / legal — needs Khalid + lawyer)
-- [ ] **P0-2 · Privacy Policy (RGPD)** — none exists. Lawyer.
-- [ ] **P0-3 · Mentions Légales** — mandatory in France. Lawyer + RC/ICE.
 
 ---
 
@@ -104,6 +170,13 @@ below and `AUDIT_REPORT.md` for the full P0-P3 + phased roadmap.
 
 ## P1 — important, not blocking
 
+- [n/a] **DB-003 · Duplicate leads RLS policies** — **does NOT apply.**
+      `004_leads.sql` already defines the leads policies cleanly; there
+      is no duplicate set to drop. The earlier worry (from the audit)
+      was based on a stale read. No migration needed for this.
+- [x] ~~**i18n P0-6/P0-7 (GestionLocative/BuyerGuide/About in French)**~~
+      Resolved in commit `593e47ae` (2026-05-26). Listed here for the
+      record; it is the same as UX-001/UX-002 above.
 - [ ] **Add `typecheck` and `test` scripts to `package.json`** so
       `scripts/verify.sh` actually validates types and tests, not
       just lint+build.
@@ -122,9 +195,14 @@ below and `AUDIT_REPORT.md` for the full P0-P3 + phased roadmap.
 
 ## Next recommended action
 
-Wait for Khalid to complete the P0 checklist (especially Supabase
-URL config + DEEPSEEK rotation). On the dev side: add `typecheck`
-script to `package.json` so verify.sh covers TS errors.
+**Close out Phase 0 (owner boundaries):** apply
+`006_fix_agent_update_rls.sql` in Supabase Studio and verify a non-admin
+agent cannot self-promote; confirm the Netlify env vars
+(`SUPABASE_URL`/`SUPABASE_ANON_KEY`) so the prebuild sitemap and the
+function JWT checks work; then approve the commit + push so Netlify
+deploys the working-tree changes. Only after that are P0-1/P0-4/P0-5
+actually closed in production. In parallel, Khalid + lawyer on the legal
+P0s (P0-2/P0-3).
 
 ---
 
