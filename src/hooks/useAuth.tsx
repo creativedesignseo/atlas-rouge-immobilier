@@ -45,21 +45,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const checkAuth = useCallback(async () => {
     setIsLoading(true)
+    let hadSession = false
     try {
       const session = await getSession()
       if (session?.user) {
-        // Optimistically trust the cached session so the admin renders fast…
+        hadSession = true
+        // Trust the cached session so the admin renders as soon as the agent
+        // row resolves — no extra server round-trip on the critical path.
         setUser(session.user)
         await loadAgentData(session.user)
-        // …then validate it against the server. A token in localStorage can be
-        // a "zombie" (server-side session revoked by a prior global sign-out):
-        // it looks logged in but every authenticated call returns 401 and the
-        // spinners hang. If the server rejects it, purge and bounce to login.
-        const { dead } = await validateSession()
-        if (dead) {
-          setUser(null)
-          setAgent(null)
-        }
       } else {
         setUser(null)
         setAgent(null)
@@ -69,6 +63,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setAgent(null)
     } finally {
       setIsLoading(false)
+    }
+
+    // Validate the session against the server WITHOUT blocking the first paint.
+    // A token in localStorage can be a "zombie" (server-side session revoked by
+    // a prior global sign-out): it looks logged in but every authenticated call
+    // returns 401. This case is rare, so we don't make every load wait on a
+    // round-trip — we render optimistically and validate in the background. If
+    // the server rejects the token, purge so ProtectedRoute bounces to login.
+    if (hadSession) {
+      validateSession()
+        .then(({ dead }) => {
+          if (dead) {
+            setUser(null)
+            setAgent(null)
+          }
+        })
+        .catch(() => { /* network blip — keep the optimistic session */ })
     }
   }, [loadAgentData])
 
