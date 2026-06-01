@@ -4,7 +4,19 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-06-01 (CIERRE post-Codex: cadena crear-inmueble RESUELTA y desplegada)
+**Last updated:** 2026-06-01 (CIERRE: cadena crear-inmueble + retraso de carga del panel, todo desplegado)
+
+---
+
+## Retraso al cargar el panel admin — 2026-06-01 ✅ RESUELTO Y DESPLEGADO
+
+`checkAuth` hacía `await validateSession()` (un `getUser()` al servidor,
+añadido en el fix de sesión zombi `d0e6e695`) **antes** de bajar `isLoading`,
+así que el spinner de `ProtectedRoute` bloqueaba CADA carga con ese round-trip
+extra. El caso zombi es raro → mala compensación. Fix (`3698de76`):
+`validateSession()` pasa a segundo plano (`.then`), el panel se pinta en cuanto
+responde `getAgent()`. Las 7 consultas del dashboard ya iban en paralelo (OK).
+Verificado: tsc + verify.sh verdes.
 
 ---
 

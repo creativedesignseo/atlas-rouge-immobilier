@@ -4,6 +4,21 @@
 
 ---
 
+## CIERRE de sesión — Claude Opus 4.8 — 2026-06-01 (perf panel admin)
+
+**Retraso al cargar el panel → RESUELTO Y DESPLEGADO** (commit `3698de76`).
+El owner reportó un pequeño retraso al abrir el admin. Causa: regresión que
+introduje yo en el fix de sesión zombi (`d0e6e695`) — `checkAuth` hacía
+`await validateSession()` (un `getUser()` al servidor) **en el camino crítico**,
+así que el spinner de `ProtectedRoute` bloqueaba cada carga con un round-trip
+extra. Fix: `validateSession()` corre en segundo plano (`.then`); el panel se
+pinta en cuanto resuelve `getAgent()`. Si la sesión está muerta, bota a login
+igual, sin penalizar las cargas sanas. Las 7 consultas del dashboard ya van en
+paralelo (`Promise.all` + timeout) — no eran el problema. Lección: cuidado con
+poner validaciones de red "de seguridad" en el path que pinta el spinner.
+
+---
+
 ## CIERRE de sesión — Claude Opus 4.8 — 2026-06-01 (cierre, post-Codex)
 
 **Saga "crear inmueble desde el admin" → RESUELTA Y DESPLEGADA.** Cadena de
