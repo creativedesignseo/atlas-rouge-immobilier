@@ -79,10 +79,14 @@ conversión a WebP funciona, pero el **bucket `property-images` no tiene
 política RLS que permita a los agentes hacer INSERT en `storage.objects`**.
 Este era el problema de fondo que los errores de formato venían tapando.
 **FIX en `supabase/migrations/007_storage_property_images_rls.sql`** (políticas
-INSERT/UPDATE/DELETE para `authenticated` en el bucket). ⚠️ **Pendiente de
-aplicar a mano en Supabase Studio** (igual que la 006) — hasta entonces la
-subida sigue rota en producción. Tras aplicarla, la subida de cualquier
-formato (incl. AVIF→WebP) funciona end-to-end.
+SELECT/INSERT/UPDATE/DELETE para `authenticated` en el bucket). ✅ **APLICADA Y
+VERIFICADA EN VIVO 2026-06-01**: ciclo completo subir→borrar da HTTP 200 (antes
+400). La subida de cualquier formato (incl. AVIF→WebP) funciona end-to-end.
+
+**NUEVA VÍA para aplicar migraciones (commit con `scripts/apply-migration.mjs`):**
+ya NO se pegan a mano en Studio. El owner añadió `SUPABASE_ACCESS_TOKEN` (PAT) a
+`.env.local`; las migraciones se aplican con `npm run migrate -- <archivo.sql>`
+(Management API). Ver [[reference_supabase]] y la regla actualizada en CLAUDE.md.
 
 **Traducción admin — verificada FUNCIONANDO 2026-06-01:** probada en vivo con
 login real contra `/.netlify/functions/translate-property` → HTTP 200 en ~5s,

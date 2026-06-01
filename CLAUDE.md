@@ -79,9 +79,14 @@ AUDIT_REPORT.md             # auditoría 13-agentes (P0-P3 + roadmap)
 - **Todo texto visible va por i18n** (`t('clave')`), nunca hardcoded.
   Las 3 versiones FR/ES/EN deben tener el MISMO set de claves.
 - **No toques `.env*`** (gitignored). Secretos solo en Netlify env vars.
-- **Las migraciones SQL se aplican a mano** en Supabase Studio (la REST
-  API no ejecuta SQL crudo). Crea el archivo en `supabase/migrations/`
-  y pásale el SQL al owner para que lo pegue.
+- **Las migraciones SQL se aplican con `npm run migrate -- <archivo>`**
+  (`scripts/apply-migration.mjs` → Management API de Supabase usando
+  `SUPABASE_ACCESS_TOKEN` en `.env.local`). La REST API no ejecuta SQL
+  crudo. Flujo: crea el archivo en `supabase/migrations/` (registro
+  append-only), aplícalo con el script y **verifica el efecto en vivo**.
+  Operaciones destructivas (`DROP TABLE`/`TRUNCATE`/`DELETE` masivo)
+  requieren confirmación explícita del owner — el script las bloquea sin
+  `--force`. (Antes se pegaban a mano en Studio; ya no hace falta.)
 - **`DEEPSEEK_API_KEY` sin prefijo `VITE_`** (es server-side; `VITE_*`
   filtraría al bundle del navegador).
 
