@@ -138,7 +138,13 @@ export async function isAdmin(): Promise<boolean> {
   return agent?.role === 'admin'
 }
 
-export async function updateAgent(userId: string, updates: AgentUpdate): Promise<{ error: string | null }> {
+// An agent may only edit these fields of their own row. `role` and `is_active`
+// are intentionally excluded: changing them is an admin operation, and the RLS
+// policy "Agent can update own row" (migration 006) blocks it at the DB level.
+// This Pick is the second layer of that defense.
+export type AgentSelfUpdate = Pick<AgentUpdate, 'name' | 'phone' | 'bio' | 'photo_url'>
+
+export async function updateAgent(userId: string, updates: AgentSelfUpdate): Promise<{ error: string | null }> {
   if (!isSupabaseConfigured) return { error: 'Supabase not configured' }
 
   const { error } = await supabase
