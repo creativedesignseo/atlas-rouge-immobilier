@@ -8,6 +8,7 @@ const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY
 const PROPERTY_IMAGES_BUCKET = 'property-images'
 const IMAGE_UPLOAD_TIMEOUT_MS = 45000
 const PROPERTY_SAVE_TIMEOUT_MS = 45000
+const PROPERTY_LIST_TIMEOUT_MS = 30000
 
 export interface PropertyFormData {
   slug: string
@@ -89,17 +90,11 @@ function toDbInsert(data: PropertyFormData, agentId?: string): PropertyInsert {
 
 async function fetchAdminProperties(agentId: string, isAdmin: boolean): Promise<PropertyRow[]> {
   if (!isSupabaseConfigured) return []
-  let query = supabase
-    .from('properties')
-    .select('*')
-    .order('created_at', { ascending: false })
-  if (!isAdmin) query = query.eq('agent_id', agentId)
-  const { data, error } = await query
-  if (error) {
-    console.error('getAdminProperties error:', error)
-    throw error
-  }
-  return (data || []) as PropertyRow[]
+  const filter = isAdmin ? '' : `&agent_id=eq.${encodeURIComponent(agentId)}`
+  return authenticatedJsonRequest<PropertyRow[]>(
+    `${SUPABASE_URL}/rest/v1/properties?select=*&order=created_at.desc${filter}`,
+    { method: 'GET', timeoutMs: PROPERTY_LIST_TIMEOUT_MS },
+  )
 }
 
 /**
@@ -124,7 +119,7 @@ export async function getAdminProperties(agentId: string, isAdmin: boolean): Pro
 
 async function authenticatedJsonRequest<T>(
   url: string,
-  options: { method: 'POST' | 'PATCH'; body: unknown; timeoutMs?: number },
+  options: { method: 'GET' | 'POST' | 'PATCH'; body?: unknown; timeoutMs?: number },
 ): Promise<T> {
   const accessToken = await currentAccessToken()
   if (!accessToken) {
@@ -143,7 +138,7 @@ async function authenticatedJsonRequest<T>(
         'Content-Type': 'application/json',
         Prefer: 'return=representation',
       },
-      body: JSON.stringify(options.body),
+      body: options.body === undefined ? undefined : JSON.stringify(options.body),
       signal: controller.signal,
     })
     const result = await response.json().catch(() => null)
@@ -160,7 +155,7 @@ async function authenticatedJsonRequest<T>(
     return result as T
   } catch (error) {
     if (error instanceof DOMException && error.name === 'AbortError') {
-      throw new Error('Guardar el inmueble tardó demasiado. Reintenta.')
+      throw new Error('La operación tardó demasiado. Reintenta.')
     }
     throw error
   } finally {

@@ -4,6 +4,40 @@
 
 ---
 
+## Intervención — Codex — 2026-06-01 (hotfix listado inmuebles)
+
+### Fix implementado: `/admin/properties` colgado tras crear
+
+Tras el deploy `5110413c`, el owner confirmó que el inmueble **sí guardó** y
+redirigió al listado, pero `/admin/properties` quedaba con el spinner central.
+La consola solo mostraba el bloqueo CSP de `ipapi.co`, que es ruido de
+geolocalización y no explica el admin.
+
+**Diagnóstico:** el bloqueo ya no estaba en `createProperty()`, sino en el
+listado. `AdminProperties` espera `getAdminProperties()`, y
+`fetchAdminProperties()` todavía usaba `supabase.from('properties').select('*')`
+sin timeout ni fallback de token. Era el mismo patrón de promesa colgada que se
+eliminó en traducción, Storage y guardado.
+
+**Cambio aplicado:**
+- `src/services/admin/propertyAdmin.service.ts`:
+  - `fetchAdminProperties()` usa REST directo a PostgREST con Bearer token,
+    `apikey`, `order=created_at.desc` y timeout de 30s;
+  - conserva el filtro `agent_id` para no-admins;
+  - reutiliza el helper autenticado compartido.
+- `src/pages/admin/AdminProperties.tsx` muestra el mensaje real si la carga del
+  listado falla, en vez de un error genérico.
+
+**Verificación local:**
+- `npx tsc -b --noEmit` → verde.
+- `bash scripts/verify.sh` → verde (mismos 3 warnings Fast Refresh
+  preexistentes; build OK).
+
+**Próximo:** publicar en `main`, esperar auto-deploy de Netlify y recargar
+`/admin/properties`.
+
+---
+
 ## Intervención — Codex — 2026-06-01 (hotfix guardar inmueble)
 
 ### Fix implementado: botón "Crear propiedad" colgado

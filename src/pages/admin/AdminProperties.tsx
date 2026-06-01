@@ -31,8 +31,8 @@ export default function AdminProperties() {
       const data = await getAdminProperties(agent.id, isAdmin)
       setProperties(data)
       setFiltered(data)
-    } catch {
-      toast.error(t('properties.loadError'))
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : t('properties.loadError'))
     } finally {
       setLoading(false)
     }

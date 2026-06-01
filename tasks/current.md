@@ -4,7 +4,27 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-06-01 (Codex: save property hang hotfix local, verify green)
+**Last updated:** 2026-06-01 (Codex: admin properties list hang hotfix local, verify green)
+
+---
+
+## Listado `/admin/properties` colgado tras crear — 2026-06-01 🟡 FIX LISTO, PENDIENTE DEPLOY
+
+Tras `5110413c`, el owner confirmó que la propiedad guardó y redirigió a
+`/admin/properties`, pero el listado quedó con spinner. La consola solo muestra
+ruido de CSP por `ipapi.co`, no relacionado con admin.
+
+Fix local:
+- `fetchAdminProperties()` ahora carga por REST directo a PostgREST con Bearer
+  token, `apikey`, `order=created_at.desc`, filtro `agent_id` para no-admins y
+  timeout de 30s.
+- `AdminProperties` muestra el mensaje real si falla la carga.
+
+Verificación: `npx tsc -b --noEmit` y `bash scripts/verify.sh` verdes.
+
+Pendiente:
+- [ ] Commit + push a `main` para auto-deploy Netlify.
+- [ ] Owner recarga `/admin/properties`.
 
 ---
 
