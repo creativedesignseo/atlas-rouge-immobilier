@@ -45,7 +45,9 @@ function toDbInsert(data: PropertyFormData, agentId?: string): PropertyInsert {
     title: data.title,
     transaction: data.transaction,
     type: data.type,
-    neighborhood_id: data.neighborhood_id,
+    // The select emits '' when no neighborhood is chosen; coerce to null so
+    // Postgres doesn't reject '' as an invalid uuid (HTTP 400).
+    neighborhood_id: data.neighborhood_id || null,
     city: data.city,
     price_eur: data.price_eur,
     price_mad: data.price_mad,

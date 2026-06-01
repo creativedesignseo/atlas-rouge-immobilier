@@ -199,7 +199,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
   // the "it translated the wrong text" bug: previously it read the base fields,
   // which could hold stale content in a different language than the source tab.
   const buildSourceContent = (values: PropertyFormValues) => {
-    const neighborhood = neighborhoods.find((item) => item.slug === values.neighborhood_id)
+    const neighborhood = neighborhoods.find((item) => item.id === values.neighborhood_id)
     const v = values as Record<string, unknown>
     const srcTitle = asStr(v[`title_${sourceLang}`]) || (values.title || '').trim()
     const srcDescription = asStr(v[`description_${sourceLang}`]) || (values.description || '').trim()
@@ -428,7 +428,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
                 >
                   <option value="">{t('propertyForm.selectOption')}</option>
                   {neighborhoods.map((n) => (
-                    <option key={n.slug} value={n.slug}>{n.name}</option>
+                    <option key={n.slug} value={n.id ?? ''}>{n.name}</option>
                   ))}
                 </select>
               </div>

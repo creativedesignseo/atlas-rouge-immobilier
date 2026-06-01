@@ -1,4 +1,7 @@
 export interface Neighborhood {
+  // DB primary key (uuid). Optional because the static mock entries below
+  // (dev fallback only) have no id; populated from Supabase in production.
+  id?: string;
   name: string;
   slug: string;
   image: string;

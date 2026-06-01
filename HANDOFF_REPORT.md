@@ -4,6 +4,41 @@
 
 ---
 
+## CIERRE de sesión — Claude Opus 4.8 — 2026-06-01 (noche)
+
+### Bug RESUELTO Y DESPLEGADO: crear inmueble daba HTTP 400
+
+Síntoma del owner: al pulsar "Crear propiedad" la consola mostraba
+`400` sobre `.../rest/v1/properties?select=*`. **No era RLS ni el
+navegador** — era un bug de datos en el formulario.
+
+**Causa raíz** (verificada reproduciendo el insert en prod vía Management
+API, transacción + rollback): el `<select>` de Barrio en `PropertyForm`
+usaba el **slug** como `value`, pero `properties.neighborhood_id` es un
+**`uuid`** (FK a `neighborhoods.id`). Postgres devolvía
+`22P02: invalid input syntax for type uuid: ""` (barrio vacío) o el mismo
+error con el slug (barrio elegido). Por eso el formulario de admin nunca
+había podido crear un inmueble; las 12 filas existentes se sembraron por
+otra vía.
+
+**Fix** (4 archivos, commit en `main` → Netlify auto-deploy):
+- `src/data/neighborhoods.ts` — `id?: string` añadido al tipo.
+- `src/services/neighborhood.service.ts` — el mapper expone `id: row.id`.
+- `src/components/admin/PropertyForm.tsx` — `<option value={n.id}>` (antes
+  slug) y el lookup de `buildSourceContent` ahora compara por `id`.
+- `src/services/admin/propertyAdmin.service.ts` — `toDbInsert` coercer
+  `neighborhood_id: data.neighborhood_id || null` (defensa: `''` → `null`).
+
+Arregla también la **edición** (el select no preseleccionaba el barrio
+porque comparaba uuid contra slug). Verificado: `scripts/verify.sh` verde;
+insert reproducido con `null` y con uuid real → ambos válidos (0 filas
+dejadas tras rollback).
+
+**Próximo:** owner reabre el admin tras el deploy y crea el inmueble
+end-to-end (traducir → subir imagen → crear). Debería funcionar.
+
+---
+
 ## CIERRE de sesión — Claude Opus 4.8 — 2026-06-01 (tarde)
 
 ### Lo que SÍ se resolvió y desplegó hoy (todo verificado en vivo)

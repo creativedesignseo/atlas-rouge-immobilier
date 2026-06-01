@@ -5,6 +5,7 @@ import type { Neighborhood } from '@/data/neighborhoods'
 
 function mapDbToNeighborhood(row: Record<string, unknown>): Neighborhood {
   return {
+    id: row.id as string,
     name: row.name as string,
     slug: row.slug as string,
     image: row.image as string,

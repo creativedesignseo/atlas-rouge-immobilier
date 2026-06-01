@@ -4,7 +4,19 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-05-30 (i18n admin + amenities desplegado; batch contenido pendiente service_role)
+**Last updated:** 2026-06-01 (fix: crear inmueble daba HTTP 400 — neighborhood_id slug→uuid — DESPLEGADO)
+
+---
+
+## Crear inmueble — HTTP 400 — 2026-06-01 ✅ RESUELTO Y DESPLEGADO
+
+El formulario de admin nunca pudo crear inmuebles: el `<select>` de Barrio
+mandaba el **slug** pero `properties.neighborhood_id` es `uuid` (FK) →
+`invalid input syntax for type uuid` → 400. Fix en 4 archivos (select usa
+`n.id`, `''`→`null` en `toDbInsert`, tipo `Neighborhood.id`, mapper). Arregla
+también la edición. Verificado vía Management API (insert con null y uuid →
+OK, rollback). Detalle en `HANDOFF_REPORT.md` (cierre 2026-06-01 noche) y
+`progress/2026-06-01-fix-property-create-400.md`.
 
 ---
 
