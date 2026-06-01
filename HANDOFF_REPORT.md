@@ -62,6 +62,22 @@ intacto (transformación **habilitada**, verificado). Decisión: **R2 como
 fase 2** (zero egress) cuando el volumen lo justifique — plan en
 `~/.claude/plans/` (pipeline de imágenes). Ver [[project_property_translation]].
 
+**Hotfix CSP (commit `3de858c4`):** `browser-image-compression` con
+`useWebWorker:true` cargaba su worker desde `cdn.jsdelivr.net`, que la CSP
+estricta (`script-src 'self'`) bloquea → la subida se colgaba en "Subiendo…"
+para siempre. Solución: `useWebWorker:false` (corre en el hilo principal, sin
+script externo, CSP intacta). NO volver a poner el worker sin antes ampliar la
+CSP (no recomendado).
+
+**Traducción admin — verificada FUNCIONANDO 2026-06-01:** probada en vivo con
+login real contra `/.netlify/functions/translate-property` → HTTP 200 en ~5s,
+devuelve EN+FR correctos. El "Adaptando…" que el owner veía era (a) los ~5s que
+tarda DeepSeek y (b) el cuelgue de la imagen (worker CSP) que daba sensación de
+bloqueo general. No es un bug de traducción. Pendiente menor: `ipapi.co`
+(geolocalización de moneda) está bloqueado por la CSP — inofensivo, degrada a
+moneda por defecto; limpiar la llamada o añadir el dominio a `connect-src`
+cuando se quiera.
+
 ### Pendiente / próximo
 
 - Verificar deploy en vivo (Netlify) y env vars de Functions (arriba).
