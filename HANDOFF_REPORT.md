@@ -4,6 +4,57 @@
 
 ---
 
+## Intervención: Claude Opus 4.8 — 2026-06-01 (Phase 0 DESPLEGADA)
+
+Autor: Claude Opus 4.8.
+
+### Resumen ejecutivo
+
+**Phase 0 desplegada a producción.** Lo que el 2026-05-29 quedó escrito
+pero sin aplicar/desplegar, hoy está **en vivo**.
+
+| Item | Estado |
+|---|---|
+| P0-1 escalada de privilegios | ✅ **SQL aplicado en prod + verificado**. La política real era `agents_update_own` (NO "Agent can update own row"; la BD prod no se construyó desde las migraciones numeradas). Recreada con `WITH CHECK` que congela `role`/`is_active`. Verificado con `pg_policies`: `check_expr` ya no es NULL. |
+| P0-4 SEO + P0-5 drift + funciones + ErrorBoundary | ✅ **commiteado y pusheado a main** (commits `a287a82a`, `5fda9950`, `4f0abf77`, `8cbd2053`). Netlify auto-deploya. |
+
+### ⚠️ Boundary del owner pendiente (verificar tras deploy)
+
+- **Env vars de Netlify para las FUNCIONES**: `translate-property` ahora
+  EXIGE un JWT de agente activo (valida contra `SUPABASE_URL/auth/v1/user`).
+  Si `SUPABASE_URL` + `SUPABASE_ANON_KEY` no están en el contexto
+  **Functions** de Netlify, la auto-traducción del admin dejará de
+  funcionar (el sitio público NO se ve afectado). Verificar en Netlify →
+  Site settings → Env vars que existan para Functions.
+- El `prebuild` del sitemap es tolerante (nunca rompe el build), pero sin
+  esas vars el sitemap solo incluirá páginas estáticas (no posts/props).
+
+### Hallazgo importante (para futuras migraciones)
+
+La BD de producción **no coincide** con los nombres de las migraciones
+numeradas `001-006`. Nombres reales verificados: políticas
+`agents_select_own` / `agents_update_own`. NO existe "Admin can update any
+agent" (la gestión de roles se hace fuera de RLS, vía service_role). Antes
+de aplicar cualquier migración futura, **verificar nombres reales con
+`pg_policies` / `pg_proc`** en vez de asumir.
+
+### Cuenta Supabase
+
+Proyecto `slxlkbrqcjabsfuhlwdf` pertenece a la cuenta
+**adspublioficial@gmail.com**. NO confundir con `vfpkeklmnhtsqsdoeayi`
+(= Menucast, otro proyecto/cuenta).
+
+### Pendiente / próximo
+
+- Verificar deploy en vivo (Netlify) y env vars de Functions (arriba).
+- Bug del panel de Traducciones del admin (sourceLang): el idioma fuente
+  se deriva de la UI del admin en vez del idioma real del contenido (FR).
+  Diagnóstico hecho, fix pendiente de decisión del owner (¿fuente siempre
+  FR o selector explícito?). Ver `PropertyForm.tsx:106`.
+- P0-2/P0-3 legales (Privacy Policy + Mentions Légales): owner + abogado.
+
+---
+
 ## Intervención: Claude Opus 4.7 — 2026-05-29 (Phase 0 stop-the-bleed)
 
 Autor: Claude Opus 4.7 (1M context).
