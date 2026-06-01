@@ -4,7 +4,28 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-06-01 (Codex: translation deployed; image upload hang hotfix local, verify green)
+**Last updated:** 2026-06-01 (Codex: save property hang hotfix local, verify green)
+
+---
+
+## Crear propiedad colgado en spinner — 2026-06-01 🟡 FIX LISTO, PENDIENTE DEPLOY
+
+Tras desplegar el fix de imágenes, el owner confirmó: traducción OK, foto OK,
+pero el botón **Crear propiedad** queda girando y no crea/guarda/navega.
+
+Fix local:
+- `src/services/admin/propertyAdmin.service.ts` convierte `createProperty()` y
+  `updateProperty()` a REST directo contra Supabase PostgREST con Bearer token,
+  `apikey`, JSON, `Prefer: return=representation` y timeout de 45s.
+- Si la sesión murió, redirige a login; si PostgREST/RLS/validación rechaza, el
+  toast muestra el mensaje real en vez de dejar spinner infinito.
+- Se mantienen las invalidaciones de caché tras guardar.
+
+Verificación: `npx tsc -b --noEmit` y `bash scripts/verify.sh` verdes.
+
+Pendiente:
+- [ ] Commit + push a `main` para auto-deploy Netlify.
+- [ ] Owner reintenta crear el inmueble.
 
 ---
 

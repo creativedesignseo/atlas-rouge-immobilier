@@ -7,6 +7,7 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY
 const PROPERTY_IMAGES_BUCKET = 'property-images'
 const IMAGE_UPLOAD_TIMEOUT_MS = 45000
+const PROPERTY_SAVE_TIMEOUT_MS = 45000
 
 export interface PropertyFormData {
   slug: string
@@ -121,39 +122,92 @@ export async function getAdminProperties(agentId: string, isAdmin: boolean): Pro
   return freshPromise
 }
 
+async function authenticatedJsonRequest<T>(
+  url: string,
+  options: { method: 'POST' | 'PATCH'; body: unknown; timeoutMs?: number },
+): Promise<T> {
+  const accessToken = await currentAccessToken()
+  if (!accessToken) {
+    await clearLocalSessionAndRedirect()
+    throw new Error('Tu sesión caducó. Te llevamos a iniciar sesión de nuevo.')
+  }
+
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), options.timeoutMs ?? PROPERTY_SAVE_TIMEOUT_MS)
+  try {
+    const response = await fetch(url, {
+      method: options.method,
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+        Prefer: 'return=representation',
+      },
+      body: JSON.stringify(options.body),
+      signal: controller.signal,
+    })
+    const result = await response.json().catch(() => null)
+
+    if (response.status === 401) {
+      await clearLocalSessionAndRedirect()
+      throw new Error('Tu sesión caducó. Te llevamos a iniciar sesión de nuevo.')
+    }
+
+    if (!response.ok) {
+      throw new Error(result?.message || result?.error || `Request failed (${response.status})`)
+    }
+
+    return result as T
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      throw new Error('Guardar el inmueble tardó demasiado. Reintenta.')
+    }
+    throw error
+  } finally {
+    clearTimeout(timeout)
+  }
+}
+
+function firstReturnedProperty(result: unknown): PropertyRow {
+  if (Array.isArray(result) && result.length > 0) return result[0] as PropertyRow
+  if (result && typeof result === 'object' && !Array.isArray(result)) return result as PropertyRow
+  throw new Error('Supabase no devolvió el inmueble guardado.')
+}
+
 export async function createProperty(data: PropertyFormData, agentId?: string): Promise<PropertyRow> {
   if (!isSupabaseConfigured) throw new Error('Supabase not configured')
 
-  const { data: result, error } = await supabase
-    .from('properties')
-    .insert(toDbInsert(data, agentId))
-    .select()
-    .single()
+  const result = await authenticatedJsonRequest<unknown>(
+    `${SUPABASE_URL}/rest/v1/properties?select=*`,
+    {
+      method: 'POST',
+      body: toDbInsert(data, agentId),
+    },
+  )
 
-  if (error) throw error
   // Drop cached lists so the next read fetches fresh.
   invalidate('adminProperties:')
   invalidate('publicProperties:')
   invalidate('featuredProperties')
-  return result as PropertyRow
+  return firstReturnedProperty(result)
 }
 
 export async function updateProperty(slug: string, data: PropertyFormData, agentId?: string): Promise<PropertyRow> {
   if (!isSupabaseConfigured) throw new Error('Supabase not configured')
 
-  const { data: result, error } = await supabase
-    .from('properties')
-    .update(toDbInsert(data, agentId))
-    .eq('slug', slug)
-    .select()
-    .single()
+  const result = await authenticatedJsonRequest<unknown>(
+    `${SUPABASE_URL}/rest/v1/properties?slug=eq.${encodeURIComponent(slug)}&select=*`,
+    {
+      method: 'PATCH',
+      body: toDbInsert(data, agentId),
+    },
+  )
 
-  if (error) throw error
   invalidate('adminProperties:')
   invalidate('publicProperties:')
   invalidate('featuredProperties')
   invalidate(`property:${slug}`)
-  return result as PropertyRow
+  return firstReturnedProperty(result)
 }
 
 export async function deleteProperty(slug: string): Promise<void> {

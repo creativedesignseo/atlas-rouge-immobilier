@@ -4,6 +4,43 @@
 
 ---
 
+## Intervención — Codex — 2026-06-01 (hotfix guardar inmueble)
+
+### Fix implementado: botón "Crear propiedad" colgado
+
+Tras el deploy del hotfix de imágenes, el owner confirmó:
+**traducción OK, imagen sube OK**, pero al pulsar **Crear propiedad** el botón
+quedaba en spinner y no navegaba ni mostraba error.
+
+**Diagnóstico:** el último paso (`createProperty()` / `updateProperty()`) aún
+usaba el cliente Supabase directo:
+`supabase.from('properties').insert(...).select().single()`. Igual que pasó con
+Storage, si esa promesa interna queda esperando auth/red, el `finally` del
+formulario no se ejecuta y el botón queda girando.
+
+**Cambio aplicado:**
+- `src/services/admin/propertyAdmin.service.ts` ahora usa REST directo para
+  `createProperty()` y `updateProperty()`:
+  - obtiene access token con `currentAccessToken()`;
+  - envía `Authorization: Bearer <token>`, `apikey`, JSON y
+    `Prefer: return=representation`;
+  - timeout de 45s;
+  - 401 limpia sesión local y redirige a login;
+  - errores PostgREST/RLS/validación se muestran con su mensaje real.
+- Mantiene invalidación de cachés `adminProperties:`, `publicProperties:` y
+  `featuredProperties`.
+
+**Verificación local:**
+- `npx tsc -b --noEmit` → verde.
+- `bash scripts/verify.sh` → verde (mismos 3 warnings Fast Refresh
+  preexistentes; build OK).
+
+**Próximo:** publicar en `main`, esperar auto-deploy de Netlify y reintentar
+crear el inmueble. Si falla, debería mostrar el mensaje real en vez de spinner
+infinito.
+
+---
+
 ## Intervención — Codex — 2026-06-01 (hotfix imágenes)
 
 ### Fix implementado: subida de imágenes colgada en "Subiendo..."
