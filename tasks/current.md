@@ -4,7 +4,18 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-06-01 (CIERRE: cadena crear-inmueble + retraso de carga del panel, todo desplegado)
+**Last updated:** 2026-06-01 (modal de borrado → diálogo del sistema de diseño, desplegado)
+
+---
+
+## Modal de borrado nativo → AlertDialog del sistema de diseño — 2026-06-01 ✅ DESPLEGADO
+
+Las 3 acciones de borrar (inmueble, artículo, contacto) usaban
+`window.confirm()` nativo. Ahora usan un `useConfirm()` (promesa) + `ConfirmProvider`
+montado en `AdminLayout`, sobre el `AlertDialog` shadcn/Radix existente, con
+botón "Eliminar" en rojo. Añadido `actions.cancel` en fr/es/en. Commit `87735bec`.
+Verificado: tsc + verify.sh verdes. NOTA: solo saca del modal nativo; el rediseño
+visual del sistema de diseño es trabajo aparte (el owner ya dijo que no le gusta).
 
 ---
 
