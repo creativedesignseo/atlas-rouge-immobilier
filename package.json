@@ -10,7 +10,8 @@
     "sitemap": "node scripts/generate-sitemap.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
-    "translate:properties": "node --env-file=.env.local scripts/translate-existing-properties.mjs"
+    "translate:properties": "node --env-file=.env.local scripts/translate-existing-properties.mjs",
+    "migrate": "node scripts/apply-migration.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

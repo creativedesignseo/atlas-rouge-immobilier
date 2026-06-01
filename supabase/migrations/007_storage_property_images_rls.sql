@@ -27,6 +27,14 @@
 --   estado de ese helper (la migración 006 le fijó el search_path).
 -- ============================================================================
 
+-- SELECT — necesario para que las operaciones de gestión (DELETE/UPDATE) del
+-- admin localicen el objeto. La lectura pública del bucket va por otra vía
+-- (rol anon); esto es para el rol authenticated (agentes).
+DROP POLICY IF EXISTS "property_images_select" ON storage.objects;
+CREATE POLICY "property_images_select"
+  ON storage.objects FOR SELECT TO authenticated
+  USING (bucket_id = 'property-images');
+
 -- INSERT — subir imágenes nuevas
 DROP POLICY IF EXISTS "property_images_insert" ON storage.objects;
 CREATE POLICY "property_images_insert"
