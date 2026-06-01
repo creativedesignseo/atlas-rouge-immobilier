@@ -69,6 +69,21 @@ para siempre. Solución: `useWebWorker:false` (corre en el hilo principal, sin
 script externo, CSP intacta). NO volver a poner el worker sin antes ampliar la
 CSP (no recomendado).
 
+**🔴 RAÍZ del fallo de subida de imágenes — hallada EN VIVO 2026-06-01
+(Playwright + sesión de agente real, ya no por suposición):** tras arreglar
+el formato (AVIF→WebP nativo, commit `b38207b4`), reproduje la subida en
+producción y vi el error AUTÉNTICO en consola:
+`StorageApiError: new row violates row-level security policy` →
+`POST /storage/v1/object/property-images/<file>.webp` HTTP 400. Es decir: la
+conversión a WebP funciona, pero el **bucket `property-images` no tiene
+política RLS que permita a los agentes hacer INSERT en `storage.objects`**.
+Este era el problema de fondo que los errores de formato venían tapando.
+**FIX en `supabase/migrations/007_storage_property_images_rls.sql`** (políticas
+INSERT/UPDATE/DELETE para `authenticated` en el bucket). ⚠️ **Pendiente de
+aplicar a mano en Supabase Studio** (igual que la 006) — hasta entonces la
+subida sigue rota en producción. Tras aplicarla, la subida de cualquier
+formato (incl. AVIF→WebP) funciona end-to-end.
+
 **Traducción admin — verificada FUNCIONANDO 2026-06-01:** probada en vivo con
 login real contra `/.netlify/functions/translate-property` → HTTP 200 en ~5s,
 devuelve EN+FR correctos. El "Adaptando…" que el owner veía era (a) los ~5s que
