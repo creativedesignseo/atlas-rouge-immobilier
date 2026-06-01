@@ -122,6 +122,26 @@ cuando se quiera.
   `admins` queda obsoleta (deprecar a futuro). En prod solo existen `is_admin()`
   (admins) e `is_active_agent()` (agents); `is_admin_role`/`is_agent` NO existen.
 
+### Auditoría sistemática de RLS + cierre de fuga de PII — 2026-06-01
+
+Tras el ciclo "arreglo uno, aparece otro", se hizo una **auditoría sistemática**
+(RLS de toda la BD × operaciones de `src/services/**`, vía Management API).
+Hallazgo grave: **`contact_submissions` era legible por `anon`** (cualquiera con
+la anon key del bundle leía nombre/email/mensaje de los leads — fuga de PII).
+**Migración `009_rls_audit_fixes.sql`** quita la lectura pública. Verificado en
+vivo: anónimo ahora lee 0 contactos (antes 3), y el formulario público sigue
+insertando (POST 201). Mapa completo en **`docs/admin-rls-audit.md`**.
+Preventivo nuevo: **`npm run audit:rls`** (`scripts/audit-rls.mjs`) marca tablas
+sensibles expuestas a anon o sin RLS — correr antes de dar algo por "cerrado".
+Deuda menor pendiente: storage `agent-avatars` sin UPDATE/DELETE; políticas
+duplicadas en estimation_requests/newsletter; tabla `admins` obsoleta.
+
+**Verificación end-to-end del admin (Playwright, navegador limpio, prod):**
+crear inmueble FUNCIONA de principio a fin — traducir (200, pestañas EN/FR/ES
+con su idioma), subir AVIF→WebP (200), insert propiedad (201). Si el owner ve
+"se queda pegado", es **caché del navegador con JS viejo** → recargar en
+incógnito o vaciar caché.
+
 ### Pendiente / próximo
 
 - Verificar deploy en vivo (Netlify) y env vars de Functions (arriba).
