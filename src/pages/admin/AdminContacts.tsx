@@ -3,6 +3,7 @@ import { Mail, Trash2, Home, Search } from 'lucide-react'
 import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '@/hooks/useAuth'
+import { useConfirm } from '@/components/admin/ConfirmDialog'
 import { getContactSubmissions, deleteContact, type ContactSubmission } from '@/services/admin/contactAdmin.service'
 import { format } from 'date-fns'
 import { fr, enUS, es } from 'date-fns/locale'
@@ -12,6 +13,7 @@ const DATE_LOCALES = { fr, en: enUS, es } as const
 export default function AdminContacts() {
   const { t, i18n } = useTranslation('admin')
   const { agent, isAdmin } = useAuth()
+  const confirm = useConfirm()
   const dateLocale = DATE_LOCALES[i18n.language?.slice(0, 2) as keyof typeof DATE_LOCALES] || enUS
   const dateFormat = i18n.language?.startsWith('fr')
     ? "dd MMMM yyyy 'à' HH:mm"
@@ -68,7 +70,14 @@ export default function AdminContacts() {
   }, [search, contacts])
 
   async function handleDelete(id: string) {
-    if (!confirm(t('contacts.deleteConfirm'))) return
+    const ok = await confirm({
+      title: t('actions.delete'),
+      description: t('contacts.deleteConfirm'),
+      confirmLabel: t('actions.delete'),
+      cancelLabel: t('actions.cancel'),
+      destructive: true,
+    })
+    if (!ok) return
 
     setDeleting(id)
     try {

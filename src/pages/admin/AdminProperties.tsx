@@ -4,6 +4,7 @@ import { Plus, Pencil, Trash2, ExternalLink, Search, Home, Star } from 'lucide-r
 import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '@/hooks/useAuth'
+import { useConfirm } from '@/components/admin/ConfirmDialog'
 import { getAdminProperties, deleteProperty } from '@/services/admin/propertyAdmin.service'
 import { getImageUrl } from '@/lib/storage'
 import type { PropertyRow } from '@/types/supabase'
@@ -12,6 +13,7 @@ export default function AdminProperties() {
   const navigate = useNavigate()
   const { t, i18n } = useTranslation('admin')
   const { agent, isAdmin } = useAuth()
+  const confirm = useConfirm()
   const [properties, setProperties] = useState<PropertyRow[]>([])
   const [filtered, setFiltered] = useState<PropertyRow[]>([])
   const [search, setSearch] = useState('')
@@ -64,7 +66,14 @@ export default function AdminProperties() {
   }, [search, properties])
 
   async function handleDelete(slug: string) {
-    if (!confirm(t('properties.deleteConfirm'))) return
+    const ok = await confirm({
+      title: t('actions.delete'),
+      description: t('properties.deleteConfirm'),
+      confirmLabel: t('actions.delete'),
+      cancelLabel: t('actions.cancel'),
+      destructive: true,
+    })
+    if (!ok) return
 
     setDeleting(slug)
     try {

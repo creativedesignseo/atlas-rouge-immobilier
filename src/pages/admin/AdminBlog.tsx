@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Plus, Pencil, Trash2, ExternalLink, Search, FileText, Eye, EyeOff } from 'lucide-react'
 import { toast } from 'sonner'
 import { useAuth } from '@/hooks/useAuth'
+import { useConfirm } from '@/components/admin/ConfirmDialog'
 import {
   listPosts,
   deletePost,
@@ -22,6 +23,7 @@ export default function AdminBlog() {
   const navigate = useNavigate()
   const { t } = useTranslation('admin')
   const { agent } = useAuth()
+  const confirm = useConfirm()
   const { lang } = useLang()
   const [posts, setPosts] = useState<BlogPost[]>([])
   const [filtered, setFiltered] = useState<BlogPost[]>([])
@@ -67,7 +69,14 @@ export default function AdminBlog() {
   }, [posts, statusFilter, search])
 
   const handleDelete = async (post: BlogPost) => {
-    if (!confirm(`¿Eliminar "${post.title}"? Esta acción no se puede deshacer.`)) return
+    const ok = await confirm({
+      title: t('actions.delete'),
+      description: `¿Eliminar "${post.title}"? Esta acción no se puede deshacer.`,
+      confirmLabel: t('actions.delete'),
+      cancelLabel: t('actions.cancel'),
+      destructive: true,
+    })
+    if (!ok) return
     setActing(post.id)
     try {
       await deletePost(post.id)
