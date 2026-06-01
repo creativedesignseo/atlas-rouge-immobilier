@@ -4,6 +4,58 @@
 
 ---
 
+## Intervención — Codex — 2026-06-01 (P0 `translate-property` 401)
+
+### Estado: fix implementado localmente, verificación verde, NO desplegado
+
+El owner reportó que `/.netlify/functions/translate-property` seguía
+devolviendo **401 `Active agent session required`** incluso tras login fresco
+en incógnito, bloqueando el flujo crear inmueble. El handoff específico
+`CODEX_HANDOFF_401.md` descarta sesión zombi, `navigator.locks`, RLS de
+`agents` y el bug `neighborhood_id` slug→uuid.
+
+**Cambio aplicado (local, sin commit/push/deploy):**
+- `netlify/functions/translate-property.js` — `isActiveAgent()` deja de ser
+  booleano opaco. Nuevo `authorizeActiveAgent()`:
+  - exige siempre Bearer + sesión Supabase válida + fila `agents` activa;
+  - mantiene la lectura de `agents` con el token del usuario, por tanto RLS
+    sigue siendo la autoridad;
+  - normaliza/fija el Supabase URL público correcto
+    (`slxlkbrqcjabsfuhlwdf.supabase.co`);
+  - si el anon key de runtime está ausente/desalineado, intenta validar contra
+    Supabase usando el access token del usuario como `apikey` de fallback, sin
+    relajar el control de agente activo;
+  - añade timeouts y `reason` no sensible (`missing_authorization`,
+    `session_rejected`, `agent_lookup_failed`, `agent_not_active`, etc.) para
+    distinguir dónde cae el 401, más logs Netlify sin tokens.
+- `src/services/translation.service.ts` — el cliente ya no llama la función sin
+  `Authorization`: primero intenta `getSession()`, y si eso no entrega token en
+  6s lee el access token de `atlas-rouge-auth-token` en `localStorage`.
+  Además, ante 401 solo redirige a login para fallos reales de sesión
+  (`missing_authorization`, `session_rejected`, `user_missing_id`); si el fallo
+  es de verificación de agente/configuración, muestra el motivo sin borrar la
+  sesión local.
+
+**Verificación local:**
+- `npx tsc -b --noEmit` → verde.
+- `node --check netlify/functions/translate-property.js` → verde.
+- `bash scripts/verify.sh` → verde (lint con 3 warnings preexistentes de Fast
+  Refresh, build OK). El sitemap de build local avisa que no hay key Supabase en
+  env local y genera URLs estáticas, comportamiento esperado/tolerante.
+- Build local confirmado: el chunk `PropertyForm-*` contiene
+  `/.netlify/functions/translate-property`, `Authorization` y los nuevos
+  `reason`.
+
+**Pendiente para cerrar P0 en producción:**
+1. Commit + push a `main` (Netlify auto-deploya; no hacer `netlify deploy` sin
+   OK explícito).
+2. Verificar en producción con un **agente de prueba dedicado**, NUNCA con la
+   cuenta owner `creativedesignseo@gmail.com`.
+3. Si aún hay 401, mirar el `reason` del body y los logs de la función; ya no
+   debería ser una caja negra.
+
+---
+
 ## CIERRE de sesión — Claude Opus 4.8 — 2026-06-01 (noche, 2ª parte)
 
 ### Bug RESUELTO Y DESPLEGADO: sesión zombi → 401 en traducir/subir

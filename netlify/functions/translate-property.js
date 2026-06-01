@@ -6,6 +6,9 @@ const LANG_NAMES = {
   es: 'Spanish',
 }
 
+const DEFAULT_SUPABASE_URL = 'https://slxlkbrqcjabsfuhlwdf.supabase.co'
+const AUTH_TIMEOUT_MS = 5000
+
 // Origins allowed to call this admin-only endpoint. Override with the
 // ALLOWED_ORIGINS env var (comma-separated) if the domain changes.
 const ALLOWED_ORIGINS = (
@@ -55,31 +58,180 @@ function clientIp(event) {
   )
 }
 
-// Authorize the caller: must hold a valid Supabase session AND be an active
-// agent. We use the caller's own token so the `agents` read is governed by the
-// "Agent can read own row" RLS policy. Returns true only for active agents.
-async function isActiveAgent(event, supabaseUrl, anonKey) {
-  const header = event.headers.authorization || event.headers.Authorization || ''
-  const token = header.startsWith('Bearer ') ? header.slice(7) : ''
-  if (!token) return false
-  try {
-    const userRes = await fetch(`${supabaseUrl}/auth/v1/user`, {
-      headers: { apikey: anonKey, Authorization: `Bearer ${token}` },
-    })
-    if (!userRes.ok) return false
-    const user = await userRes.json()
-    if (!user || !user.id) return false
+function normalizeSupabaseUrl(url) {
+  return (url || DEFAULT_SUPABASE_URL).replace(/\/+$/, '')
+}
 
-    const agentRes = await fetch(
-      `${supabaseUrl}/rest/v1/agents?user_id=eq.${encodeURIComponent(user.id)}&is_active=eq.true&select=id`,
-      { headers: { apikey: anonKey, Authorization: `Bearer ${token}` } },
+function decodeJwtPayload(jwt) {
+  try {
+    const [, payload] = String(jwt || '').split('.')
+    if (!payload) return null
+    const padded = payload.replace(/-/g, '+').replace(/_/g, '/').padEnd(
+      Math.ceil(payload.length / 4) * 4,
+      '=',
     )
-    if (!agentRes.ok) return false
-    const rows = await agentRes.json()
-    return Array.isArray(rows) && rows.length > 0
+    return JSON.parse(Buffer.from(padded, 'base64').toString('utf8'))
   } catch {
-    return false
+    return null
   }
+}
+
+function bearerToken(event) {
+  const header = event.headers.authorization || event.headers.Authorization || ''
+  const match = String(header).match(/^Bearer\s+(.+)$/i)
+  return match ? match[1].trim() : ''
+}
+
+function supabaseProjectRef(supabaseUrl) {
+  try {
+    return new URL(supabaseUrl).hostname.split('.')[0]
+  } catch {
+    return ''
+  }
+}
+
+function supabaseUrlForToken(token, configuredUrl) {
+  const configured = normalizeSupabaseUrl(configuredUrl)
+  const payload = decodeJwtPayload(token)
+  if (typeof payload?.iss !== 'string') return configured
+
+  try {
+    const issuer = new URL(payload.iss)
+    const trusted = new URL(DEFAULT_SUPABASE_URL)
+    if (issuer.hostname === trusted.hostname && issuer.pathname.replace(/\/+$/, '') === '/auth/v1') {
+      return DEFAULT_SUPABASE_URL
+    }
+  } catch {
+    // Fall back to configured env/default URL.
+  }
+  return configured
+}
+
+function authApiKeys(token, anonKey, supabaseUrl) {
+  const keys = []
+  const ref = supabaseProjectRef(supabaseUrl)
+  const anonPayload = decodeJwtPayload(anonKey)
+  const anonLooksMismatched = anonPayload?.ref && ref && anonPayload.ref !== ref
+
+  if (anonKey && !anonLooksMismatched) {
+    keys.push({ label: 'anon', value: anonKey })
+  }
+
+  // Supabase's API gateway accepts a project JWT as the apikey. Trying the
+  // caller's own access token as a fallback keeps the active-agent check intact
+  // while surviving a stale/mismatched anon key in the Netlify runtime.
+  if (token) {
+    keys.push({ label: 'session', value: token })
+  }
+
+  if (anonKey && anonLooksMismatched) {
+    keys.push({ label: 'anon_mismatch', value: anonKey })
+  }
+
+  return keys.filter((key, index, arr) => (
+    key.value && arr.findIndex((candidate) => candidate.value === key.value) === index
+  ))
+}
+
+async function fetchJsonWithTimeout(url, headers) {
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), AUTH_TIMEOUT_MS)
+  try {
+    const response = await fetch(url, { headers, signal: controller.signal })
+    const text = await response.text()
+    let body = null
+    try {
+      body = text ? JSON.parse(text) : null
+    } catch {
+      body = { parseError: true }
+    }
+    return { response, body }
+  } finally {
+    clearTimeout(timeout)
+  }
+}
+
+async function firstSupabaseOk(url, token, apiKeys) {
+  const attempts = []
+  for (const apiKey of apiKeys) {
+    try {
+      const { response, body } = await fetchJsonWithTimeout(url, {
+        apikey: apiKey.value,
+        Authorization: `Bearer ${token}`,
+      })
+      if (response.ok) return { ok: true, body, apiKey: apiKey.label }
+      attempts.push({
+        apiKey: apiKey.label,
+        status: response.status,
+        code: body?.code || body?.error_code || body?.error || null,
+      })
+    } catch (error) {
+      attempts.push({
+        apiKey: apiKey.label,
+        status: 'fetch_error',
+        code: error instanceof Error ? error.name : 'unknown',
+      })
+    }
+  }
+  return { ok: false, attempts }
+}
+
+function logAuthDenied(result, supabaseUrl) {
+  console.warn('[translate-property] active-agent auth denied', {
+    reason: result.reason,
+    supabaseHost: (() => {
+      try { return new URL(supabaseUrl).hostname } catch { return 'invalid-url' }
+    })(),
+    userAttempts: result.userAttempts,
+    agentAttempts: result.agentAttempts,
+  })
+}
+
+// Authorize the caller: must hold a valid Supabase session AND be an active
+// agent. The `agents` read still runs with the caller's own token, so RLS is the
+// authority. Return a reason code instead of collapsing all failures to false.
+async function authorizeActiveAgent(event, configuredSupabaseUrl, anonKey) {
+  const token = bearerToken(event)
+  if (!token) return { ok: false, reason: 'missing_authorization' }
+
+  const supabaseUrl = supabaseUrlForToken(token, configuredSupabaseUrl)
+  const apiKeys = authApiKeys(token, anonKey, supabaseUrl)
+  if (apiKeys.length === 0) return { ok: false, reason: 'missing_api_key' }
+
+  const userUrl = `${supabaseUrl}/auth/v1/user`
+  const userResult = await firstSupabaseOk(userUrl, token, apiKeys)
+  if (!userResult.ok) {
+    return {
+      ok: false,
+      reason: 'session_rejected',
+      supabaseUrl,
+      userAttempts: userResult.attempts,
+    }
+  }
+
+  const user = userResult.body
+  if (!user?.id) {
+    return { ok: false, reason: 'user_missing_id', supabaseUrl }
+  }
+
+  const agentUrl =
+    `${supabaseUrl}/rest/v1/agents?user_id=eq.${encodeURIComponent(user.id)}&is_active=eq.true&select=id`
+  const agentResult = await firstSupabaseOk(agentUrl, token, apiKeys)
+  if (!agentResult.ok) {
+    return {
+      ok: false,
+      reason: 'agent_lookup_failed',
+      supabaseUrl,
+      agentAttempts: agentResult.attempts,
+    }
+  }
+
+  const rows = agentResult.body
+  if (!Array.isArray(rows) || rows.length === 0) {
+    return { ok: false, reason: 'agent_not_active', supabaseUrl }
+  }
+
+  return { ok: true, supabaseUrl }
 }
 
 function makeJson(corsHeaders) {
@@ -124,13 +276,18 @@ exports.handler = async (event) => {
 
   // Admin-only endpoint: require a valid Supabase session. This stops anonymous
   // callers from burning the paid DeepSeek quota.
-  const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL
+  const supabaseUrl = normalizeSupabaseUrl(process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL)
   const anonKey = process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY
-  if (!supabaseUrl || !anonKey) {
-    return json(500, { error: 'Auth is not configured on the server' })
-  }
-  if (!(await isActiveAgent(event, supabaseUrl, anonKey))) {
-    return json(401, { error: 'Active agent session required' })
+  const auth = await authorizeActiveAgent(event, supabaseUrl, anonKey)
+  if (!auth.ok) {
+    if (auth.reason !== 'missing_authorization') {
+      logAuthDenied(auth, auth.supabaseUrl || supabaseUrl)
+    }
+    const status = auth.reason === 'missing_api_key' ? 500 : 401
+    return json(status, {
+      error: status === 500 ? 'Auth is not configured on the server' : 'Active agent session required',
+      reason: auth.reason,
+    })
   }
 
   let payload

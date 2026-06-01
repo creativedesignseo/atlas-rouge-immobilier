@@ -32,6 +32,79 @@ export interface TranslationResult {
   es: TranslatedPropertyContent
 }
 
+const AUTH_STORAGE_KEY = 'atlas-rouge-auth-token'
+
+interface TranslationApiError {
+  error?: string
+  reason?: string
+}
+
+function storedAccessToken(): string | null {
+  if (typeof window === 'undefined') return null
+
+  try {
+    const raw = window.localStorage.getItem(AUTH_STORAGE_KEY)
+    if (!raw) return null
+    const parsed: unknown = JSON.parse(raw)
+
+    if (
+      parsed &&
+      typeof parsed === 'object' &&
+      'access_token' in parsed &&
+      typeof (parsed as { access_token?: unknown }).access_token === 'string'
+    ) {
+      return (parsed as { access_token: string }).access_token
+    }
+
+    if (
+      parsed &&
+      typeof parsed === 'object' &&
+      'currentSession' in parsed &&
+      (parsed as { currentSession?: unknown }).currentSession &&
+      typeof (parsed as { currentSession?: { access_token?: unknown } }).currentSession?.access_token === 'string'
+    ) {
+      return (parsed as { currentSession: { access_token: string } }).currentSession.access_token
+    }
+  } catch {
+    return null
+  }
+
+  return null
+}
+
+async function currentAccessToken(): Promise<string | null> {
+  const session = await Promise.race([
+    supabase.auth.getSession().then((r) => r.data.session).catch(() => null),
+    new Promise<null>((resolve) => setTimeout(() => resolve(null), 6000)),
+  ])
+  return session?.access_token || storedAccessToken()
+}
+
+async function clearLocalSessionAndRedirect() {
+  try { await supabase.auth.signOut({ scope: 'local' }) } catch { /* ignore */ }
+  if (typeof window !== 'undefined') {
+    try { window.localStorage.removeItem(AUTH_STORAGE_KEY) } catch { /* ignore */ }
+    window.location.href = '/admin/login'
+  }
+}
+
+function shouldRedirectToLogin(reason?: string): boolean {
+  return !reason || ['missing_authorization', 'session_rejected', 'user_missing_id'].includes(reason)
+}
+
+function authErrorMessage(error: TranslationApiError | null): string {
+  switch (error?.reason) {
+    case 'agent_not_active':
+      return "Votre compte n'est pas un agent actif. Contactez l'administrateur du site."
+    case 'agent_lookup_failed':
+      return 'La session est valide, mais la fiche agent n\'a pas pu être vérifiée. Réessayez dans un instant.'
+    case 'missing_api_key':
+      return "Le service de traduction n'est pas correctement configuré côté serveur."
+    default:
+      return 'Tu sesión caducó. Te llevamos a iniciar sesión de nuevo.'
+  }
+}
+
 export async function autoTranslateProperty(
   content: TranslatableProperty,
   sourceLang: SupportedLanguage
@@ -40,14 +113,14 @@ export async function autoTranslateProperty(
   // can reject anonymous callers (it validates the Bearer token server-side).
   // getSession() can hang on a stuck Navigator Lock (e.g. multiple tabs); race
   // it against a short timeout so a token glitch never freezes the UI forever.
-  const session = await Promise.race([
-    supabase.auth.getSession().then((r) => r.data.session),
-    new Promise<null>((resolve) => setTimeout(() => resolve(null), 6000)),
-  ])
-  const headers: Record<string, string> = { 'Content-Type': 'application/json' }
-  if (session?.access_token) {
-    headers.Authorization = `Bearer ${session.access_token}`
+  const accessToken = await currentAccessToken()
+  if (!accessToken) {
+    await clearLocalSessionAndRedirect()
+    throw new Error('Tu sesión caducó. Te llevamos a iniciar sesión de nuevo.')
   }
+
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+  headers.Authorization = `Bearer ${accessToken}`
 
   // Abort the request if it hangs (blocked network, etc.) so the caller gets a
   // clear error instead of an endless "Adaptando…" spinner.
@@ -70,16 +143,14 @@ export async function autoTranslateProperty(
     clearTimeout(timeout)
   }
 
-  // 401 = the session is invalid/revoked server-side (the JWT may still look
-  // valid locally). Self-heal: clear the dead session and send the user to log
-  // in again, instead of leaving them stuck on an error they can't fix.
+  // 401 can mean a dead session, but it can also mean the function could not
+  // verify the active-agent row. Only bounce to login for true session failures.
   if (response.status === 401) {
-    try { await supabase.auth.signOut({ scope: 'local' }) } catch { /* ignore */ }
-    if (typeof window !== 'undefined') {
-      try { window.localStorage.clear() } catch { /* ignore */ }
-      window.location.href = '/admin/login'
+    const error = await response.json().catch(() => null) as TranslationApiError | null
+    if (shouldRedirectToLogin(error?.reason)) {
+      await clearLocalSessionAndRedirect()
     }
-    throw new Error('Tu sesión caducó. Te llevamos a iniciar sesión de nuevo.')
+    throw new Error(authErrorMessage(error))
   }
 
   if (!response.ok) {

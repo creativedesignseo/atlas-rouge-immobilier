@@ -4,7 +4,37 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-06-01 (fixes: crear inmueble HTTP 400 + sesión zombi 401 — DESPLEGADOS)
+**Last updated:** 2026-06-01 (Codex: P0 translate-property 401 fix local, verify green, pending deploy)
+
+---
+
+## `translate-property` 401 con sesión admin fresca — 2026-06-01 🟡 FIX LOCAL, PENDIENTE DEPLOY
+
+Síntoma actual reportado: `/.netlify/functions/translate-property` devuelve
+401 `Active agent session required` incluso con login fresco en incógnito, y
+bloquea crear inmuebles. Contexto completo en `CODEX_HANDOFF_401.md`.
+
+Fix local implementado por Codex:
+- `netlify/functions/translate-property.js`: auth de agente activo ya no es una
+  caja negra; devuelve `reason`, loguea intentos sin tokens, usa timeout y
+  mantiene sesión válida + fila `agents` activa vía RLS. Añadido fallback seguro
+  para validar con el access token como `apikey` si el anon key runtime está
+  desalineado.
+- `src/services/translation.service.ts`: nunca llama la función sin Bearer
+  (fallback a `localStorage` si `getSession()` no responde) y solo redirige a
+  login cuando el 401 indica sesión muerta, no por fallos de verificación de
+  agente/config.
+
+Verificación: `npx tsc -b --noEmit` verde; `node --check
+netlify/functions/translate-property.js` verde; `bash scripts/verify.sh`
+verde (3 warnings Fast Refresh preexistentes, build OK).
+
+Pendiente:
+- [ ] Commit + push a `main` para que Netlify auto-deploye (NO `netlify deploy`
+      manual sin OK explícito).
+- [ ] Verificar producción con **agente de prueba dedicado**, nunca con
+      `creativedesignseo@gmail.com`.
+- [ ] Si persiste 401, revisar `reason` del body + logs Netlify de la función.
 
 ---
 
