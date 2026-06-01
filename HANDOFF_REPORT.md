@@ -47,6 +47,21 @@ Proyecto `slxlkbrqcjabsfuhlwdf` pertenece a la cuenta
 **adspublioficial@gmail.com**. NO confundir con `vfpkeklmnhtsqsdoeayi`
 (= Menucast, otro proyecto/cuenta).
 
+### Optimización de imágenes en la subida (2026-06-01, commit `aa2e566b`)
+
+Bug reportado: subir una foto **AVIF** daba HTTP 400 (bucket solo acepta
+JPG/PNG/WebP) y la ficha no guardaba (exige ≥1 imagen); además el spinner
+"Subiendo…" se quedaba colgado. **Fix + best practice:** `ImageUploader`
+ahora comprime cada imagen en el navegador con `browser-image-compression`
+→ **WebP**, lado mayor ≤ **2560px** (mantiene proporción, no agranda),
+calidad ~0.82, objetivo <1MB. Acepta cualquier `image/*` hasta 25MB de
+entrada. `uploadImage()` persiste `.webp` con su content-type. Resuelve el
+AVIF (siempre subimos WebP), arregla el spinner (try/catch + finally) y baja
+~85% el peso → menos storage y menos egress. Serving on-the-fly de Supabase
+intacto (transformación **habilitada**, verificado). Decisión: **R2 como
+fase 2** (zero egress) cuando el volumen lo justifique — plan en
+`~/.claude/plans/` (pipeline de imágenes). Ver [[project_property_translation]].
+
 ### Pendiente / próximo
 
 - Verificar deploy en vivo (Netlify) y env vars de Functions (arriba).
