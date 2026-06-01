@@ -50,10 +50,15 @@ Proyecto `slxlkbrqcjabsfuhlwdf` pertenece a la cuenta
 ### Pendiente / próximo
 
 - Verificar deploy en vivo (Netlify) y env vars de Functions (arriba).
-- Bug del panel de Traducciones del admin (sourceLang): el idioma fuente
-  se deriva de la UI del admin en vez del idioma real del contenido (FR).
-  Diagnóstico hecho, fix pendiente de decisión del owner (¿fuente siempre
-  FR o selector explícito?). Ver `PropertyForm.tsx:106`.
+- ✅ **RESUELTO** — Bug del panel de Traducciones del admin (sourceLang).
+  Causa: el botón "Traducir" leía los campos BASE `title`/`description`
+  (sección Información básica), desincronizados del idioma fuente; y el
+  `sourceLang` se derivaba de la UI del admin. Fix (commit `a9878636`):
+  el admin **marca explícitamente** la pestaña fuente ("Marcar X como
+  idioma de origen"), `buildSourceContent` lee `title_<sourceLang>` (con
+  fallback al base), traduce FROM esa lengua a las otras dos y nunca
+  sobrescribe la fuente. Para inmuebles con texto legacy mezclado: marcar
+  fuente, corregir esa pestaña, re-traducir.
 - P0-2/P0-3 legales (Privacy Policy + Mentions Légales): owner + abogado.
 
 ---
