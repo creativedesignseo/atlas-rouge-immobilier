@@ -91,12 +91,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [checkAuth, loadAgentData])
 
   const handleSignOut = useCallback(async () => {
-    await authSignOut()
+    // Clear local state FIRST so the UI logs out instantly and the user is never
+    // trapped if the network call hangs. ProtectedRoute reacts to user=null and
+    // redirects to login. The actual sign-out runs after and can't block the UI.
     setUser(null)
     setAgent(null)
     // Clear the SWR cache so the next user (or anonymous browser) doesn't
     // see admin/private data left in memory from the previous session.
     clearQueryCache()
+    await authSignOut().catch(() => { /* local state already cleared */ })
   }, [])
 
   return (

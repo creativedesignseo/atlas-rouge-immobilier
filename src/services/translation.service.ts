@@ -38,17 +38,37 @@ export async function autoTranslateProperty(
 ): Promise<Partial<Record<SupportedLanguage, TranslatedPropertyContent>>> {
   // Admin-only endpoint — attach the current Supabase session so the function
   // can reject anonymous callers (it validates the Bearer token server-side).
-  const { data: { session } } = await supabase.auth.getSession()
+  // getSession() can hang on a stuck Navigator Lock (e.g. multiple tabs); race
+  // it against a short timeout so a token glitch never freezes the UI forever.
+  const session = await Promise.race([
+    supabase.auth.getSession().then((r) => r.data.session),
+    new Promise<null>((resolve) => setTimeout(() => resolve(null), 6000)),
+  ])
   const headers: Record<string, string> = { 'Content-Type': 'application/json' }
   if (session?.access_token) {
     headers.Authorization = `Bearer ${session.access_token}`
   }
 
-  const response = await fetch('/.netlify/functions/translate-property', {
-    method: 'POST',
-    headers,
-    body: JSON.stringify({ sourceLang, content }),
-  })
+  // Abort the request if it hangs (blocked network, etc.) so the caller gets a
+  // clear error instead of an endless "Adaptando…" spinner.
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 45000)
+  let response: Response
+  try {
+    response = await fetch('/.netlify/functions/translate-property', {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ sourceLang, content }),
+      signal: controller.signal,
+    })
+  } catch (err) {
+    if (err instanceof DOMException && err.name === 'AbortError') {
+      throw new Error('La traducción tardó demasiado (posible problema de conexión). Reintenta.')
+    }
+    throw new Error('No se pudo conectar con el servicio de traducción. Revisa tu conexión.')
+  } finally {
+    clearTimeout(timeout)
+  }
 
   if (!response.ok) {
     const error = await response.json().catch(() => null)

@@ -95,7 +95,11 @@ export async function signOut(): Promise<{ error: AuthError | null }> {
   if (!isSupabaseConfigured) {
     return { error: { message: 'Supabase not configured', name: 'ConfigError' } as AuthError }
   }
-  const { error } = await supabase.auth.signOut()
+  // scope: 'local' clears the session on THIS device without a network round-trip
+  // to revoke it server-side. This keeps "Sign out" instant and reliable even on
+  // a flaky/blocked connection (the global call could hang forever), and avoids
+  // revoking the user's sessions on other devices.
+  const { error } = await supabase.auth.signOut({ scope: 'local' })
   return { error }
 }
 
