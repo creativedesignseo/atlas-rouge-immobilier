@@ -115,6 +115,39 @@ export async function getUser(): Promise<User | null> {
   return data.user
 }
 
+/**
+ * Validate the locally-stored session against the server. A JWT persisted in
+ * localStorage can outlive its server-side session — when a prior *global*
+ * sign-out (or an admin revocation) deleted the session, the client still holds
+ * the token. `getSession()` only reads localStorage, so the UI looks logged in,
+ * yet every authenticated call (Storage upload, the translate function) returns
+ * 401: a "zombie session". `getUser()` hits `/auth/v1/user`, so it actually
+ * asks the server whether the token is still valid.
+ *
+ * Returns `{ dead: true }` only when the server is reachable AND rejects the
+ * token — in that case we purge the dead session locally so the app can show a
+ * clean login. A timeout or network blip returns `{ dead: false }` so we never
+ * log a user out over a flaky connection.
+ */
+export async function validateSession(): Promise<{ dead: boolean }> {
+  if (!isSupabaseConfigured) return { dead: false }
+  try {
+    const { data, error } = await withTimeout(
+      Promise.resolve(supabase.auth.getUser()),
+      8000,
+    )
+    if (error || !data?.user) {
+      await supabase.auth.signOut({ scope: 'local' }).catch(() => {})
+      return { dead: true }
+    }
+    return { dead: false }
+  } catch {
+    // Timeout / network error — treat the session as alive (optimistic) so a
+    // transient connectivity problem doesn't kick the user out.
+    return { dead: false }
+  }
+}
+
 export async function getAgent(userId: string): Promise<Agent | null> {
   if (!isSupabaseConfigured) return null
 

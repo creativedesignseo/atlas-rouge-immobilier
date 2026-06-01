@@ -4,7 +4,23 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-06-01 (fix: crear inmueble daba HTTP 400 — neighborhood_id slug→uuid — DESPLEGADO)
+**Last updated:** 2026-06-01 (fixes: crear inmueble HTTP 400 + sesión zombi 401 — DESPLEGADOS)
+
+---
+
+## Sesión zombi → 401 en traducir/subir — 2026-06-01 ✅ RESUELTO Y DESPLEGADO
+
+El navegador guardaba un token en localStorage de una sesión ya borrada en
+el servidor (revocada por un signOut global previo). `checkAuth` solo leía
+localStorage → UI "logueada" pero 401 en cada llamada autenticada. Fix:
+`validateSession()` pregunta al servidor (`getUser()`) al cargar y purga el
+token zombi → login limpio. Verificado vía Management API (auth.sessions
+vacío para el user). Desbloqueo del owner: cerrar sesión + entrar de nuevo.
+Detalle: `HANDOFF_REPORT.md` (cierre 2026-06-01 noche 2ª parte).
+
+⚠️ **REGLA:** verificar SIEMPRE con un AGENTE DE PRUEBA dedicado, NUNCA con
+la cuenta del owner (un signOut global le deja sesión zombi). Pendiente:
+crear ese agente de prueba.
 
 ---
 

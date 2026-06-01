@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react'
 import type { User } from '@supabase/supabase-js'
-import { getSession, getAgent, onAuthStateChange, signOut as authSignOut } from '@/services/auth.service'
+import { getSession, getAgent, onAuthStateChange, signOut as authSignOut, validateSession } from '@/services/auth.service'
 import { clearAll as clearQueryCache } from '@/lib/queryCache'
 import type { AgentRow } from '@/types/supabase'
 
@@ -48,8 +48,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const session = await getSession()
       if (session?.user) {
+        // Optimistically trust the cached session so the admin renders fast…
         setUser(session.user)
         await loadAgentData(session.user)
+        // …then validate it against the server. A token in localStorage can be
+        // a "zombie" (server-side session revoked by a prior global sign-out):
+        // it looks logged in but every authenticated call returns 401 and the
+        // spinners hang. If the server rejects it, purge and bounce to login.
+        const { dead } = await validateSession()
+        if (dead) {
+          setUser(null)
+          setAgent(null)
+        }
       } else {
         setUser(null)
         setAgent(null)

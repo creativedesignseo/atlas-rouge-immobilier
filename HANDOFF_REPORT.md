@@ -4,6 +4,47 @@
 
 ---
 
+## CIERRE de sesión — Claude Opus 4.8 — 2026-06-01 (noche, 2ª parte)
+
+### Bug RESUELTO Y DESPLEGADO: sesión zombi → 401 en traducir/subir
+
+Tras desplegar el fix del 400, el owner volvió a quedar bloqueado:
+`translate-property` devolvía **401** y "Subiendo…"/"Adaptando…" colgados.
+
+**Diagnóstico (verificado vía Management API, SIN tocar la sesión del
+owner):** `auth.sessions` y `auth.refresh_tokens` estaban **VACÍOS** para
+el user del owner (`190dcf0c-...`, creativedesignseo@gmail.com, agente
+admin activo). Es decir: el navegador tenía un token en `localStorage` de
+una sesión que el servidor ya había borrado (revocada por un `signOut`
+**global** de una sesión de prueba anterior — el propio handoff anota que
+mis verificaciones con la cuenta del owner causaron esto). `checkAuth`
+validaba con `getSession()` (solo lee localStorage, NO pregunta al
+servidor) → UI "logueada" pero cada llamada autenticada → 401. **Sesión
+zombi.** NO era `navigator.locks` (ese lock ya está desactivado en
+`src/lib/supabase.ts:21`).
+
+**Desbloqueo del owner:** Cerrar sesión + volver a entrar (mintea sesión
+nueva server-side). El fix de código evita que el zombi vuelva a ocurrir
+silenciosamente.
+
+**Fix de código** (commit en `main` → Netlify auto-deploy):
+- `src/services/auth.service.ts` — nueva `validateSession()`: llama a
+  `getUser()` (`/auth/v1/user`, server-side) con timeout 8s. Si el servidor
+  rechaza el token → `signOut({scope:'local'})` + `{dead:true}`. Timeout/red
+  → `{dead:false}` (no echa al usuario por un blip).
+- `src/hooks/useAuth.tsx` — `checkAuth` valida la sesión contra el servidor
+  tras cargar; si `dead`, purga y bota a login limpio.
+
+**REGLA reforzada:** verificar SIEMPRE con una **cuenta de agente de
+prueba** dedicada, NUNCA con la del owner. Un `signOut` global de la cuenta
+del owner le deja una sesión zombi. (Pendiente: crear ese agente de prueba.)
+
+**Deuda menor (no bloquea):** la subida de imágenes no auto-recupera en un
+401 que ocurra con el formulario ya abierto >1h; el fix de carga cubre el
+caso reportado (zombi al reabrir). Añadir self-heal en el upload si reaparece.
+
+---
+
 ## CIERRE de sesión — Claude Opus 4.8 — 2026-06-01 (noche)
 
 ### Bug RESUELTO Y DESPLEGADO: crear inmueble daba HTTP 400
