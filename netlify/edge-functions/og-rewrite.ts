@@ -35,6 +35,74 @@ const PROPERTY_SEGMENTS = new Set([
   'propriete', // fr alt
 ])
 
+// ----------------------------------------------------------------------------
+// Localized route map — kept in sync with src/lib/routes.ts. The edge runtime
+// is Deno and cannot import the app's `@/` aliased module, so the slug table is
+// duplicated here. If you change ROUTES in src/lib/routes.ts, mirror it here
+// (and in scripts/generate-sitemap.mjs).
+// ----------------------------------------------------------------------------
+const SUPPORTED_LANGS = ['fr', 'es', 'en'] as const
+type Lang = (typeof SUPPORTED_LANGS)[number]
+
+const ROUTES: Record<string, Record<Lang, string>> = {
+  buy: { fr: 'acheter', es: 'comprar', en: 'buy' },
+  rent: { fr: 'louer', es: 'alquilar', en: 'rent' },
+  sell: { fr: 'vendre', es: 'vender', en: 'sell' },
+  propertyDetail: { fr: 'property', es: 'propiedad', en: 'property' },
+  buyerGuide: { fr: 'guide-achat-maroc', es: 'guia-compra-marruecos', en: 'buying-guide-morocco' },
+  blog: { fr: 'conseils-immobiliers', es: 'consejos-inmobiliarios', en: 'real-estate-tips' },
+  about: { fr: 'a-propos', es: 'sobre-nosotros', en: 'about' },
+  contact: { fr: 'contact', es: 'contacto', en: 'contact' },
+  favorites: { fr: 'favoris', es: 'favoritos', en: 'favorites' },
+  valuation: { fr: 'estimation', es: 'valoracion', en: 'valuation' },
+  propertyManagement: { fr: 'gestion-locative', es: 'gestion-alquileres', en: 'property-management' },
+  valuationStart: { fr: 'estimer', es: 'valorar', en: 'value' },
+}
+
+const SLUG_TO_KEY: Record<string, string> = {}
+for (const [key, langMap] of Object.entries(ROUTES)) {
+  for (const slug of Object.values(langMap)) SLUG_TO_KEY[slug] = key
+}
+
+// Re-translate a pathname into another language. Known slugs are swapped;
+// unknown segments (property/post slugs) are preserved — correct, since a
+// resource keeps the same slug across languages.
+function translatePath(pathname: string, targetLang: Lang): string {
+  const segments = pathname.split('/').filter(Boolean)
+  if (segments.length === 0) return `/${targetLang}/`
+  if (SUPPORTED_LANGS.includes(segments[0] as Lang)) segments.shift()
+  const translated = segments.map((seg) => {
+    const key = SLUG_TO_KEY[seg]
+    return key ? ROUTES[key][targetLang] : seg
+  })
+  return translated.length ? `/${targetLang}/${translated.join('/')}` : `/${targetLang}/`
+}
+
+function buildHreflangBlock(pathname: string, origin: string): string {
+  const links = SUPPORTED_LANGS.map(
+    (lang) =>
+      `<link rel="alternate" hreflang="${lang}" href="${origin}${translatePath(pathname, lang)}" />`,
+  )
+  links.push(
+    `<link rel="alternate" hreflang="x-default" href="${origin}${translatePath(pathname, 'fr')}" />`,
+  )
+  return links.join('\n    ')
+}
+
+// Rewrite the canonical link to the current URL and replace the static hreflang
+// block (from index.html) with per-route alternates. Runs on every localized
+// page, independent of whether there's dynamic OG data.
+function rewriteCanonicalAndHreflang(html: string, canonicalUrl: string, hreflangBlock: string): string {
+  // Drop the existing hreflang links (4 static ones from index.html).
+  let out = html.replace(/\s*<link rel="alternate" hreflang="[^"]*" href="[^"]*"\s*\/?>/g, '')
+  // Replace canonical and append the fresh hreflang block right after it.
+  out = out.replace(
+    /<link rel="canonical" href="[^"]*"\s*\/?>/,
+    `<link rel="canonical" href="${canonicalUrl}" />\n    ${hreflangBlock}`,
+  )
+  return out
+}
+
 interface OgData {
   title: string
   description: string
@@ -228,9 +296,8 @@ function rewriteMetaTags(html: string, og: OgData, canonicalUrl: string, lang: s
 export default async function handler(request: Request, context: Context) {
   const url = new URL(request.url)
   const pathname = url.pathname
-
-  // Marcar siempre que la función corrió (debug)
-  const debug = `og-rewrite:run path=${pathname}`
+  const lang = pathname.split('/')[1] || 'fr'
+  const isLangPath = SUPPORTED_LANGS.includes(lang as Lang)
 
   // Pedir el HTML del origen primero
   const response = await context.next()
@@ -239,36 +306,37 @@ export default async function handler(request: Request, context: Context) {
     return response
   }
 
-  // Resolver datos OG desde Supabase
-  const og = await resolveOgData(pathname, url.origin)
-  if (!og) {
-    const r = new Response(await response.text(), { status: response.status, headers: response.headers })
-    r.headers.set('x-og-rewrite', `${debug} no-match`)
-    return r
+  const canonicalUrl = `${url.origin}${pathname}`
+  let html = await response.text()
+
+  // 1. SIEMPRE (para cualquier ruta con prefijo de idioma): canonical de la
+  //    ruta actual + hreflang por ruta. Esto arregla el P0-4 en TODAS las
+  //    páginas, no solo blog/propiedades.
+  if (isLangPath) {
+    html = rewriteCanonicalAndHreflang(html, canonicalUrl, buildHreflangBlock(pathname, url.origin))
   }
 
-  const html = await response.text()
-  const rewritten = rewriteMetaTags(html, og, url.toString(), pathname.split('/')[1] || 'fr')
+  // 2. CONDICIONAL: title/description/OG/Twitter para artículos y propiedades
+  //    (requiere datos de Supabase). Las páginas estáticas conservan los OG
+  //    genéricos de index.html (title/desc por-página = P1).
+  const og = await resolveOgData(pathname, url.origin)
+  if (og) {
+    html = rewriteMetaTags(html, og, canonicalUrl, lang)
+  }
 
-  const out = new Response(rewritten, {
-    status: response.status,
-    headers: response.headers,
-  })
-  out.headers.set('x-og-rewrite', `${debug} hit`)
-  // Forzar no-cache para que el CDN no sirva HTML viejo de antes del rewrite
-  out.headers.set('cache-control', 'public, max-age=0, must-revalidate')
+  const out = new Response(html, { status: response.status, headers: response.headers })
+  out.headers.set('x-og-rewrite', og ? 'dynamic' : 'static')
+  // Solo forzar no-cache cuando inyectamos datos dinámicos de Supabase; las
+  // páginas estáticas pueden cachearse con normalidad.
+  if (og) {
+    out.headers.set('cache-control', 'public, max-age=0, must-revalidate')
+  }
   return out
 }
 
 export const config: Config = {
-  // Aplica a rutas de blog (3 idiomas) y propiedades (3 variantes)
-  path: [
-    '/fr/conseils-immobiliers/*',
-    '/es/consejos-inmobiliarios/*',
-    '/en/real-estate-tips/*',
-    '/fr/property/*',
-    '/fr/propriete/*',
-    '/es/propiedad/*',
-    '/en/property/*',
-  ],
+  // Corre en todas las páginas con prefijo de idioma para reescribir
+  // canonical + hreflang por ruta. El fetch a Supabase solo ocurre en rutas
+  // de blog/propiedad (resolveOgData devuelve null para el resto, sin red).
+  path: ['/fr/*', '/es/*', '/en/*'],
 }
