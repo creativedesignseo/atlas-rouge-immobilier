@@ -1,7 +1,15 @@
 # CODEX HANDOFF — Enigma: `translate-property` devuelve 401 en sesión válida
 
-**Fecha:** 2026-06-01 · **Estado:** SIN RESOLVER · **Prioridad:** P0 (bloquea
-crear inmuebles en el admin).
+> ✅ **RESUELTO (2026-06-01) por Codex — commit `d0bc223c`.** Documento
+> histórico; se conserva por el razonamiento. **Causa raíz:** el
+> `VITE_SUPABASE_ANON_KEY` que la función usaba como `apikey` no casaba con el
+> proyecto del JWT, así que `/auth/v1/user` rechazaba tokens válidos (era la
+> hipótesis nº2 de abajo). Fix: derivar la URL del proyecto desde el `iss` del
+> JWT, probar varios `apikey` candidatos (incluido el access token del usuario)
+> y devolver `reason` codes. Ver `HANDOFF_REPORT.md` (cierre post-Codex).
+
+**Fecha:** 2026-06-01 · **Estado:** ✅ RESUELTO · **Prioridad:** P0 (era;
+bloqueaba crear inmuebles en el admin).
 
 Lee también, en este orden: `AGENTS.md`, `CLAUDE.md`, `HANDOFF_REPORT.md`
 (arriba del todo está el log más reciente), `tasks/current.md`.

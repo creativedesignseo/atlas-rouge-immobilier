@@ -4,73 +4,32 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-06-01 (Codex: admin properties list hang hotfix local, verify green)
+**Last updated:** 2026-06-01 (CIERRE post-Codex: cadena crear-inmueble RESUELTA y desplegada)
 
 ---
 
-## Listado `/admin/properties` colgado tras crear — 2026-06-01 🟡 FIX LISTO, PENDIENTE DEPLOY
+## Crear inmueble desde el admin — 2026-06-01 ✅ RESUELTO Y DESPLEGADO (cadena completa)
 
-Tras `5110413c`, el owner confirmó que la propiedad guardó y redirigió a
-`/admin/properties`, pero el listado quedó con spinner. La consola solo muestra
-ruido de CSP por `ipapi.co`, no relacionado con admin.
+Toda la cadena de bugs que bloqueaba crear inmuebles está cerrada y en `main`
+(= desplegada). `HEAD == origin/main == 92fe90e1`, `verify.sh` verde, función
+en prod confirmada nueva (`reason: "missing_authorization"` sin token).
 
-Fix local:
-- `fetchAdminProperties()` ahora carga por REST directo a PostgREST con Bearer
-  token, `apikey`, `order=created_at.desc`, filtro `agent_id` para no-admins y
-  timeout de 30s.
-- `AdminProperties` muestra el mensaje real si falla la carga.
+| # | Bug | Commit | Por |
+|---|-----|--------|-----|
+| 1 | 400 al guardar (`neighborhood_id` slug→uuid) | `701f8821` | Claude |
+| 2 | Sesión zombi → 401 (validar contra servidor) | `d0e6e695` | Claude |
+| 3 | **`translate-property` 401** (anon key runtime desalineado con el proyecto del JWT) | `d0bc223c` | Codex |
+| 4 | Imágenes colgadas → REST directo Storage | `d521c7d6` | Codex |
+| 5 | Guardar colgado → REST directo PostgREST | `5110413c` | Codex |
+| 6 | Listado colgado → REST directo PostgREST | `92fe90e1` | Codex |
 
-Verificación: `npx tsc -b --noEmit` y `bash scripts/verify.sh` verdes.
+Detalle, causa raíz y lecciones: `HANDOFF_REPORT.md` (cierre 2026-06-01
+post-Codex) + entradas de Codex. `CODEX_HANDOFF_401.md` queda como histórico.
 
-Pendiente:
-- [ ] Commit + push a `main` para auto-deploy Netlify.
-- [ ] Owner recarga `/admin/properties`.
-
----
-
-## Crear propiedad colgado en spinner — 2026-06-01 🟡 FIX LISTO, PENDIENTE DEPLOY
-
-Tras desplegar el fix de imágenes, el owner confirmó: traducción OK, foto OK,
-pero el botón **Crear propiedad** queda girando y no crea/guarda/navega.
-
-Fix local:
-- `src/services/admin/propertyAdmin.service.ts` convierte `createProperty()` y
-  `updateProperty()` a REST directo contra Supabase PostgREST con Bearer token,
-  `apikey`, JSON, `Prefer: return=representation` y timeout de 45s.
-- Si la sesión murió, redirige a login; si PostgREST/RLS/validación rechaza, el
-  toast muestra el mensaje real en vez de dejar spinner infinito.
-- Se mantienen las invalidaciones de caché tras guardar.
-
-Verificación: `npx tsc -b --noEmit` y `bash scripts/verify.sh` verdes.
-
-Pendiente:
-- [ ] Commit + push a `main` para auto-deploy Netlify.
-- [ ] Owner reintenta crear el inmueble.
-
----
-
-## Subida de imágenes colgada en "Subiendo..." — 2026-06-01 🟡 FIX LISTO, PENDIENTE REINTENTO OWNER
-
-Tras desplegar `d0bc223c`, el owner confirmó que la traducción IA funciona,
-pero la imagen queda en spinner "Subiendo..." y no se añade al formulario.
-
-Fix local:
-- Nuevo `src/lib/authSession.ts` para obtener access token con timeout +
-  fallback a `localStorage`.
-- `src/services/admin/propertyAdmin.service.ts` sube imágenes con `fetch`
-  directo a Supabase Storage (`Authorization: Bearer`, `apikey`,
-  `x-upsert:false`, `FormData`, timeout 45s) en vez de
-  `supabase.storage.upload()`, que podía quedarse colgado esperando auth interna.
-- `src/components/admin/ImageUploader.tsx` muestra el mensaje real del error
-  si Storage responde con RLS/config en vez de colgar.
-- `src/services/translation.service.ts` reutiliza el helper compartido.
-
-Verificación: `node --check netlify/functions/translate-property.js`,
-`npx tsc -b --noEmit` y `bash scripts/verify.sh` verdes.
-
-Pendiente:
-- [ ] Publicar en `main` / confirmar auto-deploy Netlify.
-- [ ] Owner reintenta subir imagen tras deploy.
+Pendiente menor (no bloquea):
+- [ ] Owner confirma el flujo real end-to-end tras el deploy.
+- [ ] Crear **agente de prueba** dedicado (verificar sin tocar la cuenta del owner).
+- [ ] CSP: `ipapi.co/json` bloqueado (geo-lookup) — añadir a `connect-src` o quitar. Cosmético.
 
 ---
 

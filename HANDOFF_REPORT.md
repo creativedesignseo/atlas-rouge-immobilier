@@ -4,6 +4,53 @@
 
 ---
 
+## CIERRE de sesión — Claude Opus 4.8 — 2026-06-01 (cierre, post-Codex)
+
+**Saga "crear inmueble desde el admin" → RESUELTA Y DESPLEGADA.** Cadena de
+fixes a lo largo del día (Claude + Codex), todos en `main` (= desplegados).
+`HEAD == origin/main`, working tree limpio, `verify.sh` verde. Función en
+prod confirmada nueva (sin token → `reason: "missing_authorization"`).
+
+### Línea de tiempo de la cadena de bugs (todos cerrados)
+1. **400 al guardar** (Claude `701f8821`) — el `<select>` de Barrio mandaba
+   el slug; `properties.neighborhood_id` es `uuid`. Fix: usar `n.id` + `''`→`null`.
+2. **Sesión zombi → 401** (Claude `d0e6e695`) — token en localStorage de una
+   sesión ya revocada server-side. Fix: `validateSession()` valida contra el
+   servidor al cargar y purga el zombi.
+3. **`translate-property` 401 con sesión fresca** (Codex `d0bc223c`) — **CAUSA
+   RAÍZ del enigma**: el `VITE_SUPABASE_ANON_KEY` usado por la función como
+   `apikey` no casaba con el proyecto del JWT → `/auth/v1/user` rechazaba un
+   token válido. Fix de Codex: derivar la URL del proyecto desde el `iss` del
+   JWT + probar varios `apikey` (incluido el access token del usuario) +
+   `reason` codes para diagnóstico.
+4. **Spinners colgados** (Codex `d521c7d6` imágenes, `5110413c` guardar,
+   `92fe90e1` listado) — varias llamadas `supabase-js` se COLGABAN (no
+   erroraban) por su manejo interno de auth/lock. Fix: `fetch` directo a
+   PostgREST/Storage con `Bearer` + `apikey` + timeout + `AbortController`
+   (`src/lib/authSession.ts`, `authenticatedJsonRequest`).
+
+### Lecciones (para futuras sesiones)
+- **`supabase-js` puede colgarse** en flujos de admin (auth/lock interno). Para
+  operaciones críticas, preferir `fetch` directo a PostgREST/Storage con token
+  explícito + timeout + AbortController. Nunca dejar un await de supabase-js sin
+  timeout en un path que pinta spinner.
+- **Verificar el anon key/apikey runtime de las Functions** contra el proyecto
+  real — un valor desalineado hace que `/auth/v1/user` rechace tokens válidos.
+- **Diagnóstico honesto:** no declarar "verificado end-to-end" sin ejecutar el
+  flujo real con un **agente de prueba dedicado** (NUNCA la cuenta del owner;
+  un signOut global la deja zombi). Sigue pendiente crear ese agente.
+- Codex entiende el harness vía `AGENTS.md` (no lee `CLAUDE.md`). El brief
+  `CODEX_HANDOFF_401.md` (tool-agnostic) funcionó: acertó la hipótesis nº2.
+
+### Pendiente menor (no bloquea)
+- [ ] Owner confirma el flujo completo end-to-end tras el deploy (crear inmueble
+      real: traducir → subir foto → guardar → ver en el listado).
+- [ ] Crear el agente de prueba dedicado para verificaciones futuras.
+- [ ] Limpiar ruido de consola: CSP bloquea `ipapi.co/json` (geo-lookup);
+      añadir a `connect-src` o quitar la llamada. Cosmético.
+
+---
+
 ## Intervención — Codex — 2026-06-01 (hotfix listado inmuebles)
 
 ### Fix implementado: `/admin/properties` colgado tras crear
