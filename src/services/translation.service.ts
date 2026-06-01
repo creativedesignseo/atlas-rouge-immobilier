@@ -70,6 +70,18 @@ export async function autoTranslateProperty(
     clearTimeout(timeout)
   }
 
+  // 401 = the session is invalid/revoked server-side (the JWT may still look
+  // valid locally). Self-heal: clear the dead session and send the user to log
+  // in again, instead of leaving them stuck on an error they can't fix.
+  if (response.status === 401) {
+    try { await supabase.auth.signOut({ scope: 'local' }) } catch { /* ignore */ }
+    if (typeof window !== 'undefined') {
+      try { window.localStorage.clear() } catch { /* ignore */ }
+      window.location.href = '/admin/login'
+    }
+    throw new Error('Tu sesión caducó. Te llevamos a iniciar sesión de nuevo.')
+  }
+
   if (!response.ok) {
     const error = await response.json().catch(() => null)
     throw new Error(error?.error || `Translation API error: ${response.status}`)
