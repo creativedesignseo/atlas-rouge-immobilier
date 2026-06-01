@@ -799,6 +799,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
                   {t('propertyForm.titleLang', { lang: activeLang.toUpperCase() })}
                 </label>
                 <input
+                  key={`title-${activeLang}`}
                   {...register(`title_${activeLang}` as keyof PropertyFormValues)}
                   placeholder={t('propertyForm.titleLangPlaceholder', { lang: activeLang.toUpperCase() })}
                   className="w-full px-3 py-2 text-sm border border-border-warm rounded-lg focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta"
@@ -810,6 +811,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
                   {t('propertyForm.descriptionLang', { lang: activeLang.toUpperCase() })}
                 </label>
                 <textarea
+                  key={`desc-${activeLang}`}
                   {...register(`description_${activeLang}` as keyof PropertyFormValues)}
                   rows={5}
                   placeholder={t('propertyForm.descriptionLangPlaceholder', { lang: activeLang.toUpperCase() })}
