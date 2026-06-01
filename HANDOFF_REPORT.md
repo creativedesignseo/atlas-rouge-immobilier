@@ -106,6 +106,22 @@ bloqueo general. No es un bug de traducción. Pendiente menor: `ipapi.co`
 moneda por defecto; limpiar la llamada o añadir el dominio a `connect-src`
 cuando se quiera.
 
+### Dos bugs del admin de inmuebles — RESUELTOS 2026-06-01 (commit `8dbaa8ba`)
+
+- **Pestañas de Traducciones mostraban el mismo idioma en todas** (al cambiar
+  EN/FR/ES seguía el texto anterior). Causa: inputs `register(title_${activeLang})`
+  sin `key` → React reusaba el `<input>` no-controlado. Fix: `key={activeLang}`
+  en los campos título/descripción de `PropertyForm.tsx`.
+- **"Crear propiedad" no guardaba.** Causa raíz: **doble sistema de roles**. La
+  RLS de INSERT de `properties` (y `contact_submissions` ALL, `site_settings`
+  UPDATE) exige `is_admin()`, que solo miraba la tabla `public.admins`. El admin
+  del panel (Sofia) es admin en `agents` (role='admin') pero NO está en `admins`
+  → rechazado. **Migración `008_unify_admin_role.sql`** redefine `is_admin()`
+  para reconocer también `agents.role='admin'` (OR, sin quitar acceso a nadie).
+  **Aplicada + verificada en vivo**: insert como Sofia → HTTP 201. La tabla
+  `admins` queda obsoleta (deprecar a futuro). En prod solo existen `is_admin()`
+  (admins) e `is_active_agent()` (agents); `is_admin_role`/`is_agent` NO existen.
+
 ### Pendiente / próximo
 
 - Verificar deploy en vivo (Netlify) y env vars de Functions (arriba).
