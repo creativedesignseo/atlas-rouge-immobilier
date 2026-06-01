@@ -4,17 +4,42 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-06-01 (Codex: P0 translate-property 401 fix local, verify green, pending deploy)
+**Last updated:** 2026-06-01 (Codex: translation deployed; image upload hang hotfix local, verify green)
 
 ---
 
-## `translate-property` 401 con sesión admin fresca — 2026-06-01 🟡 FIX LOCAL, PENDIENTE DEPLOY
+## Subida de imágenes colgada en "Subiendo..." — 2026-06-01 🟡 FIX LISTO, PENDIENTE REINTENTO OWNER
 
-Síntoma actual reportado: `/.netlify/functions/translate-property` devuelve
+Tras desplegar `d0bc223c`, el owner confirmó que la traducción IA funciona,
+pero la imagen queda en spinner "Subiendo..." y no se añade al formulario.
+
+Fix local:
+- Nuevo `src/lib/authSession.ts` para obtener access token con timeout +
+  fallback a `localStorage`.
+- `src/services/admin/propertyAdmin.service.ts` sube imágenes con `fetch`
+  directo a Supabase Storage (`Authorization: Bearer`, `apikey`,
+  `x-upsert:false`, `FormData`, timeout 45s) en vez de
+  `supabase.storage.upload()`, que podía quedarse colgado esperando auth interna.
+- `src/components/admin/ImageUploader.tsx` muestra el mensaje real del error
+  si Storage responde con RLS/config en vez de colgar.
+- `src/services/translation.service.ts` reutiliza el helper compartido.
+
+Verificación: `node --check netlify/functions/translate-property.js`,
+`npx tsc -b --noEmit` y `bash scripts/verify.sh` verdes.
+
+Pendiente:
+- [ ] Publicar en `main` / confirmar auto-deploy Netlify.
+- [ ] Owner reintenta subir imagen tras deploy.
+
+---
+
+## `translate-property` 401 con sesión admin fresca — 2026-06-01 ✅ DESPLEGADO
+
+Síntoma reportado: `/.netlify/functions/translate-property` devolvía
 401 `Active agent session required` incluso con login fresco en incógnito, y
 bloquea crear inmuebles. Contexto completo en `CODEX_HANDOFF_401.md`.
 
-Fix local implementado por Codex:
+Fix implementado por Codex y desplegado en `main` commit `d0bc223c`:
 - `netlify/functions/translate-property.js`: auth de agente activo ya no es una
   caja negra; devuelve `reason`, loguea intentos sin tokens, usa timeout y
   mantiene sesión válida + fila `agents` activa vía RLS. Añadido fallback seguro
@@ -27,14 +52,9 @@ Fix local implementado por Codex:
 
 Verificación: `npx tsc -b --noEmit` verde; `node --check
 netlify/functions/translate-property.js` verde; `bash scripts/verify.sh`
-verde (3 warnings Fast Refresh preexistentes, build OK).
-
-Pendiente:
-- [ ] Commit + push a `main` para que Netlify auto-deploye (NO `netlify deploy`
-      manual sin OK explícito).
-- [ ] Verificar producción con **agente de prueba dedicado**, nunca con
-      `creativedesignseo@gmail.com`.
-- [ ] Si persiste 401, revisar `reason` del body + logs Netlify de la función.
+verde (3 warnings Fast Refresh preexistentes, build OK). Producción verificada:
+sin token devuelve 401 con `reason: "missing_authorization"`, confirmando que
+la función nueva está viva.
 
 ---
 

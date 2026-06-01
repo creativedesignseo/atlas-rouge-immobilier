@@ -96,7 +96,7 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
         } catch (err) {
           // One bad file must not block the rest, and must never hang the UI.
           console.error('[ImageUploader] failed for', file.name, err)
-          toast.error(t('imageUploader.uploadFailed', { name: file.name }))
+          toast.error(err instanceof Error ? err.message : t('imageUploader.uploadFailed', { name: file.name }))
         }
       }
     } finally {

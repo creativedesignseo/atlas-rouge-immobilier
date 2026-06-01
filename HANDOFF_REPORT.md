@@ -4,9 +4,47 @@
 
 ---
 
+## Intervención — Codex — 2026-06-01 (hotfix imágenes)
+
+### Fix implementado: subida de imágenes colgada en "Subiendo..."
+
+Después del deploy `d0bc223c`, el owner confirmó que la traducción IA ya
+funciona, pero la subida de imágenes se quedaba con spinner **"Subiendo..."**
+y no añadía imagen al formulario.
+
+**Diagnóstico:** la traducción ya usa fallback de token, pero la subida seguía
+pasando por `supabase.storage.upload()`. Si esa llamada interna queda esperando
+la sesión/auth de supabase-js, el `finally` de `ImageUploader` no se ejecuta y
+el spinner queda colgado.
+
+**Cambio aplicado:**
+- Nuevo `src/lib/authSession.ts` con helper compartido para obtener el access
+  token actual: primero `supabase.auth.getSession()` con timeout y luego
+  fallback a `localStorage` (`atlas-rouge-auth-token`).
+- `src/services/translation.service.ts` reutiliza ese helper.
+- `src/services/admin/propertyAdmin.service.ts` ya no usa
+  `supabase.storage.upload()` para property images. Hace `fetch` directo a
+  `https://slxlkbrqcjabsfuhlwdf.supabase.co/storage/v1/object/property-images/*`
+  con `Authorization: Bearer <access_token>`, `apikey`, `x-upsert:false`,
+  `FormData`, y timeout de 45s. Si hay 401 limpia sesión local y redirige a
+  login; si Storage devuelve RLS/config error, propaga el mensaje real.
+- `src/components/admin/ImageUploader.tsx` muestra el mensaje real del error en
+  el toast para no volver a diagnosticar a ciegas.
+
+**Verificación local:**
+- `node --check netlify/functions/translate-property.js` → verde.
+- `npx tsc -b --noEmit` → verde.
+- `bash scripts/verify.sh` → verde (mismos 3 warnings Fast Refresh
+  preexistentes; build OK).
+
+**Próximo:** publicar en `main` para que Netlify auto-deploye y el owner
+reintente subir la imagen. No usar `netlify deploy` manual salvo OK explícito.
+
+---
+
 ## Intervención — Codex — 2026-06-01 (P0 `translate-property` 401)
 
-### Estado: fix implementado localmente, verificación verde, NO desplegado
+### Estado: fix DESPLEGADO en producción (`d0bc223c`)
 
 El owner reportó que `/.netlify/functions/translate-property` seguía
 devolviendo **401 `Active agent session required`** incluso tras login fresco
@@ -14,7 +52,7 @@ en incógnito, bloqueando el flujo crear inmueble. El handoff específico
 `CODEX_HANDOFF_401.md` descarta sesión zombi, `navigator.locks`, RLS de
 `agents` y el bug `neighborhood_id` slug→uuid.
 
-**Cambio aplicado (local, sin commit/push/deploy):**
+**Cambio aplicado:**
 - `netlify/functions/translate-property.js` — `isActiveAgent()` deja de ser
   booleano opaco. Nuevo `authorizeActiveAgent()`:
   - exige siempre Bearer + sesión Supabase válida + fila `agents` activa;
@@ -36,7 +74,7 @@ en incógnito, bloqueando el flujo crear inmueble. El handoff específico
   es de verificación de agente/configuración, muestra el motivo sin borrar la
   sesión local.
 
-**Verificación local:**
+**Verificación:**
 - `npx tsc -b --noEmit` → verde.
 - `node --check netlify/functions/translate-property.js` → verde.
 - `bash scripts/verify.sh` → verde (lint con 3 warnings preexistentes de Fast
@@ -46,13 +84,9 @@ en incógnito, bloqueando el flujo crear inmueble. El handoff específico
   `/.netlify/functions/translate-property`, `Authorization` y los nuevos
   `reason`.
 
-**Pendiente para cerrar P0 en producción:**
-1. Commit + push a `main` (Netlify auto-deploya; no hacer `netlify deploy` sin
-   OK explícito).
-2. Verificar en producción con un **agente de prueba dedicado**, NUNCA con la
-   cuenta owner `creativedesignseo@gmail.com`.
-3. Si aún hay 401, mirar el `reason` del body y los logs de la función; ya no
-   debería ser una caja negra.
+**Verificación producción:** Netlify publicó `d0bc223c` en producción (`ready`).
+Un POST sin token a `/.netlify/functions/translate-property` devuelve 401 con
+`reason: "missing_authorization"`, confirmando que la función nueva está viva.
 
 ---
 

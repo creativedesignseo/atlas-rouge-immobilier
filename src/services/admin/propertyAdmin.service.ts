@@ -1,6 +1,12 @@
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
+import { clearLocalSessionAndRedirect, currentAccessToken } from '@/lib/authSession'
 import { getCached, refetch, invalidate } from '@/lib/queryCache'
 import type { PropertyRow, PropertyInsert } from '@/types/supabase'
+
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY
+const PROPERTY_IMAGES_BUCKET = 'property-images'
+const IMAGE_UPLOAD_TIMEOUT_MS = 45000
 
 export interface PropertyFormData {
   slug: string
@@ -173,17 +179,52 @@ export async function uploadImage(file: Blob, originalName = 'image'): Promise<s
   const base =
     originalName.replace(/\.[^.]+$/, '').replace(/[^a-zA-Z0-9.-]/g, '_') || 'image'
   const filename = `${Date.now()}-${base}.webp`
+  const accessToken = await currentAccessToken()
+  if (!accessToken) {
+    await clearLocalSessionAndRedirect()
+    throw new Error('Tu sesión caducó. Te llevamos a iniciar sesión de nuevo.')
+  }
 
-  const { error } = await supabase.storage
-    .from('property-images')
-    .upload(filename, file, {
-      cacheControl: '3600',
-      upsert: false,
-      contentType: 'image/webp',
-    })
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), IMAGE_UPLOAD_TIMEOUT_MS)
+  try {
+    const body = new FormData()
+    body.append('cacheControl', '3600')
+    body.append('', file, filename)
 
-  if (error) throw error
-  return filename
+    const response = await fetch(
+      `${SUPABASE_URL}/storage/v1/object/${PROPERTY_IMAGES_BUCKET}/${encodeURIComponent(filename)}`,
+      {
+        method: 'POST',
+        headers: {
+          apikey: SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${accessToken}`,
+          'x-upsert': 'false',
+        },
+        body,
+        signal: controller.signal,
+      },
+    )
+    const result = await response.json().catch(() => null)
+
+    if (response.status === 401) {
+      await clearLocalSessionAndRedirect()
+      throw new Error('Tu sesión caducó. Te llevamos a iniciar sesión de nuevo.')
+    }
+
+    if (!response.ok) {
+      throw new Error(result?.message || result?.error || `Storage upload failed (${response.status})`)
+    }
+
+    return filename
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      throw new Error('La subida de imagen tardó demasiado. Reintenta.')
+    }
+    throw error
+  } finally {
+    clearTimeout(timeout)
+  }
 }
 
 export async function deleteImage(filename: string): Promise<void> {

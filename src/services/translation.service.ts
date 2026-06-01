@@ -1,5 +1,5 @@
-import { supabase } from '@/lib/supabase'
 import type { SupportedLanguage } from '@/i18n'
+import { clearLocalSessionAndRedirect, currentAccessToken } from '@/lib/authSession'
 
 export interface TranslatableProperty {
   title: string
@@ -32,60 +32,9 @@ export interface TranslationResult {
   es: TranslatedPropertyContent
 }
 
-const AUTH_STORAGE_KEY = 'atlas-rouge-auth-token'
-
 interface TranslationApiError {
   error?: string
   reason?: string
-}
-
-function storedAccessToken(): string | null {
-  if (typeof window === 'undefined') return null
-
-  try {
-    const raw = window.localStorage.getItem(AUTH_STORAGE_KEY)
-    if (!raw) return null
-    const parsed: unknown = JSON.parse(raw)
-
-    if (
-      parsed &&
-      typeof parsed === 'object' &&
-      'access_token' in parsed &&
-      typeof (parsed as { access_token?: unknown }).access_token === 'string'
-    ) {
-      return (parsed as { access_token: string }).access_token
-    }
-
-    if (
-      parsed &&
-      typeof parsed === 'object' &&
-      'currentSession' in parsed &&
-      (parsed as { currentSession?: unknown }).currentSession &&
-      typeof (parsed as { currentSession?: { access_token?: unknown } }).currentSession?.access_token === 'string'
-    ) {
-      return (parsed as { currentSession: { access_token: string } }).currentSession.access_token
-    }
-  } catch {
-    return null
-  }
-
-  return null
-}
-
-async function currentAccessToken(): Promise<string | null> {
-  const session = await Promise.race([
-    supabase.auth.getSession().then((r) => r.data.session).catch(() => null),
-    new Promise<null>((resolve) => setTimeout(() => resolve(null), 6000)),
-  ])
-  return session?.access_token || storedAccessToken()
-}
-
-async function clearLocalSessionAndRedirect() {
-  try { await supabase.auth.signOut({ scope: 'local' }) } catch { /* ignore */ }
-  if (typeof window !== 'undefined') {
-    try { window.localStorage.removeItem(AUTH_STORAGE_KEY) } catch { /* ignore */ }
-    window.location.href = '/admin/login'
-  }
 }
 
 function shouldRedirectToLogin(reason?: string): boolean {
