@@ -88,6 +88,15 @@ ya NO se pegan a mano en Studio. El owner añadió `SUPABASE_ACCESS_TOKEN` (PAT)
 `.env.local`; las migraciones se aplican con `npm run migrate -- <archivo.sql>`
 (Management API). Ver [[reference_supabase]] y la regla actualizada en CLAUDE.md.
 
+**Conexión con Supabase + variables de entorno — DOCUMENTADO en
+`docs/supabase-connection.md`:** las 3 vías de conexión (anon key para la
+app/RLS · Personal Access Token para migraciones vía Management API · login de
+agente para pruebas) y la tabla de **qué variable va dónde**. Clave: el
+`SUPABASE_ACCESS_TOKEN` (PAT) y demás herramientas de dev/admin son **solo
+locales** (`.env.local`), **NO van a Netlify** — el sitio en producción no
+aplica migraciones, así que ponerlas en Netlify solo ampliaría la superficie de
+ataque. `.env.example` actualizado con todas las variables y su destino.
+
 **Traducción admin — verificada FUNCIONANDO 2026-06-01:** probada en vivo con
 login real contra `/.netlify/functions/translate-property` → HTTP 200 en ~5s,
 devuelve EN+FR correctos. El "Adaptando…" que el owner veía era (a) los ~5s que
