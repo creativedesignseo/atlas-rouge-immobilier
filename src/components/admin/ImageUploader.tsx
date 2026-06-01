@@ -1,29 +1,41 @@
 import { useState, useRef, useCallback } from 'react'
 import { Upload, X, ImageIcon, Loader2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import imageCompression from 'browser-image-compression'
 import { getImageUrl } from '@/lib/storage'
 import { uploadImage as uploadToStorage, deleteImage } from '@/services/admin/propertyAdmin.service'
 import { toast } from 'sonner'
 
-// Optimization target: cap the longest side to 2560px (keeps aspect ratio,
-// never upscales), re-encode to WebP ~0.82 quality, aiming for <1MB. The
-// browser decodes any input format (JPG/PNG/WebP/AVIF) — so this also fixes
-// the "AVIF rejected by the bucket" bug: we always upload WebP.
-const COMPRESSION_OPTS = {
-  maxWidthOrHeight: 2560,
-  fileType: 'image/webp' as const,
-  initialQuality: 0.82,
-  maxSizeMB: 1,
-  // Must stay false: with the worker enabled the library tries to load its
-  // script from cdn.jsdelivr.net, which our strict CSP (script-src 'self')
-  // blocks — breaking every upload. Running on the main thread is fine for the
-  // handful of images uploaded at once in the admin.
-  useWebWorker: false,
-}
-
 // Accept generous input sizes; compression brings them well under 1MB.
 const MAX_INPUT_BYTES = 25 * 1024 * 1024
+const MAX_SIDE = 2560
+const WEBP_QUALITY = 0.82
+
+// Compress ANY browser-decodable image (JPG/PNG/WebP/AVIF) to WebP using the
+// browser's NATIVE decoder. We deliberately avoid browser-image-compression:
+// it doesn't decode AVIF (canvas-lib limitation) and its Web Worker loads a
+// script from a CDN that our strict CSP blocks. createImageBitmap handles AVIF
+// and respects EXIF orientation; canvas.toBlob re-encodes to WebP. No external
+// script, no worker — CSP untouched.
+async function compressToWebp(file: File): Promise<Blob> {
+  const bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' })
+  const scale = Math.min(1, MAX_SIDE / Math.max(bitmap.width, bitmap.height)) // never upscale
+  const w = Math.max(1, Math.round(bitmap.width * scale))
+  const h = Math.max(1, Math.round(bitmap.height * scale))
+
+  const canvas = document.createElement('canvas')
+  canvas.width = w
+  canvas.height = h
+  const ctx = canvas.getContext('2d')
+  if (!ctx) throw new Error('Canvas 2D context unavailable')
+  ctx.drawImage(bitmap, 0, 0, w, h)
+  bitmap.close?.()
+
+  const blob = await new Promise<Blob | null>((resolve) =>
+    canvas.toBlob(resolve, 'image/webp', WEBP_QUALITY),
+  )
+  if (!blob) throw new Error('WebP encoding failed')
+  return blob
+}
 
 interface ImageUploaderProps {
   images: string[]
@@ -77,7 +89,7 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
         try {
           // Compress + convert to WebP in the browser, then upload the result.
           setStatusKey('optimizing')
-          const compressed = await imageCompression(file, COMPRESSION_OPTS)
+          const compressed = await compressToWebp(file)
           setStatusKey('uploading')
           const filename = await uploadToStorage(compressed, file.name)
           newImages.push(filename)
