@@ -191,6 +191,8 @@
     "translateAll": "Traducir a los 3 idiomas con IA",
     "sourceLanguage": "fuente",
     "filled": "rellenado",
+    "markAsSource": "Marcar {{lang}} como idioma de origen",
+    "isSourceLanguage": "{{lang}} es el idioma de origen — la IA traduce desde aquí a los otros dos.",
     "autoTranslateFrom": "Traducir desde {{lang}}",
     "titleLang": "Título ({{lang}})",
     "descriptionLang": "Descripción ({{lang}})",

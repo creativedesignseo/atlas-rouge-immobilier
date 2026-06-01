@@ -16,6 +16,10 @@ import type { SupportedLanguage } from '@/i18n'
 const LANGS: SupportedLanguage[] = ['en', 'fr', 'es']
 const LANG_LABELS: Record<SupportedLanguage, string> = { en: 'EN', fr: 'FR', es: 'ES' }
 
+// Small normalizers shared by the translation helpers below.
+const asStr = (v: unknown) => (typeof v === 'string' ? v.trim() : '')
+const asArr = (v: unknown) => (Array.isArray(v) ? (v as string[]) : [])
+
 // Zod validation messages are emitted in English (the project fallback lng).
 // They show in form fields when validation fails — admin-facing. If we want
 // per-language messages we'd need to rebuild the schema with t() inside the
@@ -100,16 +104,18 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
   const [isTranslating, setIsTranslating] = useState(false)
   const [highlightInputs, setHighlightInputs] = useState<Record<SupportedLanguage, string>>({ en: '', fr: '', es: '' })
 
-  // Source language for AI translation = admin's current UI language.
-  // Falls back to 'fr' (the historical primary content language) if the admin
-  // is using a language that's not in our supported set.
-  const sourceLang: SupportedLanguage = (() => {
+  // Source language for AI translation. The admin picks it explicitly by
+  // marking one of the language tabs as the source; the AI then translates
+  // FROM it into the other two. Defaults to the admin's UI language, falling
+  // back to 'fr' (the historical primary content language).
+  const initialLang: SupportedLanguage = (() => {
     const ui = i18n.language?.slice(0, 2) as SupportedLanguage
     return LANGS.includes(ui) ? ui : 'fr'
   })()
+  const [sourceLang, setSourceLang] = useState<SupportedLanguage>(initialLang)
 
   // Active tab in the Translations panel (one language shown at a time).
-  const [activeLang, setActiveLang] = useState<SupportedLanguage>(sourceLang)
+  const [activeLang, setActiveLang] = useState<SupportedLanguage>(initialLang)
 
   const {
     register,
@@ -187,13 +193,23 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
     }
   }
 
-  // Build the source-content payload for the AI translator from form values.
+  // Build the source-content payload for the AI translator. The text comes from
+  // the chosen SOURCE-language tab (title_<sourceLang> etc.), falling back to the
+  // base title/description fields if that tab is still empty. This is the fix for
+  // the "it translated the wrong text" bug: previously it read the base fields,
+  // which could hold stale content in a different language than the source tab.
   const buildSourceContent = (values: PropertyFormValues) => {
     const neighborhood = neighborhoods.find((item) => item.slug === values.neighborhood_id)
+    const v = values as Record<string, unknown>
+    const srcTitle = asStr(v[`title_${sourceLang}`]) || (values.title || '').trim()
+    const srcDescription = asStr(v[`description_${sourceLang}`]) || (values.description || '').trim()
+    const srcHighlights = asArr(v[`highlights_${sourceLang}`]).length
+      ? asArr(v[`highlights_${sourceLang}`])
+      : values.highlights || []
     return {
-      title: (values.title || '').trim(),
-      description: (values.description || '').trim(),
-      highlights: values.highlights || [],
+      title: srcTitle,
+      description: srcDescription,
+      highlights: srcHighlights,
       amenities: values.amenities || [],
       transaction: values.transaction,
       type: values.type,
@@ -215,27 +231,25 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
   // AI call fails we save anyway and the public site falls back to French.
   const ensureTranslationsOnSave = async (data: PropertyFormValues) => {
     const d = data as Record<string, unknown>
-    const str = (v: unknown) => (typeof v === 'string' ? v.trim() : '')
-    const arr = (v: unknown) => (Array.isArray(v) ? (v as string[]) : [])
-    const sourceTitle = str(data.title)
-    const sourceDescription = str(data.description)
-    if (!sourceTitle || !sourceDescription) return
+    const source = buildSourceContent(data)
+    if (!source.title || !source.description) return
 
-    // Seed the source-language columns from the base fields if empty.
-    if (!str(d[`title_${sourceLang}`])) d[`title_${sourceLang}`] = sourceTitle
-    if (!str(d[`description_${sourceLang}`])) d[`description_${sourceLang}`] = sourceDescription
-    if (arr(d[`highlights_${sourceLang}`]).length === 0) d[`highlights_${sourceLang}`] = data.highlights || []
+    // Seed the source-language columns from the resolved source content if empty.
+    if (!asStr(d[`title_${sourceLang}`])) d[`title_${sourceLang}`] = source.title
+    if (!asStr(d[`description_${sourceLang}`])) d[`description_${sourceLang}`] = source.description
+    if (asArr(d[`highlights_${sourceLang}`]).length === 0) d[`highlights_${sourceLang}`] = source.highlights
 
     // Which other languages still need a translation?
     const targets = LANGS.filter((l) => l !== sourceLang).filter(
-      (l) => !str(d[`title_${l}`]) || !str(d[`description_${l}`]),
+      (l) => !asStr(d[`title_${l}`]) || !asStr(d[`description_${l}`]),
     )
     if (targets.length === 0) return
 
     const toastId = toast.loading(t('propertyForm.autoTranslating'))
     try {
-      const result = await autoTranslateProperty(buildSourceContent(data), sourceLang)
+      const result = await autoTranslateProperty(source, sourceLang)
       for (const [lang, content] of Object.entries(result)) {
+        if (lang === sourceLang) continue
         if (!targets.includes(lang as SupportedLanguage)) continue
         d[`title_${lang}`] = content.title
         d[`description_${lang}`] = content.description
@@ -259,27 +273,26 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
 
   const handleAutoTranslate = async () => {
     const values = getValues()
-    const title = (values.title || '').trim()
-    const description = (values.description || '').trim()
-    const sourceHighlights = values.highlights || []
+    const source = buildSourceContent(values)
 
-    if (!title || !description) {
+    if (!source.title || !source.description) {
       toast.error(t('propertyForm.autoTranslateMissingSource', { lang: sourceLang.toUpperCase() }))
       return
     }
 
     setIsTranslating(true)
     try {
-      const result = await autoTranslateProperty(buildSourceContent(values), sourceLang)
+      const result = await autoTranslateProperty(source, sourceLang)
 
-      // Source language gets the original content as-is.
-      setValue(`title_${sourceLang}` as keyof PropertyFormValues, title as never)
-      setValue(`description_${sourceLang}` as keyof PropertyFormValues, description as never)
-      setValue(`highlights_${sourceLang}` as keyof PropertyFormValues, sourceHighlights as never)
+      // Source language keeps its own content (normalized from its tab/base).
+      setValue(`title_${sourceLang}` as keyof PropertyFormValues, source.title as never)
+      setValue(`description_${sourceLang}` as keyof PropertyFormValues, source.description as never)
+      setValue(`highlights_${sourceLang}` as keyof PropertyFormValues, source.highlights as never)
 
-      // Other languages get AI translations.
+      // Only the OTHER languages get AI translations — never overwrite the source.
       for (const [lang, content] of Object.entries(result)) {
         const l = lang as SupportedLanguage
+        if (l === sourceLang) continue
         setValue(`title_${l}` as keyof PropertyFormValues, content.title as never)
         setValue(`description_${l}` as keyof PropertyFormValues, content.description as never)
         setValue(`highlights_${l}` as keyof PropertyFormValues, content.highlights as never)
@@ -759,6 +772,24 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
                   </button>
                 )
               })}
+            </div>
+
+            {/* Source-language picker: mark the active tab as the original to
+                translate FROM. The "Translate" button always reads this tab. */}
+            <div className="flex items-center justify-between gap-2 mb-3 px-1 min-h-[20px]">
+              {activeLang === sourceLang ? (
+                <span className="text-xs text-text-secondary">
+                  {t('propertyForm.isSourceLanguage', { lang: activeLang.toUpperCase() })}
+                </span>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setSourceLang(activeLang)}
+                  className="text-xs font-medium text-terracotta hover:underline"
+                >
+                  {t('propertyForm.markAsSource', { lang: activeLang.toUpperCase() })}
+                </button>
+              )}
             </div>
 
             {/* Active language fields (RHF keeps the other languages' values) */}
