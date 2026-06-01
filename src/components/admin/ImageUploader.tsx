@@ -1,9 +1,25 @@
 import { useState, useRef, useCallback } from 'react'
 import { Upload, X, ImageIcon, Loader2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import imageCompression from 'browser-image-compression'
 import { getImageUrl } from '@/lib/storage'
 import { uploadImage as uploadToStorage, deleteImage } from '@/services/admin/propertyAdmin.service'
 import { toast } from 'sonner'
+
+// Optimization target: cap the longest side to 2560px (keeps aspect ratio,
+// never upscales), re-encode to WebP ~0.82 quality, aiming for <1MB. The
+// browser decodes any input format (JPG/PNG/WebP/AVIF) — so this also fixes
+// the "AVIF rejected by the bucket" bug: we always upload WebP.
+const COMPRESSION_OPTS = {
+  maxWidthOrHeight: 2560,
+  fileType: 'image/webp' as const,
+  initialQuality: 0.82,
+  maxSizeMB: 1,
+  useWebWorker: true,
+}
+
+// Accept generous input sizes; compression brings them well under 1MB.
+const MAX_INPUT_BYTES = 25 * 1024 * 1024
 
 interface ImageUploaderProps {
   images: string[]
@@ -14,6 +30,7 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
   const { t } = useTranslation('admin')
   const [isDragging, setIsDragging] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const [statusKey, setStatusKey] = useState<'optimizing' | 'uploading'>('uploading')
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -30,12 +47,18 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
     if (!files || files.length === 0) return
 
     const validFiles = Array.from(files).filter((file) => {
-      const isValid = file.type.startsWith('image/') && file.size <= 5 * 1024 * 1024
-      if (!isValid) {
+      if (!file.type.startsWith('image/')) {
         toast.error(t('imageUploader.invalidFormat', { name: file.name }))
+        return false
       }
-      return isValid
+      if (file.size > MAX_INPUT_BYTES) {
+        toast.error(t('imageUploader.tooLarge', { name: file.name }))
+        return false
+      }
+      return true
     })
+
+    if (validFiles.length === 0) return
 
     if (images.length + validFiles.length > 20) {
       toast.error(t('imageUploader.maxReached'))
@@ -45,16 +68,25 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
     setUploading(true)
     const newImages: string[] = []
 
-    for (const file of validFiles) {
-      try {
-        const filename = await uploadToStorage(file)
-        newImages.push(filename)
-      } catch {
-        toast.error(t('imageUploader.uploadFailed', { name: file.name }))
+    try {
+      for (const file of validFiles) {
+        try {
+          // Compress + convert to WebP in the browser, then upload the result.
+          setStatusKey('optimizing')
+          const compressed = await imageCompression(file, COMPRESSION_OPTS)
+          setStatusKey('uploading')
+          const filename = await uploadToStorage(compressed, file.name)
+          newImages.push(filename)
+        } catch (err) {
+          // One bad file must not block the rest, and must never hang the UI.
+          console.error('[ImageUploader] failed for', file.name, err)
+          toast.error(t('imageUploader.uploadFailed', { name: file.name }))
+        }
       }
+    } finally {
+      setUploading(false)
     }
 
-    setUploading(false)
     if (newImages.length > 0) {
       onChange([...images, ...newImages])
       toast.success(t('imageUploader.addedCount', { count: newImages.length }))
@@ -118,7 +150,7 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
             <Upload className="w-8 h-8 text-text-secondary" />
           )}
           <p className="text-sm font-medium text-text-primary">
-            {uploading ? t('imageUploader.uploading') : t('imageUploader.dropHere')}
+            {uploading ? t(`imageUploader.${statusKey}`) : t('imageUploader.dropHere')}
           </p>
           <p className="text-xs text-text-secondary">
             {t('imageUploader.orClick')}

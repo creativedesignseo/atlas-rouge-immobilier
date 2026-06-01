@@ -163,16 +163,21 @@ export async function deleteProperty(slug: string): Promise<void> {
   invalidate(`property:${slug}`)
 }
 
-export async function uploadImage(file: File): Promise<string> {
+// Images are compressed to WebP in the browser before this is called
+// (see ImageUploader). We always persist .webp with the right content type.
+export async function uploadImage(file: Blob, originalName = 'image'): Promise<string> {
   if (!isSupabaseConfigured) throw new Error('Supabase not configured')
-  
-  const filename = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`
-  
+
+  const base =
+    originalName.replace(/\.[^.]+$/, '').replace(/[^a-zA-Z0-9.-]/g, '_') || 'image'
+  const filename = `${Date.now()}-${base}.webp`
+
   const { error } = await supabase.storage
     .from('property-images')
     .upload(filename, file, {
       cacheControl: '3600',
       upsert: false,
+      contentType: 'image/webp',
     })
 
   if (error) throw error
