@@ -64,6 +64,15 @@ páginas legales.
 ## Critical Findings (P0) — bloquean el lanzamiento
 
 ### P0-1 · Escalada de privilegios: cualquier agente puede auto-promoverse a admin
+> **Estado 2026-05-29 — FIX IMPLEMENTADO (pendiente aplicar SQL en Studio).**
+> Migración `supabase/migrations/006_fix_agent_update_rls.sql` reescribe la
+> policy con `WITH CHECK` por subquery (congela `role`/`is_active`) y añade
+> `SET search_path` en `is_agent`/`is_admin_role`/`is_active_agent` (cubre
+> también DB-005). `updateAgent()` (`src/services/auth.service.ts`) se estrechó
+> al tipo `AgentSelfUpdate` (`Pick` name/phone/bio/photo_url). **El SQL 006
+> todavía NO se ha pegado en Supabase Studio** → en producción el agujero sigue
+> abierto hasta que el owner lo aplique y verifique.
+
 **Áreas:** security / data / admin (triple-detectado: SEC-001, DB-001, ADM-001)
 **Archivos:** `supabase/migrations/001_agents.sql:158`, `supabase/schema.sql:331`, `supabase/migrate_existing.sql:76`
 
@@ -103,6 +112,15 @@ No existe. Multa hasta 375.000€. Audiencia principal = inversores franceses.
 **Requiere datos legales de Khalid (RC/ICE) + abogado.**
 
 ### P0-4 · Canonical y hreflang estáticos → SEO colapsa contra la home
+> **Estado 2026-05-29 — FIX IMPLEMENTADO (pendiente deploy).**
+> `netlify/edge-functions/og-rewrite.ts` ahora reescribe canonical + hreflang
+> dinámicos por ruta en todas las páginas (`config.path` ampliado a `/fr/*`,
+> `/es/*`, `/en/*`). Nuevo `scripts/generate-sitemap.mjs` + `prebuild` en
+> `package.json` generan un sitemap dinámico trilingüe (posts/propiedades/
+> neighborhoods, dominio `atlasrouge.com`, tolerante a fallos); cierra también
+> PERF-002. `public/sitemap.xml` pasa a ser build output (gitignored). **No
+> desplegado todavía** — Netlify auto-deploya al hacer push a `main`.
+
 **Área:** seo-perf (PERF-001) · `index.html:11`
 `index.html` codifica `canonical=atlasrouge.com/` y los hreflang de la home, y
 NO se reescriben por ruta. Toda página interna (cada propiedad, cada artículo)
@@ -112,6 +130,13 @@ desindexar listings/blog. Catastrófico para un negocio SEO-first.
 la edge function `og-rewrite` a todas las rutas.
 
 ### P0-5 · Drift de migraciones: la BD no es reproducible
+> **Estado 2026-05-29 — FIX IMPLEMENTADO (no re-aplicar sobre prod).**
+> Nueva `supabase/migrations/000_base_schema.sql` con `CREATE TABLE IF NOT
+> EXISTS` idempotente para neighborhoods / properties / contact_submissions /
+> favorites / site_settings. Reconstruir desde `migrations/` ya no falla en la
+> 001. **No re-aplicar sobre producción** (las tablas ya existen); sirve para
+> reproducibilidad / staging / DR.
+
 **Área:** data (DB-002) · `supabase/migrations/001_agents.sql:70`
 Las tablas base (`properties`, `contact_submissions`, `neighborhoods`,
 `site_settings`, `favorites`) solo existen en `schema.sql`, NO en las
@@ -137,17 +162,30 @@ Rompe la propuesta central del producto para la audiencia objetivo.
   `notify-lead` y `translate-property` sin auth, CORS `*`, sin rate-limit.
   `translate-property` quema cuota de pago de DeepSeek; `notify-lead` permite
   spam + inyección Markdown en Telegram. → exigir JWT Supabase + CORS al dominio.
+  > **Estado 2026-05-29 — FIX IMPLEMENTADO (pendiente deploy + env vars).**
+  > `translate-property.js` exige sesión de agente activo (JWT validado contra
+  > `/auth/v1/user` + check `agents`) + CORS allowlist + rate-limit best-effort;
+  > `notify-lead.js` añade CORS + OPTIONS + origin check;
+  > `translation.service.ts` adjunta el Bearer token. **No desplegado**;
+  > requiere `SUPABASE_URL` + `SUPABASE_ANON_KEY` en Netlify para validar el JWT.
 - **Funciones `SECURITY DEFINER` sin `search_path`** (DB-005): `is_agent()`,
   `is_admin_role()`, `is_active_agent()` → riesgo de search-path hijacking en
   funciones de autorización. Fix trivial: `SET search_path = public, pg_temp`.
-- **Políticas RLS duplicadas** (DB-003): `estimation_requests` y
+  > **Estado 2026-05-29 — INCLUIDO en `006_fix_agent_update_rls.sql`** (mismo
+  > SQL pendiente de aplicar; ver P0-1).
+- **Políticas RLS duplicadas** (DB-003): ~~`estimation_requests` y
   `newsletter_subscribers` tienen 2 juegos de políticas (las viejas no
-  versionadas + las nuevas). Crear `006` con `DROP POLICY` de las antiguas.
+  versionadas + las nuevas). Crear `006` con `DROP POLICY` de las antiguas.~~
+  > **Estado 2026-05-29 — NO APLICA.** Lectura corregida: `004_leads.sql` ya
+  > define las policies de leads de forma limpia; no existe un juego duplicado
+  > que limpiar. No se requiere migración para esto.
 
 **SEO / Performance**
 - **Sitemap dinámico no está en `main`** (PERF-002, DEPLOY-009): el generador
   `generate-sitemap.mjs` + `prebuild` solo viven en el worktree; `main` tiene
   un sitemap obsoleto (dominio `.netlify.app`, 11 URLs, sin idiomas/posts).
+  > **Estado 2026-05-29 — FIX IMPLEMENTADO (pendiente commit + deploy).** Ver
+  > P0-4: el generador y el `prebuild` están escritos; aún en el working tree.
 - **Sin SSR/prerender** (PERF-003): crawlers reciben `<div id=root>` vacío.
 - **Falta JSON-LD** Organization/RealEstateAgent/Article/BreadcrumbList (PERF-004).
 - **Fuentes bloqueantes + LCP en background-image** (PERF-005, PERF-006).
@@ -161,6 +199,9 @@ Rompe la propuesta central del producto para la audiencia objetivo.
 **QA / Stack / Deploy / UI**
 - **Cero tests automatizados** (QA-001).
 - **Sin Error Boundary** (ARCH-002, TECH-002): un throw deja pantalla en blanco.
+  > **Estado 2026-05-29 — FIX IMPLEMENTADO (pendiente deploy).**
+  > `src/components/ErrorBoundary.tsx` montado en `main.tsx`, fallback i18n
+  > (claves en `src/locales/{fr,es,en}/errors.json`).
 - **Sin scripts `typecheck`/`test`** (TECH-001, DEPLOY-004): `verify.sh` da
   "verde engañoso".
 - **`netlify.toml` sin `[build]`** (DEPLOY-001) + **env vars no documentadas**
@@ -224,12 +265,17 @@ TECH-006), shadcn sin usar (TECH-007), PII en console mock (LEGAL-012).
 ## Phased Roadmap
 
 ### Phase 0 — Stop the Bleed (1-3 días) · OBLIGATORIO antes de promocionar
-1. **P0-1** Cerrar la escalada de privilegios (SQL `WITH CHECK` + filtrar `updateAgent`).
+> **Estado 2026-05-29:** los puntos 1, 3, 4, 5 y 6 están **IMPLEMENTADOS en el
+> working tree y verify.sh verde**, pero **pendientes de aplicar el SQL `006`
+> en Studio + commit + deploy**. NO están cerrados en producción todavía. El
+> punto 2 (legal) sigue siendo owner + abogado. Ver `tasks/current.md` y
+> `progress/2026-05-29-phase0-security-seo.md`.
+1. **P0-1** Cerrar la escalada de privilegios (SQL `WITH CHECK` + filtrar `updateAgent`). ✅ implementado (migración 006, pendiente aplicar).
 2. **P0-2/P0-3** Publicar Política de Privacidad + Mentions Légales (FR/ES/EN) — requiere abogado + datos de Khalid. Quitar badges de pago falsos.
-3. **P0-4** Canonical/hreflang dinámicos por ruta.
-4. **P0-5** `000_base_schema.sql` para BD reproducible.
-5. **Cerrar funciones serverless** (auth + CORS) — riesgo de coste DeepSeek.
-6. **Error Boundary** global + tratar env Supabase ausente como error visible.
+3. **P0-4** Canonical/hreflang dinámicos por ruta. ✅ implementado (og-rewrite + sitemap, pendiente deploy).
+4. **P0-5** `000_base_schema.sql` para BD reproducible. ✅ implementado.
+5. **Cerrar funciones serverless** (auth + CORS) — riesgo de coste DeepSeek. ✅ implementado (pendiente deploy + env vars).
+6. **Error Boundary** global + tratar env Supabase ausente como error visible. ✅ Error Boundary implementado (pendiente deploy).
 
 ### Phase 1 — Stabilization (1-2 semanas)
 - i18n de GestionLocative/BuyerGuide/About (P0-6/7) + estado vacío de Search.

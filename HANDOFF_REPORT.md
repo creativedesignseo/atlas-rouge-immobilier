@@ -4,6 +4,49 @@
 
 ---
 
+## Intervención: Claude Opus 4.7 — 2026-05-29 (Phase 0 stop-the-bleed)
+
+Autor: Claude Opus 4.7 (1M context).
+
+### Resumen ejecutivo
+
+Implementada la **Phase 0 (stop-the-bleed)** de seguridad + SEO del
+`AUDIT_REPORT.md`. ⚠️ **Código escrito y `verify.sh` verde, pero el SQL
+NO está aplicado en Supabase Studio y NO se ha hecho deploy.** Son fixes
+**implementados, pendientes de aplicar SQL + deploy**, NO resueltos en
+producción.
+
+| Item | Qué se implementó | Estado |
+|---|---|---|
+| P0-1 escalada de privilegios | `006_fix_agent_update_rls.sql` (`WITH CHECK` congela `role`/`is_active` + `search_path` en helpers, cubre DB-005) + `updateAgent()` → tipo `AgentSelfUpdate` | ⏳ pendiente pegar SQL 006 en Studio |
+| P0-4 SEO | `og-rewrite.ts` canonical/hreflang por ruta (`/fr/* /es/* /en/*`) + `generate-sitemap.mjs` + `prebuild`; `public/sitemap.xml` ahora gitignored (build output). Cubre PERF-002 | ⏳ pendiente deploy |
+| P0-5 drift migraciones | `000_base_schema.sql` idempotente (no re-aplicar sobre prod) | ⏳ pendiente |
+| Funciones serverless (SEC-002/003) | `translate-property.js` JWT agente activo + CORS + rate-limit; `notify-lead.js` CORS + origin; `translation.service.ts` Bearer | ⏳ pendiente deploy + env vars |
+| Error Boundary (ARCH-002) | `ErrorBoundary.tsx` en `main.tsx` + claves `errors.json` | ⏳ pendiente deploy |
+
+### Boundaries del owner para cerrar Phase 0
+
+1. Aplicar `006_fix_agent_update_rls.sql` en Studio y **verificar que un
+   agente no-admin no puede auto-promoverse** desde DevTools.
+2. Verificar env vars en Netlify: build/sitemap necesita
+   `SUPABASE_URL`/`SUPABASE_ANON_KEY`; las funciones necesitan
+   `SUPABASE_URL`/`SUPABASE_ANON_KEY` para validar el JWT.
+3. Aprobar commit + push (Netlify auto-deploya `main`).
+
+### Correcciones de suposiciones
+
+- **DB-003 (RLS duplicadas de leads): NO aplica.** `004_leads.sql` ya
+  define las policies limpias; no hay duplicado que limpiar.
+
+### Estado al cierre
+
+- `origin/main` último commit `34af320b`. Phase 0 en el working tree
+  **sin commitear y sin deploy**. `verify.sh` verde.
+- P0 legales (P0-2/P0-3) siguen siendo owner + abogado.
+- Detalle: `progress/2026-05-29-phase0-security-seo.md`.
+
+---
+
 ## Intervención: Claude Opus 4.7 — 2026-05-26 cierre (audit 13-agentes + i18n)
 
 Autor: Claude Opus 4.7 (1M context).

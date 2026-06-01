@@ -82,14 +82,20 @@ SQL must be pasted by the owner in Supabase Studio and the branch must
 be committed + pushed (Netlify auto-deploys `main`). Until then,
 production still has the original holes.
 
-- [~] **P0-1 · Privilege escalation (SEC-001/DB-001/ADM-001)** —
-      implemented. New migration `supabase/migrations/006_fix_agent_update_rls.sql`
-      (`WITH CHECK` via subquery that freezes `role`/`is_active` +
-      `SET search_path` on helpers `is_agent`/`is_admin_role`/
-      `is_active_agent`, covering DB-005). Also narrowed `updateAgent()`
-      in `src/services/auth.service.ts` to type `AgentSelfUpdate`
-      (`Pick` name/phone/bio/photo_url) so the client can no longer send
-      `role`/`is_active`. **⚠️ SQL 006 not yet applied in Studio.**
+- [x] **P0-1 · Privilege escalation (SEC-001/DB-001/ADM-001)** —
+      **APPLIED IN PRODUCTION 2026-06-01.** Migration
+      `supabase/migrations/006_fix_agent_update_rls.sql` applied via SQL
+      Editor (project `slxlkbrqcjabsfuhlwdf`). ⚠️ Real policy name in prod
+      is `agents_update_own` (NOT "Agent can update own row" — the prod DB
+      wasn't built from these numbered migrations; names differ). Verified
+      live with `pg_policies`: `agents_update_own` now has a `WITH CHECK`
+      that freezes `role`/`is_active` via subquery (was NULL → escalation
+      open). Hardening block sets `search_path` on all `public.is_*`
+      helpers (tolerant DO block; the literal `ALTER FUNCTION public.is_agent()`
+      failed because those exact names don't exist in prod). Client side:
+      `updateAgent()` in `src/services/auth.service.ts` narrowed to
+      `AgentSelfUpdate` (`Pick` name/phone/bio/photo_url) — still
+      uncommitted in working tree.
 - [~] **P0-4 · Canonical/hreflang dynamic** — implemented.
       `netlify/edge-functions/og-rewrite.ts` now rewrites canonical +
       hreflang per route on all pages (`config.path` widened to
