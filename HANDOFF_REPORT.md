@@ -18,16 +18,19 @@ pero sin aplicar/desplegar, hoy está **en vivo**.
 | P0-1 escalada de privilegios | ✅ **SQL aplicado en prod + verificado**. La política real era `agents_update_own` (NO "Agent can update own row"; la BD prod no se construyó desde las migraciones numeradas). Recreada con `WITH CHECK` que congela `role`/`is_active`. Verificado con `pg_policies`: `check_expr` ya no es NULL. |
 | P0-4 SEO + P0-5 drift + funciones + ErrorBoundary | ✅ **commiteado y pusheado a main** (commits `a287a82a`, `5fda9950`, `4f0abf77`, `8cbd2053`). Netlify auto-deploya. |
 
-### ⚠️ Boundary del owner pendiente (verificar tras deploy)
+### Env vars de Netlify — ✅ VERIFICADAS 2026-06-01 (vía netlify CLI)
 
-- **Env vars de Netlify para las FUNCIONES**: `translate-property` ahora
-  EXIGE un JWT de agente activo (valida contra `SUPABASE_URL/auth/v1/user`).
-  Si `SUPABASE_URL` + `SUPABASE_ANON_KEY` no están en el contexto
-  **Functions** de Netlify, la auto-traducción del admin dejará de
-  funcionar (el sitio público NO se ve afectado). Verificar en Netlify →
-  Site settings → Env vars que existan para Functions.
-- El `prebuild` del sitemap es tolerante (nunca rompe el build), pero sin
-  esas vars el sitemap solo incluirá páginas estáticas (no posts/props).
+- `translate-property` lee `SUPABASE_URL || VITE_SUPABASE_URL` y
+  `SUPABASE_ANON_KEY || VITE_SUPABASE_ANON_KEY` (tiene fallback). En
+  Netlify existen `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY` con scope
+  **All** (visibles para Functions), y `DEEPSEEK_API_KEY` con scope
+  Builds/Functions/Runtime. **→ La auto-traducción del admin funciona sin
+  cambios.** No hacen falta versiones sin `VITE_`.
+- El `prebuild` del sitemap es tolerante (nunca rompe el build); con las
+  `VITE_*` presentes genera el sitemap completo.
+- **Pendiente (mejora, no bug):** `notify-lead` no envía notificación
+  email/Telegram porque faltan `RESEND_API_KEY` y `TELEGRAM_BOT_TOKEN`/
+  `TELEGRAM_CHAT_ID`. Los leads SÍ se guardan en la BD; solo no hay aviso.
 
 ### Hallazgo importante (para futuras migraciones)
 
