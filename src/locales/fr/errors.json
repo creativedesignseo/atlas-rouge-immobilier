@@ -1,1 +1,8 @@
-{}
+{
+  "boundary": {
+    "title": "Une erreur est survenue",
+    "message": "Quelque chose s'est mal passé. Vous pouvez recharger la page pour réessayer.",
+    "reload": "Recharger la page",
+    "home": "Retour à l'accueil"
+  }
+}

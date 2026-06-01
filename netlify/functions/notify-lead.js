@@ -27,6 +27,31 @@ const TO_EMAIL = process.env.AGENT_NOTIFY_EMAIL || 'info@atlasrouge.ma'
 const FROM_EMAIL =
   process.env.AGENT_NOTIFY_FROM || 'Atlas Rouge <noreply@atlasrouge.ma>'
 
+// Public endpoint (anonymous forms POST here), so we cannot require a JWT.
+// Defense is CORS + origin allowlist + payload validation. A robust rate
+// limit / captcha is tracked as P1.
+const ALLOWED_ORIGINS = (
+  process.env.ALLOWED_ORIGINS || 'https://atlasrouge.com,https://www.atlasrouge.com'
+)
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean)
+
+function resolveCors(event) {
+  const origin = event.headers.origin || event.headers.Origin || ''
+  const allowAll = process.env.CONTEXT && process.env.CONTEXT !== 'production'
+  const allowed = !origin || allowAll || ALLOWED_ORIGINS.includes(origin)
+  return {
+    allowed,
+    headers: {
+      'Access-Control-Allow-Origin': allowed ? origin || ALLOWED_ORIGINS[0] : ALLOWED_ORIGINS[0],
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      Vary: 'Origin',
+    },
+  }
+}
+
 function escapeHtml(s = '') {
   return String(s)
     .replace(/&/g, '&amp;')
@@ -125,19 +150,27 @@ async function sendTelegram(lead) {
 }
 
 exports.handler = async (event) => {
+  const cors = resolveCors(event)
+
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 204, headers: cors.headers, body: '' }
+  }
+  if (!cors.allowed) {
+    return { statusCode: 403, headers: cors.headers, body: 'Origin not allowed' }
+  }
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method not allowed' }
+    return { statusCode: 405, headers: cors.headers, body: 'Method not allowed' }
   }
   let lead
   try {
     lead = JSON.parse(event.body || '{}')
   } catch {
-    return { statusCode: 400, body: 'Invalid JSON' }
+    return { statusCode: 400, headers: cors.headers, body: 'Invalid JSON' }
   }
 
   // Validación mínima — al menos un canal de contacto y un tipo
   if (!lead.type || (!lead.email && !lead.phone)) {
-    return { statusCode: 400, body: 'Missing type or contact (email/phone)' }
+    return { statusCode: 400, headers: cors.headers, body: 'Missing type or contact (email/phone)' }
   }
 
   console.log('[notify-lead]', { type: lead.type, name: lead.name, email: lead.email })
@@ -149,7 +182,7 @@ exports.handler = async (event) => {
 
   return {
     statusCode: 200,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { ...cors.headers, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       ok: true,
       channels: results.map((r) =>

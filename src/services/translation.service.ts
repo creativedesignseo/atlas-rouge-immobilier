@@ -1,3 +1,4 @@
+import { supabase } from '@/lib/supabase'
 import type { SupportedLanguage } from '@/i18n'
 
 export interface TranslatableProperty {
@@ -35,11 +36,17 @@ export async function autoTranslateProperty(
   content: TranslatableProperty,
   sourceLang: SupportedLanguage
 ): Promise<Partial<Record<SupportedLanguage, TranslatedPropertyContent>>> {
+  // Admin-only endpoint — attach the current Supabase session so the function
+  // can reject anonymous callers (it validates the Bearer token server-side).
+  const { data: { session } } = await supabase.auth.getSession()
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+  if (session?.access_token) {
+    headers.Authorization = `Bearer ${session.access_token}`
+  }
+
   const response = await fetch('/.netlify/functions/translate-property', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers,
     body: JSON.stringify({ sourceLang, content }),
   })
 

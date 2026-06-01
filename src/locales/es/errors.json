@@ -1,1 +1,8 @@
-{}
+{
+  "boundary": {
+    "title": "Se ha producido un error",
+    "message": "Algo ha salido mal. Puedes recargar la página para volver a intentarlo.",
+    "reload": "Recargar la página",
+    "home": "Volver al inicio"
+  }
+}

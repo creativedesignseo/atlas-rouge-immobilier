@@ -1,6 +1,7 @@
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from '@/hooks/useAuth'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 import './i18n'
 import './index.css'
 import App from './App.tsx'
@@ -32,8 +33,10 @@ window.addEventListener('unhandledrejection', (e) => recoverFromStaleChunk(e.rea
 
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </ErrorBoundary>
   </BrowserRouter>,
 )
