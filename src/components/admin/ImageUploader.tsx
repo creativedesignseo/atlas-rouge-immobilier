@@ -15,7 +15,11 @@ const COMPRESSION_OPTS = {
   fileType: 'image/webp' as const,
   initialQuality: 0.82,
   maxSizeMB: 1,
-  useWebWorker: true,
+  // Must stay false: with the worker enabled the library tries to load its
+  // script from cdn.jsdelivr.net, which our strict CSP (script-src 'self')
+  // blocks — breaking every upload. Running on the main thread is fine for the
+  // handful of images uploaded at once in the admin.
+  useWebWorker: false,
 }
 
 // Accept generous input sizes; compression brings them well under 1MB.
