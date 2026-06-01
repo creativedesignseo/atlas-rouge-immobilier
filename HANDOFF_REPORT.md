@@ -4,6 +4,46 @@
 
 ---
 
+## CIERRE de sesión — Claude Opus 4.8 — 2026-06-01 (tarde)
+
+### Lo que SÍ se resolvió y desplegó hoy (todo verificado en vivo)
+- **Migraciones aplicadas en prod** (vía `npm run migrate`, Management API + PAT):
+  `006` (escalada privilegios), `007` (storage property-images RLS), `008`
+  (unificar `is_admin()` → reconoce `agents.role='admin'`), `009` (cerrar fuga
+  PII de contact_submissions).
+- **Crear inmueble FUNCIONA end-to-end** — verificado por mí con Playwright en
+  prod: traducir → 200, subir AVIF→WebP → 200, insert propiedad → 201.
+- Fixes de código desplegados: imágenes (createImageBitmap nativo, sin worker
+  CSP), pestañas de traducción (`key`), robustez (signOut instantáneo, timeouts,
+  auto-logout en 401), tooling de migraciones + auditoría RLS (`npm run audit:rls`).
+
+### ⚠️ El bloqueo final NO era el código — era el NAVEGADOR del owner
+El owner veía "Adaptando…"/"Subiendo…" colgados y "Login timed out". Diagnóstico
+hecho **en su Mac** (el Bash de Claude corre en la máquina del owner):
+- Red **perfecta**: curl a Supabase responde 401 en 0,3s por IPv4 **y** IPv6.
+  Sin proxy, sin firewall, sin VPN, sin bloqueo en /etc/hosts, DNS OK.
+- Causa: **candado de `navigator.locks` atascado** en el navegador (supabase-js
+  lo usa para sincronizar la sesión entre pestañas). El terminal no lo usa →
+  funciona; los navegadores sí → se cuelgan ANTES de salir a la red. Afecta a
+  Chrome e Safari por igual (es por-navegador). **Solución: cerrar el navegador
+  por completo / reiniciar el equipo** libera el candado. El owner va a reiniciar.
+- **Contribuí al lío**: mis pruebas en vivo hacían login+logout con la cuenta del
+  owner, y el logout global de Supabase **revocaba su sesión del navegador** (de
+  ahí los 401). **REGLA: NO volver a hacer login/logout con la cuenta del owner
+  (creativedesignseo@gmail.com / Sofia) para verificar.** Para validar contra la
+  BD usar la Management API (PAT) o curl sin tocar la sesión del navegador.
+
+### Próximo al volver
+1. El owner reinicia → reabre navegador → entra al admin → debería poder crear
+   inmuebles (red OK + código OK + candado liberado).
+2. Si AÚN se cuelga: plan B = Chrome DevTools MCP ("Debug with AI") para que
+   Claude se conecte al Chrome real del owner; o revisar config de supabase-js
+   para no depender de `navigator.locks`.
+3. Deuda menor pendiente (no bloquea): storage `agent-avatars` sin UPDATE/DELETE;
+   políticas RLS duplicadas; tabla `admins` obsoleta. Ver `docs/admin-rls-audit.md`.
+
+---
+
 ## Intervención: Claude Opus 4.8 — 2026-06-01 (Phase 0 DESPLEGADA)
 
 Autor: Claude Opus 4.8.
