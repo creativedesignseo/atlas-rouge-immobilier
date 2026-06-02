@@ -52,7 +52,7 @@ showing "Prix Nous Consulter" in place of the number).
   see "Prix Nous Consulter" on home/search/detail while the agent still sees
   the number in the admin. Column existence not confirmed by a direct query
   (Supabase MCP returned "no permission"; relying on the migrator's success).
-- Not committed, not deployed (awaiting owner OK).
+- Committed `16dae844` and pushed to `main` (Netlify auto-deploy triggered).
 
 ## Open risks / next step
 - Run the real end-to-end check (login admin, edit a property, toggle, save).

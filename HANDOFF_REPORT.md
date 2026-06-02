@@ -4,6 +4,31 @@
 
 ---
 
+## CIERRE de sesión — Claude Opus 4.8 — 2026-06-02 (precio "a consultar")
+
+**Precio opcionalmente oculto → DESPLEGADO** (commit `16dae844`, push a `main`).
+Nueva perilla (`Switch`) junto al precio en el form admin: al activarla, el
+inmueble se marca `price_on_request`. El precio se sigue guardando (el agente
+lo ve en el admin); el sitio público muestra "Prix Nous Consulter" / "Precio a
+consultar" / "Price on request" en vez del número. Flag booleano end-to-end
+imitando `is_featured`: migración `010_price_on_request.sql` (aplicada vía
+Management API), tipos (`Property`, `PropertyRow`), mapeo público, servicio
+admin (form data / insert / edit), y los 6 puntos de render públicos. La
+lógica de display está centralizada en `src/hooks/usePropertyPrice.ts`. En la
+página de detalle se oculta también el €/m² cuando el precio es a consultar.
+
+Verificación: `verify.sh` verde (tsc + lint + build). **Pendiente: prueba
+funcional end-to-end** (login admin → activar perilla → guardar → ver el texto
+en home/búsqueda/detalle, confirmar que el agente sigue viendo el número). NO
+probado aún en app corriendo — el deploy de Netlify estaba en curso al cerrar.
+
+Nota: este commit también incluye el rediseño de la tabla de specs de
+`PropertyDetail.tsx` (cambio que estaba sin commitear y entrelazado en el mismo
+archivo; no separable sin staging interactivo). Detalle:
+`progress/2026-06-02-price-on-request.md`.
+
+---
+
 ## CIERRE de sesión — Claude Opus 4.8 — 2026-06-01 (perf panel admin)
 
 **Retraso al cargar el panel → RESUELTO Y DESPLEGADO** (commit `3698de76`).

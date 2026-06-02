@@ -4,11 +4,11 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-06-02 (precio "a consultar" implementado, sin desplegar)
+**Last updated:** 2026-06-02 (precio "a consultar" desplegado — falta prueba end-to-end)
 
 ---
 
-## Precio opcionalmente oculto ("Prix Nous Consulter") — 2026-06-02 🟡 IMPLEMENTADO, SIN DESPLEGAR
+## Precio opcionalmente oculto ("Prix Nous Consulter") — 2026-06-02 ✅ DESPLEGADO (`16dae844`)
 
 Nueva perilla (Switch) junto al precio en el form admin: al activarla, el
 inmueble se marca `price_on_request`. El precio se sigue guardando (el agente
