@@ -7,6 +7,7 @@ import { Save, ArrowLeft, Plus, X, Wand2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
 import ImageUploader from './ImageUploader'
+import { Switch } from '@/components/ui/switch'
 import { getNeighborhoods } from '@/services/neighborhood.service'
 import type { Neighborhood } from '@/data/neighborhoods'
 import { autoTranslateProperty } from '@/services/translation.service'
@@ -49,6 +50,7 @@ const propertySchema = z.object({
   is_exclusive: z.boolean(),
   has_video: z.boolean(),
   has_3d_tour: z.boolean(),
+  price_on_request: z.boolean(),
   // Multilingual fields (optional — filled via translation tabs)
   title_en: z.string().nullable().optional(),
   title_fr: z.string().nullable().optional(),
@@ -144,6 +146,7 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
       is_exclusive: false,
       has_video: false,
       has_3d_tour: false,
+      price_on_request: false,
       ...defaultValues,
     },
   })
@@ -450,6 +453,16 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
                   className="w-full px-4 py-2.5 border border-border-warm rounded-xl focus:outline-none focus:ring-2 focus:ring-terracotta/30 focus:border-terracotta transition-colors"
                 />
                 {errors.price_eur && <p className="text-red-500 text-xs mt-1">{errors.price_eur.message}</p>}
+                <Controller
+                  name="price_on_request"
+                  control={control}
+                  render={({ field }) => (
+                    <label className="flex items-center gap-2.5 mt-2.5 cursor-pointer">
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
+                      <span className="text-sm text-text-secondary">{t('propertyForm.priceOnRequest')}</span>
+                    </label>
+                  )}
+                />
               </div>
 
               <div>

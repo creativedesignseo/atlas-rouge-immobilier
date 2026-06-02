@@ -10,7 +10,7 @@ import { getProperties } from '@/services/property.service'
 import { getNeighborhoods } from '@/services/neighborhood.service'
 
 import { useFavorites } from '@/hooks/useFavorites'
-import { useCurrency } from '@/hooks/useCurrency'
+import { usePropertyPrice } from '@/hooks/usePropertyPrice'
 import { useLang } from '@/hooks/useLang'
 import { getImageUrl } from '@/lib/storage'
 import { cn } from '@/lib/utils'
@@ -191,10 +191,10 @@ function FilterSection({ title, children, defaultOpen = true }: { title: string;
 
 function PropertyCardList({ property }: { property: Property }) {
   const { toggleFavorite, isFavorite } = useFavorites()
-  const { formatPrice } = useCurrency()
+  const propertyPrice = usePropertyPrice()
   const { path } = useLang()
   const { t } = useTranslation('search')
-  const priceDisplay = formatPrice(property.priceEUR)
+  const priceDisplay = propertyPrice(property)
   const image = getImageUrl(property.images[0] || 'property-01.jpg', { width: 400, height: 300, resize: 'cover' })
   const transactionLabel = property.transaction === 'sale' ? t('card.forSale') : t('card.forRent')
 
@@ -253,17 +253,17 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
   const markersRef = useRef<mapboxgl.Marker[]>([])
   const popupsRef = useRef<mapboxgl.Popup[]>([])
   const [mapError, setMapError] = useState(false)
-  const { formatPrice } = useCurrency()
+  const propertyPrice = usePropertyPrice()
   const { path } = useLang()
 
   const onHoverRef = useRef(onHover)
   const onSelectRef = useRef(onSelect)
-  const formatPriceRef = useRef(formatPrice)
+  const propertyPriceRef = useRef(propertyPrice)
   const pathRef = useRef(path)
   useLayoutEffect(() => {
     onHoverRef.current = onHover
     onSelectRef.current = onSelect
-    formatPriceRef.current = formatPrice
+    propertyPriceRef.current = propertyPrice
     pathRef.current = path
   })
 
@@ -329,7 +329,7 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
 
     properties.forEach(p => {
       const isHovered = hoveredId === p.slug
-      const priceLabel = (p.priceEUR / 1000).toFixed(0) + 'k €'
+      const priceLabel = p.priceOnRequest ? propertyPriceRef.current(p) : (p.priceEUR / 1000).toFixed(0) + 'k €'
 
       const el = document.createElement('div')
       el.style.cursor = 'pointer'
@@ -376,7 +376,7 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
           </div>
           <div style="padding:12px;background:white;border-radius:0 0 10px 10px;">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-              <p style="color:#B5533A;font-size:16px;font-weight:700;margin:0;flex:1;">${formatPriceRef.current(p.priceEUR)}</p>
+              <p style="color:#B5533A;font-size:16px;font-weight:700;margin:0;flex:1;">${propertyPriceRef.current(p)}</p>
               ${p.isExclusive ? '<span style="background:#315C45;color:white;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;">Exclusivité</span>' : ''}
             </div>
             <p style="color:#1E1E1E;font-size:14px;font-weight:600;margin:0 0 2px 0;">${p.title}</p>
@@ -470,7 +470,7 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
 
 function PropertyCardCompact({ property, isHovered = false }: { property: Property; isHovered?: boolean }) {
   const { toggleFavorite, isFavorite } = useFavorites()
-  const { formatPrice } = useCurrency()
+  const propertyPrice = usePropertyPrice()
   const { path } = useLang()
   const { t } = useTranslation('search')
   const image = getImageUrl(property.images[0] || 'property-01.jpg', { width: 400, height: 300, resize: 'cover' })
@@ -487,7 +487,7 @@ function PropertyCardCompact({ property, isHovered = false }: { property: Proper
         {property.isExclusive && <span className="absolute top-5 left-1 bg-gold text-midnight text-[9px] font-semibold px-1.5 py-0.5 rounded">Excl.</span>}
       </div>
       <div className="flex-1 min-w-0 py-0.5">
-        <p className="text-terracotta font-inter text-[14px] font-bold leading-tight">{formatPrice(property.priceEUR)}</p>
+        <p className="text-terracotta font-inter text-[14px] font-bold leading-tight">{propertyPrice(property)}</p>
         <p className="text-text-primary text-[12px] font-medium truncate mt-0.5">{property.title}</p>
         <p className="text-text-secondary text-[11px] mt-0.5">{property.neighborhood}, Marrakech</p>
         <div className="flex items-center gap-2 text-text-secondary text-[11px] mt-1">
@@ -507,10 +507,10 @@ function PropertyCardCompact({ property, isHovered = false }: { property: Proper
 
 function PropertyCardGrid({ property, isHovered = false }: { property: Property; isHovered?: boolean }) {
   const { toggleFavorite, isFavorite } = useFavorites()
-  const { formatPrice } = useCurrency()
+  const propertyPrice = usePropertyPrice()
   const { path } = useLang()
   const { t } = useTranslation('search')
-  const priceDisplay = formatPrice(property.priceEUR)
+  const priceDisplay = propertyPrice(property)
   const image = getImageUrl(property.images[0] || 'property-01.jpg', { width: 400, height: 300, resize: 'cover' })
   const transactionLabel = property.transaction === 'sale' ? t('card.forSale') : t('card.forRent')
 

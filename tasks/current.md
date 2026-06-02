@@ -4,7 +4,29 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-06-01 (modal de borrado → diálogo del sistema de diseño, desplegado)
+**Last updated:** 2026-06-02 (precio "a consultar" implementado, sin desplegar)
+
+---
+
+## Precio opcionalmente oculto ("Prix Nous Consulter") — 2026-06-02 🟡 IMPLEMENTADO, SIN DESPLEGAR
+
+Nueva perilla (Switch) junto al precio en el form admin: al activarla, el
+inmueble se marca `price_on_request`. El precio se sigue guardando (el agente
+lo ve), pero el sitio público muestra "Prix Nous Consulter" / "Precio a
+consultar" / "Price on request" en vez del número. Flag booleano end-to-end
+(imita `is_featured`): migración `010`, tipos, servicios, form y los 6 puntos
+de render (PropertyCard, Search ×4 incl. mapa, PropertyDetail). Lógica de
+display centralizada en `src/hooks/usePropertyPrice.ts`.
+
+Estado: `verify.sh` verde; migración `010` aplicada vía Management API.
+Detalle: `progress/2026-06-02-price-on-request.md`.
+
+Pendiente:
+- [ ] Verificación real end-to-end (login admin → activar perilla → guardar →
+      ver el texto en home/search/detalle; confirmar que el agente sigue
+      viendo el número). Aún NO probado en app corriendo.
+- [ ] Commit (separar el rediseño de specs de PropertyDetail, que va aparte)
+      + push a `main` (auto-deploy Netlify) — solo con OK del owner.
 
 ---
 

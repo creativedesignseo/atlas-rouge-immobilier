@@ -24,6 +24,9 @@ export interface Property {
   isExclusive: boolean;
   hasVideo: boolean;
   has3DTour: boolean;
+  /** When true, hide the numeric price on the public site and show a
+   *  "contact us" label instead. The price is still stored internally. */
+  priceOnRequest?: boolean;
   createdAt: string;
 }
 

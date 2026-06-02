@@ -175,6 +175,7 @@
     "isExclusive": "Anuncio exclusivo",
     "hasVideo": "Tiene vídeo",
     "has3dTour": "Tiene tour 3D",
+    "priceOnRequest": "Precio a consultar (ocultar precio)",
     "pricingSection": "Precio y superficie",
     "pricePerSqm": "Precio/m² (auto)",
     "roomsSection": "Estancias",

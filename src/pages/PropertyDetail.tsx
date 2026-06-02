@@ -3,10 +3,9 @@ import { useParams, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLang } from '@/hooks/useLang'
 import {
-  MapPin, Heart, Share2, X, Maximize, Bed, Bath, Home,
-  Waves, Car, Check, Phone, MessageCircle, User,
-  ChevronDown, ChevronUp, ArrowRight, Camera, Box,
-  TreePine, Info, FileText, Calculator,
+  MapPin, Heart, Share2, X, Check, Phone, MessageCircle, User,
+  ChevronDown, ChevronUp, ArrowRight, Camera,
+  Info, FileText, Calculator,
   Landmark, Percent, Briefcase
 } from 'lucide-react'
 // MapLibre se carga lazy desde components/property/LocationMap.tsx
@@ -17,7 +16,7 @@ import { submitContactForm } from '@/services/contact.service'
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 import PhoneField from '@/components/forms/PhoneField'
 import { useFavorites } from '@/hooks/useFavorites'
-import { useCurrency } from '@/hooks/useCurrency'
+import { usePropertyPrice } from '@/hooks/usePropertyPrice'
 import { useSiteSettings } from '@/hooks/useSiteSettings'
 import PropertyCard from '@/components/PropertyCard'
 import { getImageUrl } from '@/lib/storage'
@@ -26,41 +25,6 @@ import type { Property } from '@/data/properties'
 
 /* ───────────────────── constants ───────────────────── */
 
-const amenityIconMap: Record<string, React.ReactNode> = {
-  'Piscine': <Waves size={18} />,
-  'Piscine chauffee': <Waves size={18} />,
-  'Jardin': <TreePine size={18} />,
-  'Jardin paysager': <TreePine size={18} />,
-  'Terrasse': <Maximize size={18} />,
-  'Parking': <Car size={18} />,
-  'Garage': <Car size={18} />,
-  'Garage double': <Car size={18} />,
-  'Climatisation': <WindIcon />,
-  'Cheminée': <FlameIcon />,
-  'Ascenseur': <ArrowUpIcon />,
-  'Balcon': <Maximize size={18} />,
-  'Cuisine équipée': <KitchenIcon />,
-  'Domotique': <Box size={18} />,
-  'Salle de fitness': <DumbbellIcon />,
-  'Hammam': <Waves size={18} />,
-  'Tennis': <BallIcon />,
-  'Vue Atlas': <MountainIcon />,
-  'Patio': <Home size={18} />,
-  'Terrasse panoramique': <Maximize size={18} />,
-  'Fontaine centrale': <Waves size={18} />,
-  'Zelliges traditionnels': <StarIcon />,
-  'Vue golf': <FlagIcon />,
-  'Vue dégagée': <EyeIcon />,
-  'Piscine à débordement': <Waves size={18} />,
-  'Vue panoramique': <MountainIcon />,
-  'Salon marocain': <Home size={18} />,
-  'Parking 2 voitures': <Car size={18} />,
-  'Panneaux solaires': <SunIcon />,
-  'Système de sécurité': <ShieldIcon />,
-  'Portail électrique': <GateIcon />,
-  'Chauffage au sol': <FlameIcon />,
-}
-
 const guideLinks = [
   { labelKey: 'notaire', href: '/guide-achat-maroc#notaire', icon: <Landmark size={20} /> },
   { labelKey: 'frais', href: '/guide-achat-maroc#frais', icon: <Calculator size={20} /> },
@@ -68,22 +32,6 @@ const guideLinks = [
   { labelKey: 'fiscalite', href: '/guide-achat-maroc#fiscalite', icon: <FileText size={20} /> },
   { labelKey: 'gestion', href: '/guide-achat-maroc#gestion', icon: <Briefcase size={20} /> },
 ]
-
-/* ───────────────────── small icon components ───────────────────── */
-
-function WindIcon() { return (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2" /><path d="M9.6 4.6A2 2 0 1 1 11 8H2" /><path d="M12.6 19.4A2 2 0 1 0 14 16H2" /></svg>) }
-function FlameIcon() { return (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-2.072-2.143-3.5-6 .5 2.5 0 4.5-1.5 6-1.071 1.072-2.5 2.5-2.5 4.5a5 5 0 0 0 10 0Z" /><path d="M12.5 18a2.5 2.5 0 0 0 2.5-2.5c0-1.38-.5-2-1-3-1.072-2.143-2.072-2.143-3.5-6 .5 2.5 0 4.5-1.5 6-1.071 1.072-2.5 2.5-2.5 4.5a5 5 0 0 0 10 0Z" /></svg>) }
-function ArrowUpIcon() { return (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="m16 12-4-4-4 4" /><path d="M12 16V8" /></svg>) }
-function KitchenIcon() { return (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 7h18" /><path d="M3 11h18" /><path d="M6 21v-10a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v10" /><path d="M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2" /></svg>) }
-function DumbbellIcon() { return (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6.5 6.5 11 11" /><path d="m14 2 4 4" /><path d="m2 14 4 4" /><path d="M17.5 2.5 21 6" /><path d="M3 17.5 6.5 21" /><circle cx="14" cy="10" r="2" /><circle cx="10" cy="14" r="2" /></svg>) }
-function BallIcon() { return (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M4.9 4.9l14.2 14.2" /><path d="M12 2a14.5 14.5 0 0 1 0 20 14.5 14.5 0 0 1 0-20" /><path d="M2 12h20" /></svg>) }
-function MountainIcon() { return (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z" /><path d="M4.14 15.08c2.62-1.57 5.24-1.43 7.86.42 2.74 1.94 5.49 2 8.23.19" /></svg>) }
-function StarIcon() { return (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>) }
-function FlagIcon() { return (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" /><line x1="4" x2="4" y1="22" y2="15" /></svg>) }
-function EyeIcon() { return (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>) }
-function ShieldIcon() { return (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>) }
-function SunIcon() { return (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" /></svg>) }
-function GateIcon() { return (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18" /><path d="M5 21V7l8-4 8 4v14" /><path d="M5 10h16" /><path d="M9 21v-6h2v6" /><path d="M13 21v-6h2v6" /></svg>) }
 
 /* ───────────────────── Gallery Lightbox ───────────────────── */
 
@@ -388,16 +336,16 @@ function ContactPanel({ property, settings }: { property: Property; settings: Re
   )
 }
 
-/* ───────────────────── Spec Card ───────────────────── */
+/* ───────────────────── Info Row (label / value table) ───────────────────── */
 
-function SpecCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+function InfoRow({ label, value }: { label: string; value: string }) {
+  // Skip rows with no value (e.g. a property saved without a neighborhood) so
+  // the table never shows a dangling label.
+  if (!value || !value.trim()) return null
   return (
-    <div className="flex flex-col items-center text-center gap-2">
-      <div className="w-14 h-14 rounded-full bg-cream-warm flex items-center justify-center text-terracotta">{icon}</div>
-      <div>
-        <p className="text-[11px] text-text-secondary font-inter uppercase tracking-wide">{label}</p>
-        <p className="text-[18px] font-bold text-midnight font-inter">{value}</p>
-      </div>
+    <div className="grid grid-cols-[minmax(96px,40%)_1fr] gap-4 py-3.5 border-b border-border-warm">
+      <dt className="text-[12px] text-text-secondary font-inter font-medium uppercase tracking-wider self-center">{label}</dt>
+      <dd className="text-[15px] text-text-primary font-inter self-center">{value}</dd>
     </div>
   )
 }
@@ -405,11 +353,10 @@ function SpecCard({ icon, label, value }: { icon: React.ReactNode; label: string
 /* ───────────────────── Amenity Item ───────────────────── */
 
 function AmenityItem({ label }: { label: string }) {
-  const icon = amenityIconMap[label] || <Check size={18} />
   return (
-    <div className="flex items-center gap-2 py-1.5">
-      <span className="text-palm">{icon}</span>
-      <span className="text-[14px] text-text-primary font-inter">{label}</span>
+    <div className="flex items-center gap-2.5 py-2">
+      <Check size={16} strokeWidth={2.5} className="text-terracotta shrink-0" />
+      <span className="text-[15px] text-text-primary font-inter">{label}</span>
     </div>
   )
 }
@@ -421,7 +368,7 @@ export default function PropertyDetail() {
   const { t, i18n } = useTranslation('property')
   const { t: tc } = useTranslation('common')
   const { toggleFavorite, isFavorite } = useFavorites()
-  const { formatPrice } = useCurrency()
+  const propertyPrice = usePropertyPrice()
   const { settings } = useSiteSettings()
   const { path } = useLang()
 
@@ -660,8 +607,8 @@ export default function PropertyDetail() {
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="lg:w-[65%]">
             <div className="mb-6">
-              <p className="text-terracotta font-inter text-[32px] font-semibold mb-1">{formatPrice(property.priceEUR)}</p>
-              {pricePerM2 > 0 && <p className="text-text-secondary text-[14px] font-inter mb-2">{new Intl.NumberFormat('fr-FR').format(pricePerM2)} €/m²</p>}
+              <p className="text-terracotta font-inter text-[32px] font-semibold mb-1">{propertyPrice(property)}</p>
+              {!property.priceOnRequest && pricePerM2 > 0 && <p className="text-text-secondary text-[14px] font-inter mb-2">{new Intl.NumberFormat('fr-FR').format(pricePerM2)} €/m²</p>}
               <h1 className="font-display text-[28px] font-medium text-midnight mb-2">{property.title}</h1>
               <div className="flex items-center gap-2 text-text-secondary text-[15px] font-inter mb-2">
                 <MapPin size={16} /> <span>{property.neighborhood}, Marrakech</span>
@@ -671,16 +618,25 @@ export default function PropertyDetail() {
               </p>
             </div>
 
-            <div className="bg-white rounded-card border border-border-warm p-5 mb-6">
-              <div className="flex flex-wrap gap-y-4 gap-x-6">
-                <SpecCard icon={<Maximize size={22} />} label={t('surfaceLiving')} value={`${property.surface} m²`} />
-                {property.landSurface && property.landSurface > 0 && <SpecCard icon={<TreePine size={22} />} label={t('surfaceLand')} value={`${property.landSurface} m²`} />}
-                <SpecCard icon={<Home size={22} />} label={t('rooms')} value={`${property.rooms}`} />
-                <SpecCard icon={<Bed size={22} />} label={t('bedrooms')} value={`${property.bedrooms}`} />
-                <SpecCard icon={<Bath size={22} />} label={t('bathrooms')} value={`${property.bathrooms}`} />
-                <SpecCard icon={<Waves size={22} />} label={t('pool')} value={property.amenities.some(a => a.toLowerCase().includes('piscine')) ? tc('yes') : tc('no')} />
-                <SpecCard icon={<Maximize size={22} />} label={t('terrace')} value={property.amenities.some(a => a.toLowerCase().includes('terrasse')) ? tc('yes') : tc('no')} />
-                <SpecCard icon={<Car size={22} />} label={t('parking')} value={property.amenities.some(a => a.toLowerCase().includes('parking') || a.toLowerCase().includes('garage')) ? tc('yes') : tc('no')} />
+            <div className="mb-8">
+              <h3 className="font-display text-[22px] font-semibold text-midnight mb-3">{t('details.title')}</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-x-12">
+                <dl className="border-t border-border-warm">
+                  <InfoRow label={t('details.reference')} value={property.id.slice(0, 8).toUpperCase()} />
+                  <InfoRow label={t('details.city')} value={property.city} />
+                  <InfoRow label={t('details.transaction')} value={tc(property.transaction)} />
+                  <InfoRow label={t('details.type')} value={tc(property.type)} />
+                  <InfoRow label={t('details.neighborhood')} value={property.neighborhood} />
+                </dl>
+                <dl className="border-t border-border-warm">
+                  <InfoRow label={t('details.surface')} value={`${property.surface} m²`} />
+                  {property.landSurface && property.landSurface > 0 && (
+                    <InfoRow label={t('details.landSurface')} value={`${property.landSurface} m²`} />
+                  )}
+                  <InfoRow label={t('details.rooms')} value={`${property.rooms}`} />
+                  <InfoRow label={t('details.bedrooms')} value={`${property.bedrooms}`} />
+                  <InfoRow label={t('details.bathrooms')} value={`${property.bathrooms}`} />
+                </dl>
               </div>
             </div>
 
@@ -714,9 +670,9 @@ export default function PropertyDetail() {
             )}
 
             {property.amenities.length > 0 && (
-              <div className="mb-8 bg-cream-warm rounded-card p-6">
+              <div className="mb-8">
                 <h3 className="font-display text-[22px] font-semibold text-midnight mb-4">{t('amenitiesAndServices')}</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6">
                   {property.amenities.map(a => <AmenityItem key={a} label={amenityLabel(a, t)} />)}
                 </div>
               </div>

@@ -109,6 +109,7 @@ export type PropertyRow = {
   is_exclusive: boolean
   has_video: boolean
   has_3d_tour: boolean
+  price_on_request: boolean
   agent_id: string | null
   created_at: string
   // Multilingual fields

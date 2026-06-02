@@ -35,6 +35,7 @@ export interface PropertyFormData {
   is_exclusive: boolean
   has_video: boolean
   has_3d_tour: boolean
+  price_on_request: boolean
   // Multilingual fields (optional)
   title_en?: string | null
   title_fr?: string | null
@@ -75,6 +76,7 @@ function toDbInsert(data: PropertyFormData, agentId?: string): PropertyInsert {
     is_exclusive: data.is_exclusive,
     has_video: data.has_video,
     has_3d_tour: data.has_3d_tour,
+    price_on_request: data.price_on_request,
     agent_id: agentId || null,
     title_en: data.title_en ?? null,
     title_fr: data.title_fr ?? null,
@@ -323,6 +325,7 @@ export async function getPropertyForEdit(slug: string): Promise<PropertyFormData
     is_exclusive: row.is_exclusive,
     has_video: row.has_video,
     has_3d_tour: row.has_3d_tour,
+    price_on_request: row.price_on_request ?? false,
     title_en: row.title_en ?? null,
     title_fr: row.title_fr ?? null,
     title_es: row.title_es ?? null,

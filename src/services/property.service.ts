@@ -88,6 +88,7 @@ function mapDbToProperty(row: Record<string, unknown>, lang = getCurrentLanguage
     isExclusive: row.is_exclusive as boolean,
     hasVideo: row.has_video as boolean,
     has3DTour: row.has_3d_tour as boolean,
+    priceOnRequest: (row.price_on_request as boolean) ?? false,
     createdAt: row.created_at as string,
   }
 }

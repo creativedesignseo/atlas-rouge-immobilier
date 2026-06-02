@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { Heart, Bed, Bath, Maximize, Camera } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useFavorites } from '@/hooks/useFavorites'
-import { useCurrency } from '@/hooks/useCurrency'
+import { usePropertyPrice } from '@/hooks/usePropertyPrice'
 import { useLang } from '@/hooks/useLang'
 import { getImageUrl } from '@/lib/storage'
 import { amenityLabel } from '@/lib/amenities'
@@ -27,13 +27,13 @@ interface PropertyCardProps {
  */
 export default function PropertyCard({ property }: PropertyCardProps) {
   const { toggleFavorite, isFavorite } = useFavorites()
-  const { formatPrice } = useCurrency()
+  const propertyPrice = usePropertyPrice()
   const { path } = useLang()
   const { t } = useTranslation('property')
   const { t: tc } = useTranslation('common')
 
   const image = getImageUrl(property.images[0] || 'property-01.jpg', { width: 800, height: 600, resize: 'cover' })
-  const priceDisplay = formatPrice(property.priceEUR)
+  const priceDisplay = propertyPrice(property)
   const propertyPath = path(`/property/${property.slug}`)
   const fav = isFavorite(property.slug)
 
