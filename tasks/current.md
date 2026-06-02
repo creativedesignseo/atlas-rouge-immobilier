@@ -4,11 +4,11 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-06-02 (precio "a consultar" desplegado — falta prueba end-to-end)
+**Last updated:** 2026-06-02 (precio "a consultar" + rediseño tabla specs — DESPLEGADO Y VERIFICADO)
 
 ---
 
-## Precio opcionalmente oculto ("Prix Nous Consulter") — 2026-06-02 ✅ DESPLEGADO (`16dae844`)
+## Precio opcionalmente oculto ("Prix Nous Consulter") — 2026-06-02 ✅ DESPLEGADO Y VERIFICADO (`16dae844`)
 
 Nueva perilla (Switch) junto al precio en el form admin: al activarla, el
 inmueble se marca `price_on_request`. El precio se sigue guardando (el agente
@@ -18,15 +18,29 @@ consultar" / "Price on request" en vez del número. Flag booleano end-to-end
 de render (PropertyCard, Search ×4 incl. mapa, PropertyDetail). Lógica de
 display centralizada en `src/hooks/usePropertyPrice.ts`.
 
-Estado: `verify.sh` verde; migración `010` aplicada vía Management API.
+**Verificado en runtime (Claude, vía Management API + Playwright, SIN tocar la
+sesión del owner):** puse el flag a una propiedad de prueba → la ficha muestra
+"Precio a consultar" en el precio principal, y su card en `/comprar` también
+("villa850: false"). Flag revertido tras la prueba. El número `850.000` que
+apareció en la sección "similares" del preview era **fallback a datos mock**
+(`getSimilarProperties` cae a `mockProperties` cuando la query falla/timeout),
+no una fuga de la feature. `verify.sh` verde; migración `010` aplicada.
 Detalle: `progress/2026-06-02-price-on-request.md`.
 
-Pendiente:
-- [ ] Verificación real end-to-end (login admin → activar perilla → guardar →
-      ver el texto en home/search/detalle; confirmar que el agente sigue
-      viendo el número). Aún NO probado en app corriendo.
-- [ ] Commit (separar el rediseño de specs de PropertyDetail, que va aparte)
-      + push a `main` (auto-deploy Netlify) — solo con OK del owner.
+> ⚠️ Observación (separada, pre-existente): `getSimilarProperties` hace
+> fallback a inmuebles MOCK si su query falla. En el preview local cayó a mock.
+> Conviene comprobar que en PROD no muestre inmuebles falsos en "similares".
+
+---
+
+## Rediseño tabla de specs (ficha) estilo BARNES — 2026-06-02 ✅ DESPLEGADO Y VERIFICADO
+
+En `PropertyDetail`, las specs pasaron de tarjetas con icono a **tabla
+label/valor a 2 columnas con líneas finas, sin iconos** (`InfoRow`); los
+equipamientos usan un **check uniforme** (sin los iconos variados), a 4
+columnas. Eliminado código muerto (`amenityIconMap` + 13 SVG + imports lucide).
+Filas sin valor se ocultan (barrio vacío no deja etiqueta colgando). Verificado
+con Playwright (2 fichas). Shipeado dentro de `16dae844` (junto al precio).
 
 ---
 
