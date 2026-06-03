@@ -75,11 +75,13 @@
   },
   "sidebar": {
     "dashboard": "Dashboard",
-    "properties": "Properties","blog": "Blog",
+    "properties": "Properties",
+    "blog": "Blog",
     "contacts": "Contacts",
     "profile": "My profile",
     "settings": "Settings",
-    "backToSite": "Back to site"
+    "backToSite": "Back to site",
+    "neighborhoods": "Neighborhoods"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -293,5 +295,56 @@
     "errorShort": "Minimum 8 characters",
     "genericError": "Something went wrong. Please try again.",
     "backToLogin": "Back to login"
+  },
+  "neighborhoods": {
+    "title": "Neighborhoods & areas",
+    "subtitle": "Create, edit and deactivate the neighborhoods available for listings.",
+    "new": "New neighborhood",
+    "editTitle": "Edit neighborhood",
+    "empty": "No neighborhoods yet",
+    "loadError": "Could not load neighborhoods",
+    "saveError": "Could not save",
+    "deleted": "Neighborhood deleted",
+    "deactivated": "Neighborhood deactivated",
+    "activated": "Neighborhood activated",
+    "active": "Active",
+    "inactive": "Inactive",
+    "deactivate": "Deactivate",
+    "activate": "Activate",
+    "cannotDelete": "Can't delete: {{count}} property(ies) linked. Deactivate it or reassign the properties first.",
+    "deleteTitle": "Delete neighborhood",
+    "deleteConfirm": "Delete \"{{name}}\"? This cannot be undone.",
+    "adminOnly": "Only admins can manage neighborhoods.",
+    "table": {
+      "image": "Image",
+      "name": "Name",
+      "properties": "Properties",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "form": {
+      "image": "Neighborhood photo",
+      "name": "Name",
+      "namePlaceholder": "e.g. Route de Ouarzazate",
+      "slug": "Slug (URL)",
+      "slugHint": "Generated from the name. Lowercase, numbers and hyphens only.",
+      "subtitle": "Subtitle",
+      "subtitlePlaceholder": "e.g. Au départ vers l'Atlas",
+      "description": "Description",
+      "descriptionPlaceholder": "Short description of the neighborhood",
+      "active": "Visible on the site (active)",
+      "save": "Save neighborhood",
+      "uploading": "Uploading…",
+      "dropImage": "Click to upload a photo",
+      "removeImage": "Remove image",
+      "invalidImage": "The file must be an image",
+      "imageTooLarge": "The image is too large",
+      "uploadFailed": "Image upload failed",
+      "imageRequired": "Add a neighborhood photo",
+      "nameRequired": "Name and slug are required",
+      "created": "Neighborhood created",
+      "updated": "Neighborhood updated",
+      "saveError": "Could not save the neighborhood"
+    }
   }
 }

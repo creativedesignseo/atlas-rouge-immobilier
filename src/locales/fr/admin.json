@@ -75,11 +75,13 @@
   },
   "sidebar": {
     "dashboard": "Tableau de bord",
-    "properties": "Biens","blog": "Blog",
+    "properties": "Biens",
+    "blog": "Blog",
     "contacts": "Contacts",
     "profile": "Mon profil",
     "settings": "Paramètres",
-    "backToSite": "Retour au site"
+    "backToSite": "Retour au site",
+    "neighborhoods": "Quartiers"
   },
   "dashboard": {
     "title": "Tableau de bord",
@@ -293,5 +295,56 @@
     "errorShort": "Minimum 8 caractères",
     "genericError": "Une erreur s'est produite. Veuillez réessayer.",
     "backToLogin": "Retour à la connexion"
+  },
+  "neighborhoods": {
+    "title": "Quartiers et zones",
+    "subtitle": "Créez, modifiez et désactivez les quartiers disponibles pour les biens.",
+    "new": "Nouveau quartier",
+    "editTitle": "Modifier le quartier",
+    "empty": "Aucun quartier pour le moment",
+    "loadError": "Impossible de charger les quartiers",
+    "saveError": "Enregistrement impossible",
+    "deleted": "Quartier supprimé",
+    "deactivated": "Quartier désactivé",
+    "activated": "Quartier activé",
+    "active": "Actif",
+    "inactive": "Inactif",
+    "deactivate": "Désactiver",
+    "activate": "Activer",
+    "cannotDelete": "Suppression impossible : {{count}} bien(s) associé(s). Désactivez-le ou réaffectez les biens d'abord.",
+    "deleteTitle": "Supprimer le quartier",
+    "deleteConfirm": "Voulez-vous vraiment supprimer « {{name}} » ? Cette action est irréversible.",
+    "adminOnly": "Seuls les administrateurs peuvent gérer les quartiers.",
+    "table": {
+      "image": "Image",
+      "name": "Nom",
+      "properties": "Biens",
+      "status": "Statut",
+      "actions": "Actions"
+    },
+    "form": {
+      "image": "Photo du quartier",
+      "name": "Nom",
+      "namePlaceholder": "ex. Route de Ouarzazate",
+      "slug": "Slug (URL)",
+      "slugHint": "Généré à partir du nom. Minuscules, chiffres et tirets uniquement.",
+      "subtitle": "Sous-titre",
+      "subtitlePlaceholder": "ex. Au départ vers l'Atlas",
+      "description": "Description",
+      "descriptionPlaceholder": "Brève description du quartier",
+      "active": "Visible sur le site (actif)",
+      "save": "Enregistrer le quartier",
+      "uploading": "Téléversement…",
+      "dropImage": "Cliquez pour ajouter une photo",
+      "removeImage": "Retirer l'image",
+      "invalidImage": "Le fichier doit être une image",
+      "imageTooLarge": "L'image est trop volumineuse",
+      "uploadFailed": "Échec du téléversement de l'image",
+      "imageRequired": "Ajoutez une photo du quartier",
+      "nameRequired": "Le nom et le slug sont obligatoires",
+      "created": "Quartier créé",
+      "updated": "Quartier mis à jour",
+      "saveError": "Impossible d'enregistrer le quartier"
+    }
   }
 }

@@ -8,6 +8,9 @@ export interface Neighborhood {
   description: string;
   subtitle: string;
   propertyCount: number;
+  // Soft-delete flag (migration 011). Optional: static mock entries omit it
+  // and are treated as active.
+  isActive?: boolean;
 }
 
 export const neighborhoods: Neighborhood[] = [

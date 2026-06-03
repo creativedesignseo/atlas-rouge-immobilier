@@ -33,6 +33,7 @@ const AdminProperties = lazy(() => import('./pages/admin/AdminProperties'))
 const AdminPropertyNew = lazy(() => import('./pages/admin/AdminPropertyNew'))
 const AdminPropertyEdit = lazy(() => import('./pages/admin/AdminPropertyEdit'))
 const AdminContacts = lazy(() => import('./pages/admin/AdminContacts'))
+const AdminNeighborhoods = lazy(() => import('./pages/admin/AdminNeighborhoods'))
 const AgentProfile = lazy(() => import('./pages/admin/AgentProfile'))
 const AdminBlog = lazy(() => import('./pages/admin/AdminBlog'))
 const AdminBlogForm = lazy(() => import('./pages/admin/AdminBlogForm'))
@@ -149,6 +150,7 @@ export default function App() {
           <Route path="properties" element={<AdminProperties />} />
           <Route path="properties/new" element={<AdminPropertyNew />} />
           <Route path="properties/:slug/edit" element={<AdminPropertyEdit />} />
+          <Route path="neighborhoods" element={<AdminNeighborhoods />} />
           <Route path="contacts" element={<AdminContacts />} />
           <Route path="profile" element={<AgentProfile />} />
           <Route path="blog" element={<AdminBlog />} />

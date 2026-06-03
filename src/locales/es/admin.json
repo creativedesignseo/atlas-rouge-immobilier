@@ -75,11 +75,13 @@
   },
   "sidebar": {
     "dashboard": "Panel",
-    "properties": "Inmuebles","blog": "Blog",
+    "properties": "Inmuebles",
+    "blog": "Blog",
     "contacts": "Contactos",
     "profile": "Mi perfil",
     "settings": "Configuración",
-    "backToSite": "Volver al sitio"
+    "backToSite": "Volver al sitio",
+    "neighborhoods": "Barrios"
   },
   "dashboard": {
     "title": "Panel de control",
@@ -293,5 +295,56 @@
     "errorShort": "Mínimo 8 caracteres",
     "genericError": "Ha ocurrido un error. Inténtalo de nuevo.",
     "backToLogin": "Volver al login"
+  },
+  "neighborhoods": {
+    "title": "Barrios y zonas",
+    "subtitle": "Crea, edita y desactiva los barrios disponibles al publicar inmuebles.",
+    "new": "Nuevo barrio",
+    "editTitle": "Editar barrio",
+    "empty": "No hay barrios todavía",
+    "loadError": "No se pudieron cargar los barrios",
+    "saveError": "No se pudo guardar",
+    "deleted": "Barrio eliminado",
+    "deactivated": "Barrio desactivado",
+    "activated": "Barrio activado",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "deactivate": "Desactivar",
+    "activate": "Activar",
+    "cannotDelete": "No se puede eliminar: tiene {{count}} inmueble(s). Desactívalo o reasigna los inmuebles primero.",
+    "deleteTitle": "Eliminar barrio",
+    "deleteConfirm": "¿Seguro que quieres eliminar \"{{name}}\"? Esta acción no se puede deshacer.",
+    "adminOnly": "Solo los administradores pueden gestionar barrios.",
+    "table": {
+      "image": "Imagen",
+      "name": "Nombre",
+      "properties": "Inmuebles",
+      "status": "Estado",
+      "actions": "Acciones"
+    },
+    "form": {
+      "image": "Foto del barrio",
+      "name": "Nombre",
+      "namePlaceholder": "p. ej. Route de Ouarzazate",
+      "slug": "Slug (URL)",
+      "slugHint": "Se genera del nombre. Solo minúsculas, números y guiones.",
+      "subtitle": "Subtítulo",
+      "subtitlePlaceholder": "p. ej. Au départ vers l'Atlas",
+      "description": "Descripción",
+      "descriptionPlaceholder": "Breve descripción del barrio",
+      "active": "Visible en el sitio (activo)",
+      "save": "Guardar barrio",
+      "uploading": "Subiendo…",
+      "dropImage": "Haz clic para subir una foto",
+      "removeImage": "Quitar imagen",
+      "invalidImage": "El archivo debe ser una imagen",
+      "imageTooLarge": "La imagen es demasiado grande",
+      "uploadFailed": "No se pudo subir la imagen",
+      "imageRequired": "Añade una foto del barrio",
+      "nameRequired": "El nombre y el slug son obligatorios",
+      "created": "Barrio creado",
+      "updated": "Barrio actualizado",
+      "saveError": "No se pudo guardar el barrio"
+    }
   }
 }

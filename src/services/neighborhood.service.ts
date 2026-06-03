@@ -12,6 +12,7 @@ function mapDbToNeighborhood(row: Record<string, unknown>): Neighborhood {
     description: row.description as string,
     subtitle: row.subtitle as string,
     propertyCount: row.property_count as number,
+    isActive: (row.is_active as boolean) ?? true,
   }
 }
 
@@ -20,6 +21,7 @@ async function fetchNeighborhoods(): Promise<Neighborhood[]> {
   const { data, error } = await supabase
     .from('neighborhoods')
     .select('*')
+    .eq('is_active', true)
     .order('property_count', { ascending: false })
   if (error || !data) {
     console.error('Supabase error:', error)

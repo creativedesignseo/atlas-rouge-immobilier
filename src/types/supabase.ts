@@ -77,6 +77,7 @@ export type NeighborhoodRow = {
   description: string
   subtitle: string
   property_count: number
+  is_active: boolean
   created_at: string
 }
 

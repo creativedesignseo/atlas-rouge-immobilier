@@ -27,18 +27,32 @@ barrios), el desplegable de Barrio del admin y el buscador. Pasos:
 ningún INSERT/UPDATE/DELETE** → hoy ni un admin puede crear/borrar barrios
 desde la web. Esto motiva la siguiente tarea.
 
-### Siguiente: gestión de ubicaciones en el admin (best practice) — PLANIFICADO
-El owner quiere un CRUD de barrios (y a futuro ciudades) tipo WordPress, para
-reusar la web en otras ciudades/países (modelo **clon por agencia**,
-single-tenant). Best-practice acordada:
-- Jerarquía normalizada Ciudad→Barrio (FK, no `city` texto libre).
-- Conteo **calculado** (vista/trigger), NO la columna manual `property_count`
-  (ya hay drift real: Médina dice 2, son 3).
-- `UNIQUE(parent_id, slug)`, no slug global.
-- Borrado seguro: **soft-delete** + aviso de inmuebles afectados (hoy es
-  `ON DELETE SET NULL` silencioso).
-- RLS de escritura solo para admins (`is_admin()`, migración 008).
-- NO multi-tenant ni PostGIS por ahora (sobre-ingeniería).
+### Gestión de barrios en el admin (Fase 1) — 🟡 CÓDIGO LISTO (verify verde), PENDIENTE migración + deploy
+CRUD de barrios en el admin (crear/editar/soft-delete/borrar) hecho como los
+pros. **`verify.sh` verde.** Falta aplicar la migración `011` en prod y aprobar
+el push (Netlify auto-deploya). ⚠️ **No pushear sin aplicar antes la 011**: el
+home filtra `is_active` y, sin la columna, caería al fallback de barrios mock.
+
+Implementado:
+- `supabase/migrations/011_neighborhood_admin.sql`: `is_active` (soft-delete),
+  RLS INSERT/UPDATE/DELETE solo admin (`is_admin()`), SELECT público solo
+  activos (o admin), **trigger** que mantiene `property_count` desde
+  `properties` + backfill que corrige el drift (Médina 2→3).
+- Servicio `src/services/admin/neighborhoodAdmin.service.ts` + helper REST
+  `src/lib/adminRest.ts` + util `src/lib/imageCompress.ts`.
+- UI: `src/pages/admin/AdminNeighborhoods.tsx` +
+  `src/components/admin/NeighborhoodForm.tsx` (subida de foto única → WebP).
+- Ruta `/admin/neighborhoods` (App.tsx) + item de menú **solo admins**
+  (AdminSidebar). i18n FR/ES/EN (`admin.json` → `neighborhoods.*`).
+- `neighborhoods.service.ts` filtra `is_active`; tipo `NeighborhoodRow` +
+  interfaz `Neighborhood` con `is_active`/`isActive`.
+
+Detalle: `progress/2026-06-03-neighborhood-admin-crud.md`.
+
+### Fase 2 (ciudades / multi-país) — PLANIFICADA, no empezada
+Subir `city` a entidad (`cities`), cascada Ciudad→Barrio, `UNIQUE(parent_id,
+slug)`, CRUD de ciudades. Modelo **clon por agencia** (single-tenant). NO
+multi-tenant ni PostGIS (sobre-ingeniería). Pendiente de confirmar alcance.
 
 ---
 

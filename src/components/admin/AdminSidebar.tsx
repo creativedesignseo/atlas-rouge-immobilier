@@ -1,16 +1,20 @@
 import { NavLink, useLocation } from 'react-router-dom'
-import { LayoutDashboard, Home, Mail, ArrowLeft, Menu, X, UserCircle, BookOpen } from 'lucide-react'
+import { LayoutDashboard, Home, Mail, ArrowLeft, Menu, X, UserCircle, BookOpen, MapPin } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function AdminSidebar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const location = useLocation()
   const { t } = useTranslation('admin')
+  const { isAdmin } = useAuth()
 
   const navItems = [
     { path: '/admin', label: t('sidebar.dashboard'), icon: LayoutDashboard },
     { path: '/admin/properties', label: t('sidebar.properties'), icon: Home },
+    // Location management is an admin-only capability (taxonomy editing).
+    ...(isAdmin ? [{ path: '/admin/neighborhoods', label: t('sidebar.neighborhoods'), icon: MapPin }] : []),
     { path: '/admin/blog', label: t('sidebar.blog'), icon: BookOpen },
     { path: '/admin/contacts', label: t('sidebar.contacts'), icon: Mail },
     { path: '/admin/profile', label: t('sidebar.profile'), icon: UserCircle },
