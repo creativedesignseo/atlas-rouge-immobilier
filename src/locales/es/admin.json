@@ -81,7 +81,8 @@
     "profile": "Mi perfil",
     "settings": "Configuración",
     "backToSite": "Volver al sitio",
-    "neighborhoods": "Barrios"
+    "neighborhoods": "Barrios",
+    "leads": "Prospectos"
   },
   "dashboard": {
     "title": "Panel de control",
@@ -295,6 +296,35 @@
     "errorShort": "Mínimo 8 caracteres",
     "genericError": "Ha ocurrido un error. Inténtalo de nuevo.",
     "backToLogin": "Volver al login"
+  },
+  "leads": {
+    "title": "Prospectos",
+    "subtitle": "Solicitudes de estimación y suscriptores de la newsletter.",
+    "tabs": {
+      "estimations": "Estimaciones",
+      "newsletter": "Newsletter"
+    },
+    "empty": "Aún no hay prospectos",
+    "loadError": "No se pudieron cargar los prospectos",
+    "exportCsv": "Exportar a CSV",
+    "confirmedYes": "Confirmado",
+    "confirmedNo": "Pendiente",
+    "unsubscribed": "Dado de baja",
+    "estTable": {
+      "name": "Nombre",
+      "phone": "Teléfono",
+      "email": "Correo",
+      "preferredDate": "Fecha preferida",
+      "lang": "Idioma",
+      "createdAt": "Recibido el"
+    },
+    "subTable": {
+      "email": "Correo",
+      "lang": "Idioma",
+      "sourcePage": "Página de origen",
+      "confirmed": "Estado",
+      "createdAt": "Suscrito el"
+    }
   },
   "neighborhoods": {
     "title": "Barrios y zonas",

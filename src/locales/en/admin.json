@@ -81,7 +81,8 @@
     "profile": "My profile",
     "settings": "Settings",
     "backToSite": "Back to site",
-    "neighborhoods": "Neighborhoods"
+    "neighborhoods": "Neighborhoods",
+    "leads": "Leads"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -295,6 +296,35 @@
     "errorShort": "Minimum 8 characters",
     "genericError": "Something went wrong. Please try again.",
     "backToLogin": "Back to login"
+  },
+  "leads": {
+    "title": "Leads",
+    "subtitle": "Estimation requests and newsletter subscribers.",
+    "tabs": {
+      "estimations": "Estimations",
+      "newsletter": "Newsletter"
+    },
+    "empty": "No leads yet",
+    "loadError": "Could not load leads",
+    "exportCsv": "Export to CSV",
+    "confirmedYes": "Confirmed",
+    "confirmedNo": "Pending",
+    "unsubscribed": "Unsubscribed",
+    "estTable": {
+      "name": "Name",
+      "phone": "Phone",
+      "email": "Email",
+      "preferredDate": "Preferred date",
+      "lang": "Language",
+      "createdAt": "Received on"
+    },
+    "subTable": {
+      "email": "Email",
+      "lang": "Language",
+      "sourcePage": "Source page",
+      "confirmed": "Status",
+      "createdAt": "Subscribed on"
+    }
   },
   "neighborhoods": {
     "title": "Neighborhoods & areas",

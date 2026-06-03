@@ -15,6 +15,7 @@ export default function AdminContacts() {
   const { agent, isAdmin } = useAuth()
   const confirm = useConfirm()
   const dateLocale = DATE_LOCALES[i18n.language?.slice(0, 2) as keyof typeof DATE_LOCALES] || enUS
+  const siteLang = (i18n.language?.slice(0, 2) || 'en') as 'en' | 'fr' | 'es'
   const dateFormat = i18n.language?.startsWith('fr')
     ? "dd MMMM yyyy 'à' HH:mm"
     : i18n.language?.startsWith('es')
@@ -152,15 +153,15 @@ export default function AdminContacts() {
                           {expandedId === contact.id ? t('contacts.collapse') : t('contacts.expand')}
                         </button>
                         {contact.property_slug && (
-                          <a
-                            href={`/property/${contact.property_slug}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                          <button
+                            onClick={() =>
+                              window.open(`/${siteLang}/property/${contact.property_slug}`, '_blank')
+                            }
                             className="inline-flex items-center gap-1 text-xs text-palm hover:underline"
                           >
                             <Home size={12} />
                             {t('contacts.viewProperty')}
-                          </a>
+                          </button>
                         )}
                         <span className="text-xs text-text-secondary">
                           {format(new Date(contact.created_at), dateFormat, { locale: dateLocale })}
@@ -168,17 +169,19 @@ export default function AdminContacts() {
                       </div>
                     </div>
                   </div>
-                  <button
-                    onClick={() => handleDelete(contact.id)}
-                    disabled={deleting === contact.id}
-                    className="p-2 text-text-secondary hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50 flex-shrink-0"
-                  >
-                    {deleting === contact.id ? (
-                      <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin" />
-                    ) : (
-                      <Trash2 size={16} />
-                    )}
-                  </button>
+                  {isAdmin && (
+                    <button
+                      onClick={() => handleDelete(contact.id)}
+                      disabled={deleting === contact.id}
+                      className="p-2 text-text-secondary hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50 flex-shrink-0"
+                    >
+                      {deleting === contact.id ? (
+                        <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin" />
+                      ) : (
+                        <Trash2 size={16} />
+                      )}
+                    </button>
+                  )}
                 </div>
               </div>
             ))}

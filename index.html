@@ -38,6 +38,48 @@
     <!-- Preconnect to Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Google Fonts via <link> (non-render-blocking) instead of CSS @import.
+         Playfair dropped: it was a legacy fallback only, no live usage. -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Inter:wght@300;400;500;600;700&display=swap"
+    />
+
+    <!-- Structured data: agency identity + site search action -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "RealEstateAgent",
+          "@id": "https://atlasrouge.com/#organization",
+          "name": "Atlas Rouge Immobilier",
+          "url": "https://atlasrouge.com",
+          "logo": "https://atlasrouge.com/favicon.svg",
+          "image": "https://atlasrouge.com/og-image.jpg",
+          "areaServed": {
+            "@type": "City",
+            "name": "Marrakech"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://atlasrouge.com/#website",
+          "url": "https://atlasrouge.com",
+          "name": "Atlas Rouge Immobilier",
+          "publisher": { "@id": "https://atlasrouge.com/#organization" },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://atlasrouge.com/acheter?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>

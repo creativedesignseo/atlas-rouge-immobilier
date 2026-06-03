@@ -109,12 +109,6 @@ export default function Footer() {
             <p className="text-white/40 text-[13px] font-inter text-center">
               {tc('copyright', { year: new Date().getFullYear() })}
             </p>
-            <div className="flex items-center gap-3 text-[12px] text-white/40">
-              <span>Visa</span>
-              <span>Mastercard</span>
-              <span>PayPal</span>
-              <span>SSL</span>
-            </div>
           </div>
         </div>
       </div>

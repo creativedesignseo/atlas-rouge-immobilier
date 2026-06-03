@@ -104,6 +104,18 @@
     "backToList": "Back to list"
   },
   "viewProperty": "View property",
+  "mapUnavailable": {
+    "title": "Map unavailable",
+    "body": "Your browser cannot initialise the map. Properties remain available in the list."
+  },
+  "mapPopup": {
+    "rooms_one": "{{count}} room",
+    "rooms_other": "{{count}} rooms",
+    "bedrooms_one": "{{count}} bedroom",
+    "bedrooms_other": "{{count}} bedrooms"
+  },
+  "resultCount_one": "{{count}} property",
+  "resultCount_other": "{{count}} properties",
   "pricePerSqm": "/ m²",
   "card": {
     "forSale": "For sale",

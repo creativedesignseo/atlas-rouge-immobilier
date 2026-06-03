@@ -104,6 +104,18 @@
     "backToList": "Retour à la liste"
   },
   "viewProperty": "Voir le bien",
+  "mapUnavailable": {
+    "title": "Carte indisponible",
+    "body": "Votre navigateur ne peut pas initialiser la carte. Les biens restent disponibles dans la liste."
+  },
+  "mapPopup": {
+    "rooms_one": "{{count}} pièce",
+    "rooms_other": "{{count}} pièces",
+    "bedrooms_one": "{{count}} chambre",
+    "bedrooms_other": "{{count}} chambres"
+  },
+  "resultCount_one": "{{count}} bien",
+  "resultCount_other": "{{count}} biens",
   "pricePerSqm": "/ m²",
   "card": {
     "forSale": "À vendre",

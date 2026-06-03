@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'sonner'
 import { useLang } from '@/hooks/useLang'
 import {
   MapPin, Heart, Share2, X, Check, Phone, MessageCircle, User,
@@ -43,6 +44,19 @@ function Lightbox({ images, startIndex, onClose }: { images: string[]; startInde
   const goPrev = () => setCurrent(c => (c - 1 + images.length) % images.length)
   const goNext = () => setCurrent(c => (c + 1) % images.length)
 
+  // Keyboard: Escape closes, arrows navigate. Registered while the lightbox
+  // is mounted so the full-screen gallery is operable without the mouse.
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+      else if (e.key === 'ArrowLeft') goPrev()
+      else if (e.key === 'ArrowRight') goNext()
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [images.length])
+
   const onTouchStart = (e: React.TouchEvent) => { touchStartX.current = e.changedTouches[0].screenX }
   const onTouchEnd = (e: React.TouchEvent) => {
     touchEndX.current = e.changedTouches[0].screenX
@@ -50,13 +64,15 @@ function Lightbox({ images, startIndex, onClose }: { images: string[]; startInde
     if (Math.abs(diff) > 50) { if (diff > 0) goNext(); else goPrev() }
   }
 
+  // Click on the backdrop closes; clicks on the image (and controls) don't
+  // bubble up so navigating doesn't dismiss the gallery.
   return (
-    <div className="fixed inset-0 z-[70] bg-black/95 flex items-center justify-center" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+    <div className="fixed inset-0 z-[70] bg-black/95 flex items-center justify-center" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} onClick={onClose}>
       <button onClick={onClose} className="absolute top-4 right-4 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-colors z-10"><X size={20} /></button>
-      <button onClick={goPrev} className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 rounded-full items-center justify-center text-white hover:bg-white/20 transition-colors z-10"><ChevronUp size={20} className="-rotate-90" /></button>
-      <button onClick={goNext} className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 rounded-full items-center justify-center text-white hover:bg-white/20 transition-colors z-10"><ChevronUp size={20} className="rotate-90" /></button>
+      <button onClick={(e) => { e.stopPropagation(); goPrev() }} className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 rounded-full items-center justify-center text-white hover:bg-white/20 transition-colors z-10"><ChevronUp size={20} className="-rotate-90" /></button>
+      <button onClick={(e) => { e.stopPropagation(); goNext() }} className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 rounded-full items-center justify-center text-white hover:bg-white/20 transition-colors z-10"><ChevronUp size={20} className="rotate-90" /></button>
       <div className="text-center w-full px-4">
-        <img src={images[current]} alt={`Photo ${current + 1}`} className="max-w-[95vw] max-h-[80vh] object-contain rounded-lg mx-auto" draggable={false} />
+        <img src={images[current]} alt={`Photo ${current + 1}`} className="max-w-[95vw] max-h-[80vh] object-contain rounded-lg mx-auto" draggable={false} onClick={(e) => e.stopPropagation()} />
         <p className="text-white/60 text-[14px] mt-3 font-inter">{current + 1} / {images.length}</p>
       </div>
     </div>
@@ -488,6 +504,28 @@ export default function PropertyDetail() {
   const [lightboxIndex, setLightboxIndex] = useState(0)
   const [descriptionExpanded, setDescriptionExpanded] = useState(false)
 
+  // Share: native share sheet where supported (mobile), clipboard fallback
+  // with a toast everywhere else. AbortError = user dismissed the sheet, ignore.
+  const handleShare = async () => {
+    const url = typeof window !== 'undefined' ? window.location.href : ''
+    const title = property?.title || 'Atlas Rouge Immobilier'
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try {
+        await navigator.share({ title, url })
+        return
+      } catch (err) {
+        if (err instanceof Error && err.name === 'AbortError') return
+        // fall through to clipboard
+      }
+    }
+    try {
+      await navigator.clipboard.writeText(url)
+      toast.success(tc('linkCopied'))
+    } catch {
+      toast.error(tc('messageError'))
+    }
+  }
+
   if (loading) {
     return <div className="min-h-[60vh] flex items-center justify-center"><div className="w-10 h-10 border-4 border-terracotta border-t-transparent rounded-full animate-spin" /></div>
   }
@@ -535,7 +573,7 @@ export default function PropertyDetail() {
                 className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:scale-105 transition-transform">
                 <Heart size={20} className={isFavorite(property.slug) ? 'fill-terracotta text-terracotta' : 'text-text-secondary'} />
               </button>
-              <button className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:scale-105 transition-transform">
+              <button onClick={handleShare} aria-label={tc('share')} className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:scale-105 transition-transform">
                 <Share2 size={20} className="text-text-secondary" />
               </button>
             </div>

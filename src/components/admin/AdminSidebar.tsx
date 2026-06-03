@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom'
-import { LayoutDashboard, Home, Mail, ArrowLeft, Menu, X, UserCircle, BookOpen, MapPin } from 'lucide-react'
+import { LayoutDashboard, Home, Mail, ArrowLeft, Menu, X, UserCircle, BookOpen, MapPin, Inbox } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '@/hooks/useAuth'
@@ -17,6 +17,7 @@ export default function AdminSidebar() {
     ...(isAdmin ? [{ path: '/admin/neighborhoods', label: t('sidebar.neighborhoods'), icon: MapPin }] : []),
     { path: '/admin/blog', label: t('sidebar.blog'), icon: BookOpen },
     { path: '/admin/contacts', label: t('sidebar.contacts'), icon: Mail },
+    { path: '/admin/leads', label: t('sidebar.leads'), icon: Inbox },
     { path: '/admin/profile', label: t('sidebar.profile'), icon: UserCircle },
   ]
 

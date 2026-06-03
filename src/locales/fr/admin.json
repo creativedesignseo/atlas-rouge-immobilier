@@ -81,7 +81,8 @@
     "profile": "Mon profil",
     "settings": "Paramètres",
     "backToSite": "Retour au site",
-    "neighborhoods": "Quartiers"
+    "neighborhoods": "Quartiers",
+    "leads": "Prospects"
   },
   "dashboard": {
     "title": "Tableau de bord",
@@ -295,6 +296,35 @@
     "errorShort": "Minimum 8 caractères",
     "genericError": "Une erreur s'est produite. Veuillez réessayer.",
     "backToLogin": "Retour à la connexion"
+  },
+  "leads": {
+    "title": "Prospects",
+    "subtitle": "Demandes d'estimation et abonnés à la newsletter.",
+    "tabs": {
+      "estimations": "Estimations",
+      "newsletter": "Newsletter"
+    },
+    "empty": "Aucun prospect pour le moment",
+    "loadError": "Impossible de charger les prospects",
+    "exportCsv": "Exporter en CSV",
+    "confirmedYes": "Confirmé",
+    "confirmedNo": "En attente",
+    "unsubscribed": "Désabonné",
+    "estTable": {
+      "name": "Nom",
+      "phone": "Téléphone",
+      "email": "E-mail",
+      "preferredDate": "Date souhaitée",
+      "lang": "Langue",
+      "createdAt": "Reçu le"
+    },
+    "subTable": {
+      "email": "E-mail",
+      "lang": "Langue",
+      "sourcePage": "Page d'origine",
+      "confirmed": "Statut",
+      "createdAt": "Inscrit le"
+    }
   },
   "neighborhoods": {
     "title": "Quartiers et zones",

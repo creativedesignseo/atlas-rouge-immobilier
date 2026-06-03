@@ -23,6 +23,12 @@ function getCurrentLanguage(): SupportedLanguage {
   return SUPPORTED_LANGUAGES.includes(lang) ? lang : 'en'
 }
 
+// In production, a Supabase blip must NOT surface fictitious listings/prices
+// to real visitors — that would be misleading and a trust/legal hazard. Only
+// fall back to the bundled mock dataset during local development. In prod the
+// caller gets an empty result and the UI shows its empty/error state instead.
+const ALLOW_MOCK_FALLBACK = import.meta.env.DEV
+
 /**
  * Race una promesa contra un timeout. Si la promesa no resuelve antes del
  * timeout, rechaza con un Error('TIMEOUT'). Crítico para queries Supabase
@@ -94,7 +100,10 @@ function mapDbToProperty(row: Record<string, unknown>, lang = getCurrentLanguage
 }
 
 async function fetchProperties(filters: PropertyFilters): Promise<Property[]> {
-  if (!isSupabaseConfigured) return applyMockFilters(mockProperties, filters)
+  // Supabase not configured = local dev without env vars → mock is expected.
+  if (!isSupabaseConfigured) {
+    return ALLOW_MOCK_FALLBACK ? applyMockFilters(mockProperties, filters) : []
+  }
 
   // When filtering by neighborhoods, force an inner join so PostgREST applies
   // the embedded resource filter to the parent rows. Without !inner, the
@@ -140,7 +149,7 @@ async function fetchProperties(filters: PropertyFilters): Promise<Property[]> {
     const { data, error } = await withTimeout(Promise.resolve(query), 12000)
     if (error) {
       console.error('Supabase error:', error)
-      return applyMockFilters(mockProperties, filters)
+      return ALLOW_MOCK_FALLBACK ? applyMockFilters(mockProperties, filters) : []
     }
     return (data || []).map((row: Record<string, unknown>) => {
       const neighborhoodName = row.neighborhoods && typeof row.neighborhoods === 'object'
@@ -150,7 +159,7 @@ async function fetchProperties(filters: PropertyFilters): Promise<Property[]> {
     })
   } catch (err) {
     console.error('[property.service] fetchProperties timeout/error:', err)
-    return applyMockFilters(mockProperties, filters)
+    return ALLOW_MOCK_FALLBACK ? applyMockFilters(mockProperties, filters) : []
   }
 }
 
@@ -170,7 +179,7 @@ export async function getProperties(filters: PropertyFilters = {}): Promise<Prop
 
 async function fetchPropertyBySlug(slug: string): Promise<Property | null> {
   if (!isSupabaseConfigured) {
-    return mockProperties.find((p) => p.slug === slug) || null
+    return ALLOW_MOCK_FALLBACK ? (mockProperties.find((p) => p.slug === slug) || null) : null
   }
 
   const query = supabase
@@ -183,7 +192,7 @@ async function fetchPropertyBySlug(slug: string): Promise<Property | null> {
     const { data, error } = await withTimeout(Promise.resolve(query), 12000)
     if (error || !data) {
       console.error('Supabase error:', error)
-      return mockProperties.find((p) => p.slug === slug) || null
+      return ALLOW_MOCK_FALLBACK ? (mockProperties.find((p) => p.slug === slug) || null) : null
     }
     const row = data as Record<string, unknown>
     const neighborhoodName = row.neighborhoods && typeof row.neighborhoods === 'object'
@@ -192,7 +201,7 @@ async function fetchPropertyBySlug(slug: string): Promise<Property | null> {
     return mapDbToProperty({ ...row, neighborhood_name: neighborhoodName })
   } catch (err) {
     console.error('[property.service] fetchPropertyBySlug timeout/error:', err)
-    return mockProperties.find((p) => p.slug === slug) || null
+    return ALLOW_MOCK_FALLBACK ? (mockProperties.find((p) => p.slug === slug) || null) : null
   }
 }
 
@@ -209,7 +218,7 @@ export async function getPropertyBySlug(slug: string): Promise<Property | null> 
 
 async function fetchFeaturedProperties(limit: number): Promise<Property[]> {
   if (!isSupabaseConfigured) {
-    return mockProperties.filter((p) => p.isFeatured).slice(0, limit)
+    return ALLOW_MOCK_FALLBACK ? mockProperties.filter((p) => p.isFeatured).slice(0, limit) : []
   }
 
   const query = supabase
@@ -222,7 +231,7 @@ async function fetchFeaturedProperties(limit: number): Promise<Property[]> {
     const { data, error } = await withTimeout(Promise.resolve(query), 12000)
     if (error || !data) {
       console.error('Supabase error:', error)
-      return mockProperties.filter((p) => p.isFeatured).slice(0, limit)
+      return ALLOW_MOCK_FALLBACK ? mockProperties.filter((p) => p.isFeatured).slice(0, limit) : []
     }
     return data.map((row: Record<string, unknown>) => {
       const neighborhoodName = row.neighborhoods && typeof row.neighborhoods === 'object'
@@ -232,7 +241,7 @@ async function fetchFeaturedProperties(limit: number): Promise<Property[]> {
     })
   } catch (err) {
     console.error('[property.service] fetchFeaturedProperties timeout/error:', err)
-    return mockProperties.filter((p) => p.isFeatured).slice(0, limit)
+    return ALLOW_MOCK_FALLBACK ? mockProperties.filter((p) => p.isFeatured).slice(0, limit) : []
   }
 }
 
@@ -248,10 +257,12 @@ export async function getFeaturedProperties(limit = 3): Promise<Property[]> {
 }
 
 export async function getSimilarProperties(property: Property, limit = 3): Promise<Property[]> {
-  const fallback = () =>
-    mockProperties
-      .filter((p) => p.slug !== property.slug && (p.type === property.type || p.neighborhood === property.neighborhood))
-      .slice(0, limit)
+  const fallback = (): Property[] =>
+    ALLOW_MOCK_FALLBACK
+      ? mockProperties
+          .filter((p) => p.slug !== property.slug && (p.type === property.type || p.neighborhood === property.neighborhood))
+          .slice(0, limit)
+      : []
 
   if (!isSupabaseConfigured) return fallback()
 

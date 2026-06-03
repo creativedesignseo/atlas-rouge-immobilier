@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Heart, ArrowRight } from 'lucide-react'
@@ -5,16 +6,36 @@ import SectionReveal from '@/components/SectionReveal'
 import PropertyCard from '@/components/PropertyCard'
 import { useFavorites } from '@/hooks/useFavorites'
 import { useLang } from '@/hooks/useLang'
-import { properties } from '@/data/properties'
+import { getPropertyBySlug } from '@/services/property.service'
+import type { Property } from '@/data/properties'
 
 export default function Favorites() {
   const { t } = useTranslation('common')
-  const { favorites } = useFavorites()
+  const { favorites, loading: favoritesLoading } = useFavorites()
   const { path } = useLang()
 
-  const favoriteProperties = properties.filter((p) =>
-    favorites.includes(p.slug)
-  )
+  const [favoriteProperties, setFavoriteProperties] = useState<Property[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (favoritesLoading) return
+    let cancelled = false
+    setLoading(true)
+    Promise.all(favorites.map((slug) => getPropertyBySlug(slug)))
+      .then((results) => {
+        if (cancelled) return
+        setFavoriteProperties(results.filter((p): p is Property => p !== null))
+      })
+      .catch(() => {
+        if (!cancelled) setFavoriteProperties([])
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [favorites, favoritesLoading])
 
   const hasFavorites = favoriteProperties.length > 0
 
@@ -51,7 +72,11 @@ export default function Favorites() {
       {/* ═══════ CONTENT ═══════ */}
       <section className="bg-white py-12 md:py-16 min-h-[50vh]">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
-          {hasFavorites ? (
+          {loading ? (
+            <div className="flex items-center justify-center py-20">
+              <div className="w-10 h-10 border-4 border-terracotta border-t-transparent rounded-full animate-spin" />
+            </div>
+          ) : hasFavorites ? (
             <>
               <p className="font-inter text-[14px] text-text-secondary mb-6">
                 {favoriteProperties.length} {t(favoriteProperties.length > 1 ? 'saved_plural' : 'saved')}

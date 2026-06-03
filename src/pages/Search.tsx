@@ -143,6 +143,27 @@ const defaultFilters: Filters = {
 // `neighborhoods` table in Supabase (loaded via getNeighborhoods()).
 const nbhdFallback = ['Guéliz', 'Hivernage', 'Palmeraie', 'Médina', 'Agdal', 'Targa', 'Amelkis', "Route de l'Ourika", 'Route de Fès', "Route d'Amizmiz", 'Route de Tahannaout', 'M Avenue', 'Chrifia']
 
+/* ───────────────────── security helpers ───────────────────── */
+
+// Escape user/DB-controlled strings before interpolating into innerHTML.
+// The map popup is built with template strings, so any unescaped property
+// field (title, neighborhood, image filename) would be a stored-XSS vector.
+function escapeHtml(value: unknown): string {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+// A slug going into an href must be a strict, predictable shape. If it isn't,
+// drop it so we never emit an attacker-controlled URL (e.g. javascript:).
+function safeSlug(slug: unknown): string {
+  const s = String(slug ?? '')
+  return /^[a-z0-9-]+$/.test(s) ? s : ''
+}
+
 /* ───────────────────── helper functions ───────────────────── */
 
 function getActiveFilterChips(
@@ -255,16 +276,19 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
   const [mapError, setMapError] = useState(false)
   const propertyPrice = usePropertyPrice()
   const { path } = useLang()
+  const { t } = useTranslation('search')
 
   const onHoverRef = useRef(onHover)
   const onSelectRef = useRef(onSelect)
   const propertyPriceRef = useRef(propertyPrice)
   const pathRef = useRef(path)
+  const tRef = useRef(t)
   useLayoutEffect(() => {
     onHoverRef.current = onHover
     onSelectRef.current = onSelect
     propertyPriceRef.current = propertyPrice
     pathRef.current = path
+    tRef.current = t
   })
 
   useEffect(() => {
@@ -359,9 +383,14 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
 
       const renderPopup = () => {
         const hasMultiple = imgs.length > 1
+        const slug = safeSlug(p.slug)
+        const href = slug ? escapeHtml(pathRef.current(`/property/${slug}`)) : ''
+        const imgSrc = escapeHtml(getImageUrl(imgs[currentImg], { width: 560, height: 320, resize: 'cover' }))
+        const roomsLabel = escapeHtml(tRef.current('mapPopup.rooms', { count: p.rooms }))
+        const bedroomsLabel = escapeHtml(tRef.current('mapPopup.bedrooms', { count: p.bedrooms }))
         popupContainer.innerHTML = `
           <div style="position:relative;border-radius:10px 10px 0 0;overflow:hidden;height:160px;background:#f5f5f5;">
-            <img src="${getImageUrl(imgs[currentImg], { width: 560, height: 320, resize: 'cover' })}" style="width:100%;height:100%;object-fit:cover;display:block;" />
+            <img src="${imgSrc}" style="width:100%;height:100%;object-fit:cover;display:block;" />
             ${hasMultiple ? `
               <button class="popup-prev" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:28px;height:28px;background:rgba(255,255,255,0.9);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:#333;box-shadow:0 2px 6px rgba(0,0,0,0.15);">&#8249;</button>
               <button class="popup-next" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:28px;height:28px;background:rgba(255,255,255,0.9);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:#333;box-shadow:0 2px 6px rgba(0,0,0,0.15);">&#8250;</button>
@@ -376,13 +405,13 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
           </div>
           <div style="padding:12px;background:white;border-radius:0 0 10px 10px;">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-              <p style="color:#B5533A;font-size:16px;font-weight:700;margin:0;flex:1;">${propertyPriceRef.current(p)}</p>
-              ${p.isExclusive ? '<span style="background:#315C45;color:white;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;">Exclusivité</span>' : ''}
+              <p style="color:#B5533A;font-size:16px;font-weight:700;margin:0;flex:1;">${escapeHtml(propertyPriceRef.current(p))}</p>
+              ${p.isExclusive ? `<span style="background:#315C45;color:white;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;">${escapeHtml(tRef.current('card.exclusive'))}</span>` : ''}
             </div>
-            <p style="color:#1E1E1E;font-size:14px;font-weight:600;margin:0 0 2px 0;">${p.title}</p>
-            <p style="color:#6E6259;font-size:12px;margin:0 0 8px 0;">${p.neighborhood}, Marrakech</p>
-            <p style="color:#6E6259;font-size:12px;margin:0 0 12px 0;">${p.surface} m² · ${p.rooms} pièces · ${p.bedrooms} chambres</p>
-            <a href="${pathRef.current(`/property/${p.slug}`)}" style="display:block;width:100%;text-align:center;background:#B5533A;color:white;font-size:13px;font-weight:600;padding:8px 0;border-radius:8px;text-decoration:none;">Voir le bien</a>
+            <p style="color:#1E1E1E;font-size:14px;font-weight:600;margin:0 0 2px 0;">${escapeHtml(p.title)}</p>
+            <p style="color:#6E6259;font-size:12px;margin:0 0 8px 0;">${escapeHtml(p.neighborhood)}, ${escapeHtml(tRef.current('city'))}</p>
+            <p style="color:#6E6259;font-size:12px;margin:0 0 12px 0;">${escapeHtml(p.surface)} m² · ${roomsLabel} · ${bedroomsLabel}</p>
+            ${href ? `<a href="${href}" style="display:block;width:100%;text-align:center;background:#B5533A;color:white;font-size:13px;font-weight:600;padding:8px 0;border-radius:8px;text-decoration:none;">${escapeHtml(tRef.current('viewProperty'))}</a>` : ''}
           </div>
         `
 
@@ -452,9 +481,9 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
       <div className="w-full h-full min-h-[320px] bg-cream-warm flex items-center justify-center p-6 text-center">
         <div>
           <MapPin size={36} className="mx-auto text-terracotta mb-3" />
-          <p className="font-inter text-[15px] font-semibold text-midnight">Carte indisponible</p>
+          <p className="font-inter text-[15px] font-semibold text-midnight">{t('mapUnavailable.title')}</p>
           <p className="font-inter text-[13px] text-text-secondary mt-1 max-w-xs">
-            Votre navigateur ne peut pas initialiser la carte. Les biens restent disponibles dans la liste.
+            {t('mapUnavailable.body')}
           </p>
         </div>
       </div>
@@ -882,16 +911,16 @@ export default function SearchPage() {
 
               {/* View toggle */}
               <div className="flex border border-border-warm rounded-lg overflow-hidden">
-                <button onClick={() => setView('grid')} className={cn('w-9 h-9 flex items-center justify-center', view === 'grid' ? 'bg-terracotta text-white' : 'bg-white text-text-secondary hover:bg-cream')} title="Galerie">
+                <button onClick={() => setView('grid')} className={cn('w-9 h-9 flex items-center justify-center', view === 'grid' ? 'bg-terracotta text-white' : 'bg-white text-text-secondary hover:bg-cream')} title={t('viewToggle.grid')}>
                   <Grid3X3 size={16} />
                 </button>
-                <button onClick={() => setView('list')} className={cn('w-9 h-9 flex items-center justify-center', view === 'list' ? 'bg-terracotta text-white' : 'bg-white text-text-secondary hover:bg-cream')} title="Liste">
+                <button onClick={() => setView('list')} className={cn('w-9 h-9 flex items-center justify-center', view === 'list' ? 'bg-terracotta text-white' : 'bg-white text-text-secondary hover:bg-cream')} title={t('viewToggle.list')}>
                   <List size={16} />
                 </button>
-                <button onClick={() => setView('map')} className={cn('w-9 h-9 flex items-center justify-center lg:hidden', view === 'map' ? 'bg-terracotta text-white' : 'bg-white text-text-secondary hover:bg-cream')} title="Carte">
+                <button onClick={() => setView('map')} className={cn('w-9 h-9 flex items-center justify-center lg:hidden', view === 'map' ? 'bg-terracotta text-white' : 'bg-white text-text-secondary hover:bg-cream')} title={t('viewToggle.map')}>
                   <Map size={16} />
                 </button>
-                <button onClick={() => { setMapVisible(!mapVisible); if (!mapVisible) setView('list'); else setView('grid'); }} className={cn('hidden lg:flex w-9 h-9 items-center justify-center', mapVisible ? 'bg-terracotta text-white' : 'bg-white text-text-secondary hover:bg-cream')} title="Carte">
+                <button onClick={() => { setMapVisible(!mapVisible); if (!mapVisible) setView('list'); else setView('grid'); }} className={cn('hidden lg:flex w-9 h-9 items-center justify-center', mapVisible ? 'bg-terracotta text-white' : 'bg-white text-text-secondary hover:bg-cream')} title={t('viewToggle.map')}>
                   <Map size={16} />
                 </button>
               </div>
@@ -1211,7 +1240,7 @@ export default function SearchPage() {
                           onClick={() => setSelectedMapSlug(null)}
                           className="mb-2 text-[13px] text-text-secondary font-inter flex items-center gap-1 hover:text-terracotta"
                         >
-                          <ChevronDown size={14} className="rotate-90" /> Retour à la liste
+                          <ChevronDown size={14} className="rotate-90" /> {t('mobile.backToList')}
                         </button>
                         {(() => {
                           const p = filtered.find(x => x.slug === selectedMapSlug)
@@ -1222,7 +1251,7 @@ export default function SearchPage() {
                     ) : (
                       /* Horizontal carousel of all properties */
                       <div className="p-4">
-                        <p className="text-[12px] text-text-secondary font-inter mb-2 uppercase tracking-wide">{filtered.length} bien{filtered.length > 1 ? 's' : ''}</p>
+                        <p className="text-[12px] text-text-secondary font-inter mb-2 uppercase tracking-wide">{t('resultCount', { count: filtered.length })}</p>
                         <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                           {filtered.map(p => (
                             <div
@@ -1255,11 +1284,11 @@ export default function SearchPage() {
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-border-warm flex">
         <button onClick={() => setMobileFiltersOpen(true)} className="flex-1 flex items-center justify-center gap-2 h-14 text-[14px] font-medium text-text-primary">
           <Sliders size={18} />
-          Filtres
+          {t('mobile.filters')}
         </button>
         <button onClick={() => setView(view === 'map' ? 'grid' : 'map')} className="flex-1 flex items-center justify-center gap-2 h-14 text-[14px] font-medium text-text-primary border-l border-border-warm">
           <Map size={18} />
-          {view === 'map' ? 'Liste' : 'Carte'}
+          {view === 'map' ? t('viewToggle.list') : t('viewToggle.map')}
         </button>
       </div>
 

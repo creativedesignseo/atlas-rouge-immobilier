@@ -76,9 +76,38 @@ export default function BlogPost() {
     }
     if (desc) metaDesc.setAttribute('content', desc)
 
+    // JSON-LD schema.org/BlogPosting — same imperative approach as the meta
+    // tags above (mirrors PropertyDetail's RealEstateListing block).
+    const authorLabel = post.author?.name || post.guestAuthor || 'Atlas Rouge'
+    const jsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: post.seoTitle || post.title,
+      description: desc,
+      image: post.coverImage
+        ? getImageUrl(post.coverImage, { width: 1400, height: 800, resize: 'cover' })
+        : undefined,
+      datePublished: post.publishedAt || undefined,
+      dateModified: post.updatedAt || post.publishedAt || undefined,
+      url: typeof window !== 'undefined' ? window.location.href : '',
+      author: { '@type': 'Person', name: authorLabel },
+      publisher: {
+        '@type': 'Organization',
+        name: 'Atlas Rouge Immobilier',
+        logo: { '@type': 'ImageObject', url: 'https://atlasrouge.com/favicon.svg' },
+      },
+    }
+    const existing = document.querySelector('script#blogpost-jsonld')
+    const script = existing || document.createElement('script')
+    script.setAttribute('type', 'application/ld+json')
+    script.setAttribute('id', 'blogpost-jsonld')
+    script.textContent = JSON.stringify(jsonLd)
+    if (!existing) document.head.appendChild(script)
+
     return () => {
       document.title = prev
       if (prevDesc) metaDesc?.setAttribute('content', prevDesc)
+      document.querySelector('script#blogpost-jsonld')?.remove()
     }
   }, [post])
 

@@ -12,11 +12,11 @@
  * - UI (nav, buttons, forms, badges, metadata, all interactive surfaces):
  *     Inter — kept because it's the gold standard for UI legibility.
  *
- * Playfair is still imported as a fallback so any leftover `font-display`
- * usage doesn't break; new code should use `font-display` or `font-serif`.
+ * Fonts are loaded via a <link rel="stylesheet"> in index.html (non-
+ * render-blocking) rather than a CSS @import here. The `playfair` Tailwind
+ * family is a legacy fallback only and resolves to Newsreader/Georgia, so
+ * Playfair Display is no longer fetched.
  */
-@import url('https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
