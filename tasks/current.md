@@ -4,7 +4,41 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-06-02 (precio "a consultar" + rediseño tabla specs — DESPLEGADO Y VERIFICADO)
+**Last updated:** 2026-06-03 (nuevo barrio "Route de Ouarzazate" — DATOS, en vivo)
+
+---
+
+## Nuevo barrio "Route de Ouarzazate" — 2026-06-03 ✅ EN VIVO (solo datos, sin deploy de código)
+
+Alta de un barrio nuevo. **Sin cambios de código**: la tabla `neighborhoods`
+de Supabase es la fuente de verdad y alimenta a la vez el home (rejilla de
+barrios), el desplegable de Barrio del admin y el buscador. Pasos:
+
+- Foto (Aït Benhaddou, aportada por el owner, 720×480 → baja resolución)
+  optimizada a JPG 1200×800 (mismo ratio 3:2, sin crop) y subida al bucket
+  `property-images/neighborhood-route-ouarzazate.jpg` (render 200). Original
+  archivado como WebP en `source-images/neighborhoods/route-ouarzazate/`
+  (gitignored).
+- Fila insertada (`id e51f7b8d`, slug `route-ouarzazate`, `property_count 0`,
+  textos FR factuales). Detalle: `progress/2026-06-03-add-route-de-ouarzazate.md`.
+
+⚠️ **Decisión técnica a recordar:** la inserción se hizo vía Management API
+(PAT, que salta RLS) porque `neighborhoods` **solo tiene policy SELECT pública,
+ningún INSERT/UPDATE/DELETE** → hoy ni un admin puede crear/borrar barrios
+desde la web. Esto motiva la siguiente tarea.
+
+### Siguiente: gestión de ubicaciones en el admin (best practice) — PLANIFICADO
+El owner quiere un CRUD de barrios (y a futuro ciudades) tipo WordPress, para
+reusar la web en otras ciudades/países (modelo **clon por agencia**,
+single-tenant). Best-practice acordada:
+- Jerarquía normalizada Ciudad→Barrio (FK, no `city` texto libre).
+- Conteo **calculado** (vista/trigger), NO la columna manual `property_count`
+  (ya hay drift real: Médina dice 2, son 3).
+- `UNIQUE(parent_id, slug)`, no slug global.
+- Borrado seguro: **soft-delete** + aviso de inmuebles afectados (hoy es
+  `ON DELETE SET NULL` silencioso).
+- RLS de escritura solo para admins (`is_admin()`, migración 008).
+- NO multi-tenant ni PostGIS por ahora (sobre-ingeniería).
 
 ---
 
