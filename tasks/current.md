@@ -4,7 +4,30 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-06-03 (nuevo barrio "Route de Ouarzazate" — DATOS, en vivo)
+**Last updated:** 2026-06-03 (auditoría full 40/100 + Fase 0 quick wins desplegados)
+
+---
+
+## Auditoría de producción (saas-audit full) — 2026-06-03 ✅ Score 40/100 🔴 NOT READY
+
+13 agentes. Informe en `AUDIT_REPORT.md` (anterior 22/100 en
+`AUDIT_REPORT.2026-05-26.md`). Matiz: +20 "gratis" de Pagos (N/A lead-gen) y el
+cap por área aplasta a 0 áreas que están bien; sobre áreas aplicables ≈ 24/80.
+**3 P0:** DB-001 (drift de migraciones), LEGAL-001 (sin Política de Privacidad),
+LEGAL-002 (sin Mentions Légales). ~26 P1.
+
+### Fase 0 — quick wins ✅ DESPLEGADO (`847ff042`)
+6 fixes en código, `verify.sh` verde: UX-001 (CTA móvil cableado), TECH-001
+(plugin Vite fuera de prod), PERF-008 (mapbox chunk), LEGAL-004 (eliminada fuga
+de IP a ipapi.co), QA-002 (`subject:'buy'`), QA-003 (estado de error en Search +
+empty state i18n), PERF-002 (favicon).
+
+⏳ **Pendientes de Fase 0:**
+- `og-image.jpg` 1200×630 real (necesita foto del owner; no IA).
+- **Legal (P0):** páginas Política de Privacidad + Mentions Légales (abogado + datos Khalid).
+- **DB-001 baseline:** `pg_dump` de prod → `000_baseline_prod.sql`, limpiar SQL
+  divergentes (operación delicada, requiere OK explícito).
+Roadmap completo (Fases 1-3) en `AUDIT_REPORT.md`.
 
 ---
 
