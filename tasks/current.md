@@ -22,6 +22,13 @@ LEGAL-002 (sin Mentions Légales). ~26 P1.
 de IP a ipapi.co), QA-002 (`subject:'buy'`), QA-003 (estado de error en Search +
 empty state i18n), PERF-002 (favicon).
 
+### Batch 2 — 13 hallazgos (2 agentes paralelos) ✅ DESPLEGADO
+Admin/negocio: ADM-001 (pantalla de leads estimación+newsletter + CSV),
+ADM-004 (gate borrado), ADM-006 (link), ARCH-001 (Favoritos contra BD).
+Público: UX-002 (Search i18n), SEC-001 (XSS popup mapa cerrado), UX-005/006/007
+(footer/Lightbox/Share), PERF-004/005 (JSON-LD), PERF-006 (fuentes a <link>),
+ARCH-002 (sin datos demo en prod). tsc+verify verdes, paridad i18n OK.
+
 ⏳ **Pendientes de Fase 0:**
 - `og-image.jpg` 1200×630 real (necesita foto del owner; no IA).
 - **Legal (P0):** páginas Política de Privacidad + Mentions Légales (abogado + datos Khalid).
