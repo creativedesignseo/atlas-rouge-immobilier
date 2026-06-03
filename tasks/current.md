@@ -27,11 +27,12 @@ barrios), el desplegable de Barrio del admin y el buscador. Pasos:
 ningún INSERT/UPDATE/DELETE** → hoy ni un admin puede crear/borrar barrios
 desde la web. Esto motiva la siguiente tarea.
 
-### Gestión de barrios en el admin (Fase 1) — 🟡 CÓDIGO LISTO (verify verde), PENDIENTE migración + deploy
+### Gestión de barrios en el admin (Fase 1) — ✅ DESPLEGADO (`8219d357`)
 CRUD de barrios en el admin (crear/editar/soft-delete/borrar) hecho como los
-pros. **`verify.sh` verde.** Falta aplicar la migración `011` en prod y aprobar
-el push (Netlify auto-deploya). ⚠️ **No pushear sin aplicar antes la 011**: el
-home filtra `is_active` y, sin la columna, caería al fallback de barrios mock.
+pros. **`verify.sh` verde.** Migración `011` **aplicada en prod y verificada**
+(4 políticas RLS, trigger activo, drift corregido: Médina 2→3). Pusheado a
+`main` → Netlify auto-deploy. ⏳ Pendiente: smoke-test del UI admin en vivo +
+verificar que un agente no-admin no puede escribir (falta agente de prueba).
 
 Implementado:
 - `supabase/migrations/011_neighborhood_admin.sql`: `is_active` (soft-delete),
