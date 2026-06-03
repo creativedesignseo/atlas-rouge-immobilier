@@ -115,5 +115,10 @@
     "rent": "Louer"
   },
   "city": "Marrakech",
-  "kmAround": "{{km}} km"
+  "kmAround": "{{km}} km",
+  "error": {
+    "title": "Impossible de charger les biens",
+    "body": "Un problème de connexion est survenu. Vérifiez votre réseau et réessayez.",
+    "retry": "Réessayer"
+  }
 }

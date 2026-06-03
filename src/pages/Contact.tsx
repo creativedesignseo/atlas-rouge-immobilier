@@ -75,7 +75,9 @@ export default function Contact() {
     name: '',
     email: '',
     phone: '',
-    subject: 'Achat',
+    // Must match a <select> option value below ('buy'), not a French label,
+    // or the stored lead gets subject='Achat' while the UI shows 'buy'.
+    subject: 'buy',
     message: '',
     consent: false,
   })

@@ -115,5 +115,10 @@
     "rent": "Rent"
   },
   "city": "Marrakech",
-  "kmAround": "{{km}} km"
+  "kmAround": "{{km}} km",
+  "error": {
+    "title": "Could not load properties",
+    "body": "There was a connection problem. Check your network and try again.",
+    "retry": "Retry"
+  }
 }

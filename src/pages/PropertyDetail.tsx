@@ -692,7 +692,7 @@ export default function PropertyDetail() {
             </div>
           </div>
 
-          <div className="lg:w-[35%]">
+          <div id="contact-panel" className="lg:w-[35%] scroll-mt-24">
             <div className="lg:sticky lg:top-[calc(72px+24px)]">
               <ContactPanel property={property} settings={settings} />
             </div>
@@ -742,7 +742,10 @@ export default function PropertyDetail() {
           className="flex-1 flex items-center justify-center gap-2 h-14 text-[14px] font-medium text-[#25D366] border-r border-border-warm">
           <MessageCircle size={18} /> WhatsApp
         </a>
-        <button className="flex-[1.3] flex items-center justify-center gap-2 h-14 bg-terracotta text-white text-[14px] font-semibold">
+        <button
+          onClick={() => document.getElementById('contact-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+          className="flex-[1.3] flex items-center justify-center gap-2 h-14 bg-terracotta text-white text-[14px] font-semibold"
+        >
           {t('requestVisit')}
         </button>
       </div>

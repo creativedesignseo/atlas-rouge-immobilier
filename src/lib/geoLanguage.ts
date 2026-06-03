@@ -1,46 +1,43 @@
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/i18n'
 
-const COUNTRY_TO_LANG: Record<string, SupportedLanguage> = {
-  // Spanish-speaking countries
-  ES: 'es', MX: 'es', AR: 'es', CO: 'es', CL: 'es', PE: 'es', VE: 'es',
-  EC: 'es', GT: 'es', CU: 'es', BO: 'es', DO: 'es', HN: 'es', PY: 'es',
-  SV: 'es', NI: 'es', CR: 'es', PA: 'es', UY: 'es', PR: 'es', GQ: 'es',
-  // French-speaking countries (and Morocco — main market)
-  FR: 'fr', BE: 'fr', CH: 'fr', LU: 'fr', MC: 'fr', CA: 'fr',
-  MA: 'fr', DZ: 'fr', TN: 'fr', SN: 'fr', CI: 'fr', ML: 'fr',
-  CM: 'fr', BF: 'fr', NE: 'fr', TD: 'fr', MG: 'fr', CG: 'fr',
-  CD: 'fr', GA: 'fr', BJ: 'fr', TG: 'fr', GN: 'fr', RW: 'fr',
-  BI: 'fr', DJ: 'fr', HT: 'fr', VU: 'fr',
-}
-
 const STORAGE_KEY = 'i18nextLng'
 const GEO_RESOLVED_KEY = 'atlas-rouge-geo-resolved'
 
+function mapToSupported(code: string | undefined | null): SupportedLanguage | null {
+  if (!code) return null
+  const two = code.slice(0, 2).toLowerCase()
+  return (SUPPORTED_LANGUAGES as readonly string[]).includes(two)
+    ? (two as SupportedLanguage)
+    : null
+}
+
+/**
+ * Infer the preferred language from the browser itself (navigator.language(s)).
+ *
+ * GDPR/RGPD: we deliberately do NOT call any third-party geo-IP service. The
+ * previous implementation fetched https://ipapi.co/json/, which transmitted the
+ * visitor's IP (personal data) to a US processor on first load, before any
+ * consent and with no disclosure. navigator.language never leaves the browser —
+ * no network request, no PII. (Name kept for call-site compatibility.)
+ */
 export async function detectLanguageFromGeo(): Promise<SupportedLanguage | null> {
-  try {
-    const response = await fetch('https://ipapi.co/json/', {
-      headers: { Accept: 'application/json' },
-    })
-    if (!response.ok) return null
-    const data = await response.json()
-    const country = (data.country_code || data.country || '').toUpperCase()
-    const lang = COUNTRY_TO_LANG[country]
-    return lang || null
-  } catch {
-    return null
+  if (typeof navigator === 'undefined') return null
+  const candidates = [navigator.language, ...(navigator.languages || [])]
+  for (const c of candidates) {
+    const lang = mapToSupported(c)
+    if (lang) return lang
   }
+  return null
 }
 
 /**
  * Resolves the user's preferred language on first visit:
  *   1. localStorage (already chosen) — skip detection
  *   2. URL path /:lang/ — i18next-browser-languagedetector handles this first
- *   3. Geo-IP country → mapped language
- *   4. Browser navigator.language
- *   5. Default 'en'
+ *   3. Browser navigator.language(s) → mapped language (no external geo-IP)
+ *   4. Default 'en'
  *
- * Only runs the GeoIP call once per browser; result is cached in localStorage
- * via the standard i18nextLng key.
+ * Runs at most once per session (sessionStorage guard).
  */
 export async function resolveInitialLanguage(currentLang: string): Promise<SupportedLanguage | null> {
   // If user already has a language chosen (URL path or previous visit), respect it.

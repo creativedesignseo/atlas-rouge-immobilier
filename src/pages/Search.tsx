@@ -754,6 +754,11 @@ export default function SearchPage() {
   const [selectedMapSlug, setSelectedMapSlug] = useState<string | null>(null)
   const [allProperties, setAllProperties] = useState<Property[]>([])
   const [loading, setLoading] = useState(true)
+  // Distinguish "the query succeeded but matched nothing" from "the query
+  // failed" so a network/Supabase error isn't shown as a misleading
+  // "no results" empty state. reloadKey lets the user retry.
+  const [loadError, setLoadError] = useState(false)
+  const [reloadKey, setReloadKey] = useState(0)
   const [nbhdList, setNbhdList] = useState<string[]>(nbhdFallback)
 
   // Load neighborhoods from Supabase (fallback to hardcoded list on failure).
@@ -774,6 +779,7 @@ export default function SearchPage() {
     // Only flash the spinner on the first load; keep showing previous results
     // when filters change so the list doesn't blink to empty.
     if (allProperties.length === 0) setLoading(true)
+    setLoadError(false)
 
     getProperties({
       transaction: filters.transaction,
@@ -792,11 +798,12 @@ export default function SearchPage() {
     }).catch((err) => {
       console.error('Failed to load properties:', err)
       setAllProperties([])
+      setLoadError(true)
     }).finally(() => {
       setLoading(false)
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters, sort])
+  }, [filters, sort, reloadKey])
 
   const filtered = allProperties
 
@@ -1130,15 +1137,26 @@ export default function SearchPage() {
               <div className="w-10 h-10 border-4 border-terracotta border-t-transparent rounded-full animate-spin" />
               <p className="text-text-secondary mt-4">{t('loading')}</p>
             </div>
+          ) : loadError ? (
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <MapPin size={64} className="text-terracotta/40 mb-4" />
+              <h3 className="font-display text-[22px] font-semibold text-midnight mb-2">{t('error.title')}</h3>
+              <p className="text-text-secondary text-[15px] font-inter max-w-md mb-6">
+                {t('error.body')}
+              </p>
+              <button onClick={() => setReloadKey((k) => k + 1)} className="h-11 px-6 bg-terracotta text-white font-inter text-[14px] font-semibold rounded-lg hover:scale-[1.02] transition-transform">
+                {t('error.retry')}
+              </button>
+            </div>
           ) : filtered.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <MapPin size={64} className="text-sand/60 mb-4" />
               <h3 className="font-display text-[22px] font-semibold text-midnight mb-2">{t('noResults')}</h3>
               <p className="text-text-secondary text-[15px] font-inter max-w-md mb-6">
-                Essayez d'élargir votre recherche ou de modifier vos filtres pour trouver plus de résultats.
+                {t('noResultsDesc')}
               </p>
               <button onClick={resetFilters} className="h-11 px-6 bg-terracotta text-white font-inter text-[14px] font-semibold rounded-lg hover:scale-[1.02] transition-transform">
-                Réinitialiser les filtres
+                {t('filters.reset')}
               </button>
             </div>
           ) : (
