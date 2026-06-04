@@ -97,10 +97,14 @@ export default function Footer() {
 
         <div className="border-t border-white/10 mt-12 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <span className="font-display text-[18px] font-semibold text-terracotta">
-                Atlas Rouge
-              </span>
+            <div className="flex items-center gap-3">
+              <img
+                src="/logo-reverse.svg"
+                alt="Atlas Rouge Immobilier"
+                className="h-10 w-auto"
+                width={189}
+                height={40}
+              />
               <span className="text-white/40 text-[12px]">|</span>
               <span className="text-white/40 text-[13px] font-inter">
                 {tc('tagline')}

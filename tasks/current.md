@@ -4,7 +4,22 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-06-03 (auditoría full 40/100 + Fase 0 quick wins desplegados)
+**Last updated:** 2026-06-04 (logo v1 implementado en navbar + footer)
+
+---
+
+## Logo de marca v1 — 2026-06-04 ✅ IMPLEMENTADO (sin commitear, sin deploy)
+
+El owner entregó el vector final `logo-atlasrouge-v1.svg` (lockup apilado:
+isotipo de montañas terracota sobre wordmark `ATLAS ROUGE` navy; colores =
+tokens de marca exactos `#B5533A` / `#172033`). Implementado en la web:
+- `public/logo.svg` (color, navbar) + `public/logo-reverse.svg` (wordmark cream
+  para footer sobre midnight).
+- `Navbar.tsx` y `Footer.tsx` ahora usan `<img>` del logo en vez del texto.
+- Favicon sin tocar (montaña demasiado apaisada para 16px; el `AR` actual ya es
+  de marca). `verify.sh` verde, verificado visualmente en headless Chrome.
+- ⏳ Pendiente: commit + push (Netlify auto-deploya). Detalle:
+  `progress/2026-06-04-logo-vectorization.md`.
 
 ---
 

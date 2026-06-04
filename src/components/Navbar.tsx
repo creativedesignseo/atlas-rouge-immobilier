@@ -52,13 +52,14 @@ export default function Navbar() {
       <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-[72px]">
           {/* Logo */}
-          <Link to={`/${lang}/`} className="flex flex-col shrink-0">
-            <span className="font-display text-[22px] font-semibold text-terracotta leading-tight">
-              Atlas Rouge Immobilier
-            </span>
-            <span className="text-text-secondary text-[12px] font-inter">
-              {t('tagline')}
-            </span>
+          <Link to={`/${lang}/`} className="flex items-center shrink-0" aria-label="Atlas Rouge Immobilier">
+            <img
+              src="/logo.svg"
+              alt="Atlas Rouge Immobilier"
+              className="h-11 w-auto"
+              width={208}
+              height={44}
+            />
           </Link>
 
           {/* Desktop Nav */}
