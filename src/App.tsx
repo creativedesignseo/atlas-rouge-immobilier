@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useState } from 'react'
+import { Suspense, lazy, useEffect } from 'react'
 import { Routes, Route, Outlet, Navigate, useParams, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Toaster } from '@/components/ui/sonner'
@@ -12,7 +12,6 @@ import { SUPPORTED_LANGUAGES, type SupportedLanguage } from './i18n'
 import { getAllSlugsForKey } from './lib/routes'
 import { FavoritesProvider } from './hooks/useFavorites'
 import CookieBanner from './components/CookieBanner'
-import { resolveInitialLanguage } from './lib/geoLanguage'
 
 const Home = lazy(() => import('./pages/Home'))
 const SearchPage = lazy(() => import('./pages/Search'))
@@ -98,40 +97,21 @@ function LangWrapper() {
   return <Outlet />
 }
 
-// Detecta idioma desde browser/geo y redirige a /:lang/.
+// Detecta idioma desde el navegador y redirige a /:lang/.
 // Solo se monta cuando la URL NO contiene /:lang (raíz /, o 404).
 // Fallback FR (no EN) — idioma base del proyecto.
+//
+// Resolución SÍNCRONA: el idioma del navegador ya está disponible en el primer
+// render (i18next lo detecta vía navigator), así que redirigimos en el mismo
+// tick. Antes esto esperaba a una race async (hasta 1500ms) y renderizaba `null`
+// mientras decidía → pantalla en blanco en `/`. La detección geo-IP remota se
+// eliminó (RGPD), así que ya no hay nada async que esperar: navigator.language
+// es exactamente lo que computamos aquí.
 function LangDetector() {
   const { i18n } = useTranslation()
-  const [resolved, setResolved] = useState<SupportedLanguage | null>(null)
-
-  useEffect(() => {
-    let cancelled = false
-    // 1) browser language
-    const browserLang = (i18n.language?.slice(0, 2) || 'fr') as SupportedLanguage
-    const fromBrowser = SUPPORTED_LANGUAGES.includes(browserLang) ? browserLang : 'fr'
-
-    // 2) refinar con geo-IP (con timeout corto para no bloquear)
-    Promise.race([
-      resolveInitialLanguage(fromBrowser),
-      new Promise<string | null>((res) => setTimeout(() => res(null), 1500)),
-    ])
-      .then((geo) => {
-        if (cancelled) return
-        const final = (geo && SUPPORTED_LANGUAGES.includes(geo as SupportedLanguage))
-          ? (geo as SupportedLanguage)
-          : fromBrowser
-        setResolved(final)
-      })
-      .catch(() => {
-        if (!cancelled) setResolved(fromBrowser)
-      })
-
-    return () => { cancelled = true }
-  }, [i18n.language])
-
-  if (!resolved) return null  // spinner-less mientras decide (rápido: ~ms)
-  return <Navigate to={`/${resolved}/`} replace />
+  const browserLang = (i18n.language?.slice(0, 2) || 'fr') as SupportedLanguage
+  const target = SUPPORTED_LANGUAGES.includes(browserLang) ? browserLang : 'fr'
+  return <Navigate to={`/${target}/`} replace />
 }
 
 export default function App() {

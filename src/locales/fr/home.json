@@ -82,5 +82,10 @@
     "neighborhoods": "Quartiers couverts",
     "years": "Ans à Marrakech",
     "languages": "Langues (FR · ES · EN)"
+  },
+  "error": {
+    "title": "Impossible de charger le contenu",
+    "body": "Un problème de connexion est survenu. Vérifiez votre réseau et réessayez.",
+    "retry": "Réessayer"
   }
 }

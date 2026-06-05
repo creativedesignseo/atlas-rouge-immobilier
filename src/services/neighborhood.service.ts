@@ -1,5 +1,6 @@
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 import { getCached, refetch } from '@/lib/queryCache'
+import { withRetry } from '@/lib/retry'
 import { neighborhoods as mockNeighborhoods } from '@/data/neighborhoods'
 import type { Neighborhood } from '@/data/neighborhoods'
 
@@ -17,22 +18,24 @@ function mapDbToNeighborhood(row: Record<string, unknown>): Neighborhood {
 }
 
 async function fetchNeighborhoods(): Promise<Neighborhood[]> {
+  // No env vars (local dev) → mock is the expected dataset, not a failure.
   if (!isSupabaseConfigured) return mockNeighborhoods
   const { data, error } = await supabase
     .from('neighborhoods')
     .select('*')
     .eq('is_active', true)
     .order('property_count', { ascending: false })
-  if (error || !data) {
-    console.error('Supabase error:', error)
-    return mockNeighborhoods
-  }
-  return data.map(mapDbToNeighborhood)
+  // Throw on a real error so withRetry can retry a transient blip. Returning
+  // mock here would mask production failures AND defeat the retry.
+  if (error) throw error
+  return (data || []).map(mapDbToNeighborhood)
 }
 
 export async function getNeighborhoods(): Promise<Neighborhood[]> {
   const cached = getCached<Neighborhood[]>('neighborhoods')
-  const fresh = refetch('neighborhoods', fetchNeighborhoods)
+  // withRetry wraps the fetcher INSIDE refetch, so queryCache's in-flight
+  // dedupe still holds (one shared "fetch-with-retries" promise per key).
+  const fresh = refetch('neighborhoods', () => withRetry(fetchNeighborhoods))
   if (cached !== undefined) {
     fresh.catch(() => {})
     return cached
@@ -45,16 +48,24 @@ export async function getNeighborhoodBySlug(slug: string): Promise<Neighborhood 
     return mockNeighborhoods.find((n) => n.slug === slug) || null
   }
 
-  const { data, error } = await supabase
-    .from('neighborhoods')
-    .select('*')
-    .eq('slug', slug)
-    .single()
-
-  if (error || !data) {
-    console.error('Supabase error:', error)
-    return mockNeighborhoods.find((n) => n.slug === slug) || null
+  try {
+    // withRetry applies a per-attempt timeout internally — no extra withTimeout.
+    return await withRetry(async () => {
+      const { data, error } = await supabase
+        .from('neighborhoods')
+        .select('*')
+        .eq('slug', slug)
+        .single()
+      // `.single()` with 0 rows is a legitimate "not found", not a transient
+      // failure: resolve null (isTransientError won't retry it anyway).
+      if (error) {
+        if ((error as { code?: string }).code === 'PGRST116') return null
+        throw error
+      }
+      return data ? mapDbToNeighborhood(data) : null
+    })
+  } catch (err) {
+    console.error('[neighborhood.service] getNeighborhoodBySlug failed:', err)
+    return null
   }
-
-  return mapDbToNeighborhood(data)
 }

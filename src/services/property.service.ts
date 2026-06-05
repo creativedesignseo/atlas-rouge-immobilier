@@ -1,5 +1,6 @@
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 import { getCached, refetch } from '@/lib/queryCache'
+import { withRetry } from '@/lib/retry'
 import i18n, { SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/i18n'
 import { properties as mockProperties } from '@/data/properties'
 import type { Property } from '@/data/properties'
@@ -28,28 +29,6 @@ function getCurrentLanguage(): SupportedLanguage {
 // fall back to the bundled mock dataset during local development. In prod the
 // caller gets an empty result and the UI shows its empty/error state instead.
 const ALLOW_MOCK_FALLBACK = import.meta.env.DEV
-
-/**
- * Race una promesa contra un timeout. Si la promesa no resuelve antes del
- * timeout, rechaza con un Error('TIMEOUT'). Crítico para queries Supabase
- * que ocasionalmente se cuelgan en móvil sin red 4G estable o cuando el
- * navegador despierta de background.
- */
-function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
-  return new Promise<T>((resolve, reject) => {
-    const id = setTimeout(() => reject(new Error('TIMEOUT')), ms)
-    promise.then(
-      (v) => {
-        clearTimeout(id)
-        resolve(v)
-      },
-      (e) => {
-        clearTimeout(id)
-        reject(e)
-      },
-    )
-  })
-}
 
 function localizedString(row: Record<string, unknown>, field: 'title' | 'description', lang: SupportedLanguage): string {
   const localized = row[`${field}_${lang}`]
@@ -145,22 +124,29 @@ async function fetchProperties(filters: PropertyFilters): Promise<Property[]> {
     default: query = query.order('is_featured', { ascending: false })
   }
 
-  try {
-    const { data, error } = await withTimeout(Promise.resolve(query), 12000)
-    if (error) {
-      console.error('Supabase error:', error)
-      return ALLOW_MOCK_FALLBACK ? applyMockFilters(mockProperties, filters) : []
-    }
-    return (data || []).map((row: Record<string, unknown>) => {
-      const neighborhoodName = row.neighborhoods && typeof row.neighborhoods === 'object'
-        ? (row.neighborhoods as Record<string, unknown>).name as string
-        : ''
-      return mapDbToProperty({ ...row, neighborhood_name: neighborhoodName })
+  // Throw on a real error so withRetry can retry a transient blip. The DEV mock
+  // fallback is applied by the caller (getProperties), not here.
+  const { data, error } = await query
+  if (error) throw error
+  return (data || []).map((row: Record<string, unknown>) => {
+    const neighborhoodName = row.neighborhoods && typeof row.neighborhoods === 'object'
+      ? (row.neighborhoods as Record<string, unknown>).name as string
+      : ''
+    return mapDbToProperty({ ...row, neighborhood_name: neighborhoodName })
+  })
+}
+
+/**
+ * Wrap a fetcher in retry + the DEV-only mock fallback. In production a fully
+ * failed fetch (after retries) REJECTS, so the page can show an error+retry
+ * state instead of a silent empty section. In dev it resolves with mock data.
+ */
+function resilient<T>(fetcher: () => Promise<T>, devFallback: () => T): () => Promise<T> {
+  return () =>
+    withRetry(fetcher).catch((err) => {
+      if (ALLOW_MOCK_FALLBACK) return devFallback()
+      throw err
     })
-  } catch (err) {
-    console.error('[property.service] fetchProperties timeout/error:', err)
-    return ALLOW_MOCK_FALLBACK ? applyMockFilters(mockProperties, filters) : []
-  }
 }
 
 export async function getProperties(filters: PropertyFilters = {}): Promise<Property[]> {
@@ -169,7 +155,10 @@ export async function getProperties(filters: PropertyFilters = {}): Promise<Prop
   // identical filter combos hit the cache.
   const key = `publicProperties:${getCurrentLanguage()}:${JSON.stringify(filters)}`
   const cached = getCached<Property[]>(key)
-  const fresh = refetch(key, () => fetchProperties(filters))
+  const fresh = refetch(
+    key,
+    resilient(() => fetchProperties(filters), () => applyMockFilters(mockProperties, filters)),
+  )
   if (cached !== undefined) {
     fresh.catch(() => {})
     return cached
@@ -182,33 +171,35 @@ async function fetchPropertyBySlug(slug: string): Promise<Property | null> {
     return ALLOW_MOCK_FALLBACK ? (mockProperties.find((p) => p.slug === slug) || null) : null
   }
 
-  const query = supabase
+  const { data, error } = await supabase
     .from('properties')
     .select(`*, neighborhoods(name)`)
     .eq('slug', slug)
     .single()
 
-  try {
-    const { data, error } = await withTimeout(Promise.resolve(query), 12000)
-    if (error || !data) {
-      console.error('Supabase error:', error)
-      return ALLOW_MOCK_FALLBACK ? (mockProperties.find((p) => p.slug === slug) || null) : null
-    }
-    const row = data as Record<string, unknown>
-    const neighborhoodName = row.neighborhoods && typeof row.neighborhoods === 'object'
-      ? (row.neighborhoods as Record<string, unknown>).name as string
-      : ''
-    return mapDbToProperty({ ...row, neighborhood_name: neighborhoodName })
-  } catch (err) {
-    console.error('[property.service] fetchPropertyBySlug timeout/error:', err)
-    return ALLOW_MOCK_FALLBACK ? (mockProperties.find((p) => p.slug === slug) || null) : null
+  if (error) {
+    // PGRST116 = 0 rows for .single(): a legitimate "not found", not a blip.
+    if ((error as { code?: string }).code === 'PGRST116') return null
+    throw error
   }
+  if (!data) return null
+  const row = data as Record<string, unknown>
+  const neighborhoodName = row.neighborhoods && typeof row.neighborhoods === 'object'
+    ? (row.neighborhoods as Record<string, unknown>).name as string
+    : ''
+  return mapDbToProperty({ ...row, neighborhood_name: neighborhoodName })
 }
 
 export async function getPropertyBySlug(slug: string): Promise<Property | null> {
   const key = `property:${slug}:${getCurrentLanguage()}`
   const cached = getCached<Property | null>(key)
-  const fresh = refetch(key, () => fetchPropertyBySlug(slug))
+  const fresh = refetch(
+    key,
+    resilient(
+      () => fetchPropertyBySlug(slug),
+      () => mockProperties.find((p) => p.slug === slug) || null,
+    ),
+  )
   if (cached !== undefined) {
     fresh.catch(() => {})
     return cached
@@ -227,28 +218,26 @@ async function fetchFeaturedProperties(limit: number): Promise<Property[]> {
     .eq('is_featured', true)
     .limit(limit)
 
-  try {
-    const { data, error } = await withTimeout(Promise.resolve(query), 12000)
-    if (error || !data) {
-      console.error('Supabase error:', error)
-      return ALLOW_MOCK_FALLBACK ? mockProperties.filter((p) => p.isFeatured).slice(0, limit) : []
-    }
-    return data.map((row: Record<string, unknown>) => {
-      const neighborhoodName = row.neighborhoods && typeof row.neighborhoods === 'object'
-        ? (row.neighborhoods as Record<string, unknown>).name as string
-        : ''
-      return mapDbToProperty({ ...row, neighborhood_name: neighborhoodName })
-    })
-  } catch (err) {
-    console.error('[property.service] fetchFeaturedProperties timeout/error:', err)
-    return ALLOW_MOCK_FALLBACK ? mockProperties.filter((p) => p.isFeatured).slice(0, limit) : []
-  }
+  const { data, error } = await query
+  if (error) throw error
+  return (data || []).map((row: Record<string, unknown>) => {
+    const neighborhoodName = row.neighborhoods && typeof row.neighborhoods === 'object'
+      ? (row.neighborhoods as Record<string, unknown>).name as string
+      : ''
+    return mapDbToProperty({ ...row, neighborhood_name: neighborhoodName })
+  })
 }
 
 export async function getFeaturedProperties(limit = 3): Promise<Property[]> {
   const key = `featuredProperties:${getCurrentLanguage()}:${limit}`
   const cached = getCached<Property[]>(key)
-  const fresh = refetch(key, () => fetchFeaturedProperties(limit))
+  const fresh = refetch(
+    key,
+    resilient(
+      () => fetchFeaturedProperties(limit),
+      () => mockProperties.filter((p) => p.isFeatured).slice(0, limit),
+    ),
+  )
   if (cached !== undefined) {
     fresh.catch(() => {})
     return cached
@@ -274,16 +263,19 @@ export async function getSimilarProperties(property: Property, limit = 3): Promi
     .limit(limit)
 
   try {
-    const { data, error } = await withTimeout(Promise.resolve(query), 12000)
-    if (error || !data) return fallback()
-    return data.map((row: Record<string, unknown>) => {
-      const neighborhoodName = row.neighborhoods && typeof row.neighborhoods === 'object'
-        ? (row.neighborhoods as Record<string, unknown>).name as string
-        : ''
-      return mapDbToProperty({ ...row, neighborhood_name: neighborhoodName })
+    return await withRetry(async () => {
+      const { data, error } = await query
+      if (error) throw error
+      return (data || []).map((row: Record<string, unknown>) => {
+        const neighborhoodName = row.neighborhoods && typeof row.neighborhoods === 'object'
+          ? (row.neighborhoods as Record<string, unknown>).name as string
+          : ''
+        return mapDbToProperty({ ...row, neighborhood_name: neighborhoodName })
+      })
     })
   } catch (err) {
-    console.error('[property.service] getSimilarProperties timeout/error:', err)
+    // Similar properties are a secondary section — never break the page over it.
+    console.error('[property.service] getSimilarProperties failed:', err)
     return fallback()
   }
 }

@@ -82,5 +82,10 @@
     "neighborhoods": "Barrios cubiertos",
     "years": "Años en Marrakech",
     "languages": "Idiomas (FR · ES · EN)"
+  },
+  "error": {
+    "title": "No se pudo cargar el contenido",
+    "body": "Ha habido un problema de conexión. Comprueba tu red e inténtalo de nuevo.",
+    "retry": "Reintentar"
   }
 }

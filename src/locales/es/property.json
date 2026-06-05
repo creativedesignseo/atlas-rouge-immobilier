@@ -95,5 +95,10 @@
   "viewMoreListings": "Ver más anuncios",
   "agentRole": {
     "admin": "Directora"
+  },
+  "error": {
+    "title": "No se pudo cargar este inmueble",
+    "body": "Ha habido un problema de conexión. Comprueba tu red e inténtalo de nuevo.",
+    "retry": "Reintentar"
   }
 }

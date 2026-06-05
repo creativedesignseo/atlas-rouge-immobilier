@@ -95,5 +95,10 @@
   "viewMoreListings": "View more listings",
   "agentRole": {
     "admin": "Director"
+  },
+  "error": {
+    "title": "Could not load this property",
+    "body": "There was a connection problem. Check your network and try again.",
+    "retry": "Retry"
   }
 }

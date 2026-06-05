@@ -13,6 +13,7 @@ import {
 // → ahorra ~1 MB de JS en la primera carga si el usuario no llega al mapa
 const LocationMap = lazy(() => import('@/components/property/LocationMap'))
 import { getPropertyBySlug, getSimilarProperties } from '@/services/property.service'
+import { reportError } from '@/lib/reportError'
 import { submitContactForm } from '@/services/contact.service'
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 import PhoneField from '@/components/forms/PhoneField'
@@ -391,6 +392,11 @@ export default function PropertyDetail() {
   const [property, setProperty] = useState<Property | undefined>(undefined)
   const [similarProperties, setSimilarProperties] = useState<Property[]>([])
   const [loading, setLoading] = useState(true)
+  // Distinguish a transient/network failure (offer retry) from a resolved
+  // "not found" (legitimate 404). getPropertyBySlug rejects on the former and
+  // resolves null on the latter.
+  const [loadError, setLoadError] = useState(false)
+  const [reloadKey, setReloadKey] = useState(0)
   const currentLang = i18n.language?.slice(0, 2) || 'en'
 
   const guideLinkLabels: Record<string, string> = {
@@ -408,6 +414,7 @@ export default function PropertyDetail() {
     // (and other refetches) keep the previous content visible until the new
     // data arrives — fixes the "property disappears, then re-appears" flicker.
     if (!property) setLoading(true)
+    setLoadError(false)
 
     getPropertyBySlug(slug)
       .then((p) => {
@@ -428,8 +435,11 @@ export default function PropertyDetail() {
       .catch((err) => {
         if (cancelled) return
         console.error('Failed to load property:', err)
-        setProperty(undefined)
+        // A network/timeout failure (not a 404): keep any previous content and
+        // surface a retry, rather than falsely claiming the property is gone.
+        setLoadError(true)
         setSimilarProperties([])
+        reportError('data', err)
       })
       .finally(() => {
         if (!cancelled) setLoading(false)
@@ -440,7 +450,7 @@ export default function PropertyDetail() {
     // language we want to refetch so the localized title/description/highlights
     // match. The slug-only dep would leave stale French text on /en/.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slug, currentLang])
+  }, [slug, currentLang, reloadKey])
 
   // Update document.title + meta description + JSON-LD when property loads.
   // Críticos para SEO y para que se vea bien al compartir en social.
@@ -528,6 +538,25 @@ export default function PropertyDetail() {
 
   if (loading) {
     return <div className="min-h-[60vh] flex items-center justify-center"><div className="w-10 h-10 border-4 border-terracotta border-t-transparent rounded-full animate-spin" /></div>
+  }
+
+  // Network/timeout failure (after retries) — offer a retry instead of the
+  // misleading "not found" screen.
+  if (loadError && !property) {
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4">
+        <Info size={64} className="text-sand/60 mb-4" />
+        <h1 className="font-display text-[32px] font-semibold text-midnight mb-3">{t('error.title')}</h1>
+        <p className="text-text-secondary text-[16px] font-inter mb-6">{t('error.body')}</p>
+        <button
+          type="button"
+          onClick={() => setReloadKey((k) => k + 1)}
+          className="h-12 px-6 bg-terracotta text-white font-inter text-[14px] font-semibold rounded-lg hover:scale-[1.02] transition-transform flex items-center gap-2"
+        >
+          {t('error.retry')}
+        </button>
+      </div>
+    )
   }
 
   if (!property) {

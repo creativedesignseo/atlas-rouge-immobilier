@@ -1,15 +1,7 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
-
-// Mirror of the stale-chunk detector in main.tsx. After a deploy, an open tab
-// imports lazy chunks whose hashes no longer exist; that should reload, not
-// show the fallback. Kept here to avoid a circular import with main.tsx.
-function isStaleChunkError(reason: unknown): boolean {
-  const msg = reason instanceof Error ? reason.message : String(reason ?? '')
-  return /Failed to fetch dynamically imported module|Importing a module script failed|ChunkLoadError/i.test(
-    msg,
-  )
-}
+import { isStaleChunkError } from '@/lib/staleChunk'
+import { reportError } from '@/lib/reportError'
 
 function ErrorFallback() {
   // useTranslation is safe here: this is a function component rendered by the
@@ -87,6 +79,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: unknown, info: ErrorInfo) {
     console.error('[ErrorBoundary]', error, info.componentStack)
+    if (!isStaleChunkError(error)) reportError('boundary', error)
   }
 
   render() {

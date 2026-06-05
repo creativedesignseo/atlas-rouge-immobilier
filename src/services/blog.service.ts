@@ -1,4 +1,5 @@
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
+import { withRetry } from '@/lib/retry'
 import i18n, { SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/i18n'
 
 // ============================================================================
@@ -177,27 +178,6 @@ export interface ListPostsOptions {
   includeContent?: boolean
 }
 
-/**
- * Race una promesa contra un timeout. Si la promesa no resuelve antes del
- * timeout, rechaza con un Error('TIMEOUT'). Crítico para queries Supabase
- * que ocasionalmente se cuelgan en móvil sin red 4G estable.
- */
-function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
-  return new Promise<T>((resolve, reject) => {
-    const id = setTimeout(() => reject(new Error('TIMEOUT')), ms)
-    promise.then(
-      (v) => {
-        clearTimeout(id)
-        resolve(v)
-      },
-      (e) => {
-        clearTimeout(id)
-        reject(e)
-      },
-    )
-  })
-}
-
 /** Listado de posts (public-facing por defecto). */
 export async function listPosts(options: ListPostsOptions = {}): Promise<BlogPost[]> {
   const { publishedOnly = true, category, limit, includeContent = false } = options
@@ -226,19 +206,18 @@ export async function listPosts(options: ListPostsOptions = {}): Promise<BlogPos
   if (category) query = query.eq('category', category)
   if (limit) query = query.limit(limit)
 
-  // Timeout defensivo: si la query no responde en 12 s, devolvemos [] en vez
-  // de dejar el componente colgado con el skeleton forever. Esto pasa
-  // ocasionalmente en móvil con redes inestables o cuando el navegador
-  // pone la pestaña en background.
+  // withRetry adds a per-attempt timeout + transient retry, so a flaky mobile
+  // network self-heals instead of leaving the skeleton forever. The blog is a
+  // secondary section (hidden when empty), so we keep the non-rejecting
+  // contract: on final failure return [] rather than propagating.
   try {
-    const { data, error } = await withTimeout(Promise.resolve(query), 12000)
-    if (error) {
-      console.error('[blog.service] listPosts:', error)
-      return []
-    }
-    return ((data as unknown as DbBlogPostRow[]) || []).map((row) => mapDbToPost(row))
+    return await withRetry(async () => {
+      const { data, error } = await query
+      if (error) throw error
+      return ((data as unknown as DbBlogPostRow[]) || []).map((row) => mapDbToPost(row))
+    })
   } catch (err) {
-    console.error('[blog.service] listPosts timeout/error:', err)
+    console.error('[blog.service] listPosts failed:', err)
     return []
   }
 }
@@ -261,14 +240,13 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
     .maybeSingle()
 
   try {
-    const { data, error } = await withTimeout(Promise.resolve(query), 12000)
-    if (error) {
-      console.error('[blog.service] getPostBySlug:', error)
-      return null
-    }
-    return data ? mapDbToPost(data as unknown as DbBlogPostRow) : null
+    return await withRetry(async () => {
+      const { data, error } = await query
+      if (error) throw error
+      return data ? mapDbToPost(data as unknown as DbBlogPostRow) : null
+    })
   } catch (err) {
-    console.error('[blog.service] getPostBySlug timeout/error:', err)
+    console.error('[blog.service] getPostBySlug failed:', err)
     return null
   }
 }
@@ -297,14 +275,13 @@ export async function getRelatedPosts(
     .limit(limit)
 
   try {
-    const { data, error } = await withTimeout(Promise.resolve(query), 12000)
-    if (error) {
-      console.error('[blog.service] getRelatedPosts:', error)
-      return []
-    }
-    return ((data as unknown as DbBlogPostRow[]) || []).map((row) => mapDbToPost(row))
+    return await withRetry(async () => {
+      const { data, error } = await query
+      if (error) throw error
+      return ((data as unknown as DbBlogPostRow[]) || []).map((row) => mapDbToPost(row))
+    })
   } catch (err) {
-    console.error('[blog.service] getRelatedPosts timeout/error:', err)
+    console.error('[blog.service] getRelatedPosts failed:', err)
     return []
   }
 }

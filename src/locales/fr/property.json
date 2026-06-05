@@ -95,5 +95,10 @@
   "viewMoreListings": "Voir plus d'annonces",
   "agentRole": {
     "admin": "Directrice"
+  },
+  "error": {
+    "title": "Impossible de charger ce bien",
+    "body": "Un problème de connexion est survenu. Vérifiez votre réseau et réessayez.",
+    "retry": "Réessayer"
   }
 }

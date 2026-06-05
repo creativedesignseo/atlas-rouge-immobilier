@@ -172,7 +172,9 @@ export default function PropertyForm({ defaultValues, onSubmit, isLoading, mode 
 
   // Load neighborhoods
   useEffect(() => {
-    getNeighborhoods().then(setNeighborhoods)
+    getNeighborhoods()
+      .then(setNeighborhoods)
+      .catch((err) => console.error('Failed to load neighborhoods:', err))
   }, [])
 
   const addHighlight = () => {

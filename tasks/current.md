@@ -4,7 +4,25 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-06-04 (logo v1 implementado en navbar + footer)
+**Last updated:** 2026-06-05 (resiliencia de primera carga + beacon)
+
+---
+
+## Resiliencia de primera carga — 2026-06-05 ✅ IMPLEMENTADO + VERIFICADO (sin commitear, sin deploy)
+
+Fix del bug "la web no carga a la primera, hay que recargar". Tres causas
+cerradas: (1) guard de stale-chunk que se atascaba → ahora por timestamp con
+cooldown; (2) sin reintentos ni timeout en datos → nuevo `withRetry`/`withTimeout`
+en `src/lib/retry.ts`, agujero de timeout de `neighborhood.service` cerrado;
+(3) `Home` sin estado de error → spinner→error+retry por sección; LangDetector
+síncrono (sin blanco en `/`). Añadido beacon de auto-reporte de errores
+(`src/lib/reportError.ts` + `netlify/functions/report-error.js`, sin BD ni PII).
+Verificado con preview prod + Playwright: retry transitorio auto-cura sin mostrar
+error, fallo total muestra retry, recuperación OK, GSAP sin regresión, beacon
+dispara. `verify.sh` verde. Detalle: `progress/2026-06-05-first-load-resilience.md`.
+- ⏳ Pendiente: commit + push (Netlify auto-deploya). Tras deploy, vigilar
+  function logs (`[client-error]`); opcional `TELEGRAM_BOT_TOKEN`/`_CHAT_ID` en
+  Netlify env para ping a Telegram.
 
 ---
 

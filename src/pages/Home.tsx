@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import type { TFunction } from 'i18next'
 import { useLang } from '@/hooks/useLang'
 import { getImageUrl } from '@/lib/storage'
 import { useGSAP } from '@gsap/react'
@@ -24,6 +25,7 @@ import {
 import { getFeaturedProperties } from '@/services/property.service'
 import { getNeighborhoods } from '@/services/neighborhood.service'
 import { listPosts, type BlogPost } from '@/services/blog.service'
+import { reportError } from '@/lib/reportError'
 import type { Property } from '@/data/properties'
 import type { Neighborhood } from '@/data/neighborhoods'
 import PropertyCard from '@/components/PropertyCard'
@@ -99,6 +101,40 @@ function AnimatedCounter({ target, suffix = '', duration = 1.5 }: { target: numb
   return <span ref={ref}>0{suffix}</span>
 }
 
+// Spinner while a core section loads, or an error block with a retry button when
+// its fetch failed after retries. Rendered in place of the cards grid so a
+// failed first load is explicit (not a silent empty section) and recoverable.
+function SectionFallback({
+  loading,
+  onRetry,
+  t,
+}: {
+  loading: boolean
+  onRetry: () => void
+  t: TFunction
+}) {
+  if (loading) {
+    return (
+      <div className="flex justify-center py-12">
+        <div className="w-10 h-10 border-4 border-terracotta border-t-transparent rounded-full animate-spin" />
+      </div>
+    )
+  }
+  return (
+    <div className="text-center py-12 max-w-[480px] mx-auto">
+      <h3 className="font-display text-[22px] text-midnight mb-2">{t('error.title')}</h3>
+      <p className="text-text-secondary text-[15px] font-inter mb-5">{t('error.body')}</p>
+      <button
+        type="button"
+        onClick={onRetry}
+        className="inline-flex items-center gap-2 bg-terracotta text-white rounded-lg px-5 py-2.5 text-[15px] font-inter font-medium hover:bg-terracotta/90 transition-colors"
+      >
+        {t('error.retry')}
+      </button>
+    </div>
+  )
+}
+
 export default function Home() {
   const { t, i18n } = useTranslation('home')
   const { t: tBlog } = useTranslation('blog')
@@ -119,17 +155,50 @@ export default function Home() {
   const [neighborhoodsList, setNeighborhoodsList] = useState<Neighborhood[]>([])
   const [latestPosts, setLatestPosts] = useState<BlogPost[]>([])
 
+  // Loading/error per core section so a failed first load shows a spinner→error
+  // with retry instead of a silent empty section. `reloadKey` re-runs the fetch.
+  const [featuredLoading, setFeaturedLoading] = useState(true)
+  const [featuredError, setFeaturedError] = useState(false)
+  const [neighborhoodsLoading, setNeighborhoodsLoading] = useState(true)
+  const [neighborhoodsError, setNeighborhoodsError] = useState(false)
+  const [reloadKey, setReloadKey] = useState(0)
+
   useEffect(() => {
+    let cancelled = false
+
+    setFeaturedLoading(true)
+    setFeaturedError(false)
     getFeaturedProperties(3)
-      .then(setFeaturedProperties)
-      .catch((err) => console.error('Failed to load featured properties:', err))
+      .then((data) => { if (!cancelled) setFeaturedProperties(data) })
+      .catch((err) => {
+        if (cancelled) return
+        console.error('Failed to load featured properties:', err)
+        setFeaturedError(true)
+        reportError('data', err)
+      })
+      .finally(() => { if (!cancelled) setFeaturedLoading(false) })
+
+    setNeighborhoodsLoading(true)
+    setNeighborhoodsError(false)
     getNeighborhoods()
-      .then(setNeighborhoodsList)
-      .catch((err) => console.error('Failed to load neighborhoods:', err))
+      .then((data) => { if (!cancelled) setNeighborhoodsList(data) })
+      .catch((err) => {
+        if (cancelled) return
+        console.error('Failed to load neighborhoods:', err)
+        setNeighborhoodsError(true)
+        reportError('data', err)
+      })
+      .finally(() => { if (!cancelled) setNeighborhoodsLoading(false) })
+
+    // Blog is a secondary section (hidden when empty) — no error UI needed.
     listPosts({ publishedOnly: true, limit: 3 })
-      .then(setLatestPosts)
+      .then((data) => { if (!cancelled) setLatestPosts(data) })
       .catch((err) => console.error('Failed to load blog posts:', err))
-  }, [i18n.language])
+
+    return () => { cancelled = true }
+  }, [i18n.language, reloadKey])
+
+  const retryData = () => setReloadKey((k) => k + 1)
 
   // Hero entrance animations — fromTo defensivo (sin scrollTrigger porque
   // están above-the-fold, se animan al montar)
@@ -308,11 +377,15 @@ export default function Home() {
               {t('neighborhoods.subtitle')}
             </p>
           </div>
-          <div className="section-content grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {neighborhoodsList.map((n) => (
-              <NeighborhoodCard key={n.slug} neighborhood={n} />
-            ))}
-          </div>
+          {neighborhoodsError || (neighborhoodsLoading && neighborhoodsList.length === 0) ? (
+            <SectionFallback loading={!neighborhoodsError} onRetry={retryData} t={t} />
+          ) : (
+            <div className="section-content grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {neighborhoodsList.map((n) => (
+                <NeighborhoodCard key={n.slug} neighborhood={n} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -330,11 +403,15 @@ export default function Home() {
               {t('featured.subtitle')}
             </p>
           </div>
-          <div className="section-content grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredProperties.map((p) => (
-              <PropertyCard key={p.id} property={p} />
-            ))}
-          </div>
+          {featuredError || (featuredLoading && featuredProperties.length === 0) ? (
+            <SectionFallback loading={!featuredError} onRetry={retryData} t={t} />
+          ) : (
+            <div className="section-content grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredProperties.map((p) => (
+                <PropertyCard key={p.id} property={p} />
+              ))}
+            </div>
+          )}
           <div className="text-center mt-10">
             <Link
               to={path('/acheter')}
