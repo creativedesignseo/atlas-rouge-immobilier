@@ -4,6 +4,45 @@
 
 ---
 
+## CIERRE de sesión — Claude Opus 4.8 — 2026-06-05 (estrategia de captación + realidad verificada)
+
+**Sesión de estrategia de marketing (no se tocó código de la app).** El owner
+quiere lanzar campañas de pago para captar **propietarios** que tienen un
+inmueble en Marrakech y quieren venderlo/alquilarlo (no compradores). Entregable:
+`docs/marketing/google-ads-propietarios.md` (nuevo). Resumen y hallazgos
+**verificados contra código y prod** (no asumidos):
+
+- **NO hay tracking de conversión en ningún sitio.** Verificado: grep de `src/` +
+  `index.html` y del HTML servido en `https://atlasrouge.com/` → 0 coincidencias
+  de GA4 / Google Ads / GTM / Meta Pixel. **Bloqueante #1**: sin tracking no se
+  puede optimizar ni medir ROI de ninguna campaña. Instalar antes de gastar.
+- **Web viva y landings OK:** `atlasrouge.com` HTTP 200; `/fr/vendre`,
+  `/fr/estimation`, `/fr/valuation` HTTP 200.
+- **Captura de leads (código):** el formulario real está en `Estimation.tsx`
+  (`/fr/estimation` y `/fr/valuation`) → `submitEstimationRequest` → tabla
+  `estimation_requests` + `notify-lead` (Netlify Function). `Sell.tsx` y
+  `Estimer.tsx` son **informativas** (enlazan al form y a `/contact`).
+  **Sin verificar end-to-end en prod** (insert pasa RLS + email llega): pendiente
+  de prueba con envío real.
+- **Estrategia por mercado (con datos del Planificador):**
+  - **Francia / francófonos → Google Search.** Hay demanda de búsqueda real.
+    Insight: `vendre` (propietario) ≠ `à vendre`/`acheter` (comprador, a
+    negativizar). MVP = 3 campañas FR (France, Diáspora, Maroc), 5 grupos por
+    intención. Solo Marrakech (negativizar otras ciudades).
+  - **España → Meta Ads, NO Search.** Verificado en el Planificador (España/es):
+    `vender piso marrakech` sin volumen (< ~10/mes). La demanda existe pero no se
+    busca en Google; se resuelve por familia/comunidad. Posicionamiento del
+    negocio: Atlas Rouge = "el familiar profesional". Canal: Meta segmentando
+    *Expats – Morocco* × España, anuncios en dariya/francés, embudo a WhatsApp.
+  - **Alemania / UK:** verificar volumen en el Planificador ANTES de presupuestar.
+
+**Próximo paso recomendado:** (1) instalar GA4 + conversión de Google Ads +
+(opcional) Meta Pixel y probar el envío de lead end-to-end; (2) decidir entre
+montar Search-FR o Meta-España primero. Detalle completo y keywords:
+`docs/marketing/google-ads-propietarios.md`.
+
+---
+
 ## CIERRE de sesión — Claude Opus 4.8 — 2026-06-02 (precio "a consultar")
 
 **Precio opcionalmente oculto → DESPLEGADO** (commit `16dae844`, push a `main`).
