@@ -7,7 +7,9 @@ import {
   useMemo,
   type ReactNode,
 } from 'react'
-import { supabase, isSupabaseConfigured, getAnonymousId } from '@/lib/supabase'
+// Favorites are anonymous (keyed by anon_id, not the agent session), so they use
+// the anonymous client to avoid waiting on the logged-in agent's token refresh.
+import { supabasePublic as supabase, isSupabaseConfigured, getAnonymousId } from '@/lib/supabase'
 
 const STORAGE_KEY = 'atlas-rouge-favorites'
 

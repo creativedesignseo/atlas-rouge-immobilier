@@ -76,3 +76,35 @@ un estado explícito con reintento, y que el owner se entere vía beacon.
 ## Próximo paso
 Owner revisa el diff y decide commit. Al desplegar, vigilar function logs para
 ver si aparecen reportes `[client-error]`.
+
+---
+
+## ADENDA (mismo día) — CAUSA RAÍZ real encontrada en prod
+
+Tras desplegar lo anterior, el owner (logueado en /admin) seguía viendo el fallo:
+los 3 fetches del Home daban **TIMEOUT** tras agotar los reintentos. Evidencia en
+consola: `Failed to load neighborhoods/featured/blog: Error: TIMEOUT`.
+
+**Diagnóstico definitivo:** no era un blip de red — era `supabase-js` colgándose.
+El cliente principal `supabase` lleva la sesión del agente logueado; en la primera
+carga intenta **refrescar el token** y, mientras ese refresh se atasca, TODAS las
+lecturas PostgREST esperan al token → TIMEOUT. Por eso solo le pasaba al owner
+(con sesión) y nunca a un visitante anónimo (los tests en navegador limpio
+pasaban). Es el mismo patrón ya documentado en el admin (`adminRest.ts` /
+feedback memory: "supabase-js se cuelga").
+
+**Cura:** cliente anónimo dedicado `supabasePublic` en `src/lib/supabase.ts`
+(`persistSession:false`, `autoRefreshToken:false`, `detectSessionInUrl:false`).
+Las lecturas públicas no necesitan la sesión (RLS permite `anon`), así que no
+esperan a nada. Cambiados a `supabasePublic`:
+- `property.service.ts` (alias), `neighborhood.service.ts` (alias),
+- `blog.service.ts` (solo las 3 lecturas; las escrituras siguen en `supabase`),
+- `hooks/useFavorites.tsx` (favoritos son anónimos por anon_id).
+
+Los reintentos/UI de error anteriores se quedan como red de seguridad.
+
+**Verificación (reproducción exacta del bug):** preview prod + Playwright,
+sembrando una sesión de admin CADUCADA y colgando `/auth/v1/**` (el refresh).
+Resultado: `authRefreshAttempted:true` (el refresh se intenta y cuelga) pero los
+datos cargan igual (35 tarjetas, sin error UI). Antes esto habría dado TIMEOUT.
+`verify.sh` + `tsc` verdes.

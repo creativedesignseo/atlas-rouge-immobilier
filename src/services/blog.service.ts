@@ -1,4 +1,7 @@
-import { supabase, isSupabaseConfigured } from '@/lib/supabase'
+// Public reads use the anonymous client (`supabasePublic`) so they never wait on
+// the logged-in agent's token refresh — that stall made the first load hang.
+// Writes (create/update/delete) keep the authenticated `supabase` client.
+import { supabase, supabasePublic, isSupabaseConfigured } from '@/lib/supabase'
 import { withRetry } from '@/lib/retry'
 import i18n, { SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/i18n'
 
@@ -189,7 +192,7 @@ export async function listPosts(options: ListPostsOptions = {}): Promise<BlogPos
     ? 'locale, title, excerpt, content, seo_title, seo_description'
     : 'locale, title, excerpt, seo_title, seo_description'
 
-  let query = supabase
+  let query = supabasePublic
     .from('blog_posts')
     .select(
       `
@@ -226,7 +229,7 @@ export async function listPosts(options: ListPostsOptions = {}): Promise<BlogPos
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   if (!isSupabaseConfigured) return null
 
-  const query = supabase
+  const query = supabasePublic
     .from('blog_posts')
     .select(
       `
@@ -258,7 +261,7 @@ export async function getRelatedPosts(
   limit = 3,
 ): Promise<BlogPost[]> {
   if (!isSupabaseConfigured) return []
-  const query = supabase
+  const query = supabasePublic
     .from('blog_posts')
     .select(
       `

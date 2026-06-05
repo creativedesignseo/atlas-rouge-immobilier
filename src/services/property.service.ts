@@ -1,4 +1,7 @@
-import { supabase, isSupabaseConfigured } from '@/lib/supabase'
+// Public reads use the anonymous client so they never wait on the logged-in
+// agent's token refresh (that stall is what made the first load hang). Aliased
+// to `supabase` so the query-builder calls below read naturally.
+import { supabasePublic as supabase, isSupabaseConfigured } from '@/lib/supabase'
 import { getCached, refetch } from '@/lib/queryCache'
 import { withRetry } from '@/lib/retry'
 import i18n, { SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/i18n'

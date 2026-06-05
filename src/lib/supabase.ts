@@ -23,6 +23,28 @@ export const supabase = isSupabaseConfigured
     })
   : (null as unknown as ReturnType<typeof createClient<Database>>)
 
+// Dedicated ANONYMOUS client for public reads (properties, neighborhoods, blog).
+//
+// Why a second client: the main `supabase` client carries the logged-in agent's
+// session. On the first load after sign-in, supabase-js resolves/refreshes that
+// session before every PostgREST request — and when that token refresh stalls,
+// EVERY data read queues behind it and times out. That's the "first visit is
+// blank, reload fixes it" bug the owner sees (they're logged into /admin, so a
+// session exists to refresh). An anonymous visitor never reproduced it.
+//
+// Public data is readable by the `anon` role via RLS, so these reads don't need
+// the agent JWT at all. This client never persists, refreshes, or detects a
+// session, so it has nothing to block on — it always uses the anon key directly.
+export const supabasePublic = isSupabaseConfigured
+  ? createClient<Database>(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+        detectSessionInUrl: false,
+      },
+    })
+  : (null as unknown as ReturnType<typeof createClient<Database>>)
+
 const ANON_ID_KEY = 'atlas-rouge-anon-id'
 
 export function getAnonymousId(): string {
