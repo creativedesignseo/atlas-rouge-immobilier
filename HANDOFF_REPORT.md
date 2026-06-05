@@ -4,6 +4,35 @@
 
 ---
 
+## CIERRE de sesión — Claude Opus 4.8 — 2026-06-05 (resiliencia de primera carga — EN PRODUCCIÓN)
+
+**Commit `517be31b` pusheado a `main` → Netlify auto-deploy.** Fix del bug
+reportado por el owner: "la web no carga a la primera, hay que recargar".
+
+Tres causas cerradas: (1) capa de datos sin reintentos + `neighborhood.service`
+sin timeout → nuevo `src/lib/retry.ts` (`withTimeout`+`withRetry`, backoff+jitter,
+solo reintenta transitorios) cableado en property/neighborhood/blog services;
+(2) `Home` sin estado de error → spinner→error+retry por sección
+(`SectionFallback`), y `PropertyDetail` separa 404 de error de red; (3) guard de
+stale-chunk que se atascaba (flag one-shot) → ahora timestamp+cooldown vía
+`src/lib/staleChunk.ts`; LangDetector síncrono (sin blanco en `/`).
+
+Añadido beacon opt-in de auto-reporte: `src/lib/reportError.ts` +
+`netlify/functions/report-error.js` (best-effort, sin PII — solo pathname+hash,
+loguea `[client-error]` en function logs; Telegram opcional gated por env vars).
+
+Verificado: `verify.sh` verde + runtime con preview prod + Playwright (retry
+transitorio auto-cura sin mostrar error, fallo total muestra retry, recuperación
+OK, GSAP sin regresión, beacon dispara). Detalle:
+`progress/2026-06-05-first-load-resilience.md`.
+
+**Pendiente post-deploy:** confirmar en Netlify function logs que aparecen (o no)
+reportes `[client-error]`. Opcional: `TELEGRAM_BOT_TOKEN`/`_CHAT_ID` en Netlify
+env si se quiere ping. `geoLanguage.ts` quedó con exports sin uso (limpieza
+opcional). Los `brand/*.af` (working files del owner) NO se commitearon.
+
+---
+
 ## CIERRE de sesión — Claude Opus 4.8 — 2026-06-05 (estrategia de captación + realidad verificada)
 
 **Sesión de estrategia de marketing (no se tocó código de la app).** El owner
