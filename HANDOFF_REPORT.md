@@ -9,7 +9,7 @@
 **Sesión de estrategia de marketing (no se tocó código de la app).** El owner
 quiere lanzar campañas de pago para captar **propietarios** que tienen un
 inmueble en Marrakech y quieren venderlo/alquilarlo (no compradores). Entregable:
-`docs/marketing/google-ads-propietarios.md` (nuevo). Resumen y hallazgos
+`marketing/google-ads-propietarios.md` (nuevo). Resumen y hallazgos
 **verificados contra código y prod** (no asumidos):
 
 - **NO hay tracking de conversión en ningún sitio.** Verificado: grep de `src/` +
@@ -39,7 +39,7 @@ inmueble en Marrakech y quieren venderlo/alquilarlo (no compradores). Entregable
 **Próximo paso recomendado:** (1) instalar GA4 + conversión de Google Ads +
 (opcional) Meta Pixel y probar el envío de lead end-to-end; (2) decidir entre
 montar Search-FR o Meta-España primero. Detalle completo y keywords:
-`docs/marketing/google-ads-propietarios.md`.
+`marketing/google-ads-propietarios.md`.
 
 ---
 
