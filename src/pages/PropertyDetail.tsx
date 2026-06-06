@@ -380,6 +380,133 @@ function AmenityItem({ label }: { label: string }) {
 
 /* ───────────────────── main PropertyDetail component ───────────────────── */
 
+// Mobile contact modal — opened from the sticky bar's primary CTA. Reuses the
+// existing lead pipeline (submitContactForm → Supabase + notify-lead). Brand
+// colours, trilingual. Bottom-sheet on phones, centred card on larger screens.
+function MobileContactModal({
+  open,
+  onClose,
+  property,
+}: {
+  open: boolean
+  onClose: () => void
+  property: Property
+}) {
+  const { t } = useTranslation('property')
+  const defaultMessage = t('contact.defaultMessage', { title: property.title })
+  const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [email, setEmail] = useState('')
+  const [message, setMessage] = useState(defaultMessage)
+  const [wants, setWants] = useState<string[]>(['recontact'])
+  const [acceptedTerms, setAcceptedTerms] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    if (!open) return
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = '' }
+  }, [open])
+
+  if (!open) return null
+
+  const WANTS = [
+    { key: 'recontact', label: t('contact.want.recontact') },
+    { key: 'visit', label: t('contact.want.visit') },
+    { key: 'morePhotos', label: t('contact.want.morePhotos') },
+    { key: 'moreInfo', label: t('contact.want.moreInfo') },
+  ]
+  const toggleWant = (k: string) =>
+    setWants(w => (w.includes(k) ? w.filter(x => x !== k) : [...w, k]))
+
+  const inputCls =
+    'w-full h-12 px-3.5 rounded-lg border border-border-warm bg-cream-warm/40 text-[15px] text-text-primary placeholder:text-text-secondary focus:border-terracotta focus:outline-none'
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError('')
+    if (!name.trim()) { setError(t('contact.errorName')); return }
+    if (!email.trim() && !phone.trim()) { setError(t('contact.errorContact')); return }
+    if (!message.trim()) { setError(t('contact.errorMessage')); return }
+    if (!acceptedTerms) { setError(t('contact.errorTerms')); return }
+    setSubmitting(true)
+    const wantsText = WANTS.filter(w => wants.includes(w.key)).map(w => w.label).join(', ')
+    const result = await submitContactForm({
+      name,
+      email,
+      phone,
+      subject: t('contact.modalTitle'),
+      message: wantsText ? `[${wantsText}] ${message}` : message,
+      propertySlug: property.slug,
+    })
+    setSubmitting(false)
+    if (result.success) setSubmitted(true)
+    else setError(result.error || t('errorOccurred'))
+  }
+
+  return (
+    <div className="lg:hidden fixed inset-0 z-[70] flex items-end sm:items-center justify-center">
+      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+      <div className="relative w-full sm:max-w-md bg-white rounded-t-2xl sm:rounded-2xl max-h-[92vh] overflow-y-auto shadow-2xl">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-border-warm sticky top-0 bg-white z-10">
+          <h2 className="font-display text-[20px] font-medium text-midnight">{t('contact.modalTitle')}</h2>
+          <button type="button" onClick={onClose} aria-label="Close" className="p-1 -mr-1">
+            <X size={22} className="text-text-primary" />
+          </button>
+        </div>
+
+        {submitted ? (
+          <div className="px-5 py-12 text-center">
+            <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-palm/15 flex items-center justify-center">
+              <Check size={28} className="text-palm" />
+            </div>
+            <h3 className="font-display text-[20px] text-midnight mb-1">{t('contact.successTitle')}</h3>
+            <p className="text-text-secondary text-[14px] mb-6">{t('contact.successText')}</p>
+            <button type="button" onClick={onClose} className="h-11 px-6 bg-terracotta text-white rounded-xl text-[14px] font-semibold">OK</button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="px-5 py-4 space-y-3">
+            {error && <p className="text-[13px] text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>}
+            <input className={inputCls} value={name} onChange={e => setName(e.target.value)} placeholder={t('contact.namePlaceholder')} />
+            <input className={inputCls} type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder={t('contact.phonePlaceholder')} />
+            <input className={inputCls} type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder={t('contact.emailPlaceholder')} />
+
+            <div>
+              <p className="text-[14px] font-medium text-midnight mb-2">{t('contact.wantLabel')}</p>
+              <div className="grid grid-cols-2 gap-2">
+                {WANTS.map(w => {
+                  const on = wants.includes(w.key)
+                  return (
+                    <button type="button" key={w.key} onClick={() => toggleWant(w.key)} className="flex items-center gap-2 py-1.5 text-left">
+                      <span className={`w-5 h-5 rounded border flex items-center justify-center flex-shrink-0 ${on ? 'bg-terracotta border-terracotta' : 'border-border-warm'}`}>
+                        {on && <Check size={12} className="text-white" />}
+                      </span>
+                      <span className="text-[13.5px] text-text-primary">{w.label}</span>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
+            <textarea className={`${inputCls} h-auto py-3 resize-none`} rows={3} value={message} onChange={e => setMessage(e.target.value)} placeholder={t('contact.messagePlaceholder')} />
+
+            <label className="flex items-start gap-2 cursor-pointer">
+              <input type="checkbox" checked={acceptedTerms} onChange={e => setAcceptedTerms(e.target.checked)} className="mt-0.5 accent-terracotta w-4 h-4" />
+              <span className="text-[12px] text-text-secondary leading-snug">{t('iAcceptTerms')}</span>
+            </label>
+
+            <button type="submit" disabled={submitting} className="w-full h-12 bg-terracotta text-white rounded-xl text-[15px] font-semibold disabled:opacity-60 active:scale-[0.99] transition-transform">
+              {submitting ? t('contact.sending') : t('contact.send')}
+            </button>
+          </form>
+        )}
+      </div>
+    </div>
+  )
+}
+
 export default function PropertyDetail() {
   const { slug } = useParams<{ slug: string }>()
   const { t, i18n } = useTranslation('property')
@@ -392,6 +519,7 @@ export default function PropertyDetail() {
   const [property, setProperty] = useState<Property | undefined>(undefined)
   const [similarProperties, setSimilarProperties] = useState<Property[]>([])
   const [loading, setLoading] = useState(true)
+  const [contactOpen, setContactOpen] = useState(false)
   // Distinguish a transient/network failure (offer retry) from a resolved
   // "not found" (legitimate 404). getPropertyBySlug rejects on the former and
   // resolves null on the latter.
@@ -822,13 +950,15 @@ export default function PropertyDetail() {
             <MessageCircle size={20} strokeWidth={2} />
           </a>
           <button
-            onClick={() => document.getElementById('contact-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+            onClick={() => setContactOpen(true)}
             className="flex-1 h-12 rounded-xl bg-terracotta text-white text-[15px] font-semibold active:scale-[0.99] transition-transform"
           >
             {t('requestVisit')}
           </button>
         </div>
       </div>
+
+      <MobileContactModal open={contactOpen} onClose={() => setContactOpen(false)} property={property} />
     </div>
   )
 }
