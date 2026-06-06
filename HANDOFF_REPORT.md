@@ -4,27 +4,40 @@
 
 ---
 
-## CIERRE de sesión — Claude Opus 4.8 — 2026-06-06 (fix filtros móvil + doc causa raíz)
+## CIERRE de sesión — Claude Opus 4.8 — 2026-06-06 (filtros móvil + doc causa raíz) — VERIFICADO EN PROD
 
-**EN PRODUCCIÓN.** Dos cosas:
+**Realidad verificada (no supuesta):** `verify.sh` verde · local sincronizado con
+`origin/main` · último deploy Netlify **`f6767dbf` = `ready`** · `atlasrouge.com`
+HTTP 200 · filtros móvil confirmados EN VIVO con Playwright (390×844).
 
-1. **Filtros móvil (Search):** los checkboxes de Barrios y Tipo no se marcaban al
-   tocar (el `MobileFilterDrawer` no tenía `onClick`/toggle; el panel desktop sí).
-   Arreglado con `toggleArr` + `onClick` y área táctil mayor en
-   `src/pages/Search.tsx`. Verificado en móvil (Playwright 390×844): marca,
-   desmarca, multi-selección y el contador "Ver N resultados" se actualiza.
+**Commits en producción (esta tanda):**
+- `f6767dbf` — fix filtros móvil estado/equipamiento/multimedia (último, EN VIVO).
+- `407f2dd4` — fix filtros móvil barrios/tipo + ADR-002 + invariante en AGENTS.md.
+- `13687e8a` — `supabasePublic` para lecturas públicas (cura del "no carga a la 1ª").
+- `4e73429c` / `517be31b` — resiliencia de primera carga (retry, timeouts, error UI, beacon).
 
-2. **Documentación de la causa raíz del "no carga a la primera":** ADR-002
-   (`docs/decisions/ADR-002-anonymous-client-for-public-reads.md`) — el cliente
-   con sesión bloqueaba las lecturas en la 1ª carga; cura = `supabasePublic`
-   (ya desplegado en `13687e8a`). Añadidas al `AGENTS.md` la **invariante**
-   ("lecturas públicas → `supabasePublic`, nunca el cliente con sesión") y el
-   **sistema de verificación** (reproduce-primero + matriz de 3 personas, con la
-   celda "admin logueado en frío" que faltaba). Sirve para no clonar el bug a
-   otras inmobiliarias.
+1. **Filtros móvil (Search) — TODOS funcionan.** Los checkboxes del
+   `MobileFilterDrawer` pintaban la casilla pero **no tenían `onClick`/toggle**
+   (el panel desktop sí). Afectaba a Barrios, Tipo, **Estado, Equipamiento y
+   Multimedia**. Arreglado con `toggleArr` + `onClick` y área táctil mayor en
+   `src/pages/Search.tsx`. **Confirmado en vivo en prod:** las 3 secciones
+   (estado/equipamiento/multimedia) y barrios/tipo marcan/desmarcan al tocar;
+   el contador "Ver N resultados" se actualiza.
 
-Verificación: `verify.sh` verde. `brand/*.af` (working files del owner) NO
-commiteados.
+2. **Causa raíz del "no carga a la primera" — documentada y curada.** ADR-002
+   (`docs/decisions/ADR-002-anonymous-client-for-public-reads.md`): el cliente
+   con sesión bloqueaba las lecturas en la 1ª carga (refresh de token); cura =
+   `supabasePublic` (cliente anónimo, `13687e8a`). En `AGENTS.md` quedan la
+   **invariante** ("lecturas públicas → `supabasePublic`, nunca el cliente con
+   sesión") y el **sistema de verificación** (reproduce-primero + matriz de 3
+   personas, con la celda "admin logueado en frío" que faltaba). Evita clonar el
+   bug a otras inmobiliarias.
+
+**Pendiente (verificado que existe, no resuelto):**
+- **2 errores de consola** observados en `atlasrouge.com/es/comprar` (no rompen
+  los filtros ni la carga; sin investigar — siguiente sesión).
+- Landing "Regalitos" (`/bold-type-landing`) quedó sin empezar (cancelada).
+- `brand/*.af` (working files del owner) NO commiteados — por regla.
 
 ---
 

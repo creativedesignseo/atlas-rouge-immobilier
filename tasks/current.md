@@ -4,24 +4,27 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-06-06 (fix filtros móvil + ADR-002 + invariante en harness)
+**Last updated:** 2026-06-06 (filtros móvil TODOS arreglados — verificado en prod)
 
 ---
 
-## Fix filtros móvil (Search) — 2026-06-06 ✅ VERIFICADO
+## Fix filtros móvil (Search) — 2026-06-06 ✅ EN VIVO (`f6767dbf`, deploy ready)
 
-En el panel de Filtros móvil, los checkboxes de **Barrios** y **Tipo** no se
-marcaban al tocar: el `<label>` solo pintaba la casilla, sin `onClick` ni toggle
-(el panel de escritorio sí lo tenía). Añadido `toggleArr` + `onClick` en
-`MobileFilterDrawer` (`src/pages/Search.tsx`) y agrandada el área táctil (casilla
-20px). Verificado en preview prod + Playwright a 390×844: marca/desmarca,
-multi-selección (Guéliz+Palmeraie) y el contador pasa a "Ver 5 resultados".
+En el panel de Filtros móvil, los checkboxes pintaban la casilla pero NO tenían
+`onClick`/toggle (el panel desktop sí). Afectaba a **Barrios, Tipo, Estado,
+Equipamiento y Multimedia**. Arreglado con `toggleArr` + `onClick` y área táctil
+mayor en `MobileFilterDrawer` (`src/pages/Search.tsx`). **Confirmado EN VIVO** en
+`atlasrouge.com` con Playwright (390×844): las 5 secciones marcan/desmarcan y el
+contador "Ver N resultados" se actualiza. Commits: `407f2dd4` (barrios/tipo) +
+`f6767dbf` (estado/equipamiento/multimedia).
 
-## Doc de la causa raíz de carga — 2026-06-06 ✅
+## Causa raíz "no carga a la primera" — 2026-06-06 ✅ EN VIVO (`13687e8a`)
 ADR-002 (cliente anónimo `supabasePublic` para lecturas públicas) + invariante y
-matriz de 3 personas (anónimo / admin logueado en frío / red lenta) y regla
-"reproduce-primero" añadidas a `AGENTS.md`. La causa raíz del "no carga a la
-primera" ya está desplegada (`13687e8a`).
+matriz de 3 personas + regla "reproduce-primero" en `AGENTS.md`.
+
+## ⏳ Pendiente (verificado, no resuelto)
+- **2 errores de consola** en `/es/comprar` (no rompen nada visible; sin investigar).
+- Landing "Regalitos" (`/bold-type-landing`) sin empezar.
 
 ---
 
