@@ -34,6 +34,31 @@ Marrakech** (Atlas Rouge Immobilier), dirigido a **inversores europeos**
 el objetivo es captar contactos vía formularios. Cliente final: **Khalid**
 (Francia). En **producción** en `atlasrouge.com` (Netlify).
 
+## 🚀 MODO DESARROLLO — publicar a producción por defecto (ACTIVO)
+
+> **Instrucción permanente del owner (2026-06-06).** Mientras este bloque siga
+> aquí, el proyecto está en **modo desarrollo** y Claude debe **llevar todo a
+> producción automáticamente, sin volver a preguntar**. Esto se mantiene **hasta
+> que el owner modifique o elimine esta instrucción**.
+
+Tras **cualquier cambio verificado**, ejecuta el ritual completo (= la frase
+`CIERRA Y PUBLICA`) **de corrido, sin pedir confirmación**:
+
+1. Verifica de verdad: `bash scripts/verify.sh` **+** comprobar prod en vivo
+   (curl/headless). No supongas.
+2. Actualiza `HANDOFF_REPORT.md` + `tasks/current.md` (+ `progress/` si aplica)
+   con la realidad verificada.
+3. **Commit enfocado + push a `main`** → Netlify auto-despliega.
+4. Confirma el deploy `ready` y reporta la secuencia.
+
+**Guardarraíles que SIGUEN vigentes incluso en este modo** (no se saltan):
+- Si `verify.sh` está en **ROJO**: PARA, no publiques, avisa.
+- Excluye los working files del owner (`brand/*.af`).
+- Nunca `--no-verify` / `--no-gpg-sign` / `--force` sin OK explícito.
+- Operaciones **destructivas** (DROP/TRUNCATE/DELETE masivo en BD, rotación de
+  secretos, borrar archivos) siguen necesitando aprobación explícita en el chat.
+- No tocar `.env*`.
+
 ## Stack
 
 React 19.2 · Vite 7.2 · TypeScript 5.9 (strict) · Tailwind 3.4 · Supabase
@@ -93,8 +118,10 @@ AUDIT_REPORT.md             # auditoría 13-agentes (P0-P3 + roadmap)
 ## Cosas que Claude NO debe hacer
 
 - No borrar archivos ni hacer cambios destructivos sin permiso explícito.
-- No commitear sin que el owner lo pida.
-- No hacer deploy (Netlify auto-deploya al hacer push a `main`; avisar).
+- ⚠️ **Commit + deploy:** mientras el **MODO DESARROLLO** (arriba) esté activo, SÍ
+  se commitea y se publica a producción sin preguntar (ese bloque manda). Si el
+  owner elimina ese bloque, vuelve a regir: *no commitear ni desplegar sin que el
+  owner lo pida.*
 - No tratar `PROJECT_HANDBOOK.md`/`README.md` como verdad (desactualizados).
 - No re-aplicar la migración 005 ni recrear el harness (ya están hechos).
 
