@@ -800,21 +800,34 @@ export default function PropertyDetail() {
         </div>
       </section>
 
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-border-warm flex">
-        <a href={`tel:${(settings?.phone || '+212524000000').replace(/\s/g, '')}`}
-          className="flex-1 flex items-center justify-center gap-2 h-14 text-[14px] font-medium text-text-primary border-r border-border-warm">
-          <Phone size={18} /> {t('call')}
-        </a>
-        <a href={`https://wa.me/${(settings?.whatsapp || '+212600000000').replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer"
-          className="flex-1 flex items-center justify-center gap-2 h-14 text-[14px] font-medium text-[#25D366] border-r border-border-warm">
-          <MessageCircle size={18} /> WhatsApp
-        </a>
-        <button
-          onClick={() => document.getElementById('contact-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-          className="flex-[1.3] flex items-center justify-center gap-2 h-14 bg-terracotta text-white text-[14px] font-semibold"
-        >
-          {t('requestVisit')}
-        </button>
+      {/* Mobile sticky contact bar: two compact icon buttons (call, WhatsApp)
+          + a wide primary CTA. WhatsApp uses a discreet deep green (not the loud
+          brand green) so it stays recognizable without clashing with terracotta.
+          pb safe-area keeps it clear of the iPhone home indicator. */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-border-warm px-3 pt-2.5 pb-[calc(0.625rem+env(safe-area-inset-bottom))]">
+        <div className="flex items-center gap-2.5">
+          <a
+            href={`tel:${(settings?.phone || '+212524000000').replace(/\s/g, '')}`}
+            aria-label={t('call')}
+            className="flex items-center justify-center w-12 h-12 flex-shrink-0 rounded-xl border border-border-warm text-midnight active:bg-cream-warm transition-colors"
+          >
+            <Phone size={20} strokeWidth={2} />
+          </a>
+          <a
+            href={`https://wa.me/${(settings?.whatsapp || '+212600000000').replace(/\D/g, '')}`}
+            target="_blank" rel="noopener noreferrer"
+            aria-label="WhatsApp"
+            className="flex items-center justify-center w-12 h-12 flex-shrink-0 rounded-xl border border-border-warm text-[#0A8F57] active:bg-cream-warm transition-colors"
+          >
+            <MessageCircle size={20} strokeWidth={2} />
+          </a>
+          <button
+            onClick={() => document.getElementById('contact-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+            className="flex-1 h-12 rounded-xl bg-terracotta text-white text-[15px] font-semibold active:scale-[0.99] transition-transform"
+          >
+            {t('requestVisit')}
+          </button>
+        </div>
       </div>
     </div>
   )
