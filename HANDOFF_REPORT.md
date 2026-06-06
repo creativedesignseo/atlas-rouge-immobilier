@@ -4,6 +4,30 @@
 
 ---
 
+## CIERRE de sesión — Claude Opus 4.8 — 2026-06-06 (fix filtros móvil + doc causa raíz)
+
+**EN PRODUCCIÓN.** Dos cosas:
+
+1. **Filtros móvil (Search):** los checkboxes de Barrios y Tipo no se marcaban al
+   tocar (el `MobileFilterDrawer` no tenía `onClick`/toggle; el panel desktop sí).
+   Arreglado con `toggleArr` + `onClick` y área táctil mayor en
+   `src/pages/Search.tsx`. Verificado en móvil (Playwright 390×844): marca,
+   desmarca, multi-selección y el contador "Ver N resultados" se actualiza.
+
+2. **Documentación de la causa raíz del "no carga a la primera":** ADR-002
+   (`docs/decisions/ADR-002-anonymous-client-for-public-reads.md`) — el cliente
+   con sesión bloqueaba las lecturas en la 1ª carga; cura = `supabasePublic`
+   (ya desplegado en `13687e8a`). Añadidas al `AGENTS.md` la **invariante**
+   ("lecturas públicas → `supabasePublic`, nunca el cliente con sesión") y el
+   **sistema de verificación** (reproduce-primero + matriz de 3 personas, con la
+   celda "admin logueado en frío" que faltaba). Sirve para no clonar el bug a
+   otras inmobiliarias.
+
+Verificación: `verify.sh` verde. `brand/*.af` (working files del owner) NO
+commiteados.
+
+---
+
 ## CIERRE de sesión — Claude Opus 4.8 — 2026-06-05 (resiliencia de primera carga — EN PRODUCCIÓN)
 
 **Commit `517be31b` pusheado a `main` → Netlify auto-deploy.** Fix del bug

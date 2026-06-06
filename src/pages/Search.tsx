@@ -604,6 +604,13 @@ function MobileFilterDrawer({ filters, setFilters, onApply, onReset, resultCount
 }) {
   const { t } = useTranslation('search')
   const update = <K extends keyof Filters>(key: K, value: Filters[K]) => setFilters(f => ({ ...f, [key]: value }))
+  // Toggle a value in an array filter (neighborhoods / types). The mobile
+  // checkboxes had no handler at all, so tapping them did nothing.
+  const toggleArr = (key: 'neighborhoods' | 'types', value: string) =>
+    setFilters(f => {
+      const arr = f[key]
+      return { ...f, [key]: arr.includes(value) ? arr.filter(v => v !== value) : [...arr, value] }
+    })
 
   return (
     <div className="fixed inset-0 z-[60] flex flex-col bg-white lg:hidden">
@@ -636,12 +643,17 @@ function MobileFilterDrawer({ filters, setFilters, onApply, onReset, resultCount
           </div>
           <div className="mt-2 space-y-1">
             {nbhdList.map(n => (
-              <label key={n} className="flex items-center gap-2 py-1 cursor-pointer">
-                <div className={cn('w-4 h-4 border rounded flex items-center justify-center', filters.neighborhoods.includes(n) ? 'bg-terracotta border-terracotta' : 'border-border-warm')}>
-                  {filters.neighborhoods.includes(n) && <Check size={10} className="text-white" />}
+              <button
+                type="button"
+                key={n}
+                onClick={() => toggleArr('neighborhoods', n)}
+                className="flex items-center gap-2 py-2 w-full text-left cursor-pointer"
+              >
+                <div className={cn('w-5 h-5 border rounded flex items-center justify-center flex-shrink-0', filters.neighborhoods.includes(n) ? 'bg-terracotta border-terracotta' : 'border-border-warm')}>
+                  {filters.neighborhoods.includes(n) && <Check size={12} className="text-white" />}
                 </div>
                 <span className="text-[14px] text-text-primary">{n}</span>
-              </label>
+              </button>
             ))}
           </div>
         </div>
@@ -650,12 +662,17 @@ function MobileFilterDrawer({ filters, setFilters, onApply, onReset, resultCount
           <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">{t('filters.type')}</label>
           <div className="space-y-2">
             {typeOptions.map(opt => (
-              <label key={opt.key} className="flex items-center gap-2 cursor-pointer">
-                <div className={cn('w-4 h-4 border rounded flex items-center justify-center', filters.types.includes(opt.key) ? 'bg-terracotta border-terracotta' : 'border-border-warm')}>
-                  {filters.types.includes(opt.key) && <Check size={10} className="text-white" />}
+              <button
+                type="button"
+                key={opt.key}
+                onClick={() => toggleArr('types', opt.key)}
+                className="flex items-center gap-2 py-2 w-full text-left cursor-pointer"
+              >
+                <div className={cn('w-5 h-5 border rounded flex items-center justify-center flex-shrink-0', filters.types.includes(opt.key) ? 'bg-terracotta border-terracotta' : 'border-border-warm')}>
+                  {filters.types.includes(opt.key) && <Check size={12} className="text-white" />}
                 </div>
                 <span className="text-[14px] text-text-primary">{t(opt.i18nKey)}</span>
-              </label>
+              </button>
             ))}
           </div>
         </div>

@@ -115,6 +115,46 @@ Do not commit on red. Do not deploy on red. If a failure is unrelated
 to your change, capture it in `tasks/current.md` under "Known
 pre-existing failures" and surface it to the user.
 
+### Reproduce-first (hard rule)
+
+`verify.sh` (lint + build) does NOT prove a behavior works. **No bug fix
+is "verified" until you have reproduced the failure under the real
+condition that triggers it, then shown it gone under that same
+condition.** A green build + a happy-path click is not verification — it
+is how a non-fix ships looking fixed. (See the 2026-06-05 first-load
+incident: a thorough fix was shipped and deployed while still broken,
+because it was tested as an anonymous visitor and the bug only happens
+when logged in.)
+
+### Verification personas (for any change touching data loading / auth)
+
+Verify under ALL THREE, not just the convenient one:
+
+1. **Anonymous visitor, cold load** (no session, cleared cache).
+2. **Logged-in admin, cold load** (a stored session exists — this is the
+   cell that hid the first-load hang for six weeks; it is the owner's
+   real environment and is mandatory).
+3. **Slow / blocked network** (throttle or block Supabase; confirm
+   error+retry UI appears and recovers, nothing hangs forever).
+
+The standard tool is a production preview (`npm run build && npm run
+preview`) driven by Playwright: seed an expired session in
+`localStorage` and block/stall the relevant endpoint to reproduce the
+real failure.
+
+## Architectural invariants (do not break without a new ADR)
+
+- **Public/anonymous reads use `supabasePublic`, NEVER the session client
+  `supabase`.** The session client refreshes the agent token before every
+  request; coupling public reads to it makes the first load hang for
+  logged-in users. `supabase` is only for auth, the admin panel, and
+  authenticated writes. See `docs/decisions/ADR-002-anonymous-client-for-public-reads.md`.
+  Quick check: `grep -rn "supabase\.from" src/services` outside
+  `src/services/admin/` should be empty.
+- **supabase-js can HANG (not error) on auth-coupled paths.** For
+  authenticated admin operations prefer direct REST (`src/lib/adminRest.ts`)
+  with an explicit token + `AbortController` timeout.
+
 ---
 
 ## When to use subagents

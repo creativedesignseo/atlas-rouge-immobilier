@@ -4,7 +4,24 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-06-05 (resiliencia de primera carga + beacon)
+**Last updated:** 2026-06-06 (fix filtros móvil + ADR-002 + invariante en harness)
+
+---
+
+## Fix filtros móvil (Search) — 2026-06-06 ✅ VERIFICADO
+
+En el panel de Filtros móvil, los checkboxes de **Barrios** y **Tipo** no se
+marcaban al tocar: el `<label>` solo pintaba la casilla, sin `onClick` ni toggle
+(el panel de escritorio sí lo tenía). Añadido `toggleArr` + `onClick` en
+`MobileFilterDrawer` (`src/pages/Search.tsx`) y agrandada el área táctil (casilla
+20px). Verificado en preview prod + Playwright a 390×844: marca/desmarca,
+multi-selección (Guéliz+Palmeraie) y el contador pasa a "Ver 5 resultados".
+
+## Doc de la causa raíz de carga — 2026-06-06 ✅
+ADR-002 (cliente anónimo `supabasePublic` para lecturas públicas) + invariante y
+matriz de 3 personas (anónimo / admin logueado en frío / red lenta) y regla
+"reproduce-primero" añadidas a `AGENTS.md`. La causa raíz del "no carga a la
+primera" ya está desplegada (`13687e8a`).
 
 ---
 
