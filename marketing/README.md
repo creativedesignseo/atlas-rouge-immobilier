@@ -17,6 +17,8 @@ relitigues sin motivo. El estado operativo del proyecto sigue viviendo en
 | Documento | Qué contiene |
 |---|---|
 | [google-ads-propietarios.md](google-ads-propietarios.md) | Estrategia de captación de **propietarios** (vender/alquilar en Marrakech). Google Search en francés (keywords, negativas, anuncios, estructura), keywords en español, y el pivote a **Meta Ads para España**. Incluye el estado verificado del tracking y los formularios. |
+| [google-ads-como-importar.md](google-ads-como-importar.md) | Guía paso a paso para subir la campaña **sin API**, con Google Ads Editor (app de escritorio): importar el CSV, ajustes, anuncios, duplicar campañas, publicar. |
+| [google-ads-import-FR.csv](google-ads-import-FR.csv) | Archivo de importación listo para Google Ads Editor: campaña FR completa (5 grupos, keywords frase/exacta + Max CPC, negativas de campaña). |
 
 ## Notas
 

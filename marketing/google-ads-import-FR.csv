@@ -1,0 +1,57 @@
+Campaign,Ad Group,Keyword,Criterion Type,Max CPC
+Atlas Rouge - FR-France,A - Vendre,vendre appartement marrakech,Phrase,2.50
+Atlas Rouge - FR-France,A - Vendre,vendre villa marrakech,Phrase,2.50
+Atlas Rouge - FR-France,A - Vendre,vendre riad marrakech,Phrase,2.50
+Atlas Rouge - FR-France,A - Vendre,vendre maison marrakech,Phrase,2.50
+Atlas Rouge - FR-France,A - Vendre,vendre bien immobilier marrakech,Phrase,2.50
+Atlas Rouge - FR-France,A - Vendre,vendre propriété marrakech,Phrase,2.50
+Atlas Rouge - FR-France,A - Vendre,comment vendre appartement marrakech,Phrase,2.50
+Atlas Rouge - FR-France,A - Vendre,agence pour vendre appartement marrakech,Phrase,2.50
+Atlas Rouge - FR-France,A - Vendre,vendre mon appartement à marrakech,Exact,2.50
+Atlas Rouge - FR-France,A - Vendre,vendre ma villa à marrakech,Exact,2.50
+Atlas Rouge - FR-France,A - Vendre,je veux vendre mon bien à marrakech,Exact,2.50
+Atlas Rouge - FR-France,B1 - Gestion locative,gestion locative marrakech,Phrase,2.00
+Atlas Rouge - FR-France,B1 - Gestion locative,agence gestion locative marrakech,Phrase,2.00
+Atlas Rouge - FR-France,B1 - Gestion locative,mettre en location appartement marrakech,Phrase,2.00
+Atlas Rouge - FR-France,B1 - Gestion locative,mise en location villa marrakech,Phrase,2.00
+Atlas Rouge - FR-France,B1 - Gestion locative,gestion location longue durée marrakech,Phrase,2.00
+Atlas Rouge - FR-France,B1 - Gestion locative,gérer mon appartement marrakech,Exact,2.00
+Atlas Rouge - FR-France,B2 - Gestion Airbnb,gestion airbnb marrakech,Phrase,2.00
+Atlas Rouge - FR-France,B2 - Gestion Airbnb,conciergerie marrakech,Phrase,2.00
+Atlas Rouge - FR-France,B2 - Gestion Airbnb,conciergerie airbnb marrakech,Phrase,2.00
+Atlas Rouge - FR-France,B2 - Gestion Airbnb,gestion location courte durée marrakech,Phrase,2.00
+Atlas Rouge - FR-France,B2 - Gestion Airbnb,gestion location saisonnière marrakech,Phrase,2.00
+Atlas Rouge - FR-France,B2 - Gestion Airbnb,gérer mon airbnb marrakech,Phrase,2.00
+Atlas Rouge - FR-France,C - Estimation,estimation appartement marrakech,Phrase,2.50
+Atlas Rouge - FR-France,C - Estimation,estimation immobilière marrakech,Phrase,2.50
+Atlas Rouge - FR-France,C - Estimation,estimer mon bien marrakech,Phrase,2.50
+Atlas Rouge - FR-France,C - Estimation,prix immobilier marrakech 2026,Phrase,2.50
+Atlas Rouge - FR-France,C - Estimation,prix m2 marrakech,Phrase,2.50
+Atlas Rouge - FR-France,C - Estimation,valeur appartement marrakech,Phrase,2.50
+Atlas Rouge - FR-France,C - Estimation,estimer mon appartement marrakech,Exact,2.50
+Atlas Rouge - FR-France,D - Agence,agence immobilière marrakech,Phrase,1.50
+Atlas Rouge - FR-France,D - Agence,agence immobilière française marrakech,Phrase,1.50
+Atlas Rouge - FR-France,D - Agence,agence immobilière francophone marrakech,Phrase,1.50
+Atlas Rouge - FR-France,D - Agence,meilleure agence immobilière marrakech,Phrase,1.50
+Atlas Rouge - FR-France,,acheter,Negative Phrase,
+Atlas Rouge - FR-France,,achat,Negative Phrase,
+Atlas Rouge - FR-France,,à vendre,Negative Phrase,
+Atlas Rouge - FR-France,,a vendre,Negative Phrase,
+Atlas Rouge - FR-France,,buy,Negative Phrase,
+Atlas Rouge - FR-France,,kaufen,Negative Phrase,
+Atlas Rouge - FR-France,,comprar,Negative Phrase,
+Atlas Rouge - FR-France,,pas cher,Negative Phrase,
+Atlas Rouge - FR-France,,pas chère,Negative Phrase,
+Atlas Rouge - FR-France,,bon marché,Negative Phrase,
+Atlas Rouge - FR-France,,promo,Negative Phrase,
+Atlas Rouge - FR-France,,location vacances,Negative Phrase,
+Atlas Rouge - FR-France,,hotel,Negative Phrase,
+Atlas Rouge - FR-France,,hôtel,Negative Phrase,
+Atlas Rouge - FR-France,,emploi,Negative Phrase,
+Atlas Rouge - FR-France,,travail,Negative Phrase,
+Atlas Rouge - FR-France,,recrutement,Negative Phrase,
+Atlas Rouge - FR-France,,vol,Negative Phrase,
+Atlas Rouge - FR-France,,voyage,Negative Phrase,
+Atlas Rouge - FR-France,,restaurant,Negative Phrase,
+Atlas Rouge - FR-France,,que visiter,Negative Phrase,
+Atlas Rouge - FR-France,,que faire à marrakech,Negative Phrase,
