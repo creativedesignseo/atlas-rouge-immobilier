@@ -604,11 +604,14 @@ function MobileFilterDrawer({ filters, setFilters, onApply, onReset, resultCount
 }) {
   const { t } = useTranslation('search')
   const update = <K extends keyof Filters>(key: K, value: Filters[K]) => setFilters(f => ({ ...f, [key]: value }))
-  // Toggle a value in an array filter (neighborhoods / types). The mobile
-  // checkboxes had no handler at all, so tapping them did nothing.
-  const toggleArr = (key: 'neighborhoods' | 'types', value: string) =>
+  // Toggle a value in an array filter. The mobile checkboxes had no handler at
+  // all (neighborhoods, types, status, amenities, media), so tapping did nothing.
+  const toggleArr = (
+    key: 'neighborhoods' | 'types' | 'statuses' | 'amenities' | 'media',
+    value: string,
+  ) =>
     setFilters(f => {
-      const arr = f[key]
+      const arr = f[key] as string[]
       return { ...f, [key]: arr.includes(value) ? arr.filter(v => v !== value) : [...arr, value] }
     })
 
@@ -720,12 +723,17 @@ function MobileFilterDrawer({ filters, setFilters, onApply, onReset, resultCount
         <div className="mb-6">
           <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">{t('filters.status')}</label>
           {statusOptions.map(s => (
-            <label key={s.key} className="flex items-center gap-2 py-1 cursor-pointer">
-              <div className={cn('w-4 h-4 border rounded flex items-center justify-center', filters.statuses.includes(s.key) ? 'bg-terracotta border-terracotta' : 'border-border-warm')}>
-                {filters.statuses.includes(s.key) && <Check size={10} className="text-white" />}
+            <button
+              type="button"
+              key={s.key}
+              onClick={() => toggleArr('statuses', s.key)}
+              className="flex items-center gap-2 py-2 w-full text-left cursor-pointer"
+            >
+              <div className={cn('w-5 h-5 border rounded flex items-center justify-center flex-shrink-0', filters.statuses.includes(s.key) ? 'bg-terracotta border-terracotta' : 'border-border-warm')}>
+                {filters.statuses.includes(s.key) && <Check size={12} className="text-white" />}
               </div>
               <span className="text-[14px] text-text-primary">{t(s.i18nKey)}</span>
-            </label>
+            </button>
           ))}
         </div>
         {/* Équipements */}
@@ -733,12 +741,17 @@ function MobileFilterDrawer({ filters, setFilters, onApply, onReset, resultCount
           <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">{t('filters.amenities')}</label>
           <div className="grid grid-cols-2 gap-2">
             {amenitiesList.map(a => (
-              <label key={a} className="flex items-center gap-2 cursor-pointer">
-                <div className={cn('w-4 h-4 border rounded flex items-center justify-center', filters.amenities.includes(a) ? 'bg-terracotta border-terracotta' : 'border-border-warm')}>
-                  {filters.amenities.includes(a) && <Check size={10} className="text-white" />}
+              <button
+                type="button"
+                key={a}
+                onClick={() => toggleArr('amenities', a)}
+                className="flex items-center gap-2 py-2 text-left cursor-pointer"
+              >
+                <div className={cn('w-5 h-5 border rounded flex items-center justify-center flex-shrink-0', filters.amenities.includes(a) ? 'bg-terracotta border-terracotta' : 'border-border-warm')}>
+                  {filters.amenities.includes(a) && <Check size={12} className="text-white" />}
                 </div>
                 <span className="text-[13px] text-text-primary">{amenityLabel(a, t)}</span>
-              </label>
+              </button>
             ))}
           </div>
         </div>
@@ -746,12 +759,17 @@ function MobileFilterDrawer({ filters, setFilters, onApply, onReset, resultCount
         <div className="mb-6">
           <label className="font-inter text-[14px] font-semibold text-midnight mb-2 block">{t('filters.media')}</label>
           {mediaOptions.map(m => (
-            <label key={m.key} className="flex items-center gap-2 py-1 cursor-pointer">
-              <div className={cn('w-4 h-4 border rounded flex items-center justify-center', filters.media.includes(m.key) ? 'bg-terracotta border-terracotta' : 'border-border-warm')}>
-                {filters.media.includes(m.key) && <Check size={10} className="text-white" />}
+            <button
+              type="button"
+              key={m.key}
+              onClick={() => toggleArr('media', m.key)}
+              className="flex items-center gap-2 py-2 w-full text-left cursor-pointer"
+            >
+              <div className={cn('w-5 h-5 border rounded flex items-center justify-center flex-shrink-0', filters.media.includes(m.key) ? 'bg-terracotta border-terracotta' : 'border-border-warm')}>
+                {filters.media.includes(m.key) && <Check size={12} className="text-white" />}
               </div>
               <span className="text-[14px] text-text-primary">{t(m.i18nKey)}</span>
-            </label>
+            </button>
           ))}
         </div>
       </div>
