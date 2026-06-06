@@ -447,9 +447,9 @@ function MobileContactModal({
   }
 
   return (
-    <div className="lg:hidden fixed inset-0 z-[70] flex items-end sm:items-center justify-center">
+    <div className="lg:hidden fixed inset-0 z-[70] flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/50" onClick={onClose} />
-      <div className="relative w-full sm:max-w-md bg-white rounded-t-2xl sm:rounded-2xl max-h-[92vh] overflow-y-auto shadow-2xl">
+      <div className="relative w-full max-w-md bg-white rounded-2xl max-h-[85vh] overflow-y-auto shadow-2xl">
         <div className="flex items-center justify-between px-5 py-4 border-b border-border-warm sticky top-0 bg-white z-10">
           <h2 className="font-display text-[20px] font-medium text-midnight">{t('contact.modalTitle')}</h2>
           <button type="button" onClick={onClose} aria-label="Close" className="p-1 -mr-1">
