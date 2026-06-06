@@ -41,8 +41,6 @@ interface Filters {
   bedroomsMax: string
   radius: string
   statuses: string[]
-  views: string[]
-  styles: string[]
   amenities: string[]
   media: string[]
 }
@@ -67,28 +65,13 @@ const radiusOptions = [
   { value: '50', label: '50 km' },
 ]
 
+// Only statuses that map to real property data are exposed:
+//   exclusivite → isExclusive · recent → created in the last 90 days.
+// 'neuf'/'ancien'/'baisse' were removed: no backing field existed, so they
+// filtered nothing (misleading dead controls).
 const statusOptions = [
-  { key: 'neuf', i18nKey: 'status.new' },
-  { key: 'ancien', i18nKey: 'status.old' },
   { key: 'exclusivite', i18nKey: 'status.exclusive' },
-  { key: 'baisse', i18nKey: 'status.priceDrop' },
   { key: 'recent', i18nKey: 'status.recent' },
-]
-
-const viewOptions = [
-  { key: 'atlas', i18nKey: 'views.atlas' },
-  { key: 'jardin', i18nKey: 'views.garden' },
-  { key: 'piscine', i18nKey: 'views.pool' },
-  { key: 'medina', i18nKey: 'views.medina' },
-  { key: 'golf', i18nKey: 'views.golf' },
-]
-
-const styleOptions = [
-  { key: 'contemporain', i18nKey: 'styles.contemporary' },
-  { key: 'marocain-moderne', i18nKey: 'styles.moroccanModern' },
-  { key: 'riad-traditionnel', i18nKey: 'styles.traditionalRiad' },
-  { key: 'minimaliste', i18nKey: 'styles.minimalist' },
-  { key: 'domaine-prive', i18nKey: 'styles.privateEstate' },
 ]
 
 const amenitiesList = [
@@ -133,8 +116,6 @@ const defaultFilters: Filters = {
   bedroomsMax: '',
   radius: '0',
   statuses: [],
-  views: [],
-  styles: [],
   amenities: [],
   media: [],
 }
@@ -191,6 +172,45 @@ function getActiveFilterChips(
     chips.push({ key: `media-${m}`, label: opt ? t(opt.i18nKey) : m, onRemove: () => { } })
   })
   return chips
+}
+
+/* ───────────────────── client-side filtering ───────────────────── */
+
+// The DB query (getProperties) handles transaction/type/neighborhood/price/
+// surface/bedrooms. The remaining filters run here, on the already-fetched list,
+// using fields that ARE present on each Property. Before this, these controls
+// existed in the UI but never filtered anything.
+function applyClientFilters(list: Property[], f: Filters): Property[] {
+  const RECENT_DAYS = 90
+  const now = Date.now()
+  return list.filter(p => {
+    // Amenities: must have ALL selected (case-insensitive).
+    if (f.amenities.length) {
+      const have = p.amenities.map(a => a.toLowerCase())
+      if (!f.amenities.every(a => have.includes(a.toLowerCase()))) return false
+    }
+    // Rooms (total).
+    if (f.roomsMin && p.rooms < Number(f.roomsMin)) return false
+    if (f.roomsMax && p.rooms > Number(f.roomsMax)) return false
+    // Land surface.
+    if (f.landMin && (p.landSurface == null || p.landSurface < Number(f.landMin))) return false
+    if (f.landMax && (p.landSurface == null || p.landSurface > Number(f.landMax))) return false
+    // Media (each selected must be satisfied).
+    for (const m of f.media) {
+      if (m === 'video' && !p.hasVideo) return false
+      if (m === '3d' && !p.has3DTour) return false
+      if (m === 'photos' && !(p.images && p.images.length > 0)) return false
+    }
+    // Status (only backed options remain).
+    for (const s of f.statuses) {
+      if (s === 'exclusivite' && !p.isExclusive) return false
+      if (s === 'recent') {
+        const ageDays = (now - new Date(p.createdAt).getTime()) / 86_400_000
+        if (!(ageDays <= RECENT_DAYS)) return false
+      }
+    }
+    return true
+  })
 }
 
 /* ───────────────────── accordion component ───────────────────── */
@@ -869,7 +889,7 @@ export default function SearchPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters, sort, reloadKey])
 
-  const filtered = allProperties
+  const filtered = useMemo(() => applyClientFilters(allProperties, filters), [allProperties, filters])
 
   const activeChips = useMemo(() => getActiveFilterChips(filters, t), [filters, t])
 
@@ -1117,36 +1137,6 @@ export default function SearchPage() {
                     className={cn('w-4 h-4 border rounded flex items-center justify-center cursor-pointer', filters.statuses.includes(s.key) ? 'bg-terracotta border-terracotta' : 'border-border-warm')}
                   >
                     {filters.statuses.includes(s.key) && <Check size={10} className="text-white" />}
-                  </div>
-                  <span className="text-[13px] text-text-primary">{t(s.i18nKey)}</span>
-                </label>
-              ))}
-            </FilterSection>
-
-            {/* Vue */}
-            <FilterSection title={t('filters.view')} defaultOpen={false}>
-              {viewOptions.map(v => (
-                <label key={v.key} className="flex items-center gap-2 py-0.5 cursor-pointer">
-                  <div
-                    onClick={() => toggleArrayValue('views', v.key)}
-                    className={cn('w-4 h-4 border rounded flex items-center justify-center cursor-pointer', filters.views.includes(v.key) ? 'bg-terracotta border-terracotta' : 'border-border-warm')}
-                  >
-                    {filters.views.includes(v.key) && <Check size={10} className="text-white" />}
-                  </div>
-                  <span className="text-[13px] text-text-primary">{t(v.i18nKey)}</span>
-                </label>
-              ))}
-            </FilterSection>
-
-            {/* Style */}
-            <FilterSection title={t('filters.style')} defaultOpen={false}>
-              {styleOptions.map(s => (
-                <label key={s.key} className="flex items-center gap-2 py-0.5 cursor-pointer">
-                  <div
-                    onClick={() => toggleArrayValue('styles', s.key)}
-                    className={cn('w-4 h-4 border rounded flex items-center justify-center cursor-pointer', filters.styles.includes(s.key) ? 'bg-terracotta border-terracotta' : 'border-border-warm')}
-                  >
-                    {filters.styles.includes(s.key) && <Check size={10} className="text-white" />}
                   </div>
                   <span className="text-[13px] text-text-primary">{t(s.i18nKey)}</span>
                 </label>

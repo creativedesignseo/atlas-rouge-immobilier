@@ -4,6 +4,31 @@
 
 ---
 
+## CIERRE de sesión — Claude Opus 4.8 — 2026-06-06 (filtros que no filtraban — arreglados)
+
+**EN PRODUCCIÓN.** El owner reportó que filtros del buscador (Estado, Vista,
+Estilo, Equipamiento, Multimedia) se marcaban pero **no cambiaban los
+resultados**. Verificado en código: la query (`getProperties`) solo usaba 8
+campos y `const filtered = allProperties` no aplicaba el resto.
+
+- **Cableados (filtran de verdad)** vía `applyClientFilters` en `src/pages/Search.tsx`
+  (filtra la lista ya cargada con campos que SÍ existen en `Property`):
+  **Equipamientos** (amenities, AND, case-insensitive), **Habitaciones**
+  (`rooms`), **Sup. terreno** (`landSurface`), **Multimedia** (`hasVideo`/
+  `has3DTour`), **Estado** (exclusivité→`isExclusive`, recientes ≤90d→`createdAt`).
+- **Eliminados:** **Vista** y **Estilo** — no existen esos campos en la BD, eran
+  controles muertos. **Estado** recortado a las opciones con datos (quitados
+  neuf/ancien/baisse).
+- **Verificado con datos reales de prod** (Playwright): marcar "Piscina" filtra
+  14→8 propiedades; Vista/Estilo ya no aparecen. `verify.sh`+`tsc`+lint verdes.
+
+**Pendiente:** (a) UX desktop — el clic en esos checkboxes solo responde en la
+casilla, no en el texto (móvil ya es fila completa); (b) filtro "Radio (km)"
+sigue decorativo; (c) 2 errores de consola en `/es/comprar` sin investigar;
+(d) landing Regalitos sin empezar.
+
+---
+
 ## CIERRE de sesión — Claude Opus 4.8 — 2026-06-06 (filtros móvil + doc causa raíz) — VERIFICADO EN PROD
 
 **Realidad verificada (no supuesta):** `verify.sh` verde · local sincronizado con

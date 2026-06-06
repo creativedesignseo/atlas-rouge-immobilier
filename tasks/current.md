@@ -22,8 +22,22 @@ contador "Ver N resultados" se actualiza. Commits: `407f2dd4` (barrios/tipo) +
 ADR-002 (cliente anónimo `supabasePublic` para lecturas públicas) + invariante y
 matriz de 3 personas + regla "reproduce-primero" en `AGENTS.md`.
 
+## Filtros que no filtraban — 2026-06-06 ✅ (cablear + limpiar)
+Los filtros del panel se marcaban pero NO afectaban a los resultados: la query
+solo usaba 8 campos y `const filtered = allProperties` no filtraba más. Añadido
+`applyClientFilters` (Search.tsx) que filtra sobre la lista ya cargada por
+**Equipamientos** (amenities, AND), **Habitaciones**, **Sup. terreno**,
+**Multimedia** (video/3D) y **Estado** (exclusivité / recientes ≤90d). Verificado
+con datos reales: marcar "Piscina" → 14→8. Eliminados **Vista** y **Estilo** (no
+existen esos campos en la BD; eran controles muertos) y recortado **Estado** a las
+opciones con datos. Detalle de qué filtros existen: ver ADR/HANDOFF.
+
 ## ⏳ Pendiente (verificado, no resuelto)
-- **2 errores de consola** en `/es/comprar` (no rompen nada visible; sin investigar).
+- **UX desktop:** en los checkboxes del panel desktop (barrios/tipo/estado/
+  equipamiento/multimedia) el clic solo responde en la casilla, no en el texto
+  (móvil ya es fila completa). Mejora menor pendiente.
+- Filtro **Radio (km)** sigue siendo decorativo (sin lógica de geo-radio).
+- **2 errores de consola** en `/es/comprar` (no rompen nada; sin investigar).
 - Landing "Regalitos" (`/bold-type-landing`) sin empezar.
 
 ---
