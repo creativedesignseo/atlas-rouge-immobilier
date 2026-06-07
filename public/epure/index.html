@@ -79,11 +79,13 @@
   .cta h2{font-family:var(--serif);font-weight:300;font-size:clamp(34px,5vw,62px);line-height:1.06}
   .cta h2 em{font-style:italic;color:var(--terra)}
   .cta p{color:var(--soft);font-size:17px;line-height:1.8;max-width:44ch;margin:22px auto 40px}
-  .form{display:flex;gap:12px;max-width:520px;margin:0 auto;flex-wrap:wrap;justify-content:center}
-  .form input{flex:1;min-width:200px;height:54px;border:1px solid var(--line);border-radius:2px;padding:0 18px;font:inherit;font-size:15px;color:var(--ink);background:var(--white)}
+  .form{display:flex;flex-direction:column;gap:12px;max-width:420px;margin:0 auto}
+  .form input{height:54px;border:1px solid var(--line);border-radius:2px;padding:0 18px;font:inherit;font-size:15px;color:var(--ink);background:var(--white)}
   .form input:focus{outline:none;border-color:var(--terra)}
   .form button{height:54px;padding:0 32px;background:var(--terra);color:#fff;border:none;border-radius:2px;font-size:12px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer}
   .form button:hover{background:#9c4a30}
+  .form button:disabled{opacity:.6;cursor:default}
+  #l-status{font-size:13px;margin-top:4px;min-height:18px}
   .cta small{display:block;color:var(--muted);font-size:12px;margin-top:18px;letter-spacing:.04em}
 
   footer{border-top:1px solid var(--line);padding:50px 0}
@@ -139,9 +141,12 @@
     <span class="eyebrow">Propriétaires</span>
     <h2 class="serif">Recevez votre <em>estimation privée</em>.</h2>
     <p>Confiez votre bien à une équipe experte du marché de Marrakech. Confidentiel, sans engagement.</p>
-    <form class="form" onsubmit="return false">
-      <input placeholder="Votre email" />
-      <button type="submit">Demander</button>
+    <form class="form" id="lead-form">
+      <input id="l-name" placeholder="Votre nom" autocomplete="name" />
+      <input id="l-email" type="email" placeholder="Votre email" autocomplete="email" />
+      <input id="l-phone" type="tel" placeholder="Téléphone (+212 …)" autocomplete="tel" />
+      <button type="submit">Demander mon estimation</button>
+      <div id="l-status"></div>
     </form>
     <small>Réponse sous 48 h · Vos données restent confidentielles</small>
   </div></section>
@@ -151,5 +156,45 @@
     <div>Marrakech · Maroc</div>
     <div>Réponse sous 48 h · 100 % en français</div>
   </div></footer>
+
+  <script>
+    // Connexion au système de leads : insertion dans contact_submissions
+    // (PostgREST, clé anon publique) + notification (Netlify function).
+    var SUPA = 'https://slxlkbrqcjabsfuhlwdf.supabase.co';
+    var KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNseGxrYnJxY2phYnNmdWhsd2RmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5ODE2NzksImV4cCI6MjA5MjU1NzY3OX0.3KP6ljy0JwZXuMQ25RWIeRYipqxRo28fL-W-n7vSpmc';
+    var f = document.getElementById('lead-form');
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = document.getElementById('l-name').value.trim();
+      var email = document.getElementById('l-email').value.trim();
+      var phone = document.getElementById('l-phone').value.trim();
+      var st = document.getElementById('l-status');
+      st.style.color = '#B35A3D';
+      if (!name) { st.textContent = 'Merci d’indiquer votre nom.'; return; }
+      if (!email && !phone) { st.textContent = 'Indiquez un email ou un téléphone.'; return; }
+      var btn = f.querySelector('button'); var old = btn.textContent;
+      btn.disabled = true; btn.textContent = 'Envoi…'; st.textContent = '';
+      var lead = { name: name, email: email || null, phone: phone || null,
+        subject: 'Estimation — landing propriétaires (épure)',
+        message: 'Demande d’estimation envoyée depuis la landing propriétaires.', property_slug: null };
+      fetch(SUPA + '/rest/v1/contact_submissions', {
+        method: 'POST',
+        headers: { apikey: KEY, Authorization: 'Bearer ' + KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+        body: JSON.stringify(lead)
+      }).then(function (r) {
+        if (!r.ok) throw new Error('insert ' + r.status);
+        try {
+          fetch('/.netlify/functions/notify-lead', { method: 'POST', keepalive: true,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type: 'estimation', name: name, email: email, phone: phone, subject: lead.subject, message: lead.message, lang: 'fr' }) });
+        } catch (_) {}
+        f.innerHTML = '<p class="serif" style="font-size:28px">Merci, ' + name.split(' ')[0].replace(/[<>]/g, '') + '.</p>' +
+          '<p style="color:var(--soft);margin-top:8px">Nous revenons vers vous sous 48 h.</p>';
+      }).catch(function () {
+        st.textContent = 'Une erreur est survenue. Réessayez, ou écrivez-nous directement.';
+        btn.disabled = false; btn.textContent = old;
+      });
+    });
+  </script>
 </body>
 </html>
