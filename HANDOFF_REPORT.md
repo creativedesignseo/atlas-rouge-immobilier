@@ -4,6 +4,43 @@
 
 ---
 
+## CIERRE de sesión — Claude Opus 4.8 — 2026-06-08 (exploración de landing de captación — solo maquetas)
+
+**Realidad verificada:** `verify.sh` verde · local sincronizado con `origin/main`
+· último commit `a1946d51` · deploy Netlify `ready` · todas las páginas 200.
+
+**La web REAL (`atlasrouge.com`) NO se tocó esta tanda.** Todo lo nuevo son
+**maquetas estáticas aisladas** bajo `public/` para explorar una **landing de
+captación de propietarios** ("vender su bien en Marrakech"). No afectan a la SPA.
+
+**Maquetas publicadas (todas 200 en prod, fotos/datos de DEMOSTRACIÓN — Unsplash):**
+- `/vendre/index.html` — réplica fiel de la LP de Semrush (estructura + tipografía
+  + botones exactos) recoloreada a marca. Usa la fuente **Lazzer auto-alojada en
+  `public/vendre/fonts/`** → ⚠️ **Lazzer es propietaria de Semrush; SOLO para la
+  maqueta, NO usar en producción sin licencia.**
+- `/atlas-luxe/index.html` — lujo claro/cálido.
+- `/prestige/index.html` — lujo oscuro (DESCARTADO por el owner: "tétrica").
+- `/lumiere/index.html` — lujo luminoso cálido (marfil).
+- **`/epure/index.html` — DIRECCIÓN ELEGIDA por el owner: blanca, limpia, ligera,
+  elegante** (minimal-luxury, serif Cormorant —gratis—, un solo acento terracota).
+  El **formulario YA está conectado** a leads: inserta en `contact_submissions`
+  vía PostgREST con la **anon key pública** embebida (la misma del bundle) +
+  dispara `notify-lead`. En **francés** (para probar).
+- `/design-system` — ruta React (DesignSystem.tsx) con el "Sistema Atlas" 1:1 de
+  `document/atlas-landing/styles.css`.
+
+**Pendiente / próximos pasos (sobre `/epure`, la elegida):**
+- Sustituir fotos demo por **fotos reales** (Pexels/propias, nunca IA).
+- Decidir idioma final (hoy FR; añadir ES/EN si se quiere).
+- Probar un envío real y comprobar que el lead llega a `/admin/contacts` + aviso.
+- Decidir si se integra en la SPA (ruta React) o queda como landing estática.
+- Limpieza: hay archivos sueltos sin commitear (`public/prueba/`,
+  `semrush-lp-full.jpeg`, `document/`) que conviene revisar/eliminar.
+
+**Marca:** el acento terracota oficial es **`#B35A3D`** (cambiado de `#B5533A`).
+
+---
+
 ## CIERRE de sesión — Claude Opus 4.8 — 2026-06-06 (filtros que no filtraban — arreglados)
 
 **EN PRODUCCIÓN.** El owner reportó que filtros del buscador (Estado, Vista,

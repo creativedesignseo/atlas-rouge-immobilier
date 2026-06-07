@@ -4,7 +4,23 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-06-06 (filtros móvil TODOS arreglados — verificado en prod)
+**Last updated:** 2026-06-08 (exploración landing captación — elegida /epure blanca)
+
+---
+
+## Landing de captación de propietarios — 2026-06-08 🎨 EN MAQUETA (no es la web real)
+
+Exploración de una landing para captar propietarios que venden en Marrakech.
+Maquetas estáticas aisladas en `public/` (no tocan la SPA), todas EN VIVO:
+`/vendre` (réplica Semrush), `/atlas-luxe`, `/prestige` (descartada), `/lumiere`,
+y **`/epure` = la ELEGIDA** (blanca, limpia, elegante). El formulario de `/epure`
+ya inserta leads en `contact_submissions` + `notify-lead` (FR). Detalle completo
+en `HANDOFF_REPORT.md`.
+- ⏳ Pendiente: fotos reales (no demo), idioma final, probar lead end-to-end,
+  decidir si se integra en la SPA, y limpiar archivos sueltos
+  (`public/prueba/`, `semrush-lp-full.jpeg`, `document/`).
+- ⚠️ `/vendre` usa la fuente **Lazzer** (propietaria de Semrush) — solo maqueta,
+  NO producción sin licencia.
 
 ---
 
