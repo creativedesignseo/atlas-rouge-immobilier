@@ -30,7 +30,7 @@ function ErrorFallback() {
           type="button"
           onClick={() => window.location.reload()}
           style={{
-            background: '#B5533A',
+            background: '#B35A3D',
             color: '#fff',
             border: 'none',
             borderRadius: 8,
@@ -44,8 +44,8 @@ function ErrorFallback() {
         <a
           href="/"
           style={{
-            color: '#B5533A',
-            border: '1px solid #B5533A',
+            color: '#B35A3D',
+            border: '1px solid #B35A3D',
             borderRadius: 8,
             padding: '0.65rem 1.25rem',
             fontSize: '0.95rem',

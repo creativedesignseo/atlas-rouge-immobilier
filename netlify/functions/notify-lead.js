@@ -75,7 +75,7 @@ function buildEmail(lead) {
 
   const html = `
     <div style="font-family:-apple-system,Segoe UI,sans-serif;color:#1A1A1A;max-width:560px">
-      <h2 style="color:#B5533A;border-bottom:1px solid #eee;padding-bottom:8px">
+      <h2 style="color:#B35A3D;border-bottom:1px solid #eee;padding-bottom:8px">
         Nuevo lead — Atlas Rouge
       </h2>
       <table style="border-collapse:collapse;width:100%">

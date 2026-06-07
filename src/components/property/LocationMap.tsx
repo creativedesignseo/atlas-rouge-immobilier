@@ -52,7 +52,7 @@ export default function LocationMap({ property }: { property: Property }) {
     })
 
     const el = document.createElement('div')
-    el.innerHTML = `<div style="width: 80px; height: 80px; background: rgba(181,83,58,0.2); border: 2px solid #B5533A; border-radius: 50%; display: flex; align-items: center; justify-content: center;"><div style="width: 12px; height: 12px; background: #B5533A; border-radius: 50%;"></div></div>`
+    el.innerHTML = `<div style="width: 80px; height: 80px; background: rgba(179,90,61,0.2); border: 2px solid #B35A3D; border-radius: 50%; display: flex; align-items: center; justify-content: center;"><div style="width: 12px; height: 12px; background: #B35A3D; border-radius: 50%;"></div></div>`
     const marker = new mapboxgl.Marker({ element: el, anchor: 'center' })
       .setLngLat([property.longitude, property.latitude])
       .addTo(map.current)

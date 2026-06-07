@@ -378,7 +378,7 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
       const el = document.createElement('div')
       el.style.cursor = 'pointer'
       el.innerHTML = `<div style="
-        background: ${isHovered ? '#315C45' : '#B5533A'};
+        background: ${isHovered ? '#315C45' : '#B35A3D'};
         color: white; padding: 5px 12px; border-radius: 20px;
         font-size: 12px; font-weight: 700; white-space: nowrap;
         box-shadow: 0 2px 10px rgba(0,0,0,0.25);
@@ -425,13 +425,13 @@ function MapView({ properties, hoveredId, onHover, onSelect }: { properties: Pro
           </div>
           <div style="padding:12px;background:white;border-radius:0 0 10px 10px;">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-              <p style="color:#B5533A;font-size:16px;font-weight:700;margin:0;flex:1;">${escapeHtml(propertyPriceRef.current(p))}</p>
+              <p style="color:#B35A3D;font-size:16px;font-weight:700;margin:0;flex:1;">${escapeHtml(propertyPriceRef.current(p))}</p>
               ${p.isExclusive ? `<span style="background:#315C45;color:white;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;">${escapeHtml(tRef.current('card.exclusive'))}</span>` : ''}
             </div>
             <p style="color:#1E1E1E;font-size:14px;font-weight:600;margin:0 0 2px 0;">${escapeHtml(p.title)}</p>
             <p style="color:#6E6259;font-size:12px;margin:0 0 8px 0;">${escapeHtml(p.neighborhood)}, ${escapeHtml(tRef.current('city'))}</p>
             <p style="color:#6E6259;font-size:12px;margin:0 0 12px 0;">${escapeHtml(p.surface)} m² · ${roomsLabel} · ${bedroomsLabel}</p>
-            ${href ? `<a href="${href}" style="display:block;width:100%;text-align:center;background:#B5533A;color:white;font-size:13px;font-weight:600;padding:8px 0;border-radius:8px;text-decoration:none;">${escapeHtml(tRef.current('viewProperty'))}</a>` : ''}
+            ${href ? `<a href="${href}" style="display:block;width:100%;text-align:center;background:#B35A3D;color:white;font-size:13px;font-weight:600;padding:8px 0;border-radius:8px;text-decoration:none;">${escapeHtml(tRef.current('viewProperty'))}</a>` : ''}
           </div>
         `
 
