@@ -1,249 +1,258 @@
 import { useState } from 'react'
-import {
-  Check, Minus, Plus, ChevronDown, ArrowRight, Search,
-  SlidersHorizontal, Star, X, Phone, MessageCircle,
-} from 'lucide-react'
 
 /**
- * Internal design-system reference page (route: /design-system).
+ * Living spec of the "Atlas" design system, ported 1:1 from
+ * document/atlas-landing/styles.css (the owner's design system) so the tokens
+ * and component looks are faithful — NOT a re-interpretation.
  *
- * Adapts the "Milray Park" editorial/pill design language to the Atlas Rouge
- * brand: cream background, serif display headings, TERRACOTTA as the primary
- * action (kept from the brand, not black), generous pill shapes. This is the
- * living spec we align the rest of the site to — it does not affect any
- * existing page.
+ * Route: /design-system. Self-contained: a scoped <style> block holds the
+ * system's tokens/classes (prefixed .ads-*) so it never clashes with the app's
+ * Tailwind. This is the reference we align the real site to next.
  */
 
-function Card({ title, children, className = '' }: { title: string; children: React.ReactNode; className?: string }) {
-  return (
-    <div className={`bg-white rounded-3xl border border-border-subtle p-6 md:p-7 ${className}`}>
-      <p className="text-[12px] font-inter font-medium uppercase tracking-[1.5px] text-text-secondary mb-5">{title}</p>
-      {children}
-    </div>
-  )
+const CSS = `
+.ads {
+  --bg:#EFF1F3; --surface:#FCFCFA; --soft:#EEEAE3; --soft-2:#F6F4EF;
+  --text:#1F1F1F; --muted:#6F6A63; --border:#1F1F1F;
+  --primary:#B35A3D; --primary-soft:#E7C5B8;
+  --r-sm:12px; --r-md:22px; --r-lg:34px; --pill:999px;
+  --title:Georgia,"Times New Roman",serif;
+  --body:Inter,Arial,Helvetica,sans-serif;
+  background:var(--bg); color:var(--text); font-family:var(--body);
+  min-height:100vh; padding:40px 16px;
 }
+.ads * { box-sizing:border-box; }
+.ads .wrap { width:min(1180px,100%); margin:0 auto; }
+.ads h1.title { font-family:var(--title); font-weight:500; font-size:clamp(40px,6vw,72px); letter-spacing:-0.03em; text-align:center; margin:0 0 6px; }
+.ads .sub { text-align:center; color:var(--muted); font-size:15px; margin:0 0 36px; }
+.ads .grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.ads .card { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--r-lg); padding:26px; }
+.ads .card.full { grid-column:1 / -1; }
+.ads .label { font-size:12px; font-weight:800; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin:0 0 18px; }
+.ads .row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+.ads .stack { display:flex; flex-direction:column; gap:12px; }
 
-function Swatch({ name, hex, text = '#fff' }: { name: string; hex: string; text?: string }) {
-  return (
-    <div className="flex flex-col gap-1.5">
-      <div className="h-16 rounded-2xl flex items-end p-2.5" style={{ background: hex }}>
-        <span className="text-[10px] font-inter font-medium" style={{ color: text }}>{hex}</span>
-      </div>
-      <span className="text-[12px] font-inter text-text-secondary">{name}</span>
-    </div>
-  )
-}
+/* buttons */
+.ads .btn { border:none; border-radius:var(--pill); padding:13px 24px; font-size:14px; font-weight:700; min-height:46px; display:inline-flex; align-items:center; justify-content:center; gap:8px; font-family:var(--body); }
+.ads .btn-dark { background:var(--text); color:#fff; }
+.ads .btn-outline { background:transparent; border:1.5px solid var(--text); color:var(--text); }
+.ads .btn-primary { background:var(--primary); color:#fff; }
+.ads .btn-soft { background:var(--soft); color:var(--text); }
+.ads .btn-icon { width:46px; height:46px; padding:0; border-radius:50%; }
+
+/* eyebrow */
+.ads .eyebrow { display:inline-flex; align-items:center; gap:8px; background:var(--soft); border-radius:var(--pill); padding:9px 16px; font-size:12px; font-weight:800; letter-spacing:0.08em; text-transform:uppercase; }
+.ads .dot { width:8px; height:8px; border-radius:50%; background:var(--primary); }
+
+/* tags */
+.ads .tag { border-radius:var(--pill); padding:8px 16px; font-size:13px; font-weight:700; background:var(--soft); color:var(--text); border:none; }
+.ads .tag.active { background:var(--primary); color:#fff; }
+.ads .tag.mini { font-size:11px; letter-spacing:0.08em; text-transform:uppercase; padding:6px 12px; }
+
+/* stat */
+.ads .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.ads .stat { background:var(--soft-2); border-radius:var(--r-md); padding:18px; }
+.ads .stat strong { display:block; font-family:var(--title); font-size:32px; font-weight:500; }
+.ads .stat span { color:var(--muted); font-size:13px; }
+
+/* input pill */
+.ads .input-pill { display:flex; align-items:center; gap:10px; background:var(--surface); border:1.5px solid var(--border); border-radius:var(--pill); padding:6px 8px 6px 18px; }
+.ads .input-pill input { flex:1; border:none; outline:none; background:transparent; font-size:15px; color:var(--text); }
+.ads .field { background:var(--soft-2); border:1.5px solid var(--border); border-radius:var(--r-sm); padding:13px 16px; font-size:15px; outline:none; }
+
+/* accordion */
+.ads .acc { border:1.5px solid var(--border); border-radius:var(--r-md); overflow:hidden; }
+.ads .acc + .acc { margin-top:12px; }
+.ads .acc-head { width:100%; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 20px; background:transparent; border:none; text-align:left; font-family:var(--title); font-size:18px; color:var(--text); }
+.ads .acc.open { background:var(--soft-2); }
+.ads .acc-body { padding:0 20px 18px; color:var(--muted); font-size:14px; line-height:1.6; }
+.ads .acc-body .hl { color:var(--primary); font-weight:600; }
+.ads .plus { color:var(--primary); font-size:22px; line-height:1; }
+
+/* checks / radios */
+.ads .opt { display:flex; align-items:center; gap:10px; background:none; border:none; padding:0; font-size:14px; color:var(--text); }
+.ads .box { width:20px; height:20px; border-radius:6px; border:1.5px solid var(--border); display:grid; place-items:center; }
+.ads .box.on { background:var(--primary); border-color:var(--primary); }
+.ads .box.rad { border-radius:50%; }
+.ads .box .tick { width:10px; height:10px; border-radius:2px; background:#fff; }
+.ads .box.rad .tick { border-radius:50%; }
+
+/* segmented */
+.ads .segmented { display:inline-flex; gap:6px; background:var(--soft); border-radius:var(--pill); padding:5px; }
+.ads .segmented .seg { border:none; background:transparent; border-radius:var(--pill); padding:9px 18px; font-size:13px; font-weight:700; color:var(--text); }
+.ads .segmented .seg.on { background:var(--primary); color:#fff; }
+
+/* cell */
+.ads .cell { display:flex; gap:14px; align-items:center; background:var(--soft-2); border-radius:var(--r-md); padding:14px; }
+.ads .cell .ph { width:90px; height:74px; border-radius:var(--r-sm); background:var(--soft); display:grid; place-items:center; color:var(--muted); font-size:11px; flex-shrink:0; }
+.ads .cell h3 { font-family:var(--title); font-size:18px; margin:0; }
+.ads .cell .price { font-family:var(--title); font-size:18px; color:var(--primary); }
+
+.ads .swatch { height:60px; border-radius:var(--r-sm); display:flex; align-items:flex-end; padding:8px; }
+.ads .swatch span { font-size:10px; font-weight:700; }
+.ads .swgrid { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
+.ads .swname { font-size:11px; color:var(--muted); margin-top:6px; display:block; }
+
+@media (max-width:760px){ .ads .grid { grid-template-columns:1fr; } }
+`
+
+function Plus() { return <span className="plus">+</span> }
+function MinusIcon() { return <span className="plus">−</span> }
 
 export default function DesignSystem() {
-  const [accordionOpen, setAccordionOpen] = useState<number | null>(1)
-  const [segment, setSegment] = useState('grid')
-  const [checks, setChecks] = useState({ a: true, b: false })
-  const [radio, setRadio] = useState('a')
-  const [tab, setTab] = useState('all')
+  const [open, setOpen] = useState<number | null>(1)
+  const [seg, setSeg] = useState('grid')
+  const [chk, setChk] = useState({ a: true, b: false })
+  const [rad, setRad] = useState('a')
+  const [tag, setTag] = useState('all')
+
+  const swatches: [string, string, string][] = [
+    ['Primario', '#B35A3D', '#fff'], ['Texto / borde', '#1F1F1F', '#fff'],
+    ['Fondo', '#EFF1F3', '#1F1F1F'], ['Superficie', '#FCFCFA', '#6F6A63'],
+    ['Beige', '#EEEAE3', '#6F6A63'], ['Beige 2', '#F6F4EF', '#6F6A63'],
+    ['Primary soft', '#E7C5B8', '#1F1F1F'], ['Muted', '#6F6A63', '#fff'],
+  ]
 
   return (
-    <div className="min-h-screen bg-cream py-12 px-4 md:px-8">
-      <div className="max-w-[1200px] mx-auto">
-        <header className="text-center mb-12">
-          <h1 className="font-display text-[40px] md:text-[52px] font-medium text-midnight">Design System</h1>
-          <p className="font-inter text-[15px] text-text-secondary mt-2">Atlas Rouge · lenguaje editorial cálido · acento terracota</p>
-        </header>
+    <div className="ads">
+      <style>{CSS}</style>
+      <div className="wrap">
+        <h1 className="title">Sistema de Diseño Atlas</h1>
+        <p className="sub">Tokens reales · serif Georgia · primario terracota · bordes finos · píldoras</p>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-6">
-
+        <div className="grid">
           {/* Colors */}
-          <Card title="Colores de marca" className="lg:col-span-2">
-            <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
-              <Swatch name="Terracota (primario)" hex="#B35A3D" />
-              <Swatch name="Midnight" hex="#172033" />
-              <Swatch name="Palm" hex="#315C45" />
-              <Swatch name="Gold" hex="#C8A96A" text="#3a2f17" />
-              <Swatch name="Sand" hex="#D8C3A5" text="#3a2f17" />
-              <Swatch name="Cream" hex="#FAF7F1" text="#6E6259" />
-              <Swatch name="Cream warm" hex="#F8F3EA" text="#6E6259" />
-              <Swatch name="Texto" hex="#1E1E1E" />
-              <Swatch name="Texto sec." hex="#6E6259" />
-              <Swatch name="Borde" hex="#E8DED2" text="#6E6259" />
+          <div className="card full">
+            <p className="label">Colores</p>
+            <div className="swgrid">
+              {swatches.map(([n, hex, tx]) => (
+                <div key={n}>
+                  <div className="swatch" style={{ background: hex }}><span style={{ color: tx }}>{hex}</span></div>
+                  <span className="swname">{n}</span>
+                </div>
+              ))}
             </div>
-          </Card>
+          </div>
 
           {/* Buttons */}
-          <Card title="Botones">
-            <div className="flex flex-wrap items-center gap-3">
-              <button className="h-11 px-7 rounded-full bg-terracotta text-white font-inter text-[14px] font-semibold hover:opacity-90 active:scale-[0.98] transition">Primario</button>
-              <button className="h-11 px-7 rounded-full border border-midnight text-midnight font-inter text-[14px] font-semibold hover:bg-midnight hover:text-white transition">Secundario</button>
-              <button className="h-11 px-7 rounded-full bg-cream-warm text-text-primary font-inter text-[14px] font-medium hover:bg-sand/40 transition">Terciario</button>
-              <button className="h-11 w-11 rounded-full bg-cream-warm text-text-primary flex items-center justify-center hover:bg-sand/40 transition"><ChevronDown size={18} /></button>
-              <button className="h-11 w-11 rounded-full bg-cream-warm text-text-primary flex items-center justify-center hover:bg-sand/40 transition"><SlidersHorizontal size={18} /></button>
-              <button className="h-11 px-5 rounded-full bg-terracotta text-white flex items-center justify-center hover:opacity-90 transition"><ArrowRight size={18} /></button>
+          <div className="card">
+            <p className="label">Botones</p>
+            <div className="row">
+              <button className="btn btn-primary">Primario</button>
+              <button className="btn btn-dark">Oscuro</button>
+              <button className="btn btn-outline">Outline</button>
+              <button className="btn btn-soft">Soft</button>
+              <button className="btn btn-soft btn-icon">→</button>
             </div>
-            <div className="flex flex-wrap items-center gap-3 mt-3">
-              <button className="h-9 px-5 rounded-full bg-terracotta text-white font-inter text-[13px] font-semibold">Pequeño</button>
-              <button disabled className="h-9 px-5 rounded-full bg-cream-warm text-text-secondary/50 font-inter text-[13px] font-medium cursor-not-allowed">Desactivado</button>
-            </div>
-          </Card>
+          </div>
 
-          {/* Tags & Badges */}
-          <Card title="Tags & Badges">
-            <div className="flex flex-wrap items-center gap-2.5">
-              {['all', 'moodboard', 'ratings'].map(k => (
-                <button key={k} onClick={() => setTab(k)} className={`h-9 px-4 rounded-full font-inter text-[13px] font-medium transition ${tab === k ? 'bg-terracotta text-white' : 'bg-cream-warm text-text-primary hover:bg-sand/40'}`}>
-                  {k === 'all' ? 'TODO' : k === 'moodboard' ? 'Destacados' : 'Valoración'}{k === 'ratings' && <ChevronDown size={14} className="inline ml-1 -mt-0.5" />}
+          {/* Tags */}
+          <div className="card">
+            <p className="label">Tags & Badges</p>
+            <div className="row">
+              {(['all', 'feat', 'rate'] as const).map(k => (
+                <button key={k} className={`tag ${tag === k ? 'active' : ''}`} onClick={() => setTag(k)}>
+                  {k === 'all' ? 'TODO' : k === 'feat' ? 'Destacados' : 'Valoración'}
                 </button>
               ))}
             </div>
-            <div className="flex flex-wrap items-center gap-2.5 mt-3">
-              <button className="h-8 px-3.5 rounded-full bg-cream-warm text-text-primary font-inter text-[12.5px] font-medium flex items-center gap-1.5">Limpiar todo <X size={13} /></button>
-              <span className="h-7 px-3 rounded-full bg-sand/30 text-stone font-inter text-[11px] font-semibold uppercase tracking-[1px] flex items-center">Villa</span>
-              <span className="h-7 px-3 rounded-full bg-sand/30 text-stone font-inter text-[11px] font-semibold uppercase tracking-[1px] flex items-center">Exclusiva</span>
-              <span className="h-7 px-3 rounded-full bg-palm/15 text-palm font-inter text-[11px] font-semibold uppercase tracking-[1px] flex items-center">En venta</span>
-              <span className="h-7 px-3 rounded-full bg-gold/25 text-[#7a5d1f] font-inter text-[11px] font-semibold uppercase tracking-[1px] flex items-center">Gold</span>
+            <div className="row" style={{ marginTop: 12 }}>
+              <span className="tag mini">Villa</span>
+              <span className="tag mini">Exclusiva</span>
+              <span className="tag mini" style={{ background: '#E7C5B8' }}>En venta</span>
             </div>
-          </Card>
+          </div>
 
-          {/* Breadcrumb + Bullets */}
-          <Card title="Breadcrumb & Bullets">
-            <nav className="flex items-center gap-2 font-inter text-[13.5px]">
-              <a className="text-text-secondary hover:text-terracotta cursor-pointer">Inicio</a>
-              <span className="text-border-warm">·</span>
-              <span className="h-7 px-3 rounded-full bg-cream-warm text-text-primary font-medium flex items-center">Detalle del inmueble</span>
-            </nav>
-            <div className="mt-5 space-y-2">
-              {['Trato 100% en francés', 'Acompañamiento integral'].map(b => (
-                <div key={b} className="flex items-center gap-2.5 bg-cream-warm rounded-full px-4 py-2.5">
-                  <span className="w-5 h-5 rounded-full bg-terracotta flex items-center justify-center flex-shrink-0"><Check size={12} className="text-white" /></span>
-                  <span className="font-inter text-[14px] text-text-primary">{b}</span>
-                </div>
-              ))}
+          {/* Eyebrow + Stats */}
+          <div className="card full">
+            <p className="label">Eyebrow & Stats</p>
+            <span className="eyebrow"><span className="dot" /> Inmobiliaria premium</span>
+            <div className="stats" style={{ marginTop: 18 }}>
+              <div className="stat"><strong>320+</strong><span>Propiedades activas</span></div>
+              <div className="stat"><strong>48h</strong><span>Tiempo de respuesta</span></div>
+              <div className="stat"><strong>4.9</strong><span>Valoración de clientes</span></div>
             </div>
-          </Card>
+          </div>
 
           {/* Accordion */}
-          <Card title="Acordeón">
-            <div className="space-y-3">
-              {[
-                { q: '¿Qué es Atlas Rouge?', a: 'Una agencia inmobiliaria de lujo en Marrakech con acompañamiento en francés de principio a fin.' },
-                { q: '¿Qué hace única a Atlas Rouge?', a: 'En Atlas Rouge accedes a más de 3.500 propiedades con un conserje francófono que gestiona todo el proceso por ti.' },
-              ].map((item, i) => {
-                const open = accordionOpen === i
-                return (
-                  <div key={i} className={`rounded-2xl border transition ${open ? 'bg-cream-warm border-border-warm' : 'border-border-subtle'}`}>
-                    <button onClick={() => setAccordionOpen(open ? null : i)} className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left">
-                      <span className="font-display text-[17px] text-midnight">{item.q}</span>
-                      <span className="flex-shrink-0 text-terracotta">{open ? <Minus size={20} /> : <Plus size={20} />}</span>
-                    </button>
-                    {open && (
-                      <p className="px-5 pb-4 font-inter text-[14px] text-text-secondary leading-relaxed">
-                        {item.a.split('Atlas Rouge').map((part, idx, arr) => (
-                          <span key={idx}>{part}{idx < arr.length - 1 && <span className="text-terracotta font-medium">Atlas Rouge</span>}</span>
-                        ))}
-                      </p>
-                    )}
-                  </div>
-                )
-              })}
-            </div>
-          </Card>
-
-          {/* Checkboxes & Radios */}
-          <Card title="Checkboxes & Radios">
-            <div className="grid grid-cols-2 gap-6">
-              <div className="space-y-3">
-                {([['a', 'Marcado'], ['b', 'Sin marcar']] as const).map(([k, label]) => {
-                  const on = checks[k]
-                  return (
-                    <button key={k} onClick={() => setChecks(c => ({ ...c, [k]: !c[k] }))} className="flex items-center gap-2.5">
-                      <span className={`w-5 h-5 rounded-md border flex items-center justify-center ${on ? 'bg-terracotta border-terracotta' : 'border-border-warm'}`}>{on && <Check size={13} className="text-white" />}</span>
-                      <span className="font-inter text-[14px] text-text-primary">{label}</span>
-                    </button>
-                  )
-                })}
-                <div className="flex items-center gap-2.5 opacity-40">
-                  <span className="w-5 h-5 rounded-md bg-sand/40 border border-border-warm" />
-                  <span className="font-inter text-[14px]">Desactivado</span>
-                </div>
+          <div className="card">
+            <p className="label">Acordeón</p>
+            {[
+              { q: '¿Qué es Atlas Rouge?', a: 'Agencia de lujo en Marrakech con acompañamiento en francés.' },
+              { q: '¿Qué la hace única?', a: 'Acceso a +3.500 propiedades con conserje francófono de principio a fin.' },
+            ].map((it, i) => (
+              <div key={i} className={`acc ${open === i ? 'open' : ''}`}>
+                <button className="acc-head" onClick={() => setOpen(open === i ? null : i)}>
+                  {it.q}{open === i ? <MinusIcon /> : <Plus />}
+                </button>
+                {open === i && <div className="acc-body">{it.a}</div>}
               </div>
-              <div className="space-y-3">
-                {([['a', 'Comprar'], ['b', 'Alquilar']] as const).map(([k, label]) => {
-                  const on = radio === k
-                  return (
-                    <button key={k} onClick={() => setRadio(k)} className="flex items-center gap-2.5">
-                      <span className={`w-5 h-5 rounded-full border flex items-center justify-center ${on ? 'border-terracotta' : 'border-border-warm'}`}>{on && <span className="w-2.5 h-2.5 rounded-full bg-terracotta" />}</span>
-                      <span className="font-inter text-[14px] text-text-primary">{label}</span>
-                    </button>
-                  )
-                })}
-                <div className="flex items-center gap-2.5 opacity-40">
-                  <span className="w-5 h-5 rounded-full border border-border-warm" />
-                  <span className="font-inter text-[14px]">Desactivado</span>
-                </div>
+            ))}
+          </div>
+
+          {/* Checks / radios */}
+          <div className="card">
+            <p className="label">Checkboxes & Radios</p>
+            <div className="row" style={{ gap: 32, alignItems: 'flex-start' }}>
+              <div className="stack">
+                {(['a', 'b'] as const).map(k => (
+                  <button key={k} className="opt" onClick={() => setChk(c => ({ ...c, [k]: !c[k] }))}>
+                    <span className={`box ${chk[k] ? 'on' : ''}`}>{chk[k] && <span className="tick" />}</span>
+                    {k === 'a' ? 'Marcado' : 'Sin marcar'}
+                  </button>
+                ))}
+              </div>
+              <div className="stack">
+                {(['a', 'b'] as const).map(k => (
+                  <button key={k} className="opt" onClick={() => setRad(k)}>
+                    <span className={`box rad ${rad === k ? 'on' : ''}`}>{rad === k && <span className="tick" />}</span>
+                    {k === 'a' ? 'Comprar' : 'Alquilar'}
+                  </button>
+                ))}
               </div>
             </div>
-          </Card>
+          </div>
 
-          {/* Text inputs */}
-          <Card title="Inputs" className="lg:col-span-2">
-            <div className="space-y-4 max-w-[640px]">
-              <div className="flex items-center gap-2 h-13 pl-5 pr-2 py-2 rounded-full border border-border-warm bg-white">
-                <Search size={18} className="text-text-secondary" />
-                <input className="flex-1 bg-transparent outline-none font-inter text-[15px] placeholder:text-text-secondary" placeholder="Buscar barrio, tipo, precio…" />
-                <button className="h-9 px-4 rounded-full bg-cream-warm text-text-primary font-inter text-[13px] font-medium flex items-center gap-1.5">Presupuesto <ChevronDown size={15} /></button>
+          {/* Inputs */}
+          <div className="card full">
+            <p className="label">Inputs</p>
+            <div className="stack" style={{ maxWidth: 620 }}>
+              <div className="input-pill">
+                <span style={{ color: '#6F6A63' }}>⌕</span>
+                <input placeholder="Buscar barrio, tipo, precio…" />
+                <button className="btn btn-soft" style={{ minHeight: 36, padding: '8px 16px' }}>Presupuesto ▾</button>
               </div>
-              <div className="flex items-center gap-2 h-13 pl-5 pr-2 py-2 rounded-full border border-border-warm bg-white max-w-[420px]">
-                <Search size={18} className="text-text-secondary" />
-                <input className="flex-1 bg-transparent outline-none font-inter text-[15px] placeholder:text-text-secondary" placeholder="Buscar…" />
-                <button className="h-9 w-9 rounded-full bg-cream-warm flex items-center justify-center"><SlidersHorizontal size={16} /></button>
-              </div>
-              <div className="flex flex-wrap gap-3">
-                <input className="h-12 px-4 rounded-xl border border-border-warm bg-cream-warm/40 font-inter text-[15px] placeholder:text-text-secondary outline-none focus:border-terracotta" placeholder="Tu nombre" />
-                <input className="h-12 px-4 rounded-xl border border-border-warm bg-cream-warm/40 font-inter text-[15px] placeholder:text-text-secondary outline-none focus:border-terracotta" placeholder="Tu email" />
+              <div className="row">
+                <input className="field" placeholder="Tu nombre" />
+                <input className="field" placeholder="Tu email" />
               </div>
             </div>
-          </Card>
+          </div>
 
-          {/* Info block + Segmented */}
-          <Card title="Info block">
-            <div className="flex gap-3 bg-cream-warm rounded-2xl p-4">
-              <span className="w-6 h-6 rounded-full bg-terracotta flex items-center justify-center flex-shrink-0 mt-0.5"><Check size={13} className="text-white" /></span>
-              <p className="font-inter text-[13.5px] text-text-secondary leading-relaxed">
-                <span className="font-semibold text-text-primary">¿Una zona preferida?</span> Indícasela a tu asesor. Si no, él seleccionará las mejores opciones según tu perfil de inversión.
-              </p>
-            </div>
-          </Card>
-
-          <Card title="Segmented controls">
-            <div className="inline-flex p-1 rounded-full bg-cream-warm">
+          {/* Segmented */}
+          <div className="card">
+            <p className="label">Segmented controls</p>
+            <div className="segmented">
               {(['grid', 'list', 'map'] as const).map(s => (
-                <button key={s} onClick={() => setSegment(s)} className={`h-9 px-5 rounded-full font-inter text-[13px] font-medium capitalize transition ${segment === s ? 'bg-terracotta text-white' : 'text-text-primary'}`}>
+                <button key={s} className={`seg ${seg === s ? 'on' : ''}`} onClick={() => setSeg(s)}>
                   {s === 'grid' ? 'Cuadrícula' : s === 'list' ? 'Lista' : 'Mapa'}
                 </button>
               ))}
             </div>
-          </Card>
+          </div>
 
           {/* Cell */}
-          <Card title="Tarjeta / Cell" className="lg:col-span-2">
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 bg-cream-warm rounded-2xl p-3 max-w-[560px]">
-              <div className="w-full sm:w-28 h-24 rounded-xl bg-sand/40 flex-shrink-0 flex items-center justify-center text-stone font-inter text-[11px]">Foto</div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-1 text-terracotta mb-0.5">{[1, 2, 3, 4].map(i => <Star key={i} size={13} fill="currentColor" />)}<Star size={13} className="text-sand" /></div>
-                <h3 className="font-display text-[18px] text-midnight leading-tight">Appartement haut standing</h3>
-                <p className="font-inter text-[13px] text-text-secondary">Guéliz, Marrakech · <span className="text-palm font-medium">Disponible</span></p>
+          <div className="card">
+            <p className="label">Tarjeta / Cell</p>
+            <div className="cell">
+              <div className="ph">Foto</div>
+              <div style={{ flex: 1 }}>
+                <h3>Appartement haut standing</h3>
+                <p style={{ color: '#6F6A63', fontSize: 13, margin: '4px 0 0' }}>Guéliz, Marrakech</p>
               </div>
-              <div className="flex sm:flex-col items-center justify-between sm:justify-center gap-2">
-                <span className="font-display text-[18px] text-terracotta">295 000 €</span>
-                <div className="flex gap-2">
-                  <a className="h-9 w-9 rounded-full border border-border-warm flex items-center justify-center text-midnight cursor-pointer"><Phone size={16} /></a>
-                  <a className="h-9 w-9 rounded-full border border-border-warm flex items-center justify-center text-[#0A8F57] cursor-pointer"><MessageCircle size={16} /></a>
-                </div>
-              </div>
+              <span className="price">295 000 €</span>
             </div>
-          </Card>
-
-        </div>
-
-        <div className="text-center mt-10">
-          <span className="inline-flex h-9 px-5 rounded-full bg-cream-warm text-text-secondary font-inter text-[13px] items-center">Y más…</span>
+          </div>
         </div>
       </div>
     </div>
