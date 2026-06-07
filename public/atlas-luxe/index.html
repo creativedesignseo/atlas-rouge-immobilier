@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Atlas Rouge — Muestra Lujo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --cream:#FAF7F1; --ivory:#FFFDF9; --ink:#1A1A1A; --muted:#6E6259;
+    --terra:#B35A3D; --gold:#C8A96A; --line:rgba(26,26,26,.10);
+    --serif:"Cormorant Garamond",Georgia,serif; --sans:"Inter",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  img{display:block;width:100%;height:100%;object-fit:cover}
+  .wrap{width:min(1240px,calc(100% - 48px));margin:0 auto}
+  .eyebrow{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);font-weight:500}
+  .serif{font-family:var(--serif)}
+  a{color:inherit;text-decoration:none}
+
+  /* nav */
+  nav{position:absolute;top:0;left:0;right:0;z-index:5}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:26px 0;color:#fff}
+  .brand{font-family:var(--serif);font-size:26px;letter-spacing:.02em;font-weight:500}
+  .brand small{display:block;font-family:var(--sans);font-size:9px;letter-spacing:.32em;text-transform:uppercase;opacity:.8;margin-top:-2px}
+  .nav-links{display:flex;gap:34px;font-size:13px;letter-spacing:.04em}
+  .nav-links a{opacity:.9}
+  .nav-cta{border:1px solid rgba(255,255,255,.5);border-radius:2px;padding:10px 20px;font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+  @media(max-width:780px){.nav-links{display:none}}
+
+  /* hero */
+  .hero{position:relative;height:92vh;min-height:560px;color:#fff;overflow:hidden}
+  .hero .bg{position:absolute;inset:0}
+  .hero .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,.15) 40%,rgba(0,0,0,.55) 100%)}
+  .hero-content{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:8vh}
+  .hero .eyebrow{color:rgba(255,255,255,.85)}
+  .hero h1{font-family:var(--serif);font-weight:500;font-size:clamp(44px,7vw,92px);line-height:1.02;letter-spacing:-.01em;margin:18px 0 22px;max-width:14ch}
+  .hero p{max-width:46ch;font-size:17px;color:rgba(255,255,255,.9)}
+  .hero-actions{display:flex;gap:22px;align-items:center;margin-top:34px;flex-wrap:wrap}
+  .btn{background:var(--terra);color:#fff;border:none;border-radius:2px;padding:15px 30px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;cursor:pointer}
+  .link-arrow{font-size:13px;letter-spacing:.06em;border-bottom:1px solid rgba(255,255,255,.5);padding-bottom:3px}
+
+  /* stats — no boxes, hairline separators */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);margin-top:80px}
+  .stat{padding:34px 0;text-align:center;border-left:1px solid var(--line)}
+  .stat:first-child{border-left:none}
+  .stat b{font-family:var(--serif);font-size:42px;font-weight:500;display:block}
+  .stat span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+  /* section */
+  section.block{padding:96px 0}
+  .head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:44px;gap:24px;flex-wrap:wrap}
+  .head h2{font-family:var(--serif);font-weight:500;font-size:clamp(32px,4.5vw,52px);line-height:1.05}
+  .head .eyebrow{margin-bottom:12px;display:block}
+
+  /* property cards — photo led, no border */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:34px}
+  @media(max-width:880px){.grid{grid-template-columns:1fr;gap:40px}}
+  .card .photo{position:relative;aspect-ratio:4/5;overflow:hidden;border-radius:3px}
+  .card .photo img{transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+  .card:hover .photo img{transform:scale(1.05)}
+  .seal{position:absolute;top:16px;left:16px;background:rgba(255,255,255,.92);color:var(--ink);font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:7px 12px;border-radius:2px}
+  .seal.gold{background:var(--gold);color:#3a2e12}
+  .card .info{padding:20px 2px 0}
+  .card .loc{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .card h3{font-family:var(--serif);font-size:26px;font-weight:500;margin:6px 0 10px}
+  .card .meta{font-size:13px;color:var(--muted);display:flex;gap:16px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+  .card .price{font-family:var(--serif);font-size:24px;margin-top:14px;display:flex;justify-content:space-between;align-items:center}
+  .card .price .go{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--terra)}
+
+  /* dark CTA band */
+  .cta{background:var(--ink);color:#fff;border-radius:4px;overflow:hidden;display:grid;grid-template-columns:1.1fr .9fr}
+  @media(max-width:880px){.cta{grid-template-columns:1fr}}
+  .cta .txt{padding:64px}
+  .cta .eyebrow{color:var(--gold)}
+  .cta h2{font-family:var(--serif);font-weight:500;font-size:clamp(30px,4vw,46px);line-height:1.08;margin:16px 0 18px}
+  .cta p{color:rgba(255,255,255,.75);max-width:42ch;margin-bottom:30px}
+  .cta .photo{min-height:340px}
+
+  footer{padding:50px 0;border-top:1px solid var(--line);text-align:center;color:var(--muted);font-size:13px;letter-spacing:.04em}
+  .note{background:var(--terra);color:#fff;text-align:center;font-size:12px;letter-spacing:.06em;padding:8px}
+</style>
+</head>
+<body>
+  <div class="note">MUESTRA "LUJO" — solo demostración · no es la web real · fotos de stock (Unsplash)</div>
+
+  <nav><div class="wrap nav-inner">
+    <div class="brand">Atlas Rouge<small>Marrakech</small></div>
+    <div class="nav-links"><a>Comprar</a><a>Alquilar</a><a>Vender</a><a>Conserjería</a></div>
+    <a class="nav-cta">Contacto</a>
+  </div></nav>
+
+  <header class="hero">
+    <div class="bg"><img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1900&q=80" alt="Villa de lujo en Marrakech" /></div>
+    <div class="wrap hero-content">
+      <span class="eyebrow">Inmobiliaria de lujo · Marrakech</span>
+      <h1 class="serif">Propiedades de excepción en el corazón de Marruecos</h1>
+      <p>Villas, riads y residencias exclusivas, seleccionadas a mano y acompañadas por un conserje francófono de principio a fin.</p>
+      <div class="hero-actions">
+        <button class="btn">Descubrir la colección</button>
+        <a class="link-arrow">Vender mi propiedad →</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat"><b>320+</b><span>Propiedades exclusivas</span></div>
+      <div class="stat"><b>48h</b><span>Respuesta garantizada</span></div>
+      <div class="stat"><b>4.9</b><span>Valoración de clientes</span></div>
+    </div>
+  </div>
+
+  <section class="block"><div class="wrap">
+    <div class="head">
+      <div><span class="eyebrow">Selección</span><h2 class="serif">Propiedades destacadas</h2></div>
+      <a class="link-arrow" style="border-color:var(--line)">Ver toda la colección →</a>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <div class="photo"><span class="seal gold">Exclusiva</span><img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=900&q=80" alt="Villa" /></div>
+        <div class="info"><div class="loc">Palmeraie</div><h3 class="serif">Villa contemporánea con piscina</h3><div class="meta"><span>520 m²</span><span>5 hab.</span><span>Jardín</span></div><div class="price">2 950 000 € <span class="go">Ver →</span></div></div>
+      </article>
+      <article class="card">
+        <div class="photo"><span class="seal">En venta</span><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80" alt="Riad" /></div>
+        <div class="info"><div class="loc">Médina</div><h3 class="serif">Riad histórico restaurado</h3><div class="meta"><span>310 m²</span><span>6 hab.</span><span>Patio</span></div><div class="price">1 250 000 € <span class="go">Ver →</span></div></div>
+      </article>
+      <article class="card">
+        <div class="photo"><span class="seal gold">Exclusiva</span><img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=900&q=80" alt="Apartamento" /></div>
+        <div class="info"><div class="loc">Guéliz</div><h3 class="serif">Ático con terraza panorámica</h3><div class="meta"><span>180 m²</span><span>3 hab.</span><span>Terraza</span></div><div class="price">890 000 € <span class="go">Ver →</span></div></div>
+      </article>
+    </div>
+  </div></section>
+
+  <section class="block" style="padding-top:0"><div class="wrap">
+    <div class="cta">
+      <div class="txt">
+        <span class="eyebrow">Propietarios</span>
+        <h2 class="serif">¿Vende su propiedad en Marrakech?</h2>
+        <p>Confíe su bien a un equipo discreto y experto. Valoración, fotografía profesional y una red internacional de inversores.</p>
+        <button class="btn">Solicitar una valoración</button>
+      </div>
+      <div class="photo"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=80" alt="Interior de lujo" /></div>
+    </div>
+  </div></section>
+
+  <footer><div class="wrap">Atlas Rouge Immobilier · Marrakech — muestra de estilo</div></footer>
+</body>
+</html>
