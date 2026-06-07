@@ -14,6 +14,7 @@ import { FavoritesProvider } from './hooks/useFavorites'
 import CookieBanner from './components/CookieBanner'
 
 const Home = lazy(() => import('./pages/Home'))
+const DesignSystem = lazy(() => import('./pages/DesignSystem'))
 const SearchPage = lazy(() => import('./pages/Search'))
 const PropertyDetailPage = lazy(() => import('./pages/PropertyDetail'))
 const About = lazy(() => import('./pages/About'))
@@ -122,6 +123,9 @@ export default function App() {
       <Routes>
         {/* Root: detect language and redirect */}
         <Route path="/" element={<LangDetector />} />
+
+        {/* Internal design-system reference (no lang prefix, no layout) */}
+        <Route path="/design-system" element={<Suspense fallback={<AdminLoader />}><DesignSystem /></Suspense>} />
 
         {/* Admin routes — no lang prefix, outside public layout */}
         <Route path="/admin/login" element={<AdminLogin />} />
