@@ -6,7 +6,7 @@ module.exports = {
     extend: {
       colors: {
         // Brand accents (used sparingly to preserve their value)
-        terracotta: '#B5533A',
+        terracotta: '#B35A3D',
         palm: '#315C45',
         gold: '#C8A96A',
         sand: '#D8C3A5',
