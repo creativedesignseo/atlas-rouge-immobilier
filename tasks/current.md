@@ -8,7 +8,7 @@
 
 ---
 
-## Nuevo servicio: Conciergerie / alquiler turístico — 2026-06-10 ✅ EN VIVO (deploy `<hash>`)
+## Nuevo servicio: Conciergerie / alquiler turístico — 2026-06-10 ✅ EN VIVO (`4dedfc87`, deploy ready)
 
 Khalid pidió añadir el servicio de **conciergerie de location courte durée**
 (gestión Airbnb: propietario cede el bien → agencia lo gestiona en Airbnb/Booking

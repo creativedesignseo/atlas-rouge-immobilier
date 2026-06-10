@@ -6,9 +6,10 @@
 
 ## CIERRE de sesión — Claude Opus 4.8 — 2026-06-10 (nuevo servicio: Conciergerie / alquiler turístico)
 
-**Realidad verificada:** `verify.sh` verde · sección renderizada y verificada en
-preview de producción (Playwright) en **FR/ES/EN** sin claves i18n crudas ·
-commit `<pendiente>` · deploy Netlify `<pendiente>`.
+**Realidad verificada:** `verify.sh` verde · commit `4dedfc87` · deploy Netlify
+`ready` · sección verificada **EN VIVO en `atlasrouge.com`** (Playwright) en
+**FR/ES/EN** sin claves i18n crudas (`/fr/gestion-locative`,
+`/es/gestion-alquileres`, `/en/property-management`).
 
 **Qué se hizo y por qué.** Khalid pidió añadir el servicio de **conciergerie de
 location courte durée** (gestión de alquiler turístico tipo Airbnb: el propietario
