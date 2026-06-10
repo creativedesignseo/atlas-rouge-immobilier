@@ -5,6 +5,7 @@
       "subtitle": "Deje el alquiler de su propiedad en nuestras manos: nos encargamos de todo. Una gestión tranquila y profesional de principio a fin."
     },
     "services": {
+      "badge": "Larga duración",
       "heading": "Nuestros servicios de gestión",
       "subheading": "Un servicio integral para alquilar su propiedad con total tranquilidad.",
       "items": {
@@ -73,6 +74,45 @@
       "subtitle": "Hablemos de su proyecto de gestión de alquileres. Nuestro equipo le propone una solución a medida.",
       "appointment": "Pedir cita",
       "phone": "+212 524 00 00 00"
+    },
+    "concierge": {
+      "badge": "Alquiler turístico",
+      "heading": "Conciergerie — alquiler de corta duración",
+      "subheading": "¿Su propiedad está libre parte del año? La rentabilizamos como alquiler turístico (Airbnb, Booking) y nos ocupamos de todo, mientras usted percibe ingresos sin esfuerzo.",
+      "items": {
+        "listing": {
+          "title": "Anuncio y fotos profesionales",
+          "description": "Publicamos su bien en Airbnb, Booking y otras plataformas con fotos profesionales y un anuncio optimizado."
+        },
+        "pricing": {
+          "title": "Precios dinámicos",
+          "description": "Ajustamos las tarifas según la temporada y la demanda para maximizar sus ingresos."
+        },
+        "guests": {
+          "title": "Reservas y huéspedes",
+          "description": "Gestionamos las reservas y la comunicación con los huéspedes, antes, durante y después de la estancia."
+        },
+        "checkin": {
+          "title": "Llegadas y salidas",
+          "description": "Recepción de los huéspedes, entrega de llaves y estado del alojamiento en cada entrada y salida."
+        },
+        "cleaning": {
+          "title": "Limpieza y lavandería",
+          "description": "Limpieza profesional y ropa de cama y baño entre cada estancia."
+        },
+        "reporting": {
+          "title": "Mantenimiento y reporting",
+          "description": "Mantenimiento corriente del bien e informe mensual de ingresos y ocupación."
+        }
+      },
+      "model": {
+        "heading": "Cómo funciona",
+        "body": "Usted sigue siendo el propietario y decide cuándo está disponible su bien. Nosotros nos encargamos de toda la operativa y percibimos una comisión sobre los ingresos del alquiler — sin gastos fijos."
+      },
+      "cta": {
+        "note": "Comisión a medida según su propiedad.",
+        "button": "Solicitar presupuesto"
+      }
     }
   }
 }

@@ -5,6 +5,7 @@
       "subtitle": "Let us manage your property's rental — we take care of everything. Stress-free, professional management from start to finish."
     },
     "services": {
+      "badge": "Long-term",
       "heading": "Our management services",
       "subheading": "End-to-end support to rent out your property with complete peace of mind.",
       "items": {
@@ -73,6 +74,45 @@
       "subtitle": "Let's talk about your rental management project. Our team will design a tailor-made solution for you.",
       "appointment": "Book an appointment",
       "phone": "+212 524 00 00 00"
+    },
+    "concierge": {
+      "badge": "Short-let",
+      "heading": "Concierge — short-let management",
+      "subheading": "Is your property empty part of the year? We turn it into a short-let (Airbnb, Booking) and take care of everything while you earn income effortlessly.",
+      "items": {
+        "listing": {
+          "title": "Listing and professional photos",
+          "description": "We list your property on Airbnb, Booking and other platforms with professional photos and an optimised listing."
+        },
+        "pricing": {
+          "title": "Dynamic pricing",
+          "description": "We adjust rates by season and demand to maximise your income."
+        },
+        "guests": {
+          "title": "Bookings and guests",
+          "description": "We handle bookings and guest communication before, during and after each stay."
+        },
+        "checkin": {
+          "title": "Check-in and check-out",
+          "description": "Guest welcome, key handover and property inspection at every arrival and departure."
+        },
+        "cleaning": {
+          "title": "Cleaning and laundry",
+          "description": "Professional cleaning and fresh linen between every stay."
+        },
+        "reporting": {
+          "title": "Maintenance and reporting",
+          "description": "Routine maintenance and a monthly income and occupancy report."
+        }
+      },
+      "model": {
+        "heading": "How it works",
+        "body": "You remain the owner and decide when your property is available. We handle the entire operation and charge a commission on rental income — with no fixed fees."
+      },
+      "cta": {
+        "note": "Tailored commission based on your property.",
+        "button": "Request a quote"
+      }
     }
   }
 }

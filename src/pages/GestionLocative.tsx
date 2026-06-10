@@ -10,6 +10,12 @@ import {
   Phone,
   Check,
   ArrowRight,
+  Camera,
+  TrendingUp,
+  MessageSquare,
+  KeyRound,
+  Sparkles,
+  LineChart,
 } from 'lucide-react'
 import SectionReveal from '@/components/SectionReveal'
 
@@ -19,6 +25,18 @@ const services = [
   { icon: ShieldCheck, key: 'rentGuarantee' },
   { icon: Wrench, key: 'maintenance' },
   { icon: FileText, key: 'taxFiling' },
+] as const
+
+// Short-let / conciergerie (Airbnb) management — owner-acquisition product.
+// Distinct from the long-term tiers above; pricing is a tailored quote (no
+// invented commission until the owner confirms real figures).
+const conciergeServices = [
+  { icon: Camera, key: 'listing' },
+  { icon: TrendingUp, key: 'pricing' },
+  { icon: MessageSquare, key: 'guests' },
+  { icon: KeyRound, key: 'checkin' },
+  { icon: Sparkles, key: 'cleaning' },
+  { icon: LineChart, key: 'reporting' },
 ] as const
 
 const pricingTiers = [
@@ -66,7 +84,10 @@ export default function GestionLocative() {
         <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
           <SectionReveal y={30}>
             <div className="text-center mb-12">
-              <h2 className="font-display text-[28px] md:text-[36px] font-medium text-midnight mb-3">
+              <span className="text-terracotta text-[12px] font-inter font-medium uppercase tracking-[2px]">
+                {t('rental.services.badge')}
+              </span>
+              <h2 className="font-display text-[28px] md:text-[36px] font-medium text-midnight mt-3 mb-3">
                 {t('rental.services.heading')}
               </h2>
               <p className="font-inter text-[16px] text-text-secondary max-w-[560px] mx-auto">
@@ -191,6 +212,71 @@ export default function GestionLocative() {
                 </div>
               )
             })}
+          </SectionReveal>
+        </div>
+      </section>
+
+      {/* ═══════ CONCIERGERIE (short-let / Airbnb) ═══════ */}
+      <section className="bg-midnight py-16 md:py-24">
+        <div className="max-w-[1280px] mx-auto px-6 lg:px-12">
+          <SectionReveal y={30}>
+            <div className="text-center mb-12">
+              <span className="text-terracotta text-[12px] font-inter font-medium uppercase tracking-[2px]">
+                {t('rental.concierge.badge')}
+              </span>
+              <h2 className="font-display text-[28px] md:text-[36px] font-medium text-white mt-3 mb-3">
+                {t('rental.concierge.heading')}
+              </h2>
+              <p className="font-inter text-[16px] text-white/70 max-w-[620px] mx-auto">
+                {t('rental.concierge.subheading')}
+              </p>
+            </div>
+          </SectionReveal>
+
+          <SectionReveal
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            stagger={0.1}
+            y={30}
+          >
+            {conciergeServices.map(({ icon: Icon, key }) => (
+              <div
+                key={key}
+                className="bg-white/5 border border-white/10 rounded-card p-6 md:p-8 hover:bg-white/[0.08] transition-colors duration-250"
+              >
+                <div className="w-12 h-12 rounded-lg bg-terracotta/15 flex items-center justify-center mb-4">
+                  <Icon size={24} className="text-terracotta" />
+                </div>
+                <h3 className="font-display text-[20px] font-semibold text-white mb-2">
+                  {t(`rental.concierge.items.${key}.title`)}
+                </h3>
+                <p className="font-inter text-[14px] text-white/70 leading-[1.7]">
+                  {t(`rental.concierge.items.${key}.description`)}
+                </p>
+              </div>
+            ))}
+          </SectionReveal>
+
+          <SectionReveal y={30} delay={0.1}>
+            <div className="max-w-[720px] mx-auto mt-12 text-center">
+              <h3 className="font-display text-[20px] md:text-[22px] font-semibold text-white mb-3">
+                {t('rental.concierge.model.heading')}
+              </h3>
+              <p className="font-inter text-[15px] text-white/70 leading-[1.7] mb-8">
+                {t('rental.concierge.model.body')}
+              </p>
+              <div className="flex flex-col items-center gap-3">
+                <Link
+                  to={path('/contact')}
+                  className="inline-flex items-center gap-2 bg-terracotta text-white font-inter text-[14px] font-semibold px-8 py-3.5 rounded-lg hover:scale-[1.02] transition-transform"
+                >
+                  {t('rental.concierge.cta.button')}
+                  <ArrowRight size={16} />
+                </Link>
+                <span className="font-inter text-[13px] text-white/50">
+                  {t('rental.concierge.cta.note')}
+                </span>
+              </div>
+            </div>
           </SectionReveal>
         </div>
       </section>

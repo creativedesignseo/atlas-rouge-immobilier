@@ -5,6 +5,7 @@
       "subtitle": "Confiez-nous la location de votre bien, nous nous occupons de tout. Une gestion sereine et professionnelle de A à Z."
     },
     "services": {
+      "badge": "Longue durée",
       "heading": "Nos services de gestion",
       "subheading": "Une prise en charge complète pour louer votre bien en toute tranquillité.",
       "items": {
@@ -73,6 +74,45 @@
       "subtitle": "Discutons de votre projet de gestion locative. Notre équipe vous propose une solution sur mesure.",
       "appointment": "Prendre rendez-vous",
       "phone": "+212 524 00 00 00"
+    },
+    "concierge": {
+      "badge": "Location courte durée",
+      "heading": "Conciergerie — location courte durée",
+      "subheading": "Votre bien est libre une partie de l'année ? Nous le rentabilisons en location courte durée (Airbnb, Booking) et nous occupons de tout, pendant que vous percevez des revenus sans effort.",
+      "items": {
+        "listing": {
+          "title": "Annonce et photos professionnelles",
+          "description": "Nous publions votre bien sur Airbnb, Booking et d'autres plateformes avec des photos professionnelles et une annonce optimisée."
+        },
+        "pricing": {
+          "title": "Tarification dynamique",
+          "description": "Nous ajustons les tarifs selon la saison et la demande pour maximiser vos revenus."
+        },
+        "guests": {
+          "title": "Réservations et voyageurs",
+          "description": "Nous gérons les réservations et la communication avec les voyageurs, avant, pendant et après le séjour."
+        },
+        "checkin": {
+          "title": "Arrivées et départs",
+          "description": "Accueil des voyageurs, remise des clés et état des lieux à chaque entrée et sortie."
+        },
+        "cleaning": {
+          "title": "Ménage et blanchisserie",
+          "description": "Ménage professionnel et linge de maison entre chaque séjour."
+        },
+        "reporting": {
+          "title": "Entretien et reporting",
+          "description": "Entretien courant du bien et rapport mensuel des revenus et du taux d'occupation."
+        }
+      },
+      "model": {
+        "heading": "Comment ça marche",
+        "body": "Vous restez propriétaire et décidez quand votre bien est disponible. Nous prenons en charge toute l'exploitation et percevons une commission sur les revenus locatifs — sans frais fixes."
+      },
+      "cta": {
+        "note": "Commission sur mesure selon votre bien.",
+        "button": "Demander un devis"
+      }
     }
   }
 }

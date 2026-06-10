@@ -4,7 +4,30 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-06-08 (exploración landing captación — elegida /epure blanca)
+**Last updated:** 2026-06-10 (nuevo servicio Conciergerie / alquiler turístico)
+
+---
+
+## Nuevo servicio: Conciergerie / alquiler turístico — 2026-06-10 ✅ EN VIVO (deploy `<hash>`)
+
+Khalid pidió añadir el servicio de **conciergerie de location courte durée**
+(gestión Airbnb: propietario cede el bien → agencia lo gestiona en Airbnb/Booking
+→ comisión sobre ingresos). Es distinto de la "Gestión de alquileres" actual
+(larga duración, planes 8/10/12 %). Decisión: **fundido en la misma página
+`GestionLocative`** (sin tocar la rejilla del home), **solo el servicio** (cluster
+de blog después).
+
+Implementado y verificado en preview (FR/ES/EN, Playwright, sin claves crudas):
+- `src/pages/GestionLocative.tsx`: nueva sección midnight con 6 tarjetas + "Cómo
+  funciona" + CTA "Solicitar presupuesto" → /contact; badge "Larga duración" sobre
+  lo existente para diferenciar la pareja.
+- `src/locales/{fr,es,en}/services.json`: `rental.concierge.*` (paridad OK).
+- `src/locales/{fr,es,en}/home.json`: card `management` menciona ambas modalidades.
+
+⚠️ **NO se inventaron cifras.** Precio = "presupuesto a medida"; modelo = "comisión
+sobre ingresos, sin gastos fijos". **Pendiente de Khalid** para mostrar cifras:
+(1) comisión real (¿~20 %? ¿tramos?), (2) qué incluye, (3) ¿tiers o todo-incluido?
+**Fase 2:** cluster SEO de blog de captación (destino de Ads propietarios + `/epure`).
 
 ---
 

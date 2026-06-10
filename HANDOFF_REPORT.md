@@ -4,6 +4,50 @@
 
 ---
 
+## CIERRE de sesión — Claude Opus 4.8 — 2026-06-10 (nuevo servicio: Conciergerie / alquiler turístico)
+
+**Realidad verificada:** `verify.sh` verde · sección renderizada y verificada en
+preview de producción (Playwright) en **FR/ES/EN** sin claves i18n crudas ·
+commit `<pendiente>` · deploy Netlify `<pendiente>`.
+
+**Qué se hizo y por qué.** Khalid pidió añadir el servicio de **conciergerie de
+location courte durée** (gestión de alquiler turístico tipo Airbnb: el propietario
+cede su bien, la agencia lo gestiona en Airbnb/Booking y cobra comisión sobre los
+ingresos). Es un producto **distinto** de la "Gestión de alquileres" existente,
+que es **larga duración** (búsqueda de inquilino, contrato anual, planes 8/10/12 %
+de la renta mensual). Decisión del owner (Jonatan): **fundirlo dentro de la misma
+página `GestionLocative`** (sin tocar la rejilla 3×2 del home) y **solo el servicio
+ahora** (el cluster de blog de captación se hará después).
+
+**Cambios (código):**
+- `src/pages/GestionLocative.tsx`: nueva sección **Conciergerie (short-let)** con
+  fondo `midnight`, 6 tarjetas (anuncio+fotos / precios dinámicos / reservas+
+  huéspedes / llegadas+salidas / limpieza+lavandería / mantenimiento+reporting),
+  bloque "Cómo funciona" y CTA **"Solicitar presupuesto"** → `/contact`. Añadido
+  un badge **"Larga duración"** sobre la sección existente para que la pareja
+  (larga duración vs. turístico) se entienda.
+- `src/locales/{fr,es,en}/services.json`: `rental.services.badge` + bloque
+  `rental.concierge.*` (badge/heading/subheading/6 items/model/cta). Paridad de
+  claves verificada idéntica en los 3 idiomas. **Naming**: FR `Conciergerie`,
+  ES `alquiler turístico` (NO "conserjería" — en ES eso es el portero),
+  EN `Concierge — short-let`.
+- `src/locales/{fr,es,en}/home.json`: descripción del card `management` ahora
+  menciona **larga duración o conciergerie corta duración (Airbnb)**.
+
+**Regla respetada — NO se inventaron datos.** No hay comisión ni planes
+fabricados: el modelo se describe como "comisión sobre los ingresos, sin gastos
+fijos" y el precio es **"presupuesto a medida"** (CTA a contacto). Para mostrar
+cifras reales hace falta que **Khalid confirme**: (1) su comisión exacta (¿~20 %?
+¿tramos?), (2) qué incluye exactamente (¿limpieza? ¿fotos? ¿precios dinámicos?
+¿declaración fiscal? ¿seguro?), (3) si quiere tiers como en larga duración o una
+sola oferta todo-incluido.
+
+**Pendiente (fase 2, cuando Khalid confirme):** cifras reales de comisión/planes,
+cluster SEO de blog para captación ("Combien rapporte un Airbnb à Marrakech", etc.)
+como destino de la campaña de Ads de propietarios y de la landing `/epure`.
+
+---
+
 ## CIERRE de sesión — Claude Opus 4.8 — 2026-06-08 (exploración de landing de captación — solo maquetas)
 
 **Realidad verificada:** `verify.sh` verde · local sincronizado con `origin/main`
