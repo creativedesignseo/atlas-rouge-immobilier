@@ -6,16 +6,16 @@
 
 **Last updated:** 2026-06-22 (French Modern Direction guardada + brand book HTML)
 
-## French Modern Direction — 2026-06-22 ✅ GUARDADA Y VERIFICADA LOCALMENTE
+## French Modern Direction — 2026-06-22 ✅ GUARDADA Y VERIFICADA EN PROD
 
 Nueva dirección visual para una inmobiliaria moderna francesa, separada de las
 pruebas Marrakech. Se guardó con nombre fijo `French Modern Direction` y se
 publicó un brand book HTML navegable.
 
-Verificado localmente en `127.0.0.1:3000`:
-- `/french-modern-direction` → preview React
-- `/design-books/french-modern-direction/` → brand book HTML
-- `npm run build` → verde
+Verificado en producción:
+- `https://atlasrouge.com/french-modern-direction` → `200 OK`
+- `https://atlasrouge.com/design-books/french-modern-direction/` → `200 OK`
+- brand book HTML expone el título `French Modern Direction`
 
 Artefactos:
 - `src/pages/FrenchModernDirection.tsx`

@@ -33,13 +33,13 @@ Create a reusable modern French real-estate direction, save it under a stable na
 
 ## Verification
 
-Build passed. Both local routes responded `200 OK` and the HTML brand book rendered from the dev server.
+Build passed. Both local routes responded `200 OK`, and after pushing to `main`
+the production URLs also responded `200 OK` with the saved brand-book title.
 
 ## Open risks
 
-None for the saved direction itself. The production site still needs a deploy/push if the user wants these previews available on the live domain.
+None for the saved direction itself.
 
 ## Next step
 
 Use `French Modern Direction` as the saved reference name in future design iterations.
-

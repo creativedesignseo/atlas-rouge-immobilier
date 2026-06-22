@@ -6,10 +6,11 @@
 
 ## CIERRE de sesión — GPT-5.5 / French Modern Direction — 2026-06-22
 
-**Realidad verificada:** preview local en `/french-modern-direction` y
-`/design-books/french-modern-direction/` responde `200 OK` en `127.0.0.1:3000`.
-`npm run build` verde. La dirección quedó guardada como **French Modern
-Direction** para reutilizarla en próximas sesiones.
+**Realidad verificada:** `npm run build` verde. En producción,
+`https://atlasrouge.com/french-modern-direction` y
+`https://atlasrouge.com/design-books/french-modern-direction/` responden
+`200 OK`. El brand book HTML publica el título **French Modern Direction** y la
+preview React quedó guardada para reutilizarla en próximas sesiones.
 
 **Qué se hizo y por qué.** El owner pidió una dirección visual nueva para una
 inmobiliaria moderna francesa, separada de Marrakech y de las pruebas anteriores.
