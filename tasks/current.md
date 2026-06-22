@@ -4,7 +4,25 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-06-10 (nuevo servicio Conciergerie / alquiler turístico)
+**Last updated:** 2026-06-22 (French Modern Direction guardada + brand book HTML)
+
+## French Modern Direction — 2026-06-22 ✅ GUARDADA Y VERIFICADA LOCALMENTE
+
+Nueva dirección visual para una inmobiliaria moderna francesa, separada de las
+pruebas Marrakech. Se guardó con nombre fijo `French Modern Direction` y se
+publicó un brand book HTML navegable.
+
+Verificado localmente en `127.0.0.1:3000`:
+- `/french-modern-direction` → preview React
+- `/design-books/french-modern-direction/` → brand book HTML
+- `npm run build` → verde
+
+Artefactos:
+- `src/pages/FrenchModernDirection.tsx`
+- `public/design-books/french-modern-direction/index.html`
+- `docs/design-directions/french-modern-direction.md`
+
+Estado: listo para reutilizar en próximas iteraciones de marca.
 
 ---
 

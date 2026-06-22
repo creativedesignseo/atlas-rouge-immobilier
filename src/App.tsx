@@ -15,6 +15,9 @@ import CookieBanner from './components/CookieBanner'
 
 const Home = lazy(() => import('./pages/Home'))
 const DesignSystem = lazy(() => import('./pages/DesignSystem'))
+const MiniDesignDirection = lazy(() => import('./pages/MiniDesignDirection'))
+const ModernRealEstatePrototype = lazy(() => import('./pages/ModernRealEstatePrototype'))
+const FrenchModernDirection = lazy(() => import('./pages/FrenchModernDirection'))
 const SearchPage = lazy(() => import('./pages/Search'))
 const PropertyDetailPage = lazy(() => import('./pages/PropertyDetail'))
 const About = lazy(() => import('./pages/About'))
@@ -126,6 +129,9 @@ export default function App() {
 
         {/* Internal design-system reference (no lang prefix, no layout) */}
         <Route path="/design-system" element={<Suspense fallback={<AdminLoader />}><DesignSystem /></Suspense>} />
+        <Route path="/mini-design-direction" element={<Suspense fallback={<AdminLoader />}><MiniDesignDirection /></Suspense>} />
+        <Route path="/modern-real-estate-prototype" element={<Suspense fallback={<AdminLoader />}><ModernRealEstatePrototype /></Suspense>} />
+        <Route path="/french-modern-direction" element={<Suspense fallback={<AdminLoader />}><FrenchModernDirection /></Suspense>} />
 
         {/* Admin routes — no lang prefix, outside public layout */}
         <Route path="/admin/login" element={<AdminLogin />} />

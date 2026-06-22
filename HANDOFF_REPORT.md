@@ -4,6 +4,33 @@
 
 ---
 
+## CIERRE de sesión — GPT-5.5 / French Modern Direction — 2026-06-22
+
+**Realidad verificada:** preview local en `/french-modern-direction` y
+`/design-books/french-modern-direction/` responde `200 OK` en `127.0.0.1:3000`.
+`npm run build` verde. La dirección quedó guardada como **French Modern
+Direction** para reutilizarla en próximas sesiones.
+
+**Qué se hizo y por qué.** El owner pidió una dirección visual nueva para una
+inmobiliaria moderna francesa, separada de Marrakech y de las pruebas anteriores.
+Se creó una propuesta más seria y contemporánea, con paleta nueva
+(`Porcelain / Carbon / Petrol / Absinthe / Brique / Linen Line`), jerarquía
+tipográfica moderna y un layout más realista de producto inmobiliario.
+
+**Artefactos creados:**
+- `src/pages/FrenchModernDirection.tsx`: preview React con hero, búsqueda,
+  propiedad destacada, guía visual y reglas de composición.
+- `public/design-books/french-modern-direction/index.html`: brand book HTML
+  navegable con paleta, tipografía, grid y muestras de tarjetas.
+- `docs/design-directions/french-modern-direction.md`: ficha guardada con nombre
+  fijo para futuras referencias.
+
+**Instrucción de continuidad:** cuando el owner pida volver a esta línea, basta
+con invocar **French Modern Direction**. No hace falta reconstruir el contexto
+desde cero.
+
+---
+
 ## CIERRE de sesión — Claude Opus 4.8 — 2026-06-10 (nuevo servicio: Conciergerie / alquiler turístico)
 
 **Realidad verificada:** `verify.sh` verde · commit `4dedfc87` · deploy Netlify
