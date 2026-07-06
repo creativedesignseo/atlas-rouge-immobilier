@@ -91,10 +91,12 @@
 
 ## 🟢 Baja prioridad (P2/P3 — backlog / pulido)
 
-### T13 · Higiene de repo — ⬜ pendiente
-- 🟢 · ⬜ · Claude. `git rm` de los 2 zips de 6.6MB, borrar carpeta `-v4/`,
-  añadir `*.zip` a `.gitignore`, condicionar `plugin-inspect-react-code` a dev.
-  (TECH-003/004, ARCH-003/004)
+### T13 · Higiene de repo — 🟡 parcial (2026-07-06)
+- 🟢 · ✅ · Claude. `git rm` de los 2 zips de 6.6MB, borrar carpeta `-v4/`,
+  añadir `*.zip` a `.gitignore` — hecho 2026-07-06 tras auditoría con 3
+  agentes en paralelo (cero referencias funcionales, confirmado con el owner).
+- 🟢 · ⬜ · Condicionar `plugin-inspect-react-code` a dev. (TECH-003/004,
+  ARCH-003/004) — sigue pendiente, no tocado esta sesión.
 
 ### T14 · Limpiar deps muertas y shadcn sin usar — ⬜ pendiente
 - 🟢 · ⬜ · Claude. `@studio-freight/lenis`, `next-themes`, `tw-animate-css`,

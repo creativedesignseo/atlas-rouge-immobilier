@@ -39,6 +39,7 @@ coverage
 # TypeScript
 *.tsbuildinfo
 atlas-rouge-immobilier-v4/
+*.zip
 
 # Netlify CLI build artifacts
 .netlify/edge-functions-dist/
