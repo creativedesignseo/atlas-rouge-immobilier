@@ -27,6 +27,21 @@ adicionales, porque la plantilla nativa de Google (`Row Type`/`Action`/
 soporta eso, al contrario que el CSV simple de Editor. Cuenta destino:
 `freecoche` (407-193-7268), dentro del MCC `Amsip MCC` (769-608-2742).
 
+**Reorganización (a petición del owner):** las 5 plantillas MCC + la nueva
+`keyword_remove_low_volume_mcc_template.csv` viven ahora en
+`marketing/google-ads-templates/` (carpeta creada por el owner), no sueltas en
+`marketing/`. Es la carpeta de trabajo para todo lo de Google Ads bulk upload
+de aquí en adelante.
+
+**Ajuste en curso (mismo día, tras la primera subida):** Google marcó 6
+keywords de concordancia exacta/frase muy específica en el grupo `A - Vendre`
+como "Entidad no apta - Volumen de búsquedas bajo" (verificado en pantalla por
+el owner). Diagnóstico: son variantes redundantes de keywords de frase que ya
+están activas en el mismo grupo — no hacía falta un keyword research nuevo,
+bastaba con borrarlas. Se preparó `keyword_remove_low_volume_mcc_template.csv`
+(18 filas = las 6 keywords × 3 campañas, `Action: Remove`) — **pendiente de que
+el owner la suba** vía Subidas → Palabra clave.
+
 **Sin verificar aún (pendiente, no asumir que está bien):**
 - No se ha confirmado visualmente que las 3 campañas aparezcan completas en
   la vista "Campañas" (el owner iba a comprobarlo tras la última subida).
