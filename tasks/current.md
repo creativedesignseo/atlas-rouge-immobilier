@@ -4,27 +4,36 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-07-06 (Google Ads: las 3 campañas creadas en la cuenta real vía Bulk Uploads)
+**Last updated:** 2026-07-06 (Google Ads: campañas en vivo, carpeta consolidada, ajuste de keywords preparado sin confirmar)
 
 ## Google Ads — campaña propietarios — 2026-07-06 🟢 CAMPAÑAS CREADAS, SIN ACTIVAR
 
-Las 3 campañas del plan (`Atlas Rouge - FR-France`, `FR-Diaspora`, `Maroc`) ya
-están creadas en la cuenta real `freecoche` (407-193-7268) vía **Google Ads →
-Herramientas → Acciones masivas → Cargas** (bulk upload nativo, no Editor), con
-las 5 plantillas MCC generadas y verificadas esta sesión (`marketing/*_mcc_
-template.csv`). Las 5 subidas terminaron "Ha finalizado correctamente": 3
-campañas + 15 grupos + 102 keywords + 66 negativas + 15 anuncios. Detalle
-completo en `HANDOFF_REPORT.md`.
+Las 3 campañas (`Atlas Rouge - FR-France` 15€/día, `FR-Diaspora` 9€/día,
+`Maroc` 6€/día) están creadas en la cuenta real `freecoche` (407-193-7268),
+estado **Pendiente — anuncios en revisión**, confirmado en pantalla por el
+owner (no solo Editor). Se subieron vía **Google Ads → Herramientas →
+Acciones masivas → Cargas**: 3 campañas + 15 grupos + 102 keywords + 66
+negativas + 15 anuncios, las 5 "Ha finalizado correctamente". Detalle en
+`HANDOFF_REPORT.md`.
 
-- ⏳ **Pendiente de confirmar:** revisar visualmente en "Campañas" que las 3
-  aparecen completas y en qué estado quedaron (probablemente pausadas/borrador
-  por defecto).
+**Carpeta de trabajo:** `marketing/google-ads-templates/` (a petición del
+owner) — ahí viven las 5 plantillas MCC + la nueva de ajuste, ya no hay
+copias sueltas en `marketing/`.
+
+- 🔴 **Pendiente de confirmar:** el owner debe subir
+  `marketing/google-ads-templates/keyword_remove_low_volume_mcc_template.csv`
+  (18 filas, `Action: Remove`) — borra 6 keywords que Google marcó "Entidad no
+  apta - Volumen de búsquedas bajo" en `A - Vendre` (redundantes con keywords
+  de frase ya activas). **No confirmado todavía que se haya subido.**
 - 🔴 **Bloqueante de facturación:** la cuenta muestra "Se requiere un nuevo
   método de pago" — resolver antes de activar nada.
 - 🔴 **Bloqueante no verificado esta sesión:** tracking de conversión (GA4 +
   conversión de Ads). Última vez comprobado en código (2026-06-05): NO existía.
   Falta re-verificar antes de activar cualquier campaña.
-- ⚠️ **NO ACTIVAR las campañas** hasta cerrar los 2 puntos rojos de arriba.
+- ⚠️ **NO ACTIVAR las campañas** hasta cerrar los 3 puntos rojos de arriba.
+- 📌 **Lección para el futuro:** las keywords originales se escribieron sin
+  verificar volumen real (Semrush no disponible por plan). Cualquier keyword
+  nueva debe pasar antes por el Planificador de palabras clave de Google Ads.
 - ⚠️ Se vio en pantalla otra sesión de IA en paralelo (ventana "HANDOFF status
   review") con un diff de +4969 líneas sin revisar — el owner dijo que no es
   relevante aquí, pero si reaparece un PR de esa sesión, revisarlo antes de

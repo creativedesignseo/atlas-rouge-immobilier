@@ -4,6 +4,59 @@
 
 ---
 
+## CIERRE de sesión — Claude Sonnet 5 — 2026-07-06 (campañas Google Ads en vivo, carpeta consolidada, ajuste de keywords preparado)
+
+**Realidad verificada ahora mismo, no supuesta:** `bash scripts/verify.sh`
+verde (build OK). `atlasrouge.com` → HTTP 200. `git log` confirma 3 commits
+de esta sesión en `main`/origin: `0e883207` (CSV a 3 campañas), `c3715228`
+(plantillas MCC rellenas), `c7b15ca4` (consolidadas en
+`marketing/google-ads-templates/`). Ningún cambio de código (`src/`,
+`netlify/`) esta sesión — todo es `marketing/` + docs.
+
+**Estado real de Google Ads (confirmado en pantalla por el owner, no
+Editor):** las 3 campañas (`Atlas Rouge - FR-France` 15€/día,
+`FR-Diaspora` 9€/día, `Maroc` 6€/día) existen en la cuenta `freecoche`
+(407-193-7268) con estado **Pendiente — anuncios en revisión**. Se subieron
+vía **Google Ads → Herramientas → Acciones masivas → Cargas** (nativo, no
+Editor), en 5 pasadas: 3 campañas + 15 grupos + 102 keywords + 66 negativas +
+15 anuncios, todas "Ha finalizado correctamente".
+
+**Carpeta de trabajo (a petición del owner):** `marketing/google-ads-
+templates/` — ahí viven las 5 plantillas MCC rellenas + la de ajuste. Ya no
+hay copias sueltas en `marketing/` (se movieron con `git mv`, historia
+preservada).
+
+**Ajuste detectado y preparado, PENDIENTE DE CONFIRMAR SUBIDA:** Google marcó
+6 keywords del grupo `A - Vendre` como "Entidad no apta - Volumen de
+búsquedas bajo" (`agence pour vendre appartement marrakech`, `vendre mon
+appartement à marrakech`, `vendre ma villa à marrakech`, `je veux vendre mon
+bien à marrakech`, `vendre propriété marrakech`, `comment vendre appartement
+marrakech`). Diagnóstico: redundantes con keywords de frase ya activas en el
+mismo grupo — no hacía falta un keyword research nuevo (Semrush no disponible
+por plan; recomendado usar el Planificador de palabras clave de Google Ads,
+que es la fuente de verdad para esto). Preparado
+`keyword_remove_low_volume_mcc_template.csv` (18 filas, `Action: Remove`, las
+6 keywords × 3 campañas) — **el owner NO ha confirmado todavía haberla
+subido**; no asumir que ya está borrada.
+
+**Lección de esta sesión (documentar para no repetir):** las keywords
+originales del plan (`google-ads-propietarios.md`) se escribieron por lógica
+de intención de búsqueda, sin verificar volumen real con un keyword tool
+antes de cargarlas. Cualquier keyword nueva que se añada de aquí en adelante
+debe pasar primero por el Planificador de Google Ads (o Semrush si se
+resuelve el acceso) — no repetir el mismo error.
+
+**Pendiente real (no resuelto hoy):**
+- 🔴 Confirmar que se subió `keyword_remove_low_volume_mcc_template.csv`.
+- 🔴 Banner de la cuenta: "Se requiere un nuevo método de pago" — bloquea
+  cualquier gasto real aunque las campañas salgan de revisión.
+- 🔴 Tracking de conversión (GA4 + conversión de Ads) sin re-verificar en
+  código esta sesión (última vez, 2026-06-05: no existía).
+- ⚠️ **NO activar ninguna campaña** hasta cerrar los dos puntos rojos de
+  arriba.
+
+---
+
 ## ACTUALIZACIÓN — Claude Sonnet 5 — 2026-07-06 (las 3 campañas creadas EN LA CUENTA REAL vía Bulk Uploads)
 
 **Realidad verificada por el owner en pantalla (Google Ads → Herramientas →
