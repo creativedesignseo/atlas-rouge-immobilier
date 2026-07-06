@@ -1,9 +1,9 @@
 // Compress ANY browser-decodable image (JPG/PNG/WebP/AVIF) to WebP using the
-// browser's NATIVE decoder. Mirrors the logic in ImageUploader so single-image
-// admin forms (e.g. neighborhood photo) can reuse it without pulling in the
-// whole multi-image uploader. We avoid browser-image-compression on purpose:
-// it can't decode AVIF and loads a worker script from a CDN our CSP blocks.
-// createImageBitmap handles AVIF + EXIF orientation; canvas.toBlob re-encodes.
+// browser's NATIVE decoder. Shared by ImageUploader (multi-image) and
+// single-image admin forms (e.g. neighborhood photo). We avoid
+// browser-image-compression on purpose: it can't decode AVIF and loads a
+// worker script from a CDN our CSP blocks. createImageBitmap handles AVIF +
+// EXIF orientation; canvas.toBlob re-encodes.
 
 const MAX_SIDE = 2560
 const WEBP_QUALITY = 0.82

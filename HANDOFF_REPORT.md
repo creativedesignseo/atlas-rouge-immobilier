@@ -4,6 +4,36 @@
 
 ---
 
+## CIERRE de sesión — Claude Sonnet 5 — 2026-07-06 (corregidos los 2 hallazgos del /graphify)
+
+**Realidad verificada:** `npx tsc -b --noEmit` limpio, `bash scripts/verify.sh`
+verde (build OK). **No verificado en navegador** — el cambio de
+`ImageUploader.tsx` toca el flujo de subida de imágenes del admin, que
+requiere sesión autenticada; no se probó end-to-end esta sesión. Riesgo bajo
+(mismo código, solo se quitó una copia duplicada), pero no confirmado en
+runtime real.
+
+**Cambios:**
+1. **`README.md`**: 5 menciones de "MapLibre GL" / "CARTO Voyager" corregidas
+   a "Mapbox GL JS" (v3, estilo Standard 2D) — el código migró hace semanas
+   (`progress/2026-05-30-mapbox-migration.md`) pero el README nunca se
+   actualizó. Detectado por el grafo de conocimiento generado esta misma
+   sesión.
+2. **Duplicación `compressToWebp()` consolidada**: `src/components/admin/
+   ImageUploader.tsx` tenía su propia copia byte-a-byte idéntica a
+   `src/lib/imageCompress.ts` (mismo `MAX_SIDE`, `WEBP_QUALITY`, mismo
+   `createImageBitmap`+canvas). Se eliminó la copia local, ahora importa la
+   compartida. Se actualizó también el comentario de `lib/imageCompress.ts`
+   (ya no dice "mirrors ImageUploader" — ahora es la única fuente).
+
+**Pendiente:** probar en el panel admin real (subir una imagen a una
+propiedad o barrio) para confirmar que el import compartido funciona igual
+que la copia local que reemplazó.
+
+---
+
+---
+
 ## CIERRE de sesión — Claude Sonnet 5 — 2026-07-06 (primer /graphify del proyecto: mapa de conocimiento generado)
 
 **Realidad verificada, no supuesta:** `bash scripts/verify.sh` verde (build OK,

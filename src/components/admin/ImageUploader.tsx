@@ -3,39 +3,11 @@ import { Upload, X, ImageIcon, Loader2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { getImageUrl } from '@/lib/storage'
 import { uploadImage as uploadToStorage, deleteImage } from '@/services/admin/propertyAdmin.service'
+import { compressToWebp } from '@/lib/imageCompress'
 import { toast } from 'sonner'
 
 // Accept generous input sizes; compression brings them well under 1MB.
 const MAX_INPUT_BYTES = 25 * 1024 * 1024
-const MAX_SIDE = 2560
-const WEBP_QUALITY = 0.82
-
-// Compress ANY browser-decodable image (JPG/PNG/WebP/AVIF) to WebP using the
-// browser's NATIVE decoder. We deliberately avoid browser-image-compression:
-// it doesn't decode AVIF (canvas-lib limitation) and its Web Worker loads a
-// script from a CDN that our strict CSP blocks. createImageBitmap handles AVIF
-// and respects EXIF orientation; canvas.toBlob re-encodes to WebP. No external
-// script, no worker — CSP untouched.
-async function compressToWebp(file: File): Promise<Blob> {
-  const bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' })
-  const scale = Math.min(1, MAX_SIDE / Math.max(bitmap.width, bitmap.height)) // never upscale
-  const w = Math.max(1, Math.round(bitmap.width * scale))
-  const h = Math.max(1, Math.round(bitmap.height * scale))
-
-  const canvas = document.createElement('canvas')
-  canvas.width = w
-  canvas.height = h
-  const ctx = canvas.getContext('2d')
-  if (!ctx) throw new Error('Canvas 2D context unavailable')
-  ctx.drawImage(bitmap, 0, 0, w, h)
-  bitmap.close?.()
-
-  const blob = await new Promise<Blob | null>((resolve) =>
-    canvas.toBlob(resolve, 'image/webp', WEBP_QUALITY),
-  )
-  if (!blob) throw new Error('WebP encoding failed')
-  return blob
-}
 
 interface ImageUploaderProps {
   images: string[]

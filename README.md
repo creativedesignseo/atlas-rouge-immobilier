@@ -18,7 +18,7 @@
 | Tailwind CSS | 3.4 | Estilos utilitarios |
 | shadcn/ui | — | Componentes base (Button, Dialog, etc.) |
 | Supabase | — | Base de datos PostgreSQL + Auth + Storage |
-| MapLibre GL | — | Mapas interactivos (Search & PropertyDetail) |
+| Mapbox GL JS | 3 | Mapas interactivos (Search & PropertyDetail) |
 | GSAP | — | Animaciones de scroll |
 | React Router DOM | 7 | Enrutamiento SPA |
 | Lucide React | — | Iconos |
@@ -45,7 +45,7 @@ src/
 │   └── utils.ts             # Helpers (cn, etc.)
 ├── pages/               # Páginas de la aplicación (code-splitting)
 │   ├── Home.tsx
-│   ├── Search.tsx           # Búsqueda con mapa MapLibre
+│   ├── Search.tsx           # Búsqueda con mapa Mapbox
 │   ├── PropertyDetail.tsx   # Ficha de propiedad + mapa + contacto
 │   ├── Contact.tsx
 │   ├── About.tsx
@@ -218,7 +218,7 @@ Los scripts de creación y seed están en `/supabase/`:
 ### Core
 - [x] Listado de propiedades con filtros (tipo, barrio, precio, habitaciones)
 - [x] Ficha de propiedad con galería, especificaciones, mapa y contacto
-- [x] Mapa interactivo MapLibre GL en búsqueda y ficha de propiedad
+- [x] Mapa interactivo Mapbox GL JS en búsqueda y ficha de propiedad
 - [x] Favoritos anónimos sincronizados con Supabase
 - [x] Formulario de contacto conectado a Supabase
 - [x] Cambio de moneda EUR / MAD con persistencia en localStorage
@@ -291,13 +291,13 @@ Se genera un `anonymous_id` vía `crypto.randomUUID()` y se guarda en `localStor
 La adaptación multilingüe de propiedades se hace desde el backoffice mediante una Netlify Function (`/.netlify/functions/translate-property`). La clave de DeepSeek debe configurarse como `DEEPSEEK_API_KEY` en Netlify, no como variable `VITE_*`, para que no se exponga en el navegador.
 
 ### Code-splitting
-Todas las páginas excepto Home y NotFound se cargan con `React.lazy()` para reducir el bundle inicial. El chunk de MapLibre GL (~1 MB) solo se carga cuando se visita Search o PropertyDetail.
+Todas las páginas excepto Home y NotFound se cargan con `React.lazy()` para reducir el bundle inicial. El chunk de Mapbox GL JS (~1.8 MB) solo se carga cuando se visita Search o PropertyDetail.
 
 ---
 
 ## Créditos
 
 - **Diseño y desarrollo:** [Atlas Rouge Immobilier](https://atlas-rouge-immobilier.netlify.app)
-- **Mapas:** [MapLibre GL](https://maplibre.org/) + [CARTO Voyager](https://carto.com/basemaps/) tiles
+- **Mapas:** [Mapbox GL JS](https://www.mapbox.com/mapbox-gljs) (estilo Standard 2D)
 - **Backend:** [Supabase](https://supabase.com/)
 - **Hosting:** [Netlify](https://netlify.com/)

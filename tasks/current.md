@@ -4,19 +4,21 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-07-06 (primer /graphify generado: 2 hallazgos reales pendientes de corregir)
+**Last updated:** 2026-07-06 (los 2 hallazgos del /graphify corregidos, falta probar en navegador)
 
-## Grafo de conocimiento (/graphify) — 2026-07-06 ✅ GENERADO, 2 hallazgos pendientes
+## Grafo de conocimiento (/graphify) — 2026-07-06 ✅ GENERADO, hallazgos corregidos
 
 Primera corrida de `/graphify` sobre el repo completo: 1685 nodos, 2857
 aristas, 124 comunidades. Salidas en `graphify-out/` (`graph.html`,
 `graph.json`, `GRAPH_REPORT.md`). Detalle completo en `HANDOFF_REPORT.md`.
 
-- ⏳ **README.md desactualizado**: dice MapLibre GL, el código usa Mapbox GL
-  JS v3 desde hace semanas. Corregir texto/menciones técnicas.
-- ⏳ **Duplicación de código**: `compressToWebp()` existe dos veces
-  (`ImageUploader.tsx` inline + `lib/imageCompress.ts` compartida). Consolidar
-  en una sola implementación.
+- ✅ **README.md corregido**: las 5 menciones de MapLibre/CARTO ahora dicen
+  Mapbox GL JS v3, acorde al código real.
+- ✅ **Duplicación de `compressToWebp()` consolidada**: `ImageUploader.tsx`
+  ahora importa la versión compartida de `lib/imageCompress.ts` en vez de
+  tener su propia copia. `tsc`/`verify.sh` verdes.
+  - ⏳ **Falta probar en el navegador** (subir una imagen real en el admin) —
+    no verificado en runtime esta sesión, solo a nivel de tipos/build.
 - 📌 `cn()` es el nodo más conectado (288 aristas) — mayor blast radius del
   proyecto si se toca sin cuidado.
 - Para mantenerlo al día: `graphify . --update` (incremental, solo
