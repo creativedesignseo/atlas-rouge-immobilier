@@ -4,7 +4,25 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-07-06 (Google Ads: campañas en vivo, carpeta consolidada, ajuste de keywords preparado sin confirmar)
+**Last updated:** 2026-07-06 (primer /graphify generado: 2 hallazgos reales pendientes de corregir)
+
+## Grafo de conocimiento (/graphify) — 2026-07-06 ✅ GENERADO, 2 hallazgos pendientes
+
+Primera corrida de `/graphify` sobre el repo completo: 1685 nodos, 2857
+aristas, 124 comunidades. Salidas en `graphify-out/` (`graph.html`,
+`graph.json`, `GRAPH_REPORT.md`). Detalle completo en `HANDOFF_REPORT.md`.
+
+- ⏳ **README.md desactualizado**: dice MapLibre GL, el código usa Mapbox GL
+  JS v3 desde hace semanas. Corregir texto/menciones técnicas.
+- ⏳ **Duplicación de código**: `compressToWebp()` existe dos veces
+  (`ImageUploader.tsx` inline + `lib/imageCompress.ts` compartida). Consolidar
+  en una sola implementación.
+- 📌 `cn()` es el nodo más conectado (288 aristas) — mayor blast radius del
+  proyecto si se toca sin cuidado.
+- Para mantenerlo al día: `graphify . --update` (incremental, solo
+  re-extrae archivos cambiados).
+
+---
 
 ## Google Ads — campaña propietarios — 2026-07-06 🟢 CAMPAÑAS CREADAS, SIN ACTIVAR
 

@@ -4,6 +4,53 @@
 
 ---
 
+## CIERRE de sesión — Claude Sonnet 5 — 2026-07-06 (primer /graphify del proyecto: mapa de conocimiento generado)
+
+**Realidad verificada, no supuesta:** `bash scripts/verify.sh` verde (build OK,
+sin cambios de código esta sesión — solo `.gitignore` + `graphify-out/`).
+`atlasrouge.com` → HTTP 200.
+
+**Qué se hizo:** primera ejecución de `/graphify` sobre el repo completo.
+Corpus detectado: 383 archivos — se excluyeron 78 (assets creativos de
+`brand/Agente/` — vídeos/música del proyecto de conciergerie, mockups
+duplicados de `public/atlas-landing/`/`document/atlas-landing/`, capturas de
+`.playwright-mcp/`) por ser ruido ajeno al código/arquitectura real, dejando
+305 archivos (240 código, 61 docs, 4 imágenes).
+
+- AST: 1203 nodos, 2781 aristas (extracción estructural, determinista).
+- Semántica: 14 subagentes en paralelo (sin `GEMINI_API_KEY` configurada →
+  Claude Code como backend), 715 nodos, 767 aristas, ~27 hyperedges. Coste:
+  1.393.494 tokens de entrada / 245.907 de salida.
+- Grafo final: **1685 nodos, 2857 aristas, 124 comunidades**.
+- Salidas en `graphify-out/`: `graph.html` (interactivo), `graph.json`
+  (crudo, para GraphRAG/otras herramientas), `GRAPH_REPORT.md` (auditoría en
+  texto), `manifest.json` (para `--update` incremental), `cost.json`.
+  `graphify-out/cache/` excluida de git (regenerable, no aporta al repo).
+
+**Hallazgos reales que salieron solos del grafo (sin que nadie los pidiera),
+NINGUNO corregido todavía:**
+1. **`README.md` desactualizado**: sigue describiendo el mapa como MapLibre
+   GL + CARTO Voyager Tiles, pero el código migró a Mapbox GL JS v3 hace
+   semanas (commit `70af4956`, ver `progress/2026-05-30-mapbox-migration.md`).
+   El grafo lo marcó como "conexión sorprendente" AMBIGUOUS entre el nodo de
+   migración y el nodo del README.
+2. **Duplicación de código**: dos implementaciones independientes de
+   compresión WebP — `compressToWebp()` inline en
+   `src/components/admin/ImageUploader.tsx` y la función compartida en
+   `src/lib/imageCompress.ts` (usada por `NeighborhoodForm.tsx`). Detectado
+   por el subagente del chunk 5 con confianza 0.95 (`semantically_similar_to`).
+3. `cn()` (utilidad de clases Tailwind) es el nodo más conectado del proyecto
+   (288 aristas) — el punto de mayor blast radius si se rompe, sin que esto
+   estuviera documentado en ningún sitio antes.
+
+**Pendiente (no atacado esta sesión, el owner puede pedirlo cuando quiera):**
+corregir el README (Mapbox, no MapLibre) y consolidar las dos funciones de
+compresión WebP en una sola.
+
+---
+
+---
+
 ## CIERRE de sesión — Claude Sonnet 5 — 2026-07-06 (campañas Google Ads en vivo, carpeta consolidada, ajuste de keywords preparado)
 
 **Realidad verificada ahora mismo, no supuesta:** `bash scripts/verify.sh`
