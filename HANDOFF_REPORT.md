@@ -4,6 +4,43 @@
 
 ---
 
+## ACTUALIZACIÓN — Claude Sonnet 5 — 2026-07-06 (las 3 campañas creadas EN LA CUENTA REAL vía Bulk Uploads)
+
+**Realidad verificada por el owner en pantalla (Google Ads → Herramientas →
+Subidas), no supuesta:** las 5 plantillas MCC generadas esta sesión se
+subieron una por una (formato nativo "Bulk Actions → Uploads", NO Google Ads
+Editor) y las 5 terminaron **"Ha finalizado correctamente"**:
+
+| Archivo | Cambios aplicados |
+|---|---|
+| `campaign_mcc_template.csv` | 3 (las 3 campañas: FR-France, FR-Diaspora, Maroc) |
+| `ad_group_mcc_template.csv` | 15 (5 grupos × 3 campañas) |
+| `keyword_mcc_template.csv` | 102 (34 keywords × 3 campañas) |
+| `ad_group_negative_keyword_mcc_template.csv` | 66 (22 negativas × 3 campañas) |
+| `responsive_search_ad_mcc_template.csv` | 15 (1 RSA por grupo × 3 campañas) |
+
+**Diferencia clave vs el cierre anterior de hoy:** esta vez SÍ se creó todo —
+incluyendo presupuesto/ubicación/idioma/red por campaña — en un solo tipo de
+subida por entidad, sin pasar por Google Ads Editor y sin ajustes manuales
+adicionales, porque la plantilla nativa de Google (`Row Type`/`Action`/
+`Customer ID` + columnas de Budget/Location/Language a nivel de Campaign) sí
+soporta eso, al contrario que el CSV simple de Editor. Cuenta destino:
+`freecoche` (407-193-7268), dentro del MCC `Amsip MCC` (769-608-2742).
+
+**Sin verificar aún (pendiente, no asumir que está bien):**
+- No se ha confirmado visualmente que las 3 campañas aparezcan completas en
+  la vista "Campañas" (el owner iba a comprobarlo tras la última subida).
+- Estado real de las campañas: probablemente "Pausada"/borrador por defecto
+  tras un bulk upload — **no activarlas** todavía.
+- **Bloqueante de facturación:** la cuenta muestra el banner "Se requiere un
+  nuevo método de pago - No se pueden aplicar cargos a tus métodos de pago
+  actuales" — sin resolver esto, no se puede gastar aunque se activen.
+- **Bloqueante de tracking:** sigue sin re-verificarse si GA4 + conversión de
+  Google Ads existen en el código (última comprobación, 2026-06-05: NO
+  existían). No activar sin confirmar esto.
+
+---
+
 ## CIERRE de sesión — Claude Sonnet 5 — 2026-07-06 (auditoría en vivo de Google Ads Editor + CSVs de importación ampliados a 3 campañas)
 
 **Realidad verificada, no supuesta:** `bash scripts/verify.sh` verde (build OK,
