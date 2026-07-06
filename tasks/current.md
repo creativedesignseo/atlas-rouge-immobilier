@@ -4,7 +4,35 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-06-22 (French Modern Direction guardada + brand book HTML)
+**Last updated:** 2026-07-06 (Google Ads: CSVs ampliados a 3 campañas, falta subida real)
+
+## Google Ads — campaña propietarios — 2026-07-06 🟡 EN CURSO (código no tocado)
+
+Auditoría en vivo de Google Ads Editor (cuenta `freecoche`) reveló: solo existe
+`Atlas Rouge - FR-France` (de las 3 del plan), **0 anuncios** cargados, y nunca
+se publicó. Se amplió `marketing/google-ads-import-FR.csv` (168 filas, 3
+campañas) y `marketing/google-ads-ads-FR.csv` (15 anuncios con UTM) para cubrir
+`FR-France` + `FR-Diaspora` + `Maroc`. Detalle completo en `HANDOFF_REPORT.md`.
+
+- ⏳ **Pendiente inmediato:** el owner quiere un único archivo que al subirlo
+  cree las campañas COMPLETAS (con presupuesto/ubicación/idioma incluidos, no
+  solo keywords+ads). Eso requiere la plantilla nativa de **Google Ads →
+  Herramientas y configuración → Acciones masivas → Cargas** (no Editor). No
+  se adivinaron las columnas exactas (no verificables por búsqueda web sin
+  riesgo de error) — el owner debe descargar esa plantilla real y pasarla para
+  rellenarla con los datos ya listos.
+- ⏳ Import intermedio (mientras tanto, con Google Ads Editor): importar los 2
+  CSV ya ampliados + fijar a mano 3 campos por campaña (ubicación/presupuesto/
+  idioma) — ver `marketing/google-ads-como-importar.md` actualizado.
+- ⚠️ **Bloqueante no verificado esta sesión:** tracking de conversión (GA4 +
+  conversión de Ads). Última vez comprobado en código (2026-06-05): NO existía.
+  Falta re-verificar antes de activar cualquier campaña.
+- ⚠️ Se vio en pantalla otra sesión de IA en paralelo (ventana "HANDOFF status
+  review") con un diff de +4969 líneas sin revisar — el owner dijo que no es
+  relevante aquí, pero si reaparece un PR de esa sesión, revisarlo antes de
+  fusionar.
+
+---
 
 ## French Modern Direction — 2026-06-22 ✅ GUARDADA Y VERIFICADA EN PROD
 

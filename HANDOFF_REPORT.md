@@ -4,6 +4,71 @@
 
 ---
 
+## CIERRE de sesión — Claude Sonnet 5 — 2026-07-06 (auditoría en vivo de Google Ads Editor + CSVs de importación ampliados a 3 campañas)
+
+**Realidad verificada, no supuesta:** `bash scripts/verify.sh` verde (build OK,
+0 errores; typecheck/test siguen sin script, warning pre-existente de chunks
+>500kB en `mapbox` e `index`). `atlasrouge.com` → HTTP 200. Este cierre **no
+toca código de la web** (`src/`, `netlify/`) — solo `marketing/*`, así que no
+hay build nuevo que verificar en producción real; Netlify reconstruirá igual
+(inofensivo, ver nota en `marketing/README.md`).
+
+**Qué se encontró (inspección en vivo de Google Ads Editor, cuenta `freecoche`
+407-193-7268, vía computer-use + screenshots reales — no adivinado):**
+- Existe la campaña `Atlas Rouge - FR-France` con sus 5 grupos exactos del plan
+  (A-Vendre, B1-Gestion locative, B2-Gestion Airbnb, C-Estimation, D-Agence),
+  34 keywords (frase/exacta) + 22 negativas — coincide con lo que ya traía
+  `marketing/google-ads-import-FR.csv` (v. antigua, solo esa campaña).
+- **0 anuncios** en los 5 grupos (`Anuncios (0)`), aunque
+  `marketing/google-ads-ads-FR.csv` (sin commitear) ya tenía 5 RSA listos —
+  nunca se importó.
+- Solo existe **1 de las 3 campañas** del plan (falta `FR-Diaspora` y `Maroc`).
+- Extensiones casi inexistentes (1 recurso de anuncio en toda la cuenta, 0 de
+  llamada); 5 advertencias de calidad de Google (imágenes, sitelinks,
+  destacados, audiencias).
+- La campaña **nunca se publicó** ("Publique la campaña..." en la vista
+  general) — todo vivía como borrador local en Editor.
+- Se vio en pantalla (captura del owner) **otra sesión de IA en paralelo**
+  (ventana "HANDOFF status review", editor tipo Antigravity) con un diff
+  pendiente de **+4969 −0** y botón "Crear PR" sobre este mismo repo — el
+  owner confirmó que no es relevante para este cierre; **queda sin resolver
+  qué contenía ese diff** si aparece de nuevo, revisar antes de fusionar nada
+  ajeno a esta sesión.
+
+**Cambios (código no, solo `marketing/`):**
+- `marketing/google-ads-import-FR.csv`: ampliado de 1 a **3 campañas**
+  (`FR-France`, `FR-Diaspora`, `Maroc`), mismas keywords/negativas en las 3 (lo
+  pide el plan). 168 filas, verificado con `csv.reader` que todas tienen 5
+  columnas.
+- `marketing/google-ads-ads-FR.csv` (nuevo, antes sin commitear y sin UTMs):
+  15 anuncios (5 grupos × 3 campañas), ahora con **UTM en la URL final**
+  (`utm_campaign=fr-france|fr-diaspora|maroc&utm_content=<grupo>`). Verificado
+  15 filas × 22 columnas.
+- `marketing/google-ads-como-importar.md`: reescrito para el flujo real de 2
+  archivos + tabla de los 3 campos que un CSV simple de Editor NO puede llevar
+  (ubicación/presupuesto/idioma por campaña) — esos siguen siendo manuales,
+  ~1 min por campaña, sin inventar un atajo que no existe.
+
+**Pendiente (pedido explícito del owner, en curso):** el owner quiere un
+único archivo que, al subirlo, cree las campañas completas **incluyendo**
+presupuesto/ubicación/idioma — eso Editor no lo permite con un CSV simple,
+pero la función nativa **Google Ads → Herramientas y configuración → Acciones
+masivas → Cargas** sí soporta esto en un solo archivo. No se pudo confirmar
+por búsqueda web el nombre exacto de las columnas de esa plantilla (las
+fuentes consultadas — ayuda de Google y doc de Adobe Advertising, que es un
+producto distinto con columnas propias — no lo detallan) → **se decidió no
+adivinar** y pedir al owner que descargue la plantilla real desde Google Ads
+y la comparta, para rellenarla con los datos ya preparados arriba. **Sigue
+pendiente de que el owner la baje y la pase.**
+
+**Bloqueante que sigue abierto (no tocado esta sesión):** tracking de
+conversión (GA4 + conversión de Google Ads). Última verificación en código
+fue 2026-06-05 y decía que NO existía. No se ha re-verificado esta sesión —
+**no asumir que sigue igual ni que cambió**; comprobarlo en código antes de
+activar cualquier campaña.
+
+---
+
 ## CIERRE de sesión — GPT-5.5 / French Modern Direction — 2026-06-22
 
 **Realidad verificada:** `npm run build` verde. En producción,

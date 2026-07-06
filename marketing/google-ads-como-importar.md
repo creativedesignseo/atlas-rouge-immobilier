@@ -1,100 +1,74 @@
-# Cómo subir la campaña a Google Ads SIN API (Google Ads Editor)
+# Cómo subir las 3 campañas a Google Ads SIN API (Google Ads Editor)
 
-> Para montar la campaña sin tener acceso a la API. Herramienta: **Google Ads
+> Para montar las campañas sin tener acceso a la API. Herramienta: **Google Ads
 > Editor**, app de escritorio gratuita (Mac/Windows). Entras con tu login normal
-> de Google Ads. Archivo de importación: `google-ads-import-FR.csv` (esta carpeta).
+> de Google Ads (cuenta `freecoche`, 407-193-7268). Dos archivos de importación,
+> ambos en esta carpeta: `google-ads-import-FR.csv` (keywords + negativas) y
+> `google-ads-ads-FR.csv` (anuncios).
 
-## Qué incluye el CSV
+> **Actualizado 2026-07-06** — revisado en vivo contra el Editor: la campaña
+> `Atlas Rouge - FR-France` ya existía con sus 5 grupos, keywords y negativas
+> (venían de una importación previa de `google-ads-import-FR.csv`), pero tenía
+> **0 anuncios** y solo 1 de las 3 campañas del plan. Ambos CSV se ampliaron
+> para cubrir las 3 campañas de una sola pasada y los anuncios llevan ya las
+> UTM en la URL final (antes no las tenían).
 
-La campaña **`Atlas Rouge - FR-France`** completa: 5 grupos de anuncios
-(A-Vendre, B1-Gestion locative, B2-Gestion Airbnb, C-Estimation, D-Agence), todas
-las keywords (frase + exacta) con su Max CPC, y las **negativas a nivel de
-campaña**.
+## Qué incluye cada CSV
+
+**`google-ads-import-FR.csv`** — las 3 campañas completas (`Atlas Rouge -
+FR-France`, `Atlas Rouge - FR-Diaspora`, `Atlas Rouge - Maroc`), cada una con
+sus 5 grupos de anuncios (A-Vendre, B1-Gestion locative, B2-Gestion Airbnb,
+C-Estimation, D-Agence), todas las keywords (frase + exacta) con su Max CPC, y
+las **negativas a nivel de campaña**. Las 3 campañas llevan exactamente las
+mismas keywords/negativas (así lo pide el plan — solo cambia geo y presupuesto,
+ver §3).
 
 > Nota de diseño: como el grupo **B2 capta vacacional/Airbnb**, las negativas
 > NO incluyen `courte durée` ni `saisonnière` (chocarían con B2). Solo se
 > negativiza `location vacances` (turista que busca alquilar, no propietario).
 
-El CSV **no** trae presupuesto, ubicaciones ni idioma: eso son ajustes de campaña
-que pones una vez en Editor (2 minutos, pasos abajo). Tampoco trae los anuncios
-(los pegas a mano — ver §4).
+**`google-ads-ads-FR.csv`** — 1 Responsive Search Ad por grupo × 3 campañas (15
+anuncios). Ya incluyen la URL final con UTM: `utm_source=google&utm_medium=cpc
+&utm_campaign=<fr-france|fr-diaspora|maroc>&utm_content=<grupo>`.
+
+**Ninguno de los dos CSV trae presupuesto, ubicaciones ni idioma** — eso Google
+Ads Editor no lo acepta en este formato de importación simple; son ajustes de
+campaña que se ponen una vez por campaña, a mano, en Editor (§3, ~1 minuto cada
+una). Sin inventar atajos: es el único paso que de verdad requiere el editor.
 
 ## 1. Instalar y abrir
 
 1. Descarga Google Ads Editor: https://ads.google.com/intl/es_es/home/tools/ads-editor/
-2. Ábrelo → **Add account** → inicia sesión con tu cuenta de Google Ads → descarga la cuenta.
+2. Ábrelo → cuenta `freecoche` (ya vinculada) → **Obtener cambios recientes**.
 
-## 2. Importar el CSV
+## 2. Importar los 2 CSV
 
 1. Menú **Account → Import → From file…**
-2. Selecciona `google-ads-import-FR.csv`.
-3. En la pantalla de mapeo, confirma que las columnas se reconocen:
-   `Campaign`, `Ad Group`, `Keyword`, `Criterion Type`, `Max CPC`.
-4. **Revisa los cambios propuestos** (Editor los muestra en verde antes de aplicar)
-   → **Process / Apply**. Aún NO está publicado en Google: sigue local.
+2. Selecciona `google-ads-import-FR.csv` → confirma el mapeo de columnas
+   (`Campaign`, `Ad Group`, `Keyword`, `Criterion Type`, `Max CPC`) → **Apply**.
+   Esto crea `FR-Diaspora` y `Maroc` (nuevas) y no toca `FR-France` si ya
+   coincide con lo que había.
+3. Repite **Account → Import → From file…** con `google-ads-ads-FR.csv` →
+   confirma el mapeo (`Campaign`, `Ad Group`, `Ad type`, `Headline 1-12`,
+   `Description 1-4`, `Path 1`, `Path 2`, `Final URL`) → **Apply**.
+4. **Revisa los cambios propuestos** (Editor los muestra en verde) antes de
+   aplicar. Aún NO está publicado en Google: sigue local.
 
-## 3. Ajustes de campaña (una vez, en Editor)
+## 3. Ajustes de campaña (una vez por campaña, en Editor) — esto SÍ es manual
 
-Selecciona la campaña `Atlas Rouge - FR-France` y completa:
-- **Tipo:** Search (Búsqueda). Desmarca la **Red de Display**.
-- **Presupuesto diario:** p. ej. 15 €/día.
-- **Ubicaciones:** France. Opción "Presence: people regularly in this location"
-  (no "interested in").
-- **Idioma:** Français.
-- **Estrategia de puja:** "Maximizar clics" con CPC máx. limitado (los Max CPC del
-  CSV ya están puestos como tope por keyword).
+No hay forma de que un CSV simple de Editor fije esto; son ~4 campos por
+campaña:
 
-## 4. Anuncios (pegar a mano — 5 min)
+| Campaña | Ubicación (Presence, no "interested in") | Presupuesto/día | Idioma | Red de Display |
+|---|---|---|---|---|
+| `Atlas Rouge - FR-France` | Francia | 15 € | Français | Desmarcada |
+| `Atlas Rouge - FR-Diaspora` | Bélgica, España, Italia, Países Bajos, Suiza | 9 € | Français | Desmarcada |
+| `Atlas Rouge - Maroc` | Maroc | 6 € | Français | Desmarcada |
 
-Por cada grupo, crea un **Responsive Search Ad** (Editor: selecciona el grupo →
-pestaña Ads → + → Responsive search ad) y pega:
+Estrategia de puja en las 3: **"Maximizar clics"** con CPC máx. limitado (los
+Max CPC del CSV ya están puestos como tope por keyword).
 
-**Títulos (pega varios; máx 15):**
-```
-Vendez Votre Bien à Marrakech
-Estimation Gratuite en 24h
-Agence Francophone à Marrakech
-Confiez-nous Votre Appartement
-Vente & Gestion Locative
-Gestion Airbnb Clé en Main
-Experts Immobilier Marrakech
-Réseau d'Acheteurs Internationaux
-Accompagnement de A à Z
-Sans Engagement
-Vous Possédez un Bien à Marrakech ?
-Votre Bien, Notre Expertise
-```
-**Descripciones (máx 4):**
-```
-Vous possédez un bien à Marrakech ? Confiez sa vente ou sa location à notre agence francophone. Estimation gratuite, sans engagement.
-Photos pro, diffusion internationale et accompagnement jusqu'à la signature. Demandez votre estimation gratuite dès aujourd'hui.
-Gestion locative et conciergerie Airbnb clé en main. Nous gérons tout : locataires, ménage, encaissements. Vous percevez vos revenus.
-Une équipe francophone à Marrakech qui s'occupe de tout. Vente, location longue durée ou saisonnière. Parlons de votre projet.
-```
-**Título fijado (pin posición 1) por grupo:**
-- A → "Vendez Votre Bien à Marrakech" · B1 → "Gestion Locative à Marrakech"
-- B2 → "Gestion Airbnb Clé en Main" · C → "Estimation Gratuite en 24h"
-- D → "Agence Francophone à Marrakech"
-
-**URL final por grupo** (la del idioma FR):
-- A y D → `https://atlasrouge.com/fr/vendre`
-- B1 y B2 → `https://atlasrouge.com/fr/gestion-locative`
-- C → `https://atlasrouge.com/fr/estimation`
-
-> Añade UTMs en la URL final: `?utm_source=google&utm_medium=cpc&utm_campaign=fr-france`
-
-## 5. Duplicar para las otras 2 campañas francesas
-
-No hace falta re-importar. En Editor:
-1. Click derecho sobre `Atlas Rouge - FR-France` → **Copy** → **Paste**.
-2. Renombra la copia a `Atlas Rouge - FR-Diaspora` y cambia SOLO:
-   - Ubicaciones → Bélgica, España, Italia, Países Bajos, Suiza.
-   - Presupuesto → p. ej. 9 €/día.
-3. Repite para `Atlas Rouge - Maroc`: ubicación Maroc, presupuesto ~6 €/día.
-
-Las keywords, negativas y anuncios viajan con la copia. Solo cambia geo + budget.
-
-## 6. Publicar
+## 4. Publicar
 
 1. Botón **Post** (arriba a la derecha) → revisa el resumen → **Post**.
 2. Esto SÍ sube todo a Google Ads. Las campañas quedan listas pero **NO las
@@ -109,5 +83,5 @@ de poner las campañas en "Activa".** Ver `google-ads-propietarios.md` §7.
 
 ---
 
-*Archivo de importación: `google-ads-import-FR.csv`. Estrategia completa:
-`google-ads-propietarios.md`.*
+*Archivos de importación: `google-ads-import-FR.csv` + `google-ads-ads-FR.csv`.
+Estrategia completa: `google-ads-propietarios.md`.*
