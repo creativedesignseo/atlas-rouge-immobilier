@@ -4,6 +4,79 @@
 
 ---
 
+## CIERRE de sesión — Claude Sonnet 5 — 2026-07-07 (Vídeo 2 · Conciergerie/Airbnb editado en Remotion)
+
+**Realidad verificada:** `bash scripts/verify.sh` verde (build OK). `atlasrouge.com`
+→ HTTP 200. **Cero cambios de código de la web** esta sesión — todo el trabajo
+vivió en `brand/Agente/` (carpeta de marca/creatividad, **no trackeada por
+git**, confirmado con `git status`: aparece como `??` completa). No hay nada
+que commitear del vídeo; solo se actualizan estos docs.
+
+**Qué se hizo:** se montó en Remotion el "Vídeo 2 · Conciergerie/Airbnb" (30s
+objetivo, quedó en ~25s), a partir de 3 clips nuevos generados con IA que el
+owner subió a `brand/Agente/Video 1/`. Nueva composición Remotion
+`AtlasRougeConciergerie` (720×1280 vertical, nativo de Reels/Stories/TikTok),
+en `brand/Agente/remotion/src/ConciergerieVideo.tsx` +
+`components/ConciergerieScene.tsx` (nuevo componente, complementa
+`ClipScene.tsx` que es el del vídeo 16:9 original — no se tocó).
+
+**Problemas reales encontrados y corregidos, en orden:**
+1. Los 3 clips no tenían guion/orden claro → se transcribieron con **Whisper**
+   (modelo `small`, francés) y coincidían exactamente con el guion ya escrito
+   para "Vídeo 1 · Conciergerie/Airbnb" en la conversación previa.
+2. Marca de agua **"Veo"** (Google, el generador de vídeo IA) visible en la
+   esquina inferior derecha de los 3 clips → tapada con un parche de blur.
+3. Transiciones con fundido a negro entre clips (10 frames) → eliminadas,
+   ahora corte seco (`ConciergerieScene` ya no aplica opacity de
+   entrada/salida).
+4. **Glitch real de la IA**: en `c2-solucion-equipo.mp4`, los últimos ~4
+   frames del clip (frames globales 381-384) deforman la cara y cambian la
+   chaqueta de color — confirmado visualmente extrayendo fotogramas con
+   `ffmpeg`. Corregido acortando `VIDEO_VERTICAL.clip2` de 192 a 189 frames
+   (corta justo antes del glitch, pérdida imperceptible de 3 frames).
+5. **Subtítulo basura quemado por la IA** ("tauanélé tuasié siouoine") en los
+   primeros ~2,5s de `c2-solucion-equipo.mp4`, debajo del subtítulo real →
+   tapado con una banda negra sólida (`hideBurnedCaption` prop, 110px,
+   `#000000` opaco — un intento inicial con `rgba(0,0,0,0.92)` dejaba el
+   texto ligeramente visible, hubo que subir a opacidad 100%).
+6. **Vídeo estático** → añadido zoom+paneo continuo (Ken Burns) en los 3
+   clips vía `transform: scale() translateX()` interpolado por frame; el
+   clip 1 lleva un "swing" más marcado (`motion="swing"`, escala hasta 1.16 +
+   paneo -3.2%) a petición explícita del owner, los otros 2 llevan zoom
+   sutil (hasta 1.09 + paneo -1.2%).
+7. **Audio**: voz de los 3 clips con ganancia ×1.35 (`voiceGain` prop en
+   `OffthreadVideo`, prop `volume`); música de fondo subida de 22%→28%
+   durante el habla y de 32%→40% en el cierre (antes 18%/32%, luego
+   22%/32%, ahora 28%/40%).
+
+**Pista de música elegida:** `Musica/leberch-real-estate-262604.mp3` (nombre
+sugería temática inmobiliaria), copiada a
+`brand/Agente/remotion/public/music-conciergerie.mp3`. El owner no ha
+confirmado si le convence — sigue siendo una elección por defecto, no una
+decisión final suya.
+
+**Pendiente, explícitamente NO resuelto todavía:**
+- El owner pidió insertar 2 imágenes de apoyo (cutaways de un hotel/
+  conciergerie) en vez de la banda negra que tapa el subtítulo basura — las
+  pegó directamente en el chat pero **no se encontraron guardadas como
+  archivo en disco** (se buscó en `/tmp`, `$TMPDIR`, `~/.claude`,
+  `~/Downloads`, `~/Desktop` sin resultado). Se le pidió que las guarde en
+  `brand/Agente/Video 1/` y confirme el nombre — sigue sin hacerlo. Mientras
+  tanto, la banda negra sigue siendo el arreglo vigente para esa parte.
+- No se ha verificado en un móvil real / dentro de Meta Ads Manager cómo se
+  ve — solo se verificó extrayendo fotogramas con `ffmpeg` y viéndolos aquí.
+- Video 1 y Video 3 (Gestión de alquiler largo, Vender) del plan de 3 vídeos
+  siguen sin grabar ni montar.
+
+**Archivo final (local, no en git):**
+```
+brand/Agente/remotion/out/atlas-rouge-conciergerie-vertical.mp4
+```
+
+---
+
+---
+
 ## CIERRE de sesión — Claude Sonnet 5 — 2026-07-06 (corregidos los 2 hallazgos del /graphify)
 
 **Realidad verificada:** `npx tsc -b --noEmit` limpio, `bash scripts/verify.sh`

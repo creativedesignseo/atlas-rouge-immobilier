@@ -4,7 +4,30 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-07-06 (los 2 hallazgos del /graphify corregidos, falta probar en navegador)
+**Last updated:** 2026-07-07 (Vídeo 2 · Conciergerie/Airbnb editado en Remotion, faltan imágenes de apoyo del owner)
+
+## Vídeo 2 · Conciergerie/Airbnb (Remotion) — 2026-07-07 🟡 EDITADO, falta cerrar
+
+Montado en `brand/Agente/remotion` (composición `AtlasRougeConciergerie`,
+720×1280 vertical, ~25s). Ronda de correcciones ya aplicada: corte seco entre
+clips, glitch de IA recortado (clip2 acortado a 189 frames), subtítulo basura
+quemado tapado, zoom/paneo continuo en los 3 clips (swing marcado en el
+clip 1), voz con ganancia ×1.35, música al 28%/40%. Detalle completo en
+`HANDOFF_REPORT.md`. **No es código de la web — vive fuera de git, en
+`brand/Agente/`, no hay nada que desplegar.**
+
+- 🔴 **Bloqueado esperando al owner:** pidió insertar 2 imágenes de apoyo
+  (cutaways de hotel/conciergerie) en vez de la banda negra actual — las
+  pegó en el chat pero no quedaron guardadas como archivo; hay que esperar a
+  que las guarde en `brand/Agente/Video 1/` y confirme el nombre.
+- ⏳ Música elegida (`leberch-real-estate-262604.mp3`) es una elección por
+  defecto, no confirmada por el owner — puede cambiar.
+- ⏳ No verificado en móvil real ni en Meta Ads Manager, solo en fotogramas
+  extraídos con `ffmpeg`.
+- ⏳ Video 1 (Gestión alquiler largo) y Video 3 (Vender) del plan de 3 vídeos
+  siguen sin grabar.
+
+---
 
 ## Grafo de conocimiento (/graphify) — 2026-07-06 ✅ GENERADO, hallazgos corregidos
 
