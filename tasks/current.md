@@ -4,7 +4,37 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-07-07 (Vídeo 2 · Conciergerie/Airbnb editado en Remotion, faltan imágenes de apoyo del owner)
+**Last updated:** 2026-07-15 (Correo corporativo Zoho Mail activado + migrado el dominio de email a atlasrouge.com en el código)
+
+## Correo corporativo — Zoho Mail — 2026-07-15 ✅ CONTRATADO Y MIGRADO EN CÓDIGO
+
+El owner adquirió y configuró el correo corporativo con **Zoho Mail** sobre
+el dominio `atlasrouge.com`. Coste: **13 €/año (IVA incluido)**, facturación
+anual — próxima renovación esperada ~2027-07-15.
+
+- ✅ **Migrado en código** (mismo día): `netlify/functions/notify-lead.js`
+  ahora usa por defecto `info@atlasrouge.com` (antes `info@atlasrouge.ma`)
+  tanto para `TO_EMAIL` como para `FROM_EMAIL` (antes `noreply@atlasrouge.ma`
+  — se unificó a `info@` porque es la única cuenta real provisionada en
+  Zoho). Placeholders de email en el login del admin (`AdminLogin.tsx` +
+  `src/locales/{fr,es,en}/admin.json`) actualizados de `admin@atlasrouge.ma`
+  a `admin@atlasrouge.com`. `verify.sh` en verde tras el cambio.
+- ⏳ **Sin confirmar/verificar** (bloqueado por el clasificador de seguridad
+  al intentar una lectura de la tabla `agents` sin autorización explícita
+  del owner en el mensaje): si el segundo admin existente, **Sofia**
+  (documentado en `HANDOFF.md` como `admin@atlasrouge.ma`), tiene ese mismo
+  email como credencial de login real en Supabase Auth. **No se tocó** —
+  cambiar el email de login de una cuenta real es una acción de credenciales,
+  no un simple texto, y podría dejarla sin acceso. Si el owner quiere
+  actualizarlo también, hay que confirmarlo explícitamente y coordinarlo con
+  Sofia (cambio de email en Supabase Auth invalida la sesión/requiere que
+  ella confirme el nuevo correo).
+- Si en el futuro se quiere actualizar `AGENT_NOTIFY_EMAIL`/`AGENT_NOTIFY_FROM`
+  como env vars reales en Netlify (en vez de depender del fallback en
+  código), o automatizar algo del correo, la nueva CLI oficial de Zoho Mail
+  es el camino a evaluar primero (explorada a nivel informativo, no instalada).
+
+---
 
 ## Vídeo 2 · Conciergerie/Airbnb (Remotion) — 2026-07-07 🟡 EDITADO, falta cerrar
 

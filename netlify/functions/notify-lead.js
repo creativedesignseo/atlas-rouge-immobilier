@@ -23,9 +23,9 @@
 // }
 // ----------------------------------------------------------------------------
 
-const TO_EMAIL = process.env.AGENT_NOTIFY_EMAIL || 'info@atlasrouge.ma'
+const TO_EMAIL = process.env.AGENT_NOTIFY_EMAIL || 'info@atlasrouge.com'
 const FROM_EMAIL =
-  process.env.AGENT_NOTIFY_FROM || 'Atlas Rouge <noreply@atlasrouge.ma>'
+  process.env.AGENT_NOTIFY_FROM || 'Atlas Rouge <info@atlasrouge.com>'
 
 // Public endpoint (anonymous forms POST here), so we cannot require a JWT.
 // Defense is CORS + origin allowlist + payload validation. A robust rate
