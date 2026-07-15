@@ -4,6 +4,56 @@
 
 ---
 
+## CIERRE de sesión — Claude Sonnet 5 — 2026-07-15 (Migración de dominio de email a atlasrouge.com)
+
+**Realidad verificada:** `bash scripts/verify.sh` verde (lint+build OK, tras
+`npm install` porque `node_modules/` no existía al empezar la sesión).
+Commit `06144343` pusheado a `main`. Deploy Netlify confirmado vía API:
+`state: ready`, `commit_ref` coincide exactamente, `context: production`,
+publicado `2026-07-15T21:23:16Z`. `atlasrouge.com` → HTTP 200 en vivo.
+
+**Motivo:** el owner contrató y configuró correo corporativo real en
+**Zoho Mail** sobre el dominio `atlasrouge.com` (13 €/año IVA incluido,
+facturación anual, ~2027-07-15 próxima renovación) — hasta ahora el código
+seguía usando el dominio antiguo `atlasrouge.ma` como fallback.
+
+**Qué se cambió:**
+- `netlify/functions/notify-lead.js`: `TO_EMAIL` fallback de
+  `info@atlasrouge.ma` → `info@atlasrouge.com`; `FROM_EMAIL` fallback de
+  `noreply@atlasrouge.ma` → `info@atlasrouge.com` (unificado a `info@`
+  porque es la única cuenta real provisionada en Zoho — `noreply@` no
+  existe como buzón real).
+- Placeholder de email en el login del admin: `AdminLogin.tsx` +
+  `src/locales/{fr,es,en}/admin.json` (`emailPlaceholder`), de
+  `admin@atlasrouge.ma` a `admin@atlasrouge.com`.
+
+**Explícitamente NO tocado (requiere decisión del owner):** `HANDOFF.md`
+documenta un segundo admin real, **Sofia**, con email `admin@atlasrouge.ma`
+en la tabla `agents`/Supabase Auth. Se intentó verificar si ese sigue siendo
+su email de login real (`select ... from public.agents`), pero el
+clasificador de seguridad de auto-mode bloqueó la lectura por ser datos de
+producción con PII sin autorización explícita del owner en el mensaje. No
+se cambió nada de su cuenta real — es una credencial de acceso de otra
+persona, no un texto de UI; cambiarla sin coordinarlo con ella podría
+dejarla sin acceso al panel. Si el owner confirma que quiere migrarla
+también, hay que coordinarlo con Sofia (Supabase Auth normalmente exige que
+el usuario confirme el nuevo email desde su bandeja de entrada).
+
+**No relacionado con este cambio, visto de pasada:** el deploy reporta un
+warning pre-existente en `netlify.toml` — 1 de 5 reglas de redirect no se
+pudo procesar (`{:from=>"/assets/*", :status=>404}`). No es nuevo de esta
+sesión, no bloquea el deploy; queda anotado por si se quiere limpiar en otra
+sesión.
+
+**Env vars de Netlify sin tocar:** si existen `AGENT_NOTIFY_EMAIL` /
+`AGENT_NOTIFY_FROM` configuradas como variables de entorno reales en
+Netlify (no solo el fallback en código), esas tienen prioridad y no se
+tocaron desde aquí — revisar en Netlify → Site settings → Environment
+variables si el owner quiere confirmar cuál valor está realmente activo en
+producción.
+
+---
+
 ## CIERRE de sesión — Claude Sonnet 5 — 2026-07-07 (Vídeo 2 · Conciergerie/Airbnb editado en Remotion)
 
 **Realidad verificada:** `bash scripts/verify.sh` verde (build OK). `atlasrouge.com`
