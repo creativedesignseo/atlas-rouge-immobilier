@@ -4,6 +4,59 @@
 
 ---
 
+## CIERRE de sesión — Claude Sonnet 5 — 2026-07-21 (Teléfono/WhatsApp real unificado en todo el sitio)
+
+**Realidad verificada:** `bash scripts/verify.sh` verde (lint+build OK). Deploy
+Netlify confirmado vía API: `state: ready`, `commit_ref` `0e15addc` coincide
+exacto, `context: production`, publicado `2026-07-21T05:45:40Z`. Verificado
+además el número real (`648024156` / `648 02 41 56`) presente en el bundle JS
+servido en producción (`curl` directo al `.js` desplegado, no solo el HTML —
+el sitio es una SPA renderizada en cliente, así que un curl al HTML no lo
+muestra).
+
+**Motivo:** el owner pidió añadir su número real (`+212 648 02 41 56`) "a
+toda la web" — hasta ahora había dos números placeholder sin usar nunca
+(`+212524000000` teléfono, `+212600000000` WhatsApp) repartidos de forma
+inconsistente entre varios archivos.
+
+**Qué se cambió:**
+- `src/lib/contact.ts` — `WHATSAPP_NUMBER`/`PHONE_NUMBER` (fuente central ya
+  existente, usada por `Navbar.tsx` y `BlogPost.tsx`) actualizados al número
+  real; se añadió `PHONE_NUMBER_DISPLAY` (formato con espacios) para texto
+  visible.
+- `src/services/settings.service.ts` — el fallback `defaultSettings` (se usa
+  si Supabase tarda en cargar) ahora importa de `lib/contact.ts` en vez de
+  tener su propio literal duplicado.
+- `src/pages/Contact.tsx` y `src/pages/PropertyDetail.tsx` — los fallbacks
+  inline (`settings?.phone || '+212524000000'`, repetidos 5 veces entre los
+  dos archivos) ahora importan de `lib/contact.ts`.
+- **3 enlaces `tel:` huérfanos** que no leían de ninguna fuente central
+  (`About.tsx`, `Estimation.tsx`, `GestionLocative.tsx`) — conectados a
+  `lib/contact.ts` en vez de quedar hardcodeados otra vez.
+- `src/locales/{fr,es,en}/services.json` — clave `rental.cta.phone`
+  actualizada en los 3 idiomas.
+- **Base de datos real**: migración `supabase/migrations/012_update_contact_phone.sql`
+  aplicada con `npm run migrate` — actualiza las filas `phone`/`whatsapp` de
+  `site_settings` en el proyecto Supabase real (`slxlkbrqcjabsfuhlwdf`).
+  También actualizado `supabase/seed.sql` para que entornos nuevos siembren
+  el número correcto.
+
+**Encontrado y limpiado de paso (no relacionado con el teléfono):** un
+directorio `brand/Agente/remotion/build/` (298 MB, caché de un render de
+vídeo, sin trackear por git) estaba haciendo fallar `npm run lint` del sitio
+completo porque el `eslint.config.js` raíz no excluye `brand/` de su
+`globalIgnores`. Se borró el directorio (los vídeos finales viven a salvo en
+`brand/Agente/remotion/out/`, no se perdió nada). Si en el futuro vuelve a
+pasar esto, la causa raíz sigue sin arreglar: `eslint.config.js` debería
+excluir `brand/` explícitamente para que el trabajo de vídeo no pueda romper
+el `verify.sh` del sitio.
+
+**Warning pre-existente, sin relación, visto de pasada (ya anotado la sesión
+anterior):** 1 de 5 reglas de redirect en `netlify.toml` sigue sin poder
+procesarse (`{:from=>"/assets/*", :status=>404}`). No bloquea el deploy.
+
+---
+
 ## CIERRE de sesión — Claude Sonnet 5 — 2026-07-15 (Migración de dominio de email a atlasrouge.com)
 
 **Realidad verificada:** `bash scripts/verify.sh` verde (lint+build OK, tras
