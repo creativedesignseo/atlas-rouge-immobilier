@@ -4,7 +4,33 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-07-15 (Correo corporativo Zoho Mail activado + migrado el dominio de email a atlasrouge.com en el código)
+**Last updated:** 2026-07-21 (Teléfono/WhatsApp real unificado en todo el sitio + BD)
+
+## Teléfono/WhatsApp real — 2026-07-21 ✅ UNIFICADO EN CÓDIGO Y BASE DE DATOS
+
+El owner dio su número real (`+212 648 02 41 56`) para sustituir los dos
+placeholders que nunca se habían usado (`+212524000000` teléfono,
+`+212600000000` WhatsApp), repartidos de forma inconsistente en 6+ archivos.
+
+- ✅ **Código**: `src/lib/contact.ts` (fuente central) + `settings.service.ts`
+  + `Contact.tsx` + `PropertyDetail.tsx` + 3 enlaces `tel:` que estaban
+  hardcodeados sin leer de ninguna fuente central (`About.tsx`,
+  `Estimation.tsx`, `GestionLocative.tsx`) + `services.json` en los 3 idiomas.
+- ✅ **Base de datos real**: migración `012_update_contact_phone.sql`
+  aplicada con `npm run migrate` sobre `site_settings` (proyecto Supabase
+  `slxlkbrqcjabsfuhlwdf`). `supabase/seed.sql` también actualizado.
+- ✅ **Verificado en producción dos veces** (commit `0e15addc`, deploy
+  Netlify `ready`): número real confirmado presente en el bundle JS servido
+  en `atlasrouge.com` (`curl` directo al `.js` desplegado — no solo el HTML,
+  que en esta SPA no lo mostraría).
+- ✅ **De paso**: se encontró y borró `brand/Agente/remotion/build/` (298 MB,
+  caché de render de vídeo sin trackear) que rompía `npm run lint` de todo
+  el sitio porque `eslint.config.js` no excluye `brand/` de su
+  `globalIgnores`. **Sigue pendiente** arreglar la causa raíz (añadir
+  `brand` a `globalIgnores`) para que el trabajo de vídeo no pueda volver a
+  romper el `verify.sh` del sitio.
+
+---
 
 ## Correo corporativo — Zoho Mail — 2026-07-15 ✅ CONTRATADO Y MIGRADO EN CÓDIGO
 
