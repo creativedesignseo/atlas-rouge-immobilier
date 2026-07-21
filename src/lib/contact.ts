@@ -5,11 +5,13 @@
 // ────────────────────────────────────────────────────────────────────
 
 // WhatsApp number in international E.164 format WITHOUT the leading "+".
-// Replace with the real Atlas Rouge mobile number when known.
-export const WHATSAPP_NUMBER = '212600000000'
+export const WHATSAPP_NUMBER = '212648024156'
 
 // Display number for tel: links (with the +).
-export const PHONE_NUMBER = '+212524000000'
+export const PHONE_NUMBER = '+212648024156'
+
+// Human-readable, spaced format for visible text (buttons, footer, etc.).
+export const PHONE_NUMBER_DISPLAY = '+212 648 02 41 56'
 
 /**
  * Build a WhatsApp click-to-chat URL with a pre-filled message.

@@ -5,6 +5,7 @@ import { useLang } from '@/hooks/useLang'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { PHONE_NUMBER, PHONE_NUMBER_DISPLAY } from '@/lib/contact'
 import {
   ShieldCheck,
   MapPin,
@@ -475,11 +476,11 @@ export default function About() {
               {t('cta.appointment')}
             </Link>
             <a
-              href="tel:+212524000000"
+              href={`tel:${PHONE_NUMBER}`}
               className="inline-flex items-center gap-2 text-white font-inter text-[14px] hover:underline"
             >
               <Phone size={18} />
-              +212 524 00 00 00
+              {PHONE_NUMBER_DISPLAY}
             </a>
           </div>
         </SectionReveal>

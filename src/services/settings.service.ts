@@ -1,4 +1,5 @@
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
+import { PHONE_NUMBER_DISPLAY, WHATSAPP_NUMBER } from '@/lib/contact'
 
 export type SiteSettings = Record<string, string>
 
@@ -6,8 +7,8 @@ const defaultSettings: SiteSettings = {
   company_name: 'Atlas Rouge Immobilier',
   agent_name: 'Sophie Martin',
   agent_title: 'Conseillère immobilière',
-  phone: '+212 524 00 00 00',
-  whatsapp: '+212 600 00 00 00',
+  phone: PHONE_NUMBER_DISPLAY,
+  whatsapp: `+${WHATSAPP_NUMBER}`,
   email: 'contact@atlasrouge.immo',
   address: '123 Boulevard Mohamed VI, Guéliz',
   city_postal: '40000 Marrakech, Maroc',

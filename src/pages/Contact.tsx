@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { submitContactForm } from '@/services/contact.service'
 import { Link } from 'react-router-dom'
 import { useLang } from '@/hooks/useLang'
+import { PHONE_NUMBER, PHONE_NUMBER_DISPLAY, WHATSAPP_NUMBER } from '@/lib/contact'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -374,10 +375,10 @@ export default function Contact() {
                       {t('info.phone')}
                     </p>
                     <a
-                      href={`tel:${(settings?.phone || '+212524000000').replace(/\s/g, '')}`}
+                      href={`tel:${(settings?.phone || PHONE_NUMBER).replace(/\s/g, '')}`}
                       className="font-inter text-[15px] text-text-primary hover:text-terracotta transition-colors"
                     >
-                      {settings?.phone || '+212 524 00 00 00'}
+                      {settings?.phone || PHONE_NUMBER_DISPLAY}
                     </a>
                   </div>
                 </div>
@@ -389,12 +390,12 @@ export default function Contact() {
                       WhatsApp
                     </p>
                     <a
-                      href={`https://wa.me/${(settings?.whatsapp || '+212600000000').replace(/\D/g, '')}`}
+                      href={`https://wa.me/${(settings?.whatsapp || WHATSAPP_NUMBER).replace(/\D/g, '')}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="font-inter text-[15px] text-text-primary hover:text-terracotta transition-colors"
                     >
-                      {settings?.whatsapp || '+212 600 00 00 00'}
+                      {settings?.whatsapp || PHONE_NUMBER_DISPLAY}
                     </a>
                   </div>
                 </div>
@@ -521,7 +522,7 @@ export default function Contact() {
           <SectionReveal className="space-y-3" stagger={0.06} y={15}>
             <AccordionItem
               question={t('faq.appointment.question')}
-              answer={t('faq.appointment.answer', { phone: settings?.phone || '+212 524 00 00 00', whatsapp: settings?.whatsapp || '+212 600 00 00 00' })}
+              answer={t('faq.appointment.answer', { phone: settings?.phone || PHONE_NUMBER_DISPLAY, whatsapp: settings?.whatsapp || PHONE_NUMBER_DISPLAY })}
               isOpen={openFaq === 0}
               onToggle={() => setOpenFaq(openFaq === 0 ? null : 0)}
             />

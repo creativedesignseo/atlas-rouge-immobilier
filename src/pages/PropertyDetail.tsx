@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { useLang } from '@/hooks/useLang'
+import { PHONE_NUMBER, PHONE_NUMBER_DISPLAY, WHATSAPP_NUMBER } from '@/lib/contact'
 import {
   MapPin, Heart, Share2, X, Check, Phone, MessageCircle, User,
   ChevronDown, ChevronUp, ArrowRight, Camera,
@@ -90,8 +91,8 @@ interface AgentInfo {
 
 function ContactPanel({ property, settings }: { property: Property; settings: Record<string, string> | null }) {
   const { t, i18n } = useTranslation('property')
-  const phone = settings?.phone || '+212 524 00 00 00'
-  const whatsapp = settings?.whatsapp || '+212 600 00 00 00'
+  const phone = settings?.phone || PHONE_NUMBER_DISPLAY
+  const whatsapp = settings?.whatsapp || PHONE_NUMBER_DISPLAY
   const defaultMessage = t('contact.defaultMessage', { title: property.title })
 
   // Agente real desde la tabla `agents` — el primer agent activo (Sofia
@@ -935,14 +936,14 @@ export default function PropertyDetail() {
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-border-warm px-3 pt-2.5 pb-[calc(0.625rem+env(safe-area-inset-bottom))]">
         <div className="flex items-center gap-2.5">
           <a
-            href={`tel:${(settings?.phone || '+212524000000').replace(/\s/g, '')}`}
+            href={`tel:${(settings?.phone || PHONE_NUMBER).replace(/\s/g, '')}`}
             aria-label={t('call')}
             className="flex items-center justify-center w-12 h-12 flex-shrink-0 rounded-xl border border-border-warm text-midnight active:bg-cream-warm transition-colors"
           >
             <Phone size={20} strokeWidth={2} />
           </a>
           <a
-            href={`https://wa.me/${(settings?.whatsapp || '+212600000000').replace(/\D/g, '')}`}
+            href={`https://wa.me/${(settings?.whatsapp || WHATSAPP_NUMBER).replace(/\D/g, '')}`}
             target="_blank" rel="noopener noreferrer"
             aria-label="WhatsApp"
             className="flex items-center justify-center w-12 h-12 flex-shrink-0 rounded-xl border border-border-warm text-[#0A8F57] active:bg-cream-warm transition-colors"

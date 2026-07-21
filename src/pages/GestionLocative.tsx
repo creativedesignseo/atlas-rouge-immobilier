@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLang } from '@/hooks/useLang'
+import { PHONE_NUMBER } from '@/lib/contact'
 import {
   Users,
   ClipboardCheck,
@@ -299,7 +300,7 @@ export default function GestionLocative() {
                 {t('rental.cta.appointment')}
               </Link>
               <a
-                href="tel:+212524000000"
+                href={`tel:${PHONE_NUMBER}`}
                 className="inline-flex items-center gap-2 text-terracotta font-inter text-[14px] font-medium hover:underline"
               >
                 <Phone size={18} />
