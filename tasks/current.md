@@ -4,7 +4,44 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-07-22 (Redes sociales corregidas a Instagram+TikTok, quitado el menú de apps)
+**Last updated:** 2026-07-22 (Contacto: email info@, teléfono único + WhatsApp flotante, sin dirección; iconos sin fondo; fix desplegable teléfono)
+
+## Contacto + iconos + campo de teléfono — 2026-07-22 ✅ HECHO Y EN VIVO
+
+Tres tandas de correcciones pedidas por el owner, todas en producción
+(commits `77b5a8e6` y `1e9e27da`, deploy Netlify `ready`, verificado en el
+bundle JS en vivo: `info@atlasrouge.com` presente, `atlasrouge.immo` = 0,
+`createPortal` presente, Instagram/TikTok correctos).
+
+- ✅ **Email**: `info@atlasrouge.com` en todo el sitio (constante `EMAIL` en
+  `lib/contact.ts` + settings default + seed + migración 014 aplicada a la BD).
+- ✅ **Contacto "Nuestros datos"**: quitada la fila duplicada de WhatsApp
+  (solo queda el teléfono) y el bloque de Dirección; quitada además la
+  sección de mapa decorativo (mostraba una calle falsa). No se muestra
+  dirección en ninguna parte (owner: aún no hay dirección física). `address`
+  y `city_postal` borrados de settings/seed/BD.
+- ✅ **Botón flotante de WhatsApp** site-wide (`FloatingWhatsApp` montado en
+  `Layout`) con el número real + el mensaje pre-rellenado del navbar.
+- ✅ **Iconos sin fondo** (owner eligió "absolutamente todos"): decorativos
+  (servicios/pasos/guía/estados) quedan limpios; los botones funcionales
+  sobre fotos (favorito/compartir/cerrar galería/flechas) pierden el chip
+  pero ganan sombra en el icono para seguir visibles y tocables. Se
+  mantienen a propósito: círculos con NÚMERO de pasos (no son iconos) y las
+  CTA de marca de WhatsApp. Iconos sociales del footer también sin fondo.
+  ⚠️ ~13 archivos tocados; build verde pero NO se revisó visualmente cada
+  página (la captura del navegador embebido falla en secciones oscuras) —
+  si aparece algún icono raro en alguna página, es un ajuste puntual
+  pendiente.
+- ✅ **Fix campo de teléfono** (`PhoneField`, usado en Contacto y ficha de
+  propiedad): el desplegable de país se colaba por detrás de las filas
+  siguientes del formulario (contextos de apilamiento por transforms de
+  GSAP). Ahora se renderiza en un **portal a `<body>` con `position: fixed`,
+  z-1000**, siguiendo al campo en scroll/resize → siempre por encima
+  (verificado por DOM: portal en body, 51 opciones). Placeholder del
+  teléfono en Contacto ya sin prefijo (solo el número local, por idioma).
+
+---
+
 
 ## Redes sociales + menú de apps — 2026-07-22 ✅ HECHO Y EN VIVO
 

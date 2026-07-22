@@ -4,6 +4,86 @@
 
 ---
 
+## CIERRE de sesión — Claude Opus 4.8 — 2026-07-22 (Contacto, iconos sin fondo, fix campo de teléfono)
+
+**Realidad verificada:** `bash scripts/verify.sh` verde (lint+build). Git
+limpio (solo el working file `brand/New-logo.af` del owner). `HEAD` = 
+`origin/main` = `1e9e27da`. Deploy Netlify `ready`, `commit_ref` `1e9e27da`
+coincide exacto, publicado `2026-07-22T15:20:07Z`. Verificado sobre el bundle
+JS **servido en vivo** (`curl` a `atlasrouge.com/assets/index-*.js`, `LC_ALL=C`
+por encoding): `info@atlasrouge.com` presente (1), email antiguo
+`atlasrouge.immo` = 0, `createPortal`/`react-dom` presente (fix del teléfono),
+`instagram.com/atlasrougeimmo` = 1, `tiktok.com/@atlas.rouge.immo` = 1.
+`atlasrouge.com` → HTTP 200.
+
+**Se hizo en dos commits (`77b5a8e6` + `1e9e27da`):**
+
+1. **Email → `info@atlasrouge.com`** en todo el sitio. Nueva constante `EMAIL`
+   en `lib/contact.ts`; settings default + seed + migración `014` aplicada a
+   la BD real (`site_settings.email`).
+
+2. **Página de Contacto ("Nos coordonnées")**: quitada la fila duplicada de
+   WhatsApp (queda solo el teléfono), quitado el bloque de Dirección, y
+   quitada la sección decorativa de "mapa" completa (mostraba una calle
+   placeholder falsa). No se muestra dirección en ninguna parte (decisión del
+   owner: aún no hay dirección física). `address` y `city_postal` eliminados
+   de settings/seed y de la BD (migración 014).
+
+3. **Botón flotante de WhatsApp** (`src/components/FloatingWhatsApp.tsx`,
+   montado en `Layout` → todas las páginas públicas): círculo verde de marca
+   con el número real y el mensaje pre-rellenado del navbar. Es la única
+   excepción deliberada a "iconos sin fondo" — es un action-button de marca
+   que el owner pidió explícitamente y que sin el círculo verde sería
+   invisible/irreconocible.
+
+4. **Iconos sin fondo en todo el sitio** (el owner eligió explícitamente
+   "absolutamente todos" en una pregunta de confirmación):
+   - Decorativos (badges de servicios/pasos/guía/estados vacíos/éxito):
+     fondo de círculo tintado eliminado → iconos limpios, más grandes,
+     stroke más fino; ahora coherentes con `ServiceCard`/`About` que ya iban
+     sin fondo.
+   - Botones funcionales sobre fotos (favorito, compartir, cerrar galería,
+     flechas del lightbox, cerrar mapa, flecha hover de barrio): se quita el
+     chip pero se añade `drop-shadow` al icono para que sigan visibles y
+     tocables sobre las fotos (si se dejaban pelados, desaparecían).
+   - **Mantenidos a propósito:** los círculos con NÚMERO de los pasos
+     (1·2·3 — son texto, no iconos), las CTA de marca de WhatsApp (navbar +
+     flotante). Iconos sociales del footer y de Contacto también sin fondo.
+   - **~13 archivos tocados.** Build verde, pero NO se revisó visualmente
+     cada página una a una (la captura del navegador embebido falla en las
+     secciones de fondo oscuro). Riesgo residual bajo: si algún icono quedó
+     raro en alguna página concreta, es un ajuste puntual — no hay forma
+     conocida de que rompa funcionalidad (solo estilos).
+
+5. **Fix del campo de teléfono** (`src/components/forms/PhoneField.tsx`,
+   componente reutilizable usado en Contacto y en la ficha de propiedad):
+   - **Bug reportado por el owner (con captura):** el desplegable de país se
+     pintaba por DETRÁS de las filas siguientes del formulario. Causa: las
+     filas del form llevan transforms de GSAP que crean contextos de
+     apilamiento hermanos; un `absolute z-30` dentro de una fila no puede
+     ganar a una fila posterior con su propio contexto. **Fix:** el
+     desplegable ahora se renderiza en un **portal a `document.body` con
+     `position: fixed` y `z-index: 1000`**, recalculando su posición a partir
+     del rect del campo al abrir y en scroll/resize. El handler de
+     click-fuera considera también el menú porteado (`menuRef`) para que
+     seleccionar un país no lo cierre antes de tiempo. Verificado por DOM en
+     preview: menú en `<body>`, `position: fixed`, `z: 1000`, pegado al campo
+     (10px debajo), 51 opciones.
+   - **Placeholder** del teléfono en Contacto ya no incluye el prefijo (el
+     prefijo vive en el selector de país): ahora muestra solo el número local
+     por idioma (`600 000 000` es / `6 00 00 00 00` fr / `7700 000000` en).
+
+**Warning pre-existente sin relación (ya anotado sesiones anteriores):** 1 de
+5 reglas de redirect en `netlify.toml` sigue sin procesarse
+(`{:from=>"/assets/*", :status=>404}`). No bloquea el deploy.
+
+**Deuda técnica anotada (de sesiones previas, sin resolver):** `eslint.config.js`
+no excluye `brand/` de su `globalIgnores`, así que un `build/` de un render de
+vídeo puede volver a romper `npm run lint` del sitio; conviene añadir `brand`
+a `globalIgnores`.
+
+---
+
 ## CIERRE de sesión — Claude Opus 4.8 — 2026-07-22 (Redes sociales + menú de apps del footer)
 
 **Realidad verificada:** `bash scripts/verify.sh` verde (lint+build OK).
