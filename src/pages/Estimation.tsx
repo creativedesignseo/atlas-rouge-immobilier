@@ -127,8 +127,8 @@ export default function Estimation() {
       <section className="bg-white py-12 md:py-20">
         <div className="max-w-[560px] mx-auto px-6 lg:px-12">
           <div className="bg-cream-warm rounded-card p-8">
-            <div className="w-12 h-12 rounded-lg bg-palm/10 flex items-center justify-center mb-5">
-              <UserCheck size={24} className="text-palm" />
+            <div className="mb-5">
+              <UserCheck size={32} strokeWidth={1.75} className="text-palm" />
             </div>
             <h2 className="font-display text-[24px] font-medium text-midnight mb-2">
               {t('expert.title')}
@@ -234,8 +234,8 @@ export default function Estimation() {
                 key={number}
                 className="bg-white rounded-card p-8 text-center hover:shadow-card-hover transition-shadow duration-250"
               >
-                <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-terracotta/10 flex items-center justify-center">
-                  <Icon size={24} className="text-terracotta" />
+                <div className="flex justify-center mb-5">
+                  <Icon size={32} strokeWidth={1.75} className="text-terracotta" />
                 </div>
                 <span className="inline-block w-8 h-8 rounded-full bg-terracotta text-white font-inter text-[14px] font-semibold leading-8 mb-3">
                   {number}

@@ -357,9 +357,7 @@ export default function BuyerGuide() {
                   {/* Notaire card */}
                   <div className="bg-white rounded-xl border border-border-warm p-6 shadow-card">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-full bg-cream-warm flex items-center justify-center text-terracotta">
-                        <Landmark size={20} />
-                      </div>
+                      <Landmark size={24} strokeWidth={1.75} className="text-terracotta shrink-0" />
                       <h3 className="font-display text-[20px] font-semibold text-midnight">
                         {t('notary.notaireCard.title')}
                       </h3>
@@ -372,9 +370,7 @@ export default function BuyerGuide() {
                   {/* Adoul card */}
                   <div className="bg-white rounded-xl border border-border-warm p-6 shadow-card">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-full bg-cream-warm flex items-center justify-center text-palm">
-                        <FileText size={20} />
-                      </div>
+                      <FileText size={24} strokeWidth={1.75} className="text-palm shrink-0" />
                       <h3 className="font-display text-[20px] font-semibold text-midnight">
                         {t('notary.adoulCard.title')}
                       </h3>

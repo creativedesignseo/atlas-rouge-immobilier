@@ -8,7 +8,7 @@
     "email": "Correo electrónico",
     "emailPlaceholder": "juan@ejemplo.com",
     "phone": "Teléfono",
-    "phonePlaceholder": "+34 600 000 000",
+    "phonePlaceholder": "600 000 000",
     "subject": "Asunto",
     "subjectPlaceholder": "Compra, alquiler, estimación...",
     "message": "Mensaje",

@@ -8,7 +8,7 @@
     "email": "E-mail",
     "emailPlaceholder": "jean@exemple.com",
     "phone": "Téléphone",
-    "phonePlaceholder": "+33 6 00 00 00 00",
+    "phonePlaceholder": "6 00 00 00 00",
     "subject": "Sujet",
     "subjectPlaceholder": "Achat, location, estimation...",
     "message": "Message",

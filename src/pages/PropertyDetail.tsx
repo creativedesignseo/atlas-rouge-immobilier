@@ -70,9 +70,9 @@ function Lightbox({ images, startIndex, onClose }: { images: string[]; startInde
   // bubble up so navigating doesn't dismiss the gallery.
   return (
     <div className="fixed inset-0 z-[70] bg-black/95 flex items-center justify-center" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} onClick={onClose}>
-      <button onClick={onClose} className="absolute top-4 right-4 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-colors z-10"><X size={20} /></button>
-      <button onClick={(e) => { e.stopPropagation(); goPrev() }} className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 rounded-full items-center justify-center text-white hover:bg-white/20 transition-colors z-10"><ChevronUp size={20} className="-rotate-90" /></button>
-      <button onClick={(e) => { e.stopPropagation(); goNext() }} className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 rounded-full items-center justify-center text-white hover:bg-white/20 transition-colors z-10"><ChevronUp size={20} className="rotate-90" /></button>
+      <button onClick={onClose} className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center text-white hover:opacity-80 transition-opacity z-10 [filter:drop-shadow(0_1px_3px_rgba(0,0,0,0.5))]"><X size={26} strokeWidth={2.25} /></button>
+      <button onClick={(e) => { e.stopPropagation(); goPrev() }} className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center text-white hover:opacity-80 transition-opacity z-10 [filter:drop-shadow(0_1px_3px_rgba(0,0,0,0.5))]"><ChevronUp size={26} strokeWidth={2.25} className="-rotate-90" /></button>
+      <button onClick={(e) => { e.stopPropagation(); goNext() }} className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center text-white hover:opacity-80 transition-opacity z-10 [filter:drop-shadow(0_1px_3px_rgba(0,0,0,0.5))]"><ChevronUp size={26} strokeWidth={2.25} className="rotate-90" /></button>
       <div className="text-center w-full px-4">
         <img src={images[current]} alt={`Photo ${current + 1}`} className="max-w-[95vw] max-h-[80vh] object-contain rounded-lg mx-auto" draggable={false} onClick={(e) => e.stopPropagation()} />
         <p className="text-white/60 text-[14px] mt-3 font-inter">{current + 1} / {images.length}</p>
@@ -460,8 +460,8 @@ function MobileContactModal({
 
         {submitted ? (
           <div className="px-5 py-12 text-center">
-            <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-palm/15 flex items-center justify-center">
-              <Check size={28} className="text-palm" />
+            <div className="flex justify-center mb-4">
+              <Check size={40} strokeWidth={2} className="text-palm" />
             </div>
             <h3 className="font-display text-[20px] text-midnight mb-1">{t('contact.successTitle')}</h3>
             <p className="text-text-secondary text-[14px] mb-6">{t('contact.successText')}</p>
@@ -728,11 +728,11 @@ export default function PropertyDetail() {
             </div>
             <div className="absolute top-4 right-4 flex gap-2">
               <button onClick={() => toggleFavorite(property.slug)}
-                className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:scale-105 transition-transform">
-                <Heart size={20} className={isFavorite(property.slug) ? 'fill-terracotta text-terracotta' : 'text-text-secondary'} />
+                className="w-10 h-10 flex items-center justify-center hover:scale-110 transition-transform [filter:drop-shadow(0_1px_3px_rgba(0,0,0,0.45))]">
+                <Heart size={24} strokeWidth={2} className={isFavorite(property.slug) ? 'fill-terracotta text-terracotta' : 'text-white'} />
               </button>
-              <button onClick={handleShare} aria-label={tc('share')} className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:scale-105 transition-transform">
-                <Share2 size={20} className="text-text-secondary" />
+              <button onClick={handleShare} aria-label={tc('share')} className="w-10 h-10 flex items-center justify-center hover:scale-110 transition-transform [filter:drop-shadow(0_1px_3px_rgba(0,0,0,0.45))]">
+                <Share2 size={24} strokeWidth={2} className="text-white" />
               </button>
             </div>
             <div className="absolute bottom-4 right-4 bg-white/90 text-midnight text-[13px] font-medium px-3 py-1.5 rounded-full flex items-center gap-1.5">
@@ -776,8 +776,8 @@ export default function PropertyDetail() {
                       {property.isExclusive && <span className="bg-gold text-midnight text-[11px] font-semibold px-2 py-1 rounded">{t('exclusiveListing')}</span>}
                     </div>
                     <div className="absolute top-3 right-3 flex gap-2">
-                      <button onClick={(e) => { e.stopPropagation(); toggleFavorite(property.slug) }} className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md">
-                        <Heart size={18} className={isFavorite(property.slug) ? 'fill-terracotta text-terracotta' : 'text-text-secondary'} />
+                      <button onClick={(e) => { e.stopPropagation(); toggleFavorite(property.slug) }} className="w-9 h-9 flex items-center justify-center hover:scale-110 transition-transform [filter:drop-shadow(0_1px_3px_rgba(0,0,0,0.45))]">
+                        <Heart size={22} strokeWidth={2} className={isFavorite(property.slug) ? 'fill-terracotta text-terracotta' : 'text-white'} />
                       </button>
                     </div>
                   </>

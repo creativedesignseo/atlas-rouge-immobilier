@@ -13,8 +13,8 @@ export default function Estimer() {
       <section className="bg-cream-warm pt-16 md:pt-24 pb-16 md:pb-20">
         <div className="max-w-[800px] mx-auto px-6 lg:px-12 text-center">
           <SectionReveal y={40}>
-            <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-terracotta/10 flex items-center justify-center">
-              <Calculator size={28} className="text-terracotta" />
+            <div className="flex justify-center mb-6">
+              <Calculator size={40} strokeWidth={1.75} className="text-terracotta" />
             </div>
             <h1 className="font-display text-[36px] md:text-[48px] font-medium text-midnight leading-[1.1] tracking-[-0.3px] mb-4">
               {t('intro.title')}

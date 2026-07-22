@@ -107,8 +107,8 @@ export default function GestionLocative() {
                 key={key}
                 className="bg-cream-warm rounded-card p-6 md:p-8 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-250"
               >
-                <div className="w-12 h-12 rounded-lg bg-palm/10 flex items-center justify-center mb-4">
-                  <Icon size={24} className="text-palm" />
+                <div className="mb-4">
+                  <Icon size={32} strokeWidth={1.75} className="text-palm" />
                 </div>
                 <h3 className="font-display text-[20px] font-semibold text-midnight mb-2">
                   {t(`rental.services.items.${key}.title`)}
@@ -244,8 +244,8 @@ export default function GestionLocative() {
                 key={key}
                 className="bg-white/5 border border-white/10 rounded-card p-6 md:p-8 hover:bg-white/[0.08] transition-colors duration-250"
               >
-                <div className="w-12 h-12 rounded-lg bg-terracotta/15 flex items-center justify-center mb-4">
-                  <Icon size={24} className="text-terracotta" />
+                <div className="mb-4">
+                  <Icon size={32} strokeWidth={1.75} className="text-terracotta" />
                 </div>
                 <h3 className="font-display text-[20px] font-semibold text-white mb-2">
                   {t(`rental.concierge.items.${key}.title`)}

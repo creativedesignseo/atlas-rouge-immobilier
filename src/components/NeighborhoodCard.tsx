@@ -70,9 +70,9 @@ export default function NeighborhoodCard({ neighborhood }: NeighborhoodCardProps
 
       {/* Subtle indicator that the card is clickable — arrow in top-right that
           appears on hover. Premium sites use this instead of an explicit CTA. */}
-      <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/0 group-hover:bg-white/95 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 ease-premium">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="text-ink">
-          <path d="M3.5 7h7M7 3.5l3.5 3.5L7 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <div className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-premium [filter:drop-shadow(0_1px_3px_rgba(0,0,0,0.45))]">
+        <svg width="20" height="20" viewBox="0 0 14 14" fill="none" className="text-white">
+          <path d="M3.5 7h7M7 3.5l3.5 3.5L7 10.5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </div>
     </Link>

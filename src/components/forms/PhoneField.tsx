@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { ChevronDown, Search } from 'lucide-react'
 
@@ -121,8 +122,15 @@ export default function PhoneField({
 }: PhoneFieldProps) {
   const { i18n } = useTranslation()
   const containerRef = useRef<HTMLDivElement>(null)
+  const fieldRef = useRef<HTMLDivElement>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const searchRef = useRef<HTMLInputElement>(null)
+  // Posición del menú (portal a body con position: fixed) — se recalcula al
+  // abrir y en scroll/resize. El portal evita que las siguientes filas del
+  // formulario (con su propio contexto de apilamiento por transforms de GSAP)
+  // tapen el desplegable.
+  const [menuPos, setMenuPos] = useState<{ top: number; left: number; width: number } | null>(null)
 
   // País por defecto: prop > idioma > FR
   const initialCountry = useMemo(() => {
@@ -149,16 +157,39 @@ export default function PhoneField({
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState('')
 
-  // Cerrar al hacer click fuera
+  // Recalcula la posición del menú a partir del rect del campo.
+  function updateMenuPos() {
+    const el = fieldRef.current
+    if (!el) return
+    const r = el.getBoundingClientRect()
+    setMenuPos({ top: r.bottom + 8, left: r.left, width: r.width })
+  }
+
+  // Cerrar al hacer click fuera. El menú vive en un portal (fuera de
+  // containerRef), así que también hay que considerarlo "dentro".
   useEffect(() => {
     if (!open) return
     function onDocClick(e: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setOpen(false)
-      }
+      const target = e.target as Node
+      const inContainer = containerRef.current?.contains(target)
+      const inMenu = menuRef.current?.contains(target)
+      if (!inContainer && !inMenu) setOpen(false)
     }
     document.addEventListener('mousedown', onDocClick)
     return () => document.removeEventListener('mousedown', onDocClick)
+  }, [open])
+
+  // Posicionar el menú al abrir y mantenerlo pegado al campo en scroll/resize.
+  useEffect(() => {
+    if (!open) return
+    updateMenuPos()
+    const onScroll = () => updateMenuPos()
+    window.addEventListener('resize', onScroll)
+    window.addEventListener('scroll', onScroll, true)
+    return () => {
+      window.removeEventListener('resize', onScroll)
+      window.removeEventListener('scroll', onScroll, true)
+    }
   }, [open])
 
   // Focus en el search al abrir
@@ -205,12 +236,19 @@ export default function PhoneField({
   return (
     <div ref={containerRef} className={`relative ${className}`}>
       <div
+        ref={fieldRef}
         className={`flex ${heightClass} border-2 border-border-warm rounded-xl bg-white overflow-hidden focus-within:border-terracotta focus-within:ring-2 focus-within:ring-terracotta/15 transition-colors`}
       >
         {/* Botón selector país */}
         <button
           type="button"
-          onClick={() => setOpen((v) => !v)}
+          onClick={() =>
+            setOpen((v) => {
+              const next = !v
+              if (next) updateMenuPos()
+              return next
+            })
+          }
           className="flex items-center gap-1.5 pl-3 pr-2 border-r border-border-warm hover:bg-cream-warm/50 transition-colors"
           aria-label="Select country"
           aria-haspopup="listbox"
@@ -243,10 +281,13 @@ export default function PhoneField({
         />
       </div>
 
-      {/* Dropdown countries */}
-      {open && (
+      {/* Dropdown countries — portal a body con posición fija para que nunca
+          quede tapado por las siguientes filas del formulario. */}
+      {open && menuPos && createPortal(
         <div
-          className="absolute z-30 top-full left-0 right-0 mt-2 bg-white border border-border-warm rounded-xl shadow-card-hover overflow-hidden"
+          ref={menuRef}
+          className="fixed z-[1000] bg-white border border-border-warm rounded-xl shadow-card-hover overflow-hidden"
+          style={{ top: menuPos.top, left: menuPos.left, width: menuPos.width }}
           role="listbox"
         >
           <div className="flex items-center gap-2 px-3 py-2.5 border-b border-border-warm">
@@ -291,7 +332,8 @@ export default function PhoneField({
               ))
             )}
           </ul>
-        </div>
+        </div>,
+        document.body,
       )}
     </div>
   )

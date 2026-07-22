@@ -8,7 +8,7 @@
     "email": "Email",
     "emailPlaceholder": "john@example.com",
     "phone": "Phone",
-    "phonePlaceholder": "+44 7700 000000",
+    "phonePlaceholder": "7700 000000",
     "subject": "Subject",
     "subjectPlaceholder": "Purchase, rental, estimate...",
     "message": "Message",

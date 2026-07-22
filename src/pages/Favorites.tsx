@@ -91,8 +91,8 @@ export default function Favorites() {
           ) : (
             /* ── Empty state ── */
             <SectionReveal className="flex flex-col items-center justify-center text-center py-20">
-              <div className="w-20 h-20 rounded-full bg-cream-warm flex items-center justify-center mb-6">
-                <Heart size={36} className="text-border-warm" />
+              <div className="mb-6">
+                <Heart size={48} strokeWidth={1.5} className="text-border-warm" />
               </div>
               <h2 className="font-display text-[24px] font-medium text-midnight mb-3">
                 {t('noFavorites')}

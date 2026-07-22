@@ -583,9 +583,9 @@ function PropertyCardGrid({ property, isHovered = false }: { property: Property;
         </span>
         <button
           onClick={() => toggleFavorite(property.slug)}
-          className="absolute top-3 right-3 w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md hover:scale-105 transition-transform"
+          className="absolute top-3 right-3 w-9 h-9 flex items-center justify-center hover:scale-110 transition-transform [filter:drop-shadow(0_1px_3px_rgba(0,0,0,0.45))]"
         >
-          <Heart size={18} className={isFavorite(property.slug) ? 'fill-terracotta text-terracotta' : 'text-text-secondary'} />
+          <Heart size={22} strokeWidth={2} className={isFavorite(property.slug) ? 'fill-terracotta text-terracotta' : 'text-white'} />
         </button>
       </div>
       <div className="p-4">
@@ -1251,8 +1251,8 @@ export default function SearchPage() {
               {/* Map view (mobile) */}
               {view === 'map' && (
                 <div className="lg:hidden fixed inset-0 top-[136px] z-20 bg-midnight">
-                  <button onClick={() => { setView('grid'); setSelectedMapSlug(null) }} className="absolute top-4 right-4 z-30 w-10 h-10 bg-white rounded-full shadow flex items-center justify-center">
-                    <X size={20} />
+                  <button onClick={() => { setView('grid'); setSelectedMapSlug(null) }} className="absolute top-4 right-4 z-30 w-10 h-10 flex items-center justify-center text-white [filter:drop-shadow(0_1px_3px_rgba(0,0,0,0.5))]">
+                    <X size={24} strokeWidth={2.25} />
                   </button>
                   <MapView properties={filtered} hoveredId={hoveredMapSlug} onHover={handleMapHover} onSelect={handleMapSelect} />
                   {/* Bottom sheet — Green Acres style */}

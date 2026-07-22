@@ -73,13 +73,13 @@ export default function PropertyCard({ property }: PropertyCardProps) {
       {/* Favorite — separate button, outside the Link so it doesn't trigger nav */}
       <button
         onClick={() => toggleFavorite(property.slug)}
-        className="absolute top-3 right-3 w-9 h-9 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-soft hover:scale-110 active:scale-95 transition-transform duration-200 ease-premium"
+        className="absolute top-3 right-3 w-9 h-9 flex items-center justify-center hover:scale-110 active:scale-95 transition-transform duration-200 ease-premium [filter:drop-shadow(0_1px_3px_rgba(0,0,0,0.45))]"
         aria-label={fav ? tc('favoriteRemoved') : tc('favoriteAdded')}
       >
         <Heart
-          size={17}
-          strokeWidth={1.8}
-          className={fav ? 'fill-terracotta text-terracotta' : 'text-stone'}
+          size={22}
+          strokeWidth={2}
+          className={fav ? 'fill-terracotta text-terracotta' : 'text-white'}
         />
       </button>
 
