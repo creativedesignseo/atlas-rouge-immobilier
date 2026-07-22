@@ -4,7 +4,31 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-07-21 (Teléfono/WhatsApp real unificado en todo el sitio + BD)
+**Last updated:** 2026-07-22 (Redes sociales corregidas a Instagram+TikTok, quitado el menú de apps)
+
+## Redes sociales + menú de apps — 2026-07-22 ✅ HECHO Y EN VIVO
+
+El owner pidió: dejar solo **Instagram y TikTok** con los enlaces correctos,
+usar **iconos gruesos de Font Awesome**, y **quitar el menú "Nos apps"** del
+footer (todavía no hay app).
+
+- ✅ URLs reales centralizadas en `lib/contact.ts` (`INSTAGRAM_URL`,
+  `TIKTOK_URL`): `instagram.com/atlasrougeimmo` + `tiktok.com/@atlas.rouge.immo`.
+- ✅ Iconos Font Awesome (brand, sólidos = gruesos) inline como SVG en
+  `src/components/icons/SocialIcons.tsx` (sin instalar el paquete FA entero
+  por 2 iconos). Footer los muestra como botones redondos; Contact.tsx
+  también migrado (antes Instagram+Facebook de lucide).
+- ✅ Quitada la columna "Nos applications" del footer + sus claves i18n
+  muertas (`ourApps`/`iosApp`/`androidApp`/`emailAlerts` en fr/es/en);
+  rejilla del footer 5 → 4 columnas.
+- ✅ BD: migración `013_social_links.sql` aplicada (instagram_url real,
+  tiktok_url añadido, facebook_url borrado) + seed + defaults actualizados.
+- ✅ Verificado en el bundle JS **en vivo** de producción (commit `f4f2f27b`,
+  deploy Netlify `ready`): ambas URLs presentes, `facebook.com` = 0,
+  "Nos applications" = 0.
+
+---
+
 
 ## Teléfono/WhatsApp real — 2026-07-21 ✅ UNIFICADO EN CÓDIGO Y BASE DE DATOS
 

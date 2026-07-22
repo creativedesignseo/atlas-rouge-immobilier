@@ -4,6 +4,54 @@
 
 ---
 
+## CIERRE de sesión — Claude Opus 4.8 — 2026-07-22 (Redes sociales + menú de apps del footer)
+
+**Realidad verificada:** `bash scripts/verify.sh` verde (lint+build OK).
+Deploy Netlify `ready`, `commit_ref` `f4f2f27b` coincide exacto, publicado
+`2026-07-22T14:17:41Z`. Verificación end-to-end sobre el bundle JS **servido
+en vivo** (`curl` a `atlasrouge.com/assets/index-*.js`, con `LC_ALL=C` por
+encoding): `instagram.com/atlasrougeimmo` presente, `tiktok.com/@atlas.rouge.immo`
+presente, `facebook.com` = 0 ocurrencias, `Nos applications` = 0 ocurrencias.
+Además verificado antes del deploy sobre un preview de producción vía DOM
+(footer con 4 columnas, ambos iconos FA renderizando con viewBox 0 0 448 512).
+
+**Motivo:** el owner pidió (1) dejar solo Instagram y TikTok con los enlaces
+correctos, (2) usar iconos gruesos de Font Awesome, (3) quitar el menú "Nos
+apps" del footer porque todavía no hay app.
+
+**Qué se cambió:**
+- `src/lib/contact.ts` — nuevas constantes `INSTAGRAM_URL` /`TIKTOK_URL`
+  (fuente única).
+- `src/components/icons/SocialIcons.tsx` (NUEVO) — `InstagramIcon` +
+  `TikTokIcon`, glifos brand de Font Awesome 6 inline como SVG sólido
+  (`fill: currentColor`), sin instalar el paquete FA por dos iconos.
+- `src/components/Footer.tsx` — quitada la columna "Nos applications";
+  rejilla `lg:grid-cols-5` → `lg:grid-cols-4`; la lista de texto de redes
+  (Instagram/Facebook/LinkedIn/YouTube, todas `href="#"`) sustituida por
+  botones redondos Instagram + TikTok con los iconos FA.
+- `src/pages/Contact.tsx` — sección social migrada de Instagram+Facebook
+  (lucide) a Instagram+TikTok (FA), leyendo `settings?.instagram_url` /
+  `settings?.tiktok_url` con las constantes como fallback.
+- `src/services/settings.service.ts` — defaults: `instagram_url` real +
+  `tiktok_url` nuevo, `facebook_url` eliminado.
+- `src/locales/{fr,es,en}/footer.json` — borradas las claves muertas del
+  menú de apps (`ourApps`, `iosApp`, `androidApp`, `emailAlerts`).
+- **BD real**: migración `supabase/migrations/013_social_links.sql` aplicada
+  con `npm run migrate` (instagram_url real, tiktok_url insertado,
+  facebook_url borrado de `site_settings`) + `supabase/seed.sql` actualizado.
+
+**Nota técnica (por qué inline y no el paquete FA):** lucide-react (el set de
+iconos del sitio) no trae icono de TikTok, y el owner pidió específicamente
+Font Awesome. Meter `@fortawesome/*` por dos iconos era peso innecesario, así
+que se inlinaron los paths oficiales de FA6 Free/Brands como componentes SVG
+— mismo patrón que lucide (que también es SVG inline), cero dependencia nueva.
+
+**Warning pre-existente sin relación (ya anotado sesiones anteriores):** 1 de
+5 reglas de redirect en `netlify.toml` sigue sin procesarse
+(`{:from=>"/assets/*", :status=>404}`). No bloquea el deploy.
+
+---
+
 ## CIERRE de sesión — Claude Sonnet 5 — 2026-07-21 (Teléfono/WhatsApp real unificado en todo el sitio)
 
 **Realidad verificada:** `bash scripts/verify.sh` verde (lint+build OK). Deploy
