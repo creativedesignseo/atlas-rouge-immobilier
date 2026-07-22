@@ -1,5 +1,5 @@
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
-import { PHONE_NUMBER_DISPLAY, WHATSAPP_NUMBER } from '@/lib/contact'
+import { INSTAGRAM_URL, PHONE_NUMBER_DISPLAY, TIKTOK_URL, WHATSAPP_NUMBER } from '@/lib/contact'
 
 export type SiteSettings = Record<string, string>
 
@@ -14,8 +14,8 @@ const defaultSettings: SiteSettings = {
   city_postal: '40000 Marrakech, Maroc',
   hours_weekday: 'Lun – Ven : 9h – 18h',
   hours_saturday: 'Sam : 10h – 14h',
-  instagram_url: '#',
-  facebook_url: '#',
+  instagram_url: INSTAGRAM_URL,
+  tiktok_url: TIKTOK_URL,
 }
 
 export async function getSiteSettings(): Promise<SiteSettings> {

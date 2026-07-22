@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { submitContactForm } from '@/services/contact.service'
 import { Link } from 'react-router-dom'
 import { useLang } from '@/hooks/useLang'
-import { PHONE_NUMBER, PHONE_NUMBER_DISPLAY, WHATSAPP_NUMBER } from '@/lib/contact'
+import { INSTAGRAM_URL, PHONE_NUMBER, PHONE_NUMBER_DISPLAY, TIKTOK_URL, WHATSAPP_NUMBER } from '@/lib/contact'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -16,9 +16,8 @@ import {
   Check,
   ChevronDown,
   MessageCircle,
-  Instagram,
-  Facebook,
 } from 'lucide-react'
+import { InstagramIcon, TikTokIcon } from '@/components/icons/SocialIcons'
 import SectionReveal from '@/components/SectionReveal'
 import PhoneField from '@/components/forms/PhoneField'
 import { useSiteSettings } from '@/hooks/useSiteSettings'
@@ -440,22 +439,22 @@ export default function Contact() {
                   </p>
                   <div className="flex items-center gap-5">
                     <a
-                      href={settings?.instagram_url || '#'}
+                      href={settings?.instagram_url || INSTAGRAM_URL}
                       className="text-text-secondary hover:text-terracotta transition-colors"
                       aria-label="Instagram"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <Instagram size={22} strokeWidth={2.25} />
+                      <InstagramIcon size={22} />
                     </a>
                     <a
-                      href={settings?.facebook_url || '#'}
+                      href={settings?.tiktok_url || TIKTOK_URL}
                       className="text-text-secondary hover:text-terracotta transition-colors"
-                      aria-label="Facebook"
+                      aria-label="TikTok"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <Facebook size={22} strokeWidth={2.25} />
+                      <TikTokIcon size={22} />
                     </a>
                   </div>
                 </div>

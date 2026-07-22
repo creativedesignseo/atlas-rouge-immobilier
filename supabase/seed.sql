@@ -75,6 +75,6 @@ INSERT INTO site_settings (key, value) VALUES
   ('city_postal', '40000 Marrakech, Maroc'),
   ('hours_weekday', 'Lun – Ven : 9h – 18h'),
   ('hours_saturday', 'Sam : 10h – 14h'),
-  ('instagram_url', '#'),
-  ('facebook_url', '#')
+  ('instagram_url', 'https://www.instagram.com/atlasrougeimmo/'),
+  ('tiktok_url', 'https://www.tiktok.com/@atlas.rouge.immo')
 ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;

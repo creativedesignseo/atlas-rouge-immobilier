@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLang } from '@/hooks/useLang'
+import { INSTAGRAM_URL, TIKTOK_URL } from '@/lib/contact'
+import { InstagramIcon, TikTokIcon } from '@/components/icons/SocialIcons'
 
 export default function Footer() {
   const { path } = useLang()
@@ -27,14 +29,6 @@ export default function Footer() {
       ],
     },
     {
-      titleKey: 'ourApps',
-      links: [
-        { labelKey: 'iosApp', href: '#' },
-        { labelKey: 'androidApp', href: '#' },
-        { labelKey: 'emailAlerts', href: '#' },
-      ],
-    },
-    {
       titleKey: 'legal',
       links: [
         { labelKey: 'legalNotice', href: '#' },
@@ -46,16 +40,14 @@ export default function Footer() {
   ]
 
   const socialLinks = [
-    { label: 'Instagram', href: '#' },
-    { label: 'Facebook', href: '#' },
-    { label: 'LinkedIn', href: '#' },
-    { label: 'YouTube', href: '#' },
+    { label: 'Instagram', href: INSTAGRAM_URL, Icon: InstagramIcon },
+    { label: 'TikTok', href: TIKTOK_URL, Icon: TikTokIcon },
   ]
 
   return (
     <footer className="bg-midnight text-white">
       <div className="max-w-[1280px] mx-auto px-6 lg:px-12 py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
           {footerColumns.map((column) => (
             <div key={column.titleKey}>
               <h4 className="font-inter text-[14px] font-semibold mb-4 text-white">
@@ -80,18 +72,20 @@ export default function Footer() {
             <h4 className="font-inter text-[14px] font-semibold mb-4 text-white">
               {t('followUs')}
             </h4>
-            <ul className="space-y-3">
-              {socialLinks.map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="text-white/60 text-[14px] font-inter hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </a>
-                </li>
+            <div className="flex items-center gap-4">
+              {socialLinks.map(({ label, href, Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="flex items-center justify-center w-11 h-11 rounded-full bg-white/10 text-white/80 hover:bg-terracotta hover:text-white transition-colors"
+                >
+                  <Icon size={20} />
+                </a>
               ))}
-            </ul>
+            </div>
           </div>
         </div>
 

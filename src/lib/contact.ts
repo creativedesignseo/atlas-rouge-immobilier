@@ -13,6 +13,13 @@ export const PHONE_NUMBER = '+212648024156'
 // Human-readable, spaced format for visible text (buttons, footer, etc.).
 export const PHONE_NUMBER_DISPLAY = '+212 648 02 41 56'
 
+// ────────────────────────────────────────────────────────────────────
+// Social networks — the ONLY two active accounts. Update here and both
+// the footer and the contact page reflect the change.
+// ────────────────────────────────────────────────────────────────────
+export const INSTAGRAM_URL = 'https://www.instagram.com/atlasrougeimmo/'
+export const TIKTOK_URL = 'https://www.tiktok.com/@atlas.rouge.immo'
+
 /**
  * Build a WhatsApp click-to-chat URL with a pre-filled message.
  * Uses the wa.me short-link form so it works on web and in the WhatsApp
