@@ -3,19 +3,17 @@ import { useTranslation } from 'react-i18next'
 import { submitContactForm } from '@/services/contact.service'
 import { Link } from 'react-router-dom'
 import { useLang } from '@/hooks/useLang'
-import { INSTAGRAM_URL, PHONE_NUMBER, PHONE_NUMBER_DISPLAY, TIKTOK_URL, WHATSAPP_NUMBER } from '@/lib/contact'
+import { EMAIL, INSTAGRAM_URL, PHONE_NUMBER, PHONE_NUMBER_DISPLAY, TIKTOK_URL } from '@/lib/contact'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
-  MapPin,
   Phone,
   Mail,
   Clock,
   ChevronRight,
   Check,
   ChevronDown,
-  MessageCircle,
 } from 'lucide-react'
 import { InstagramIcon, TikTokIcon } from '@/components/icons/SocialIcons'
 import SectionReveal from '@/components/SectionReveal'
@@ -354,20 +352,6 @@ export default function Contact() {
 
               <div className="space-y-7">
                 <div className="info-block flex items-start gap-4">
-                  <MapPin size={22} strokeWidth={2.25} className="text-terracotta shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-inter text-[12px] font-medium text-text-secondary uppercase tracking-[0.3px] mb-1">
-                      {t('info.address')}
-                    </p>
-                    <p className="font-inter text-[15px] text-text-primary leading-relaxed">
-                      {settings?.address || '123 Boulevard Mohamed VI, Guéliz'}
-                      <br />
-                      {settings?.city_postal || '40000 Marrakech, Maroc'}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="info-block flex items-start gap-4">
                   <Phone size={22} strokeWidth={2.25} className="text-terracotta shrink-0 mt-0.5" />
                   <div>
                     <p className="font-inter text-[12px] font-medium text-text-secondary uppercase tracking-[0.3px] mb-1">
@@ -383,33 +367,16 @@ export default function Contact() {
                 </div>
 
                 <div className="info-block flex items-start gap-4">
-                  <MessageCircle size={22} strokeWidth={2.25} className="text-terracotta shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-inter text-[12px] font-medium text-text-secondary uppercase tracking-[0.3px] mb-1">
-                      WhatsApp
-                    </p>
-                    <a
-                      href={`https://wa.me/${(settings?.whatsapp || WHATSAPP_NUMBER).replace(/\D/g, '')}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-inter text-[15px] text-text-primary hover:text-terracotta transition-colors"
-                    >
-                      {settings?.whatsapp || PHONE_NUMBER_DISPLAY}
-                    </a>
-                  </div>
-                </div>
-
-                <div className="info-block flex items-start gap-4">
                   <Mail size={22} strokeWidth={2.25} className="text-terracotta shrink-0 mt-0.5" />
                   <div>
                     <p className="font-inter text-[12px] font-medium text-text-secondary uppercase tracking-[0.3px] mb-1">
                       {t('info.email')}
                     </p>
                     <a
-                      href={`mailto:${settings?.email || 'contact@atlasrouge.immo'}`}
+                      href={`mailto:${settings?.email || EMAIL}`}
                       className="font-inter text-[15px] text-text-primary hover:text-terracotta transition-colors"
                     >
-                      {settings?.email || 'contact@atlasrouge.immo'}
+                      {settings?.email || EMAIL}
                     </a>
                   </div>
                 </div>
@@ -461,51 +428,6 @@ export default function Contact() {
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* ═══════ MAP ═══════ */}
-      <section className="bg-midnight h-[400px] relative flex items-center justify-center overflow-hidden">
-        {/* Decorative map pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern
-                id="grid"
-                width="40"
-                height="40"
-                patternUnits="userSpaceOnUse"
-              >
-                <path
-                  d="M 40 0 L 0 0 0 40"
-                  fill="none"
-                  stroke="white"
-                  strokeWidth="0.5"
-                />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" />
-          </svg>
-        </div>
-
-        {/* Decorative circles for roads */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-[300px] h-[300px] rounded-full border border-white/10 absolute" />
-          <div className="w-[500px] h-[500px] rounded-full border border-white/5 absolute" />
-          <div className="w-[200px] h-[200px] rounded-full border border-terracotta/20 absolute" />
-        </div>
-
-        {/* Center pin */}
-        <div className="relative z-10 text-center">
-          <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-terracotta flex items-center justify-center shadow-lg">
-            <MapPin size={24} className="text-white" />
-          </div>
-          <p className="font-display text-[18px] text-white mb-1">
-            {settings?.company_name || 'Atlas Rouge Immobilier'}
-          </p>
-          <p className="font-inter text-[13px] text-white/60">
-            {settings?.address || '123 Boulevard Mohamed VI, Marrakech'}
-          </p>
         </div>
       </section>
 

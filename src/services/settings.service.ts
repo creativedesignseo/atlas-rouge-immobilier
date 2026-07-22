@@ -1,5 +1,5 @@
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
-import { INSTAGRAM_URL, PHONE_NUMBER_DISPLAY, TIKTOK_URL, WHATSAPP_NUMBER } from '@/lib/contact'
+import { EMAIL, INSTAGRAM_URL, PHONE_NUMBER_DISPLAY, TIKTOK_URL, WHATSAPP_NUMBER } from '@/lib/contact'
 
 export type SiteSettings = Record<string, string>
 
@@ -9,9 +9,7 @@ const defaultSettings: SiteSettings = {
   agent_title: 'Conseillère immobilière',
   phone: PHONE_NUMBER_DISPLAY,
   whatsapp: `+${WHATSAPP_NUMBER}`,
-  email: 'contact@atlasrouge.immo',
-  address: '123 Boulevard Mohamed VI, Guéliz',
-  city_postal: '40000 Marrakech, Maroc',
+  email: EMAIL,
   hours_weekday: 'Lun – Ven : 9h – 18h',
   hours_saturday: 'Sam : 10h – 14h',
   instagram_url: INSTAGRAM_URL,

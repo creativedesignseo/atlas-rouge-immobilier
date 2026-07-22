@@ -72,7 +72,7 @@ export default function Footer() {
             <h4 className="font-inter text-[14px] font-semibold mb-4 text-white">
               {t('followUs')}
             </h4>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-5">
               {socialLinks.map(({ label, href, Icon }) => (
                 <a
                   key={label}
@@ -80,9 +80,9 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="flex items-center justify-center w-11 h-11 rounded-full bg-white/10 text-white/80 hover:bg-terracotta hover:text-white transition-colors"
+                  className="text-white/70 hover:text-terracotta transition-colors"
                 >
-                  <Icon size={20} />
+                  <Icon size={24} />
                 </a>
               ))}
             </div>

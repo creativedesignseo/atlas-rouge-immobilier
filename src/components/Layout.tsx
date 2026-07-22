@@ -2,6 +2,7 @@ import { Suspense, useEffect } from 'react'
 import { useLocation, Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
 import Footer from './Footer'
+import FloatingWhatsApp from './FloatingWhatsApp'
 
 export default function Layout() {
   const { pathname } = useLocation()
@@ -19,6 +20,7 @@ export default function Layout() {
         </Suspense>
       </main>
       <Footer />
+      <FloatingWhatsApp />
     </div>
   )
 }

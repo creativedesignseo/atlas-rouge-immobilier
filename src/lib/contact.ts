@@ -13,6 +13,9 @@ export const PHONE_NUMBER = '+212648024156'
 // Human-readable, spaced format for visible text (buttons, footer, etc.).
 export const PHONE_NUMBER_DISPLAY = '+212 648 02 41 56'
 
+// Corporate email (Zoho Mail on atlasrouge.com).
+export const EMAIL = 'info@atlasrouge.com'
+
 // ────────────────────────────────────────────────────────────────────
 // Social networks — the ONLY two active accounts. Update here and both
 // the footer and the contact page reflect the change.
