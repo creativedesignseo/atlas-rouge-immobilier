@@ -3,6 +3,42 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Consent Mode v2 + Google Tag Manager. Analytics/ads storage is DENIED
+         by default (RGPD); it's only granted once the cookie banner is
+         accepted. The banner (src/components/CookieBanner.tsx) calls
+         window.gtag('consent','update',…). Returning visitors who already
+         accepted are granted here, before GTM fires any tag. -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        wait_for_update: 500
+      });
+      try {
+        if (localStorage.getItem('atlas-rouge-cookie-consent') === 'accepted') {
+          gtag('consent', 'update', {
+            ad_storage: 'granted',
+            ad_user_data: 'granted',
+            ad_personalization: 'granted',
+            analytics_storage: 'granted'
+          });
+        }
+      } catch (e) {}
+    </script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TW5NLSKR');</script>
+    <!-- End Google Tag Manager -->
+
     <title>Atlas Rouge Immobilier | Villas, Riads & Appartements à Marrakech</title>
     <meta name="description" content="Découvrez plus de 3 500 annonces immobilières à Marrakech : villas avec piscine, riads rénovés, appartements neufs. Accompagnement francophone de A à Z." />
     <meta name="keywords" content="immobilier Marrakech, villa Marrakech, riad Marrakech, appartement Marrakech, achat immobilier Maroc, agence immobilière Marrakech" />
@@ -82,6 +118,10 @@
     </script>
   </head>
   <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TW5NLSKR"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -46,6 +46,17 @@ export default function CookieBanner() {
   function decide(c: 'accepted' | 'rejected') {
     saveChoice(c)
     setVisible(false)
+    // Actualiza el Consent Mode de Google (definido en index.html). Solo con
+    // 'accepted' se conceden analytics/ads; con 'rejected' se mantienen
+    // denegados, así GTM/GA4 no rastrean sin consentimiento (RGPD).
+    const granted = c === 'accepted'
+    const w = window as unknown as { gtag?: (...args: unknown[]) => void }
+    w.gtag?.('consent', 'update', {
+      ad_storage: granted ? 'granted' : 'denied',
+      ad_user_data: granted ? 'granted' : 'denied',
+      ad_personalization: granted ? 'granted' : 'denied',
+      analytics_storage: granted ? 'granted' : 'denied',
+    })
     window.dispatchEvent(
       new CustomEvent('atlasrouge:cookie-consent', { detail: c }),
     )
