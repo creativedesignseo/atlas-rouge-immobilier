@@ -6,7 +6,23 @@
 
 ## CIERRE de sesión — Claude Sonnet 5 — 2026-07-23 (GA4 + GTM + Consent Mode v2)
 
-**Realidad verificada:** `bash scripts/verify.sh` verde. `HEAD` = `origin/main`
+**Re-verificado tras el commit de documentación** (mismo día, sesión
+posterior): el commit `c4d4b7fe` (solo docs) disparó su propio deploy en
+Netlify — `HEAD` = `origin/main` = **`c4d4b7fe`**, working tree limpio (solo
+los working files del owner en `brand/*.af`). Deploy más reciente
+(`6a622cfa8195530008f0e8b1`) confirmado **`ready`**, `commit_ref` coincide
+exacto, `context: production`, publicado `2026-07-23T15:02:59Z`, sin secretos
+en el scan (626 archivos escaneados). Re-comprobado en vivo con `curl` a
+`atlasrouge.com`: `GTM-TW5NLSKR` presente, `consent` presente (4 ocurrencias),
+`HTTP/2 200`. `bash scripts/verify.sh` vuelto a correr: verde. Nada ha
+cambiado respecto al cierre original de abajo — solo se confirma que el
+redeploy automático por el push de docs no rompió ni alteró el comportamiento
+ya verificado.
+
+---
+
+**Realidad verificada (cierre original, mismo día, commit de código):**
+`bash scripts/verify.sh` verde. `HEAD` = `origin/main`
 = `f35c27aa`. Deploy Netlify **`ready`**, `commit_ref` `f35c27aa` coincide
 exacto (`context: production`, publicado `2026-07-23T14:48:26Z`, sin secretos
 detectados en el scan). Verificado en `atlasrouge.com` en vivo (no solo el
