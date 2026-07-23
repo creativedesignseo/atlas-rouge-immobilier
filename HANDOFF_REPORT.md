@@ -4,6 +4,66 @@
 
 ---
 
+## CIERRE de sesión — Claude Sonnet 5 — 2026-07-23 (GA4 + GTM + Consent Mode v2)
+
+**Realidad verificada:** `bash scripts/verify.sh` verde. `HEAD` = `origin/main`
+= `f35c27aa`. Deploy Netlify **`ready`**, `commit_ref` `f35c27aa` coincide
+exacto (`context: production`, publicado `2026-07-23T14:48:26Z`, sin secretos
+detectados en el scan). Verificado en `atlasrouge.com` en vivo (no solo el
+HTML): `curl` confirma `GTM-TW5NLSKR` + `consent` presentes en la respuesta;
+inspección directa de la página cargada muestra `window.google_tag_manager`
+poblado, `dataLayer` con el ciclo completo `gtm.js`→`gtm.dom`→`gtm.load`, y la
+etiqueta GA4 disparando `gtag/js?id=G-DW0QTJH33V` de verdad. `ga4 realtime`
+confirmó **1 usuario activo (España)** de forma independiente — tercera vía de
+verificación.
+
+**Pedido del owner:** "crear una propiedad en Google Analytics para esta web y
+las metas etiquetas también para que todo esté conectado". Eligió
+explícitamente: (a) Google Tag Manager como método (no gtag directo en
+código), (b) conectar el Consent Mode al banner de cookies **ahora**, no
+después.
+
+**Creado en las cuentas Google de `creativedesignseo@gmail.com` (adspubli):**
+- Propiedad GA4 **"Atlas Rouge Immobilier"** — id `546727602`, bajo la cuenta
+  GA `244866621`. Stream web `G-DW0QTJH33V`, zona horaria Europe/Paris, EUR.
+- Contenedor GTM **`GTM-TW5NLSKR`** (id `259110871`), bajo la cuenta GTM
+  `6203566842`. Una etiqueta GA4 Configuration en el trigger "All Pages"
+  (`2147479553`). **Publicado como versión 2** del contenedor.
+
+**Integrado en el código (commit `f35c27aa`):**
+- `index.html`: script de **Consent Mode v2** ANTES del snippet de GTM —
+  `analytics_storage`/`ad_storage`/`ad_user_data`/`ad_personalization`
+  denegados por defecto (obligatorio RGPD para visitantes UE); si el
+  `localStorage` ya tiene `'atlas-rouge-cookie-consent' === 'accepted'` de una
+  visita anterior, concede antes de que GTM cargue. Snippet head + `noscript`
+  body estándar de Google instalados tal cual.
+- `src/components/CookieBanner.tsx`: los botones Aceptar/Rechazar ahora llaman
+  `window.gtag('consent','update',...)` además de guardar en `localStorage` y
+  emitir el evento existente `atlasrouge:cookie-consent`. Rechazar mantiene
+  todo denegado — GA4 no rastrea sin consentimiento explícito.
+- **Meta etiquetas SEO**: revisadas, ya estaban completas y correctas en
+  `index.html` (title/description/keywords/canonical/hreflang FR-ES-EN/Open
+  Graph/Twitter Card) — no se tocaron, no hacía falta nada ahí. Si "metas"
+  se refería a algo más (Meta/Facebook Pixel, verificación de Search
+  Console), no se ha confirmado con el owner — pendiente si lo pide.
+
+**Warning pre-existente sin relación** (ya anotado en cierres anteriores): 1
+de 5 reglas de redirect en `netlify.toml` sigue sin procesarse
+(`{:from=>"/assets/*", :status=>404}`). No bloquea el deploy.
+
+**Pendiente / próximos pasos:**
+- Configurar **conversiones** en GA4 (submit de formularios de contacto/
+  estimación) — hoy solo hay tráfico, no eventos de conversión.
+- Vincular GTM/GA4 con la cuenta de Google Ads (`freecoche`, 407-193-7268) para
+  medir conversiones de las campañas — es el bloqueante "tracking de
+  conversión" que aparecía en rojo en `tasks/current.md` (campaña de
+  propietarios, 2026-07-06). Con esto ya no está bloqueado a nivel técnico de
+  sitio; falta el enlace Ads↔GA4 en la interfaz de Google Ads.
+- Owner: revisar el aviso de cookies existente cumple RGPD a nivel de texto/
+  copy (el mecanismo técnico de consentimiento ya es correcto).
+
+---
+
 ## CIERRE de sesión — Claude Opus 4.8 — 2026-07-22 (Contacto, iconos sin fondo, fix campo de teléfono)
 
 **Realidad verificada:** `bash scripts/verify.sh` verde (lint+build). Git

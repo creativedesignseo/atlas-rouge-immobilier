@@ -4,7 +4,38 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-07-22 (Contacto: email info@, teléfono único + WhatsApp flotante, sin dirección; iconos sin fondo; fix desplegable teléfono)
+**Last updated:** 2026-07-23 (GA4 + GTM + Consent Mode v2 — conectado y verificado en vivo)
+
+## GA4 + GTM + Consent Mode — 2026-07-23 ✅ HECHO Y EN VIVO
+
+Pedido del owner: crear la propiedad de Analytics y "las metas etiquetas" para
+que todo esté conectado de cara a las campañas. Eligió Google Tag Manager +
+conectar el Consent Mode al banner de cookies ya mismo (commit `f35c27aa`,
+deploy Netlify `ready`, `commit_ref` coincide exacto).
+
+- ✅ **Propiedad GA4** "Atlas Rouge Immobilier" (id `546727602`, stream
+  `G-DW0QTJH33V`, cuenta GA `244866621`).
+- ✅ **Contenedor GTM** `GTM-TW5NLSKR` (id `259110871`, cuenta GTM
+  `6203566842`), etiqueta GA4 Configuration en All Pages, **publicado v2**.
+- ✅ **Instalado en el sitio**: snippet GTM (head+noscript) en `index.html`
+  junto con Consent Mode v2 (denegado por defecto, concedido tras aceptar el
+  banner o desde `localStorage` en visitas recurrentes).
+- ✅ **`CookieBanner.tsx`** conectado: Aceptar/Rechazar llaman
+  `gtag('consent','update',...)` — RGPD real, no solo cosmético.
+- ✅ **Verificado en vivo por 3 vías independientes**: `curl` al HTML servido
+  (GTM-TW5NLSKR + consent presentes), inspección de la página cargada
+  (`window.google_tag_manager` poblado, ciclo `gtm.js/gtm.dom/gtm.load`
+  completo, la etiqueta GA4 disparó `gtag/js` de verdad), y `ga4 realtime`
+  (1 usuario activo registrado independientemente).
+- ✅ **Meta etiquetas SEO**: revisadas, ya estaban completas — no se tocaron.
+- ⏳ **Pendiente**: configurar conversiones en GA4 (envíos de formularios) y
+  vincular GTM/GA4 con la cuenta de Google Ads `freecoche` (407-193-7268) para
+  medir conversión de las 3 campañas de propietarios — esto era el bloqueante
+  "tracking de conversión, no verificado" que aparecía en rojo más abajo
+  (sección "Google Ads — campaña propietarios"); el lado técnico del sitio ya
+  no bloquea, falta el enlace Ads↔GA4 en la interfaz de Google.
+
+---
 
 ## Contacto + iconos + campo de teléfono — 2026-07-22 ✅ HECHO Y EN VIVO
 
@@ -187,9 +218,11 @@ copias sueltas en `marketing/`.
   de frase ya activas). **No confirmado todavía que se haya subido.**
 - 🔴 **Bloqueante de facturación:** la cuenta muestra "Se requiere un nuevo
   método de pago" — resolver antes de activar nada.
-- 🔴 **Bloqueante no verificado esta sesión:** tracking de conversión (GA4 +
-  conversión de Ads). Última vez comprobado en código (2026-06-05): NO existía.
-  Falta re-verificar antes de activar cualquier campaña.
+- 🟡 **Tracking de sitio (GA4/GTM) ya resuelto** (2026-07-23, ver sección de
+  arriba): GA4 `G-DW0QTJH33V` + GTM `GTM-TW5NLSKR` en vivo con Consent Mode.
+  **Sigue faltando** vincular esa propiedad GA4 con la cuenta de Google Ads
+  `freecoche` (407-193-7268) y configurar la conversión de lead — sin eso no
+  hay forma de medir qué campaña convierte. No activar hasta cerrar esto.
 - ⚠️ **NO ACTIVAR las campañas** hasta cerrar los 3 puntos rojos de arriba.
 - 📌 **Lección para el futuro:** las keywords originales se escribieron sin
   verificar volumen real (Semrush no disponible por plan). Cualquier keyword
