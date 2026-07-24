@@ -4,7 +4,36 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-07-24 (landing /proprietaires: quita el "look de plantilla IA", ingeniería inversa de Semrush, sección problema/solución eliminada)
+**Last updated:** 2026-07-24 (landing /proprietaires: 1 solo CTA en el hero, bug real de botón partido en móvil arreglado)
+
+## Jerarquía del hero + bug de botón en móvil real — 2026-07-24 ✅ HECHO
+
+Feedback directo del owner viendo la landing en su móvil real (captura de pantalla):
+
+- ✅ **Demasiados elementos con forma de botón en el primer vistazo**: el hero
+  tenía un CTA primario + un CTA secundario ("Découvrir nos services", que
+  además ALEJA del formulario — contradice el objetivo de conversión de una
+  landing cerrada) + 3 píldoras de confianza justo debajo con el mismo
+  aspecto de botón. Corregido: se elimina el botón secundario del hero (el
+  contenido de servicios sigue existiendo más abajo en la página para quien
+  haga scroll, solo ya no compite en el primer vistazo); las 3 píldoras de
+  confianza pasan a texto simple con check, sin fondo ni borde de píldora.
+- ✅ **Bug real encontrado por el owner en un móvil de verdad**: el CTA
+  "Estimer mon bien gratuitement", agrandado en la ronda anterior de esta
+  sesión (18px/38px, 1.12rem), se partía en 2 líneas en anchos de móvil
+  reales (~375-400px) porque el texto francés + el padding nuevo ya no
+  cabían en una línea — la flecha decorativa quedaba descolgada a media
+  altura del botón, en vez de al lado del texto. Causa raíz: mi propio
+  agrandamiento de botones de la ronda anterior, sin comprobar en un ancho
+  de móvil estrecho real. Arreglado con una regla específica de móvil que
+  reduce el CTA a una talla que cabe en una línea (14px/20px, .96rem) y
+  oculta la flecha decorativa en ese breakpoint (más seguro que forzar
+  `white-space:nowrap`, que habría arriesgado desbordamiento en pantallas
+  aún más estrechas). Verificado por DOM a 375px: el botón mide exactamente
+  58px de alto (una sola línea, no el alto que tendría partido en dos) y
+  por captura de pantalla real del propio dispositivo del owner.
+
+---
 
 ## De-genericización + ingeniería inversa Semrush — 2026-07-24 ✅ HECHO
 

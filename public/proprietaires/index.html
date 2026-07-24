@@ -238,19 +238,17 @@
     }
     .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 30px; }
     .trust-row { display: flex; flex-wrap: wrap; gap: 12px; }
+    /* Texte simple + coche — pas de pilule/fond qui rappelle un bouton et
+       fait concurrence au CTA juste au-dessus (retour direct du client). */
     .trust-chip {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: rgba(255,255,255,0.74);
-      border: 1px solid rgba(23,32,51,0.1);
-      border-radius: 999px;
-      padding: 8px 12px;
-      font-size: 0.78rem;
+      gap: 7px;
+      font-size: 0.82rem;
       font-weight: 700;
-      backdrop-filter: blur(9px);
+      color: var(--ink-soft);
     }
-    .trust-chip svg { width: 15px; height: 15px; color: var(--terracotta); }
+    .trust-chip svg { width: 15px; height: 15px; color: var(--terracotta); flex: 0 0 auto; }
 
     .lead-card {
       /* No backdrop-filter here: at 97% opacity the blur is invisible but its
@@ -581,9 +579,22 @@
       .hero-lead { font-size: .98rem; line-height: 1.55; margin-bottom: 22px; }
       .hero-actions { display: grid; grid-template-columns: 1fr; margin-bottom: 22px; }
       .hero-actions .btn { width: 100%; }
-      .hero-actions .btn-secondary { display: none; }
+      /* Le CTA agrandi (18px/38px, 1.12rem) casse en 2 lignes sur mobile —
+       le texte français "Estimer mon bien gratuitement" ne tient pas sur
+       une ligne à cette taille avec cette marge, la flèche se retrouve
+       décalée. Réduit spécifiquement en mobile pour tenir sur une ligne. */
+      .hero-actions .btn-primary, .estimate-action .btn, .final-card .btn {
+        min-height: 58px;
+        padding: 14px 20px;
+        font-size: .96rem;
+      }
+      /* Flèche décorative : si le texte repasse quand même sur 2 lignes sur
+       un très petit écran, elle ne doit pas rester plantée à mi-hauteur du
+       bouton — plus sûr de la retirer en mobile que de risquer un
+       débordement avec un white-space:nowrap. */
+      .hero-actions .btn-primary .btn-icon { display: none; }
       .trust-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-      .trust-chip { font-size: .68rem; justify-content: center; padding: 8px 7px; }
+      .trust-chip { font-size: .72rem; justify-content: center; }
       .trust-chip:nth-child(3) { display: none; }
       .lead-card { padding: 22px 18px; border-radius: 20px; }
       .lead-card-top { display: block; }
@@ -675,7 +686,6 @@
               Estimer mon bien gratuitement
               <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a>
-            <a class="btn btn-secondary" href="#services" data-track="hero_services">Découvrir nos services</a>
           </div>
           <div class="trust-row" aria-label="Avantages principaux">
             <span class="trust-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Interlocuteur francophone</span>
