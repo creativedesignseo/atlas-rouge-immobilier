@@ -4,7 +4,53 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-07-24 (landing /proprietaires: bug botón flotante duplicado, foto Palmeraie, logos Airbnb/Booking, más texto recortado)
+**Last updated:** 2026-07-24 (landing /proprietaires: quita el "look de plantilla IA", ingeniería inversa de Semrush, sección problema/solución eliminada)
+
+## De-genericización + ingeniería inversa Semrush — 2026-07-24 ✅ HECHO
+
+Dos rondas de feedback directo del owner sobre la misma landing:
+
+**1) "Se ve hecho con IA"** — el owner señaló correctamente 3 patrones muy
+reconocibles de plantilla genérica: texto en cursiva de acento, fondos
+pastel en insignias/iconos, y bloques repetidos. Inventario completo hecho
+por grep antes de tocar nada; corregido:
+- Cursiva quitada del span del H1 (`En toute sérénité.`) — se mantiene el
+  color terracota, sin `font-style: italic`.
+- 5 insignias con fondo pastel aplanadas a icono/glifo sin fondo: badge
+  GRATUIT (ahora punto + texto, sin píldora), icono de "problema" (glifo
+  serif), check de "solución" (check tipográfico), icono de servicio (sin
+  cuadrado de fondo, SVG más grande), icono de "confianza" (letras sin
+  círculo).
+- Anillo decorativo (`.intent-shape`) idéntico repetido en las 3 tarjetas
+  de "Votre projet" — eliminado por completo (relleno puramente visual).
+
+**2) "Demasiada información satura"** — el owner pidió ingeniería inversa
+de `semrush.com/lp/product-free-trial` (analizado en vivo): esa página usa
+números gigantes en vez de párrafos para convencer, botones más grandes,
+y cero relleno redundante. Aplicado con **datos ya reales y verificados
+del propio proyecto** (nada inventado):
+- ✅ Nueva sección "Des chiffres clairs" (números en Playfair Display XL)
+  justo después del hero: **0%** a cargo del propietario en la venta (lo
+  paga el comprador — dato ya verificado en `sell.json`), **8-12%**
+  comisión de gestión locativa (tiers reales Essentiel/Confort/Premium),
+  **24-48h** plazo de respuesta.
+- ✅ CTAs principales (hero / banda de estimación / CTA final) agrandados
+  (64px alto, 1.12rem) — antes 54px/1rem, igual que los demás botones.
+- ✅ **Sección "problema/solución" completa eliminada** — eran 6 bloques
+  (3 problemas + 3 soluciones) que repetían exactamente el mismo mensaje
+  ("equipo local, todo resuelto, comunicación clara") que ya dice la
+  sección de confianza más abajo con una foto real. Cero mensaje único
+  perdido, confirmado leyendo ambas secciones antes de borrar. CSS muerto
+  correspondiente (`.problem-*`, `.solution-*`) también eliminado.
+- Verificado por orden real del texto de la página (`get_page_text`):
+  Hero → números → Votre projet → servicios, sin hueco ni resto de la
+  sección eliminada.
+
+⚠️ Capturas del navegador embebido siguen fallando de forma intermitente
+en esta sesión (limitación ya documentada, no relacionada con el código) —
+verificado por DOM/computed-style y por el texto real de la página.
+
+---
 
 ## Ajustes finos landing /proprietaires — 2026-07-24 ✅ HECHO
 
