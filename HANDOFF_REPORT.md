@@ -19,6 +19,16 @@ cambiado respecto al cierre original de abajo — solo se confirma que el
 redeploy automático por el push de docs no rompió ni alteró el comportamiento
 ya verificado.
 
+**2ª re-verificación** (mismo día, tras el commit `8b747644`, que a su vez
+disparó otro deploy): `HEAD`=`origin/main`=`8b747644`, deploy
+`6a62a5beb188810008f8cf83` `ready`, `commit_ref` coincide, publicado
+`2026-07-23T23:38:11Z`, sin secretos. `curl` en vivo: `GTM-TW5NLSKR` +
+`consent` (×4) presentes, `HTTP/2 200`. `verify.sh` verde. Sin cambios de
+código desde el cierre original — cada commit de *este mismo documento*
+dispara un redeploy nuevo en Netlify (comportamiento normal, no un bug), así
+que re-verificaciones sucesivas sin trabajo nuevo de por medio seguirán
+mostrando exactamente esto.
+
 ---
 
 **Realidad verificada (cierre original, mismo día, commit de código):**
