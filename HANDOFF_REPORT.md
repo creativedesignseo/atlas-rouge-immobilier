@@ -4,6 +4,78 @@
 
 ---
 
+## CIERRE de sesión — Claude Sonnet 5 — 2026-07-24 (7 rondas de revisión de la landing /proprietaires)
+
+**Realidad verificada, no supuesta:** `HEAD` = `origin/main` = `89d9a246`. Deploy
+Netlify **`ready`** (`6a63c029e9c5fe000847404d`), `commit_ref` coincide exacto,
+`context: production`, publicado `2026-07-24T19:43:10Z`, 649 archivos escaneados
+sin secretos. `bash scripts/verify.sh` verde. Verificado con `curl` en vivo
+sobre `atlasrouge.com/proprietaires/`: `HTTP/2 200`, `Découvrir nos services` = 0
+(botón eliminado), `min-width: 821px` presente ×2 (fix del CTA duplicado),
+`padding: 40px` presente (formulario agrandado), `highlightLead` presente ×3
+(fix del CTA "no hace nada"). Todos los 3 bloques `<script>` inline del archivo
+re-validados con `node --check` tras cada edición de JS (`verify.sh` **no**
+cubre este HTML estático, solo el SPA en `src/`).
+
+Después del cierre anterior (resolución del RLS), el owner hizo una revisión
+exhaustiva de la landing `/proprietaires` en vivo (desktop y móvil real), con
+7 rondas de feedback consecutivas, cada una verificada y publicada por
+separado:
+
+1. **`b085ac59`** — el CTA fijo de móvil no tenía lógica de visibilidad, se
+   montaba encima del botón del formulario (arreglado con
+   `IntersectionObserver`); foto genérica de villa sustituida por una vista
+   aérea real de La Palmeraie (Pexels, verificada); logos de Airbnb y
+   Booking.com añadidos en la tarjeta de location saisonnière.
+2. **`4010a77a`** — el owner señaló correctamente 3 patrones de "plantilla de
+   IA" (cursiva de acento, 5 insignias con fondo pastel, anillo decorativo
+   repetido 3 veces) — todos corregidos. Ingeniería inversa en vivo de
+   `semrush.com/lp/product-free-trial` aplicada con datos reales del propio
+   proyecto (nunca inventados): fila de números gigantes (0% / 8-12% / 24-48h),
+   botones principales agrandados. Sección "problema/solución" completa
+   eliminada (6 bloques que repetían el mismo mensaje que la sección de
+   confianza, con foto real, más abajo).
+3. **`b7d5a6a8`** — demasiados elementos con forma de botón en el hero (CTA
+   secundario que alejaba del formulario + 3 píldoras de confianza con
+   aspecto de botón) — corregido; y un bug real encontrado en un móvil físico
+   del owner: el CTA agrandado en la ronda 2 se partía en 2 líneas en anchos
+   reales (~375-400px), causado por mi propio agrandamiento sin comprobar en
+   dispositivo estrecho real.
+4. **`a6d01fc3`** — diagnóstico correcto del owner: el CTA "Estimer mon bien
+   gratuitement" no hacía nada visible en desktop (el formulario ya está a la
+   vista, un salto de ancla a un elemento visible no produce cambio alguno).
+   Arreglado con un pulso visual garantizado en los 5 enlaces `href="#lead"`
+   del sitio. **Autocrítica honesta:** al escribir ese arreglo declaré
+   `const leadCard` duplicado, lo que rompía con `SyntaxError` **todo** el
+   script de la página (ni el FAQ ni ningún clic habría funcionado) — detectado
+   con `node --check` antes de publicar nada roto, corregido antes del deploy.
+5. **`89d9a246`** — el owner insistió (con razón): aunque ya daba señal
+   visual, seguía habiendo 2 botones terracota en el mismo vistazo en desktop
+   (CTA del hero + "Continuer" del formulario). El CTA del hero ahora se
+   oculta en desktop (`min-width: 821px`, donde el formulario ya está visible
+   al lado) y se mantiene en móvil (donde sí hace falta para bajar hasta el
+   formulario). Formulario agrandado a petición explícita: la columna del
+   formulario pasó de ser la más estrecha del hero a ser la más ancha.
+
+**Patrón de trabajo de esta sesión:** cada ronda = fix → `node --check` sobre
+los 3 `<script>` inline (regla nueva, nacida de la ronda 4) → `bash
+scripts/verify.sh` → rebuild + verificación real en navegador (DOM/computed-style,
+ya que las capturas del navegador embebido fallaron de forma intermitente toda
+la sesión, limitación conocida) → commit + push → confirmación de deploy con
+`netlify-project-services-reader`/`netlify-deploy-services-reader` + `curl` en
+vivo → actualización de `tasks/current.md`. Sin excepciones, sin publicar nada
+sin verificar primero.
+
+**Estado actual de `/proprietaires`:** landing cerrada, en vivo, con GTM +
+Consent Mode, formulario de 3 pasos que inserta leads reales en Supabase
+(RLS ya resuelto en el cierre anterior), diseño propio del owner conservado
+pero pulido (sin tics de plantilla genérica), un único CTA claro por breakpoint,
+y datos 100% reales en cada cifra mostrada. Lista para recibir tráfico de
+campañas — quedan solo los bloqueantes ya conocidos y ajenos al código: método
+de pago de Google Ads y vínculo GA4↔Ads para medir conversión.
+
+---
+
 ## CIERRE de sesión — Claude Opus 4.8 — 2026-07-24 (RESOLUCIÓN del bug crítico de RLS)
 
 **✅ RESUELTO — los formularios de leads vuelven a insertar en producción.** El INSERT
