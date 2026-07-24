@@ -4,7 +4,41 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-07-24 (revisión completa landing /proprietaires: móvil + texto + velocidad)
+**Last updated:** 2026-07-24 (landing /proprietaires: bug botón flotante duplicado, foto Palmeraie, logos Airbnb/Booking, más texto recortado)
+
+## Ajustes finos landing /proprietaires — 2026-07-24 ✅ HECHO
+
+Ronda de feedback directo del owner tras revisar la landing en vivo:
+
+- ✅ **Bug real encontrado por el owner**: el CTA flotante móvil (`.mobile-bar`) no
+  tenía NINGUNA lógica de visibilidad — se mostraba siempre en `<=600px`, así que al
+  hacer scroll con la tarjeta del formulario todavía en pantalla, el botón fijo se
+  montaba encima de "Estimation gratuite" del formulario → parecían dos botones
+  pegados. Arreglado con un `IntersectionObserver` sobre `#lead`: la barra flotante
+  ahora solo aparece cuando el usuario ha hecho scroll más allá del formulario
+  (patrón estándar de "recordatorio flotante"). Verificado por DOM: oculto con
+  `#lead` en pantalla, visible tras pasar la tarjeta, sin solape con la bannière de
+  cookies (que ya se corrigió en la ronda anterior).
+- ✅ **Foto de la tarjeta "Présence locale"**: sustituida por una vista aérea real
+  de La Palmeraie (Pexels, verificada) — azoteas de terracota, oasis de palmeras,
+  piscina de resort, montañas del Atlas al fondo. Pedido explícito del owner: "una
+  zona de lujo de Marrakech" en vez de la foto genérica de villa reutilizada la
+  ronda anterior.
+- ✅ **Logos Airbnb + Booking.com**: añadidos en monocromo (no compiten con el
+  terracota, único color de acción) en la tarjeta "01 — Rentabiliser / Location
+  saisonnière" del bloque "Votre projet" — es la única tarjeta a la que aplican
+  (venta y alquiler largo no pasan por esas plataformas). SVG oficiales verificados
+  (Simple Icons, CC0), uso descriptivo ("diffusé sur"), sin logo modificado/recoloreado.
+- ✅ **Más texto recortado** (pedido explícito, 2ª ronda): microcopy de privacidad,
+  intro de la sección "problema", descripción del punto de confianza 3 — todos
+  acortados sin perder significado.
+- ⚠️ **Nota de verificación**: las capturas del navegador embebido fallaron de forma
+  repetida en esta sección concreta (limitación ya conocida, no relacionada con el
+  código) — verificado en su lugar por DOM/computed-style (posición, dimensiones,
+  color de los SVG, estado de las clases `is-visible`/`show`), método ya usado con
+  éxito en rondas anteriores de esta misma sesión.
+
+---
 
 ## Revisión landing /proprietaires — 2026-07-24 ✅ AUDITADA Y CORREGIDA
 
