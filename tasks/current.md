@@ -4,7 +4,40 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-07-24 (RLS de contact_submissions RESUELTO + landing /proprietaires en vivo)
+**Last updated:** 2026-07-24 (revisión completa landing /proprietaires: móvil + texto + velocidad)
+
+## Revisión landing /proprietaires — 2026-07-24 ✅ AUDITADA Y CORREGIDA
+
+Pedido del owner: revisar diseño completo, optimización móvil (reportó fallos), que el
+formulario funcione perfecto, reducir texto, y velocidad. Auditoría multi-agente (3
+dimensiones + verificación adversarial) + recorrido manual completo en móvil + test E2E
+real del formulario (lead insertado en Supabase por el UI en vivo y borrado después).
+
+- ✅ **Bug crítico visual** (encontrado a mano, no por los agentes): el h2 del
+  solution-panel salía BLANCO sobre fondo claro (ilegible en todas las resoluciones) —
+  la regla `.problem-section h2 {color:white}` contaminaba el panel interior claro.
+- ✅ **Móvil**: bannière de cookies ya no tapa el CTA fijo inferior (bottom 84px + botones
+  44px), FAQ abiertas sin recorte (max-height 480px), nota de privacidad legible (12px),
+  reglas CSS muertas eliminadas.
+- ✅ **Texto reducido** (~29 cambios): párrafos intro redundantes eliminados (intent/
+  services/estimate-band), 5 FAQ acortadas ~30-58% y en tono cliente (antes lenguaje de
+  especificación "doit préciser…"), descripciones de servicios a una línea, trust section
+  comprimida (punto duplicado y proof-panel eliminados), banner cookies con texto RGPD
+  preciso (menciona campañas), footer sin enlaces legales muertos (href="#").
+- ✅ **Velocidad**: imagen del estimate-band 633KB→147KB (invisible bajo overlay 97%),
+  imagen de la trust card daba **404** (nunca se mostró) → sustituida por URL verificada
+  200 (343KB), preconnect+preload del hero LCP (media-split 820px), fuentes recortadas
+  (DM Sans nunca se usaba; Playfair 600 sin reglas), logo de base64 inline (10.4KB por
+  carga) a SVG estático cacheable (7.4KB), backdrop-filter quitado de lead-card y
+  mobile-bar (coste GPU en scroll móvil sin beneficio visible a 97% opacidad).
+  HTML: 67.2KB → 56.7KB.
+- ✅ **Formulario verificado E2E en producción por el UI real**: paso 1→2→3, submit,
+  mensaje de éxito, evento `generate_lead` en dataLayer, fila en `contact_submissions`
+  con proyecto/tipo/habitaciones/quartier bien formados (borrada tras el test).
+- 📌 El plazo "sous 24 à 48 h" se mantiene: el sitio principal ya publica "Résultat en
+  24h" en Estimation (copy ya aprobado, esto es más conservador).
+
+---
 
 ## ✅ RESUELTO — RLS bloqueaba TODOS los formularios de leads — 2026-07-24
 
