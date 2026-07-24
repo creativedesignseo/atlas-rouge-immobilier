@@ -4,7 +4,46 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-07-24 (landing /proprietaires: 1 solo CTA en el hero, bug real de botón partido en móvil arreglado)
+**Last updated:** 2026-07-24 (landing /proprietaires: CTA "no hacía nada" arreglado + bug crítico de JS que rompía TODA la página, causado por mí)
+
+## 🔴 Bug crítico auto-causado + fix del CTA "que no hace nada" — 2026-07-24 ✅ HECHO
+
+El owner reportó, con mucha razón, que el botón "Estimer mon bien gratuitement"
+"no hacía absolutamente nada". Diagnóstico correcto: el enlace usa `href="#lead"`,
+que solo hace scroll hasta el formulario — pero en desktop el formulario **ya
+está a la vista** al lado del hero, así que el salto de ancla nativo no produce
+ningún cambio visible. No estaba roto a nivel de código, pero daba cero
+confirmación de que había pasado algo, así que se percibía como un botón muerto.
+
+**Fix aplicado:** un único manejador de clic para los 5 enlaces `href="#lead"`
+del sitio (cabecera, hero, banda de estimación, CTA final, barra fija móvil)
+que SIEMPRE hace scroll suave explícito + añade un destello/pulso visual
+(`box-shadow` animado en terracota) a la tarjeta del formulario, garantizando
+una señal inequívoca de "esto hizo algo" sin importar si el formulario ya
+estaba visible o no.
+
+**🔴 Bug crítico auto-introducido durante ese mismo arreglo:** al escribir el
+nuevo manejador declaré `const leadCard` sin darme cuenta de que YA existía
+esa misma constante más abajo en el script (del fix del botón flotante de
+la ronda anterior) → `SyntaxError: Identifier 'leadCard' has already been
+declared` → **el script entero de la página dejaba de ejecutarse**, así que
+NINGÚN clic funcionaba en toda la landing (ni el FAQ, ni el formulario, ni
+nada) — un bug bastante peor que el original. Detectado antes de publicar
+validando el script extraído con `node --check` (verify.sh NO cubre este
+archivo estático, solo el SPA). Corregido: una única declaración de
+`leadCard` al principio del script, reutilizada en los dos sitios que la
+necesitan. Re-validado con `node --check` (sintaxis limpia) y probado en
+vivo en el navegador: los 5 enlaces disparan el pulso correctamente, el
+proyecto se preselecciona (`airbnb` en el CTA del hero), y el FAQ (que
+había quedado roto por el mismo bug) vuelve a funcionar.
+
+**Lección para futuras ediciones de este archivo:** este es un HTML estático
+con `<script>` inline — `bash scripts/verify.sh` NO lo valida (solo cubre
+`src/` del SPA). Antes de publicar cualquier cambio de JS en
+`public/proprietaires/index.html`, extraer los bloques `<script>` y
+correr `node --check` sobre cada uno.
+
+---
 
 ## Jerarquía del hero + bug de botón en móvil real — 2026-07-24 ✅ HECHO
 

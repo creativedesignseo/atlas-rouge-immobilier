@@ -259,6 +259,15 @@
       padding: 28px;
       box-shadow: var(--shadow-lg);
     }
+    /* Repère visuel rejoué à chaque clic sur un CTA "#lead" — garantit que
+       le clic soit visiblement perçu même quand le formulaire est déjà
+       affiché à l'écran (desktop), où un simple ancrage ne bouge rien. */
+    @keyframes leadPulse {
+      0% { box-shadow: 0 0 0 0 rgba(181,83,58,.5), var(--shadow-lg); }
+      70% { box-shadow: 0 0 0 26px rgba(181,83,58,0), var(--shadow-lg); }
+      100% { box-shadow: 0 0 0 0 rgba(181,83,58,0), var(--shadow-lg); }
+    }
+    .lead-card.pulse { animation: leadPulse 1100ms ease-out; }
     .lead-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 22px; }
     .lead-card h3 { font-size: 1.35rem; margin-bottom: 6px; }
     .lead-card p { font-size: .9rem; margin-bottom: 0; }
@@ -964,6 +973,7 @@
       const progressBar = document.getElementById('progressBar');
       const projectInput = document.getElementById('projectInput');
       const successState = document.getElementById('successState');
+      const leadCard = document.getElementById('lead');
       let currentStep = 1;
 
       const track = (eventName, detail = {}) => {
@@ -979,6 +989,17 @@
         track('lead_form_step', { step: currentStep, project: projectInput.value });
       };
 
+      // Défilement + repère visuel clair sur la carte du formulaire. Sans ça,
+      // un clic sur un lien "#lead" ne produit AUCUN changement visible quand
+      // le formulaire est déjà à l'écran (desktop) — le bouton donne
+      // l'impression de ne servir à rien (retour direct du client).
+      const highlightLead = () => {
+        leadCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        leadCard.classList.remove('pulse');
+        void leadCard.offsetWidth; // force reflow pour rejouer l'animation
+        leadCard.classList.add('pulse');
+      };
+
       const chooseProject = (project, scroll = false) => {
         projectInput.value = project;
         document.querySelectorAll('[data-choice]').forEach(button => {
@@ -988,7 +1009,7 @@
         firstNext.disabled = false;
         track('project_selected', { project });
         if (scroll) {
-          document.getElementById('lead').scrollIntoView({ behavior: 'smooth', block: 'center' });
+          highlightLead();
           showStep(1);
         }
       };
@@ -1001,8 +1022,14 @@
         button.addEventListener('click', () => chooseProject(button.dataset.project, true));
       });
 
-      document.querySelectorAll('[data-project][href="#lead"]').forEach(link => {
-        link.addEventListener('click', () => chooseProject(link.dataset.project));
+      // TOUS les CTA "#lead" (en-tête, hero, bande d'estimation, CTA final,
+      // barre mobile) : un seul comportement fiable, garanti visible.
+      document.querySelectorAll('a[href="#lead"]').forEach(link => {
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          if (link.dataset.project) chooseProject(link.dataset.project);
+          highlightLead();
+        });
       });
 
       document.querySelectorAll('.next-btn').forEach(button => {
@@ -1112,7 +1139,6 @@
       // se superposait à la carte pendant qu'elle était visible — deux CTA
       // identiques collés l'un sur l'autre (signalé par l'utilisateur). =====
       const mobileBar = document.querySelector('.mobile-bar');
-      const leadCard = document.getElementById('lead');
       if (mobileBar && leadCard && 'IntersectionObserver' in window) {
         new IntersectionObserver(
           (entries) => mobileBar.classList.toggle('is-visible', !entries[0].isIntersecting),
