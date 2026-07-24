@@ -4,6 +4,41 @@
 
 ---
 
+## CIERRE de sesión — Claude Sonnet 5 — 2026-07-24 (Landing /proprietaires + hallazgo crítico RLS)
+
+**🔴 Hallazgo crítico, sin resolver:** `contact_submissions` rechaza TODO insert anónimo
+en producción (`42501 row-level security policy`), verificado con la clave anon real del
+bundle en vivo, 3 veces. La política `Allow public insert on contact_submissions` se ve
+correcta en `pg_policies`/`pg_policy` (roles, grants, `WITH CHECK(true)` — todo bien), y
+`SET ROLE anon` + INSERT directo en SQL reproduce el mismo fallo (descarta que sea capa
+PostgREST/HTTP). Se aplicó `supabase/migrations/015_fix_stale_contact_insert_policy.sql`
+(DROP+CREATE de la misma política, por si el rol quedó con referencia obsoleta tras una
+pausa del proyecto) — **no lo arregló**. Como owner (bypass RLS) el insert sí funciona,
+así que tabla/columnas están bien. Causa raíz sin identificar — candidato a revisar con
+logs de Postgres en Studio o soporte de Supabase. **Esto afecta potencialmente a TODOS
+los formularios públicos del sitio** (Contacto, Estimation, GestionLocative, `/epure`,
+y la nueva `/proprietaires`), no solo a lo nuevo de hoy. Detalle completo y pasos
+intentados en `tasks/current.md`. ⚠️ **No lanzar tráfico de pago a ninguna landing hasta
+confirmar que los leads llegan de verdad.**
+
+**Landing `/proprietaires`:** el owner aportó su propio diseño (mejor que un primer
+borrador mío de la misma sesión, que quedó sustituido) — integrado en
+`public/proprietaires/index.html` como subcarpeta del mismo sitio (decisión: subcarpeta,
+no subdominio — cero DNS extra, hereda HTTPS/reputación de `atlasrouge.com`, mismo patrón
+que `/epure`/`/vendre` ya usados). Diseño del owner intacto (formulario progresivo de 3
+pasos, captura UTM/gclid/fbclid ya incluida por él). Se le añadió: GTM
+(`GTM-TW5NLSKR`) + Consent Mode v2 (misma clave de consentimiento que el sitio
+principal), y se conectó el formulario de verdad a `contact_submissions` + `notify-lead`
+(antes era un prototipo sin persistencia, como advertía su propio README) — pero el
+envío real está bloqueado por el hallazgo de arriba hasta que se resuelva.
+
+Verificado en preview: 3 pasos del formulario avanzan sin error de consola, GTM/Consent
+Mode cargan (`window.google_tag_manager` poblado, consent default denied), UTM/gclid y
+`?service=` preseleccionan el paso 1 correctamente con query params reales de prueba.
+`verify.sh` verde.
+
+---
+
 ## CIERRE de sesión — Claude Sonnet 5 — 2026-07-23 (GA4 + GTM + Consent Mode v2)
 
 **Re-verificado tras el commit de documentación** (mismo día, sesión

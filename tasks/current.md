@@ -4,7 +4,78 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-07-23 (GA4 + GTM + Consent Mode v2 — conectado y verificado en vivo)
+**Last updated:** 2026-07-24 (Landing propietarios /proprietaires + hallazgo crítico RLS contact_submissions)
+
+## 🔴 CRÍTICO — RLS bloquea TODOS los formularios de leads del sitio — 2026-07-24 SIN RESOLVER
+
+Mientras se verificaba el formulario de la nueva landing `/proprietaires`, se detectó que
+**ningún INSERT anónimo a `contact_submissions` funciona en producción ahora mismo**,
+verificado con la clave anon REAL (extraída del bundle JS servido en vivo, para descartar
+clave desactualizada):
+
+```
+{"code":"42501","message":"new row violates row-level security policy for table \"contact_submissions\""}
+```
+
+Esto afecta potencialmente a **Contacto, Estimation, GestionLocative, `/epure` y ahora
+`/proprietaires`** — cualquier formulario público del sitio que inserte en esa tabla.
+
+- La política `Allow public insert on contact_submissions` (rol anon+authenticated,
+  `WITH CHECK (true)`) se ve perfectamente correcta en el catálogo de Postgres
+  (`pg_policies`, `pg_policy`, roles, grants — todo revisado, todo parece bien).
+- Se intentó `SET ROLE anon` + INSERT directo en SQL → mismo fallo (descarta que sea
+  un problema de PostgREST/HTTP/JWT — es el motor de Postgres el que rechaza).
+- Se aplicó una migración (`015_fix_stale_contact_insert_policy.sql`) que borra y
+  recrea la política idéntica, por si el rol `anon` se regeneró tras una pausa del
+  proyecto dejando referencias obsoleta — **NO resolvió el problema.**
+- Insertar como owner/service role (bypassa RLS) SÍ funciona → la tabla, columnas y
+  constraints están bien; el bloqueo es específicamente sobre el rol `anon`/`authenticated`
+  pese a que la política debería permitirlo.
+- **Causa raíz sigue sin identificar.** Candidatos a investigar en una sesión dedicada:
+  revisar logs de Postgres en Supabase Studio directamente (más detalle que el error
+  genérico de la Management API), abrir un ticket con soporte de Supabase, o probar
+  recrear la tabla completa con `pg_dump`/restore si se sospecha corrupción de catálogo.
+- **No se pudo confirmar en el sitio real** (`atlasrouge.com/fr/contact`) porque el
+  clasificador de seguridad bloqueó el envío automatizado de un formulario de producción
+  (correcto, es una acción con efectos reales) — pendiente que el owner lo pruebe él
+  mismo o autorice una prueba controlada.
+
+⚠️ **No lanzar tráfico de pago a ninguna landing de captación (`/proprietaires`, `/epure`,
+Contact, Estimation) hasta confirmar que los leads llegan de verdad a Supabase.**
+
+---
+
+## Landing propietarios `/proprietaires` — 2026-07-24 🟡 CÓDIGO LISTO, lead-capture bloqueado por el RLS de arriba
+
+El owner aportó un diseño propio (`Landing Page/atlas-rouge-landing-v2-package/`, ya no
+vive solo ahí — integrado en `public/proprietaires/index.html`) para captar propietarios
+(vender / alquiler largo / conciergerie Airbnb) vía campañas de pago. Decisión de
+arquitectura: **subcarpeta dentro de este mismo repo/sitio** (no subdominio) — mismo
+patrón que `/epure`, `/vendre`, etc. ya usados antes; cero DNS/config extra, hereda
+HTTPS y reputación de `atlasrouge.com`.
+
+- ✅ Diseño del owner conservado tal cual (Playfair Display + Manrope, paleta terracota
+  `#b5533a`/navy `#172033`, formulario progresivo de 3 pasos con barra de progreso,
+  ya capturaba `utm_source/utm_medium/utm_campaign/gclid/fbclid` + `?service=` para
+  preseleccionar el paso 1 — verificado con query params reales en preview).
+- ✅ **GTM (`GTM-TW5NLSKR`) + Consent Mode v2** integrados (mismo patrón que
+  `index.html` del sitio principal): denegado por defecto, bannière de cookies propia
+  con la MISMA clave de `localStorage` (`atlas-rouge-cookie-consent`) que el sitio
+  principal, para que el consentimiento sea coherente en todo el dominio.
+- ✅ **Formulario conectado de verdad** (antes era un prototipo que solo mostraba un
+  mensaje de éxito sin guardar nada — el propio README del owner lo advertía): ahora
+  hace POST real a `contact_submissions` + `notify-lead`, incluyendo los UTM/gclid/fbclid
+  en el mensaje para poder atribuir el lead a la campaña. Evento `generate_lead` al
+  `dataLayer` en el envío real (antes solo hacía `console.table`).
+- ✅ Verificado en preview (desktop 1440px y móvil 375px): las 3 pantallas del formulario
+  avanzan bien, sin errores de consola, GTM/consent cargan.
+- 🔴 **El envío real todavía NO funciona** por el bug de RLS de arriba — el código está
+  listo, pero hasta que se resuelva esa política, ningún lead de esta landing llegará a
+  Supabase. Verificar de nuevo en cuanto se arregle el RLS.
+- `meta robots: noindex, nofollow` añadido (landing cerrada para tráfico de campaña, no
+  para SEO orgánico).
+
+---
 
 ## GA4 + GTM + Consent Mode — 2026-07-23 ✅ HECHO Y EN VIVO
 
