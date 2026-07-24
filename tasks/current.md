@@ -4,7 +4,36 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-07-24 (landing /proprietaires: CTA "no hacía nada" arreglado + bug crítico de JS que rompía TODA la página, causado por mí)
+**Last updated:** 2026-07-24 (landing /proprietaires: botón del hero eliminado en desktop, formulario agrandado)
+
+## Botón redundante del hero + formulario agrandado — 2026-07-24 ✅ HECHO
+
+Última vuelta de feedback del owner sobre el mismo hero: aunque el botón "Estimer
+mon bien gratuitement" ya daba señal visual (ronda anterior), el owner señaló que
+seguía sin tener sentido tenerlo junto al "Continuer" del formulario — dos botones
+terracota en el mismo vistazo. Diagnóstico: son funcionalmente distintos (uno
+hace scroll+destaca el formulario, el otro avanza el paso del formulario), pero
+en **desktop** el formulario ya está a la vista al lado del hero, así que el
+primero no aporta nada real ahí — solo duplica visualmente al segundo.
+
+- ✅ **Botón del hero oculto en desktop** (`@media (min-width: 821px)`) — en
+  ese ancho el hero y el formulario ya están lado a lado, así que solo queda
+  visible "Continuer". El botón **se mantiene en móvil** (`<=820px`, donde
+  hero y formulario se apilan verticalmente y el formulario no se ve sin
+  hacer scroll) — ahí sigue siendo necesario y funcional.
+- ✅ **Formulario agrandado**, a petición explícita del owner ("expande más
+  para que se vea más grande"): la proporción de columnas del hero pasó de
+  `1.05fr / .58fr` (mínimo 360px) a `.95fr / 1.05fr` (mínimo 420px) — el
+  formulario ahora es la columna MÁS ANCHA del hero, no la más estrecha.
+  Padding interno de la tarjeta 28px → 40px para una sensación más sustancial.
+- Verificado por DOM en los dos anchos reales: `heroBtnVisible: true` a
+  375px (móvil), `display: none` a 1440px (desktop) — captura de pantalla
+  confirma un solo botón terracota visible en desktop.
+- **Lección aplicada de la ronda anterior**: antes de reconstruir, los 3
+  bloques `<script>` se volvieron a validar con `node --check` (esta vez
+  solo se tocó CSS, pero se repitió el chequeo por seguridad).
+
+---
 
 ## 🔴 Bug crítico auto-causado + fix del CTA "que no hace nada" — 2026-07-24 ✅ HECHO
 

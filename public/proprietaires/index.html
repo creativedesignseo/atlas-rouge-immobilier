@@ -223,9 +223,11 @@
       min-height: 860px;
       padding: 150px 0 78px;
       display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(360px, .58fr);
+      /* Le formulaire est LE point focal (c'est lui qui convertit) — colonne
+         élargie, plus proche 1:1 qu'avant (était 1.05fr / .58fr). */
+      grid-template-columns: minmax(0, .95fr) minmax(420px, 1.05fr);
       align-items: center;
-      gap: 74px;
+      gap: 56px;
     }
     .hero-copy { max-width: 720px; }
     .hero-copy .eyebrow { margin-bottom: 24px; }
@@ -237,6 +239,11 @@
       color: #2d3547;
     }
     .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 30px; }
+    /* En desktop (hero + formulaire côte à côte, formulaire déjà visible),
+       ce bouton fait doublon avec "Continuer" du formulaire juste à côté —
+       retour direct du client. Il ne reste utile qu'en mobile, où le
+       formulaire est plus bas, hors champ de vision (règle plus bas). */
+    @media (min-width: 821px) { .hero-actions { display: none; } }
     .trust-row { display: flex; flex-wrap: wrap; gap: 12px; }
     /* Texte simple + coche — pas de pilule/fond qui rappelle un bouton et
        fait concurrence au CTA juste au-dessus (retour direct du client). */
@@ -256,7 +263,7 @@
       background: rgba(255,255,255,0.97);
       border: 1px solid rgba(255,255,255,0.74);
       border-radius: var(--radius-md);
-      padding: 28px;
+      padding: 40px;
       box-shadow: var(--shadow-lg);
     }
     /* Repère visuel rejoué à chaque clic sur un CTA "#lead" — garantit que
