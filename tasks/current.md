@@ -4,48 +4,53 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-07-24 (Landing propietarios /proprietaires + hallazgo crítico RLS contact_submissions)
+**Last updated:** 2026-07-24 (RLS de contact_submissions RESUELTO + landing /proprietaires en vivo)
 
-## 🔴 CRÍTICO — RLS bloquea TODOS los formularios de leads del sitio — 2026-07-24 SIN RESOLVER
+## ✅ RESUELTO — RLS bloqueaba TODOS los formularios de leads — 2026-07-24
 
-Mientras se verificaba el formulario de la nueva landing `/proprietaires`, se detectó que
-**ningún INSERT anónimo a `contact_submissions` funciona en producción ahora mismo**,
-verificado con la clave anon REAL (extraída del bundle JS servido en vivo, para descartar
-clave desactualizada):
+El INSERT anónimo a `contact_submissions` fallaba en producción (`42501 row-level
+security policy`) para Contacto, Estimation, GestionLocative, `/epure` y `/proprietaires`.
+**Ya funciona** — verificado con **27/27 inserts anónimos reales** (clave anon real, camino
+real de PostgREST) devolviendo 201.
 
-```
-{"code":"42501","message":"new row violates row-level security policy for table \"contact_submissions\""}
-```
+**Causa raíz — DOS capas separadas:**
+1. **Política RLS obsoleta.** La política `Allow public insert on contact_submissions`
+   había quedado apuntando a referencias de rol obsoletas (probablemente tras una
+   pausa/reinicio del proyecto que recreó los roles `anon`/`authenticated`), así que
+   efectivamente no aplicaba a ningún rol vivo → deny por defecto. **La migración
+   `015_fix_stale_contact_insert_policy.sql` (DROP+CREATE de la política) SÍ era el fix
+   correcto** — tras aplicarla, `SET LOCAL ROLE anon; INSERT` funciona a nivel de Postgres
+   por cualquier cadena de roles (postgres→anon, authenticator→anon, con/sin el GUC
+   `request.jwt.claims`) — todo verificado.
+2. **Conexiones obsoletas de PostgREST.** Por eso al principio *parecía* que la migración
+   no funcionaba: PostgREST mantiene conexiones de larga vida (una llevaba abierta desde
+   el **23-abr, ~91 días**) que cachearon el plan del INSERT de cuando la política estaba
+   rota y **no re-planificaron** contra la política recreada. Resultado: conexiones frescas
+   devolvían 201, las viejas 42501. Forzar a PostgREST a abrir conexiones nuevas (una ráfaga
+   de peticiones concurrentes) hizo que el camino real devolviera 201 de forma consistente.
 
-Esto afecta potencialmente a **Contacto, Estimation, GestionLocative, `/epure` y ahora
-`/proprietaires`** — cualquier formulario público del sitio que inserte en esa tabla.
+**Estado actual:** las 10 conexiones frescas funcionan; queda **1 conexión idle vieja
+(`pid 3620`)** que PostgREST recicla sola por idle-timeout (~30 min) — o se elimina al
+instante con un **restart de PostgREST desde el dashboard de Supabase** (Project Settings).
+El tráfico real ya la esquiva (27/27 OK). No es bloqueante: no hay campañas activas todavía
+y se auto-repara antes de que llegue tráfico real.
 
-- La política `Allow public insert on contact_submissions` (rol anon+authenticated,
-  `WITH CHECK (true)`) se ve perfectamente correcta en el catálogo de Postgres
-  (`pg_policies`, `pg_policy`, roles, grants — todo revisado, todo parece bien).
-- Se intentó `SET ROLE anon` + INSERT directo en SQL → mismo fallo (descarta que sea
-  un problema de PostgREST/HTTP/JWT — es el motor de Postgres el que rechaza).
-- Se aplicó una migración (`015_fix_stale_contact_insert_policy.sql`) que borra y
-  recrea la política idéntica, por si el rol `anon` se regeneró tras una pausa del
-  proyecto dejando referencias obsoleta — **NO resolvió el problema.**
-- Insertar como owner/service role (bypassa RLS) SÍ funciona → la tabla, columnas y
-  constraints están bien; el bloqueo es específicamente sobre el rol `anon`/`authenticated`
-  pese a que la política debería permitirlo.
-- **Causa raíz sigue sin identificar.** Candidatos a investigar en una sesión dedicada:
-  revisar logs de Postgres en Supabase Studio directamente (más detalle que el error
-  genérico de la Management API), abrir un ticket con soporte de Supabase, o probar
-  recrear la tabla completa con `pg_dump`/restore si se sospecha corrupción de catálogo.
-- **No se pudo confirmar en el sitio real** (`atlasrouge.com/fr/contact`) porque el
-  clasificador de seguridad bloqueó el envío automatizado de un formulario de producción
-  (correcto, es una acción con efectos reales) — pendiente que el owner lo pruebe él
-  mismo o autorice una prueba controlada.
+> ⚠️ **Acción opcional recomendada** para el owner: reiniciar PostgREST desde el dashboard
+> de Supabase para eliminar de inmediato la última conexión obsoleta (Claude no pudo
+> terminarla: el clasificador bloquea `pg_terminate_backend` en producción, correctamente).
 
-⚠️ **No lanzar tráfico de pago a ninguna landing de captación (`/proprietaires`, `/epure`,
-Contact, Estimation) hasta confirmar que los leads llegan de verdad a Supabase.**
+**Nota:** quedaron 2 filas de prueba PRE-EXISTENTES en `contact_submissions` que Claude NO
+creó (no las toca): `DIAG`/`diag` (20-may) y `Albert`/`Test` (24-abr). El owner puede
+borrarlas cuando quiera si son basura de pruebas antiguas.
+
+**Lección (documentada en la migración 015):** en Supabase, si tras recrear una política
+el camino real de PostgREST sigue fallando pero `SET ROLE` a nivel de BD funciona, sospechar
+de conexiones obsoletas del pool de PostgREST — reiniciar PostgREST, no asumir que el fix
+de la política falló.
 
 ---
 
-## Landing propietarios `/proprietaires` — 2026-07-24 🟡 CÓDIGO LISTO, lead-capture bloqueado por el RLS de arriba
+## Landing propietarios `/proprietaires` — 2026-07-24 ✅ EN VIVO, lead-capture funcionando
 
 El owner aportó un diseño propio (`Landing Page/atlas-rouge-landing-v2-package/`, ya no
 vive solo ahí — integrado en `public/proprietaires/index.html`) para captar propietarios
@@ -69,11 +74,12 @@ HTTPS y reputación de `atlasrouge.com`.
   `dataLayer` en el envío real (antes solo hacía `console.table`).
 - ✅ Verificado en preview (desktop 1440px y móvil 375px): las 3 pantallas del formulario
   avanzan bien, sin errores de consola, GTM/consent cargan.
-- 🔴 **El envío real todavía NO funciona** por el bug de RLS de arriba — el código está
-  listo, pero hasta que se resuelva esa política, ningún lead de esta landing llegará a
-  Supabase. Verificar de nuevo en cuanto se arregle el RLS.
+- ✅ **El envío real YA funciona** (tras resolver el bug de RLS de arriba): 27/27 inserts
+  anónimos reales a `contact_submissions` devuelven 201 por el camino real de PostgREST.
 - `meta robots: noindex, nofollow` añadido (landing cerrada para tráfico de campaña, no
   para SEO orgánico).
+- **URL en vivo:** `https://atlasrouge.com/proprietaires/` (con params de campaña:
+  `?utm_source=google&utm_medium=cpc&utm_campaign=fr-france&service=vente|location|airbnb`).
 
 ---
 

@@ -4,22 +4,46 @@
 
 ---
 
-## CIERRE de sesión — Claude Sonnet 5 — 2026-07-24 (Landing /proprietaires + hallazgo crítico RLS)
+## CIERRE de sesión — Claude Opus 4.8 — 2026-07-24 (RESOLUCIÓN del bug crítico de RLS)
 
-**🔴 Hallazgo crítico, sin resolver:** `contact_submissions` rechaza TODO insert anónimo
-en producción (`42501 row-level security policy`), verificado con la clave anon real del
-bundle en vivo, 3 veces. La política `Allow public insert on contact_submissions` se ve
-correcta en `pg_policies`/`pg_policy` (roles, grants, `WITH CHECK(true)` — todo bien), y
-`SET ROLE anon` + INSERT directo en SQL reproduce el mismo fallo (descarta que sea capa
-PostgREST/HTTP). Se aplicó `supabase/migrations/015_fix_stale_contact_insert_policy.sql`
-(DROP+CREATE de la misma política, por si el rol quedó con referencia obsoleta tras una
-pausa del proyecto) — **no lo arregló**. Como owner (bypass RLS) el insert sí funciona,
-así que tabla/columnas están bien. Causa raíz sin identificar — candidato a revisar con
-logs de Postgres en Studio o soporte de Supabase. **Esto afecta potencialmente a TODOS
-los formularios públicos del sitio** (Contacto, Estimation, GestionLocative, `/epure`,
-y la nueva `/proprietaires`), no solo a lo nuevo de hoy. Detalle completo y pasos
-intentados en `tasks/current.md`. ⚠️ **No lanzar tráfico de pago a ninguna landing hasta
-confirmar que los leads llegan de verdad.**
+**✅ RESUELTO — los formularios de leads vuelven a insertar en producción.** El INSERT
+anónimo a `contact_submissions` (que fallaba con `42501` en Contacto, Estimation,
+GestionLocative, `/epure` y `/proprietaires`) **ya funciona: 27/27 inserts anónimos reales
+por el camino real de PostgREST devuelven 201.**
+
+**Causa raíz — dos capas independientes que había que resolver por separado:**
+
+1. **Política RLS obsoleta.** `Allow public insert on contact_submissions` había quedado
+   con referencias de rol obsoletas (probable pausa/reinicio del proyecto que recreó los
+   roles `anon`/`authenticated` con OIDs nuevos) → la política de INSERT no aplicaba a
+   ningún rol vivo → deny por defecto → 42501. **La migración `015` (DROP+CREATE de la
+   política) SÍ era el fix correcto de BD.** Tras aplicarla, `SET LOCAL ROLE anon; INSERT`
+   funciona a nivel de Postgres por cualquier cadena (postgres→anon, authenticator→anon,
+   con y sin el GUC `request.jwt.claims`) — verificado exhaustivamente.
+
+2. **Conexiones obsoletas del pool de PostgREST.** Por esto la sesión anterior concluyó
+   (erróneamente) que la migración "no funcionó": PostgREST mantiene conexiones de larga
+   vida; una llevaba abierta desde el **2026-04-23 (~91 días)** y había cacheado el plan
+   del INSERT de cuando la política estaba rota, sin re-planificar tras el DROP+CREATE.
+   Diagnóstico definitivo (creando una función temporal `debug_whoami` llamada por el
+   camino real, ya eliminada): PostgREST corre como `current_user=anon`,
+   `session_user=authenticator`. Reproducir esa cadena exacta con una conexión FRESCA
+   (vía Management API) → INSERT OK; solo las conexiones viejas del pool fallaban. Forzar
+   conexiones nuevas con una ráfaga concurrente → el camino real pasa a devolver 201
+   consistentemente (27/27).
+
+**Estado del pool ahora:** 10 conexiones frescas (funcionan) + 1 vieja idle (`pid 3620`).
+PostgREST recicla la vieja por idle-timeout (~30 min) o se elimina al instante con un
+**restart de PostgREST desde el dashboard de Supabase**. El tráfico real ya la esquiva.
+No bloqueante (no hay campañas activas; se auto-repara antes de que llegue tráfico).
+Claude no pudo terminar la conexión directamente: el clasificador de seguridad bloquea
+`pg_terminate_backend` en producción (correcto) → acción opcional del owner.
+
+**Verificación y limpieza:** todas las filas de prueba creadas durante el diagnóstico
+(1 diag + 12 concurrentes + 15 secuenciales = 28) fueron borradas; `debug_whoami`
+eliminada; confirmado que no queda basura de Claude en la tabla. Quedan 2 filas de prueba
+PRE-EXISTENTES que Claude NO creó (`DIAG` 20-may, `Albert`/`Test` 24-abr) — no se tocaron;
+el owner decide si las borra.
 
 **Landing `/proprietaires`:** el owner aportó su propio diseño (mejor que un primer
 borrador mío de la misma sesión, que quedó sustituido) — integrado en
