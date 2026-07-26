@@ -4,7 +4,31 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-07-24 (landing /proprietaires: botón del hero eliminado en desktop, formulario agrandado)
+**Last updated:** 2026-07-24 (análisis de competencia guardado; sin cambios de código — ver nota abajo)
+
+## Análisis de competencia + decisión pendiente sobre landing "vendre" — 2026-07-24
+
+- ✅ **Guardado** `marketing/competencia-barnes-marrakech.md`: análisis (en
+  palabras propias, no copia) de la página de captación de vendedores de
+  BARNES Marrakech y su listado de venta con precios reales por barrio.
+  Indexado en `marketing/README.md`.
+- 📌 **Recomendación dada, pendiente de decisión del owner**: en vez de crear
+  una landing separada para "vendre" al estilo BARNES (multipágina, texto
+  largo), ajustar dinámicamente el titular de `/proprietaires` según el
+  parámetro de campaña (`?service=vente|location|airbnb`) — reutiliza la
+  landing ya construida y pulida esta sesión, evita duplicar mantenimiento.
+  Sin implementar todavía, a la espera de que el owner elija.
+- ⚠️ **Petición rechazada explícitamente** (sin cambios de código): el owner
+  pidió extraer una ficha completa (fotos + datos) de un competidor
+  (marrakechrealty.com, un piso concreto en Prestigia Saphir) y publicarla
+  como si fuera un inmueble propio de Atlas Rouge. Rechazado por dos motivos
+  reales: (1) las fotos son propiedad del competidor/su cliente, no de Atlas
+  Rouge; (2) publicarlo como ficha propia sería un listado engañoso — Atlas
+  Rouge no tiene el mandato de esa venta. Se ofreció alternativa (probar el
+  flujo de alta de propiedades con datos de prueba marcados como demo, o con
+  un inmueble real del owner) — sin respuesta todavía.
+
+---
 
 ## Botón redundante del hero + formulario agrandado — 2026-07-24 ✅ HECHO
 

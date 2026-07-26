@@ -4,6 +4,32 @@
 
 ---
 
+## CIERRE de sesión — Claude Sonnet 5 — 2026-07-24 (análisis de competencia; sin cambios de código)
+
+**Realidad verificada, no supuesta:** `HEAD` = `origin/main` = `151bcc7c` (sin
+drift). `bash scripts/verify.sh` verde. Deploy Netlify **`ready`**
+(`6a63c19ae9c5fe0008474d13`), `commit_ref` coincide con `HEAD`. `curl` en vivo:
+`atlasrouge.com/` y `atlasrouge.com/proprietaires/` → `HTTP/2 200` los dos. No
+hay ningún cambio de código pendiente de este segmento — solo documentación.
+
+**Lo único nuevo:** `marketing/competencia-barnes-marrakech.md` (indexado en
+`marketing/README.md`) — análisis en palabras propias (no copia, por derechos
+de autor) de la página de captación de vendedores de BARNES Marrakech y su
+listado de venta con precios reales por barrio. Contexto: el owner preguntó si
+conviene crear una landing separada para "vendre" o ajustar `/proprietaires`;
+recomendación dada (ajuste dinámico de titular por `?service=`, no landing
+nueva) — **pendiente de decisión del owner, sin implementar**.
+
+**Nota de límite respetado:** el owner pidió extraer una ficha completa
+(fotos + datos) de una propiedad de un competidor (marrakechrealty.com) y
+publicarla como inmueble propio de Atlas Rouge. Rechazado explícitamente —
+las fotos no son de Atlas Rouge y el listado habría sido engañoso (sin
+mandato real sobre esa venta). Se ofreció probar el flujo de alta de
+propiedades con datos de demo o un inmueble real del owner; sin respuesta
+todavía. Ningún archivo del sitio se tocó por esta petición.
+
+---
+
 ## CIERRE de sesión — Claude Sonnet 5 — 2026-07-24 (7 rondas de revisión de la landing /proprietaires)
 
 **Realidad verificada, no supuesta:** `HEAD` = `origin/main` = `89d9a246`. Deploy
