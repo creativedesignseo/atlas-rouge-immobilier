@@ -289,7 +289,7 @@
     }
     .free-badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--terracotta); }
     .progress { height: 4px; background: var(--line); border-radius: 99px; overflow: hidden; margin-bottom: 22px; }
-    .progress-bar { height: 100%; width: 33.333%; background: var(--terracotta); transition: width 220ms ease; }
+    .progress-bar { height: 100%; width: 50%; background: var(--terracotta); transition: width 220ms ease; }
     .form-step { display: none; }
     .form-step.active { display: block; animation: fade .24s ease; }
     @keyframes fade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
@@ -352,6 +352,10 @@
       background: var(--white);
       color: var(--ink);
     }
+    .field-hint { font-size: .8125rem; color: #727987; margin: 6px 0 0; line-height: 1.4; }
+    .opt { font-weight: 500; color: #8b919c; letter-spacing: 0; }
+    .bridge { text-align: center; margin: 0 0 -18px; font-size: .9375rem; }
+    .bridge a { color: var(--terracotta); font-weight: 700; text-decoration: none; }
     .privacy { font-size: .875rem; color: #727987; margin: 12px 0 0; line-height: 1.45; }
     .success-state { display: none; text-align: center; padding: 22px 0 6px; }
     .success-icon { width: 62px; height: 62px; margin: 0 auto 14px; border-radius: 50%; background: #e5f3ec; color: var(--success); display: grid; place-items: center; }
@@ -704,7 +708,7 @@
           <div class="lead-card-top">
             <div>
               <h3 id="lead-title">Parlons de votre bien</h3>
-              <p>3 étapes · moins d’une minute</p>
+              <p>2 étapes · 30 secondes</p>
             </div>
             <span class="free-badge">Gratuit</span>
           </div>
@@ -732,60 +736,23 @@
               </div>
               <button class="btn btn-primary btn-block next-btn" type="button" disabled>Continuer</button>
             </div>
-
             <div class="form-step" data-step="2">
-              <div class="grid-2">
-                <div class="field">
-                  <label class="field-label" for="propertyType">Type de bien</label>
-                  <select id="propertyType" name="property_type" required>
-                    <option value="">Sélectionner</option>
-                    <option>Appartement</option>
-                    <option>Villa</option>
-                    <option>Riad</option>
-                    <option>Maison</option>
-                    <option>Autre</option>
-                  </select>
-                </div>
-                <div class="field">
-                  <label class="field-label" for="bedrooms">Chambres</label>
-                  <select id="bedrooms" name="bedrooms" required>
-                    <option value="">Sélectionner</option>
-                    <option>Studio / 1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5+</option>
-                  </select>
-                </div>
-              </div>
-              <div class="field">
-                <label class="field-label" for="district">Quartier ou zone à Marrakech</label>
-                <input id="district" name="district" type="text" placeholder="Ex. Guéliz, Hivernage, Médina…" required />
-              </div>
-              <div class="form-nav">
-                <button class="form-back back-btn" type="button" aria-label="Étape précédente">←</button>
-                <button class="btn btn-primary btn-block next-btn" type="button">Continuer</button>
-              </div>
-            </div>
-
-            <div class="form-step" data-step="3">
               <div class="field">
                 <label class="field-label" for="fullName">Votre nom</label>
                 <input id="fullName" name="name" type="text" autocomplete="name" placeholder="Prénom et nom" required />
               </div>
-              <div class="grid-2">
-                <div class="field">
-                  <label class="field-label" for="phone">Téléphone / WhatsApp</label>
-                  <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+33… / +212…" required />
-                </div>
-                <div class="field">
-                  <label class="field-label" for="email">E-mail</label>
-                  <input id="email" name="email" type="email" autocomplete="email" placeholder="vous@email.com" required />
-                </div>
+              <div class="field">
+                <label class="field-label" for="phone">Téléphone / WhatsApp</label>
+                <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+33… / +212…" required />
+                <p class="field-hint">Pour vous rappeler et faire le point de vive voix.</p>
+              </div>
+              <div class="field">
+                <label class="field-label" for="email">E-mail <span class="opt">(facultatif)</span></label>
+                <input id="email" name="email" type="email" autocomplete="email" placeholder="vous@email.com" />
               </div>
               <div class="form-nav">
                 <button class="form-back back-btn" type="button" aria-label="Étape précédente">←</button>
-                <button class="btn btn-primary btn-block" type="submit">Demander mon estimation</button>
+                <button class="btn btn-primary btn-block" type="submit">Être rappelé gratuitement</button>
               </div>
               <p class="privacy">En envoyant ce formulaire, vous acceptez d’être contacté. Vos données ne sont jamais revendues.</p>
             </div>
@@ -798,39 +765,6 @@
             <a class="btn btn-secondary btn-block" href="mailto:info@atlasrouge.com">Écrire à Atlas Rouge</a>
           </div>
         </aside>
-      </div>
-    </section>
-
-    <section class="intent-section" aria-labelledby="intent-title">
-      <div class="container">
-        <div class="section-head">
-          <div class="eyebrow">Votre projet</div>
-          <h2 id="intent-title">Une solution pour chaque objectif</h2>
-        </div>
-        <div class="intent-grid">
-          <article class="intent-card">
-            <div class="intent-number">01 — Rentabiliser</div>
-            <h3>Location saisonnière</h3>
-            <p>Annonces, tarifs, voyageurs, ménage et maintenance pris en charge.</p>
-            <div class="platform-logos" aria-label="Diffusé sur Airbnb et Booking.com">
-              <span><svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12.001 18.275c-1.353-1.697-2.148-3.184-2.413-4.457-.263-1.027-.16-1.848.291-2.465.477-.71 1.188-1.056 2.121-1.056s1.643.345 2.12 1.063c.446.61.558 1.432.286 2.465-.291 1.298-1.085 2.785-2.412 4.458zm9.601 1.14c-.185 1.246-1.034 2.28-2.2 2.783-2.253.98-4.483-.583-6.392-2.704 3.157-3.951 3.74-7.028 2.385-9.018-.795-1.14-1.933-1.695-3.394-1.695-2.944 0-4.563 2.49-3.927 5.382.37 1.565 1.352 3.343 2.917 5.332-.98 1.085-1.91 1.856-2.732 2.333-.636.344-1.245.558-1.828.609-2.679.399-4.778-2.2-3.825-4.88.132-.345.395-.98.845-1.961l.025-.053c1.464-3.178 3.242-6.79 5.285-10.795l.053-.132.58-1.116c.45-.822.635-1.19 1.351-1.643.346-.21.77-.315 1.246-.315.954 0 1.698.558 2.016 1.007.158.239.345.557.582.953l.558 1.089.08.159c2.041 4.004 3.821 7.608 5.279 10.794l.026.025.533 1.22.318.764c.243.613.294 1.222.213 1.858zm1.22-2.39c-.186-.583-.505-1.271-.9-2.094v-.03c-1.889-4.006-3.642-7.608-5.307-10.844l-.111-.163C15.317 1.461 14.468 0 12.001 0c-2.44 0-3.476 1.695-4.535 3.898l-.081.16c-1.669 3.236-3.421 6.843-5.303 10.847v.053l-.559 1.22c-.21.504-.317.768-.345.847C-.172 20.74 2.611 24 5.98 24c.027 0 .132 0 .265-.027h.372c1.75-.213 3.554-1.325 5.384-3.317 1.829 1.989 3.635 3.104 5.382 3.317h.372c.133.027.239.027.265.027 3.37.003 6.152-3.261 4.802-6.975z"/></svg>Airbnb</span>
-              <span><svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8.575 6.563h2.658c2.108 0 3.473 1.15 3.473 2.898 0 1.15-.575 1.82-.91 2.108l-.287.263.335.192c.815.479 1.318 1.389 1.318 2.395 0 1.988-1.51 3.257-3.857 3.257H7.449V7.713c0-.623.503-1.126 1.126-1.15zm1.7 1.868c-.479.024-.694.264-.694.79v1.893h1.676c.958 0 1.294-.743 1.294-1.365 0-.815-.503-1.318-1.318-1.318zm-.096 4.36c-.407.071-.598.31-.598.79v2.251h1.868c.934 0 1.509-.55 1.509-1.533 0-.934-.599-1.509-1.51-1.509zm7.737 2.394c.743 0 1.341.599 1.341 1.342a1.34 1.34 0 0 1-1.341 1.341 1.355 1.355 0 0 1-1.341-1.341c0-.743.598-1.342 1.34-1.342z"/></svg>Booking.com</span>
-            </div>
-            <button class="intent-link project-trigger" type="button" data-project="airbnb">Estimer mes revenus →</button>
-          </article>
-          <article class="intent-card">
-            <div class="intent-number">02 — Sécuriser</div>
-            <h3>Location longue durée</h3>
-            <p>Mise en valeur, sélection du locataire et suivi de la location.</p>
-            <button class="intent-link project-trigger" type="button" data-project="location">Confier ma location →</button>
-          </article>
-          <article class="intent-card intent-card-alt">
-            <div class="intent-number">Vous préférez vendre ?</div>
-            <h3>Vente de votre bien</h3>
-            <p>Estimation, mise en valeur et accompagnement jusqu’à la signature : c’est un autre métier, avec sa propre page.</p>
-            <a class="intent-link" href="/vendre/" data-track="cross_sell_vente">Voir la vente →</a>
-          </article>
-        </div>
       </div>
     </section>
 
@@ -851,49 +785,6 @@
       </div>
     </section>
 
-    <section class="estimate-band" aria-label="Appel à l'action estimation">
-      <div class="container estimate-inner">
-        <div>
-          <div class="eyebrow">Sans engagement</div>
-          <h2>Quel est le potentiel réel de votre bien à Marrakech ?</h2>
-        </div>
-        <div class="estimate-action"><a class="btn btn-primary" href="#lead" data-track="mid_estimation">Demander mon estimation</a></div>
-      </div>
-    </section>
-
-    <section aria-labelledby="process-title">
-      <div class="container">
-        <div class="section-head center">
-          <div class="eyebrow">Un démarrage simple</div>
-          <h2 id="process-title">De votre demande à la prise en charge</h2>
-          <p>Sans engagement avant notre proposition.</p>
-        </div>
-        <div class="process-grid">
-          <article class="process-step"><div class="step-num">1</div><h3>Demande rapide</h3><p>Votre projet et l’essentiel du bien, en une minute.</p></article>
-          <article class="process-step"><div class="step-num">2</div><h3>Premier échange</h3><p>Nous clarifions votre objectif et vos priorités.</p></article>
-          <article class="process-step"><div class="step-num">3</div><h3>Évaluation du bien</h3><p>Analyse du bien et recommandations adaptées.</p></article>
-          <article class="process-step"><div class="step-num">4</div><h3>Plan d’action</h3><p>Vous recevez une proposition claire avant toute décision.</p></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="trust-section" aria-labelledby="trust-title">
-      <div class="container trust-layout">
-        <div class="visual-card" role="img" aria-label="Propriété élégante à Marrakech">
-          <div class="visual-note"><strong>Présence locale</strong><small>Votre relais à Marrakech.</small></div>
-        </div>
-        <div>
-          <div class="eyebrow">Pourquoi Atlas Rouge</div>
-          <h2 id="trust-title">Une équipe locale, un accompagnement clair.</h2>
-          <p>Vous savez qui contacter et quelles sont les prochaines étapes.</p>
-          <div class="trust-points">
-            <div class="trust-point"><span class="icon">MA</span><div><h3>Une équipe au contact du bien</h3><p>Une présence réelle sur place, pas seulement des messages.</p></div></div>
-            <div class="trust-point"><span class="icon">✓</span><div><h3>Un cadre clair avant de commencer</h3><p>Périmètre, étapes et responsabilités définis dès le départ.</p></div></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <section aria-labelledby="faq-title">
       <div class="container">
         <div class="section-head center">
@@ -909,6 +800,8 @@
         </div>
       </div>
     </section>
+
+        <p class="bridge"><a href="/vendre/" data-track="cross_sell_vente">Vous préférez vendre&nbsp;? Voir la page vente →</a></p>
 
     <section class="final-cta" aria-labelledby="final-title">
       <div class="container final-card">
@@ -956,9 +849,9 @@
       };
 
       const showStep = (number) => {
-        currentStep = Math.max(1, Math.min(3, number));
+        currentStep = Math.max(1, Math.min(2, number));
         steps.forEach(step => step.classList.toggle('active', Number(step.dataset.step) === currentStep));
-        progressBar.style.width = `${currentStep * 33.333}%`;
+        progressBar.style.width = `${currentStep * 50}%`;
         track('lead_form_step', { step: currentStep, project: projectInput.value });
       };
 
@@ -1049,8 +942,6 @@
           subject: `Propriétaire — Landing (${projectLabel[data.project] || data.project})`,
           message: [
             `Projet : ${projectLabel[data.project] || data.project}`,
-            `Type de bien : ${data.property_type || '—'} · Chambres : ${data.bedrooms || '—'}`,
-            `Quartier : ${data.district || '—'}`,
             attribution ? `Attribution : ${attribution}` : null,
           ].filter(Boolean).join('\n'),
           property_slug: null,
@@ -1069,7 +960,7 @@
               body: JSON.stringify({ type: 'estimation', name: lead.name, email: lead.email, phone: lead.phone, subject: lead.subject, message: lead.message, lang: 'fr' }),
             });
           } catch (_) {}
-          track('generate_lead', { project: data.project, property_type: data.property_type, district: data.district });
+          track('generate_lead', { project: data.project });
           form.style.display = 'none';
           document.querySelector('.progress').style.display = 'none';
           successState.style.display = 'block';
