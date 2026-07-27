@@ -4,7 +4,57 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-07-24 (análisis de competencia guardado; sin cambios de código — ver nota abajo)
+**Last updated:** 2026-07-27 (separación gestión/venta en dos landings — ver abajo)
+
+## Separación de públicos: `/proprietaires` = gestión, `/vendre` = venta — 2026-07-27
+
+Decisión del owner (revierte la recomendación del 24-07 de usar `?service=`):
+**dos landings separadas**, porque quien vende y quien quiere que le gestionen
+no tienen el mismo problema y un solo hero no convence a los dos.
+
+### `/proprietaires` — ahora solo GESTIÓN
+- ✅ **Eliminada la franja de cifras** `0% / 8-12% / 24-48h`. Motivo real: `0%`
+  junto a `8-12%` se leía como contradicción, y el owner no quiere comunicar
+  comisiones. Se fue también su CSS (`.big-numbers`, `.stat-num`, `.stat-label`).
+- ✅ **H1 de ~93px → 60px máx** (`clamp(2.5rem, 3.9vw, 3.75rem)`); h2 en proporción.
+- ✅ **Hueco bajo el header**: la causa era `min-height: 860px` + centrado
+  vertical, no el padding. Hero a `660px` → el formulario entero entra ya en el
+  primer pantallazo.
+- ✅ **Quitada la rayita decorativa** del eyebrow (`.eyebrow::before` y la
+  gemela `.section-head.center .eyebrow::after`).
+- ✅ Vía "vente" retirada del formulario; la tarjeta 03 es ahora una pasarela
+  hacia `/vendre/`. `projectLabel` y `?service=` actualizados en consecuencia.
+- ✅ **Las 6 tarjetas de servicio reescritas de características a beneficios**
+  (pilar 2 del artículo Semrush de copywriting).
+
+### `/vendre` — landing de venta NUEVA
+- Sustituye la maqueta de junio, que era una **réplica de la LP de Semrush** con
+  su tipografía **Lazzer auto-alojada** y un formulario `onsubmit="return false"`
+  (no enviaba nada: agujero de leads).
+- Clonada de `/proprietaires` para heredar la fontanería probada: GTM +
+  Consent Mode, form de 3 pasos → `contact_submissions` + `notify-lead`,
+  responsive validado. Leads con subject `Vendeur — Landing (…)` para que se
+  distingan de los de gestión.
+- Paso 1 cualifica la temperatura: `estimation` / `vendre` / `hesite`.
+- Escrita **solo con lo confirmado por el owner**: estimación gratuita, sin
+  exclusividad, equipo local francófono. Sin comisiones, sin plazos, sin cifras.
+
+### Pendiente — bloqueado por Khalid
+- [ ] **¿Quién enseña el bien** cuando el propietario vive en Francia? Es la
+      objeción #1 elegida por el owner, pero el servicio confirmado es solo la
+      estimación. Sin esa respuesta no se puede escribir "vendez sans vous
+      déplacer" y falta la sección "vendre à distance".
+- [ ] **2-3 testimonios reales** (nombre + ciudad + una frase). Hueco ya
+      reservado en el HTML de `/vendre`. Pilar 3 de Semrush: sin esto la
+      prueba social sigue a cero en ambas landings. **No inventar.**
+- [ ] **Riesgo de licencia**: `public/vendre/fonts/Lazzer-*.woff` (fuente
+      comercial de la identidad de Semrush) sigue servida en producción —
+      `atlasrouge.com/vendre/fonts/Lazzer-Bold.woff` → HTTP 200. Y
+      `atlasrouge.com/prueba/` publica una réplica de la LP de Semrush.
+      Ambas cosas deberían retirarse (requiere OK del owner para borrar).
+- [ ] Foto del hero de `/vendre`: hoy es la misma que `/proprietaires`.
+
+---
 
 ## Análisis de competencia + decisión pendiente sobre landing "vendre" — 2026-07-24
 

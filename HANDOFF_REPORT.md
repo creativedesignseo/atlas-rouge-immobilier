@@ -4,6 +4,57 @@
 
 ---
 
+## CIERRE de sesión — Claude Opus 5 — 2026-07-27 (separación gestión/venta en dos landings)
+
+**Decisión del owner** (revierte la recomendación del 24-07 de reutilizar
+`/proprietaires` con `?service=`): **dos landings separadas**. `/proprietaires`
+pasa a ser solo gestión locativa; `/vendre` se reconstruye para la venta.
+
+**Qué se arregló en `/proprietaires`** — todo señalado por el owner sobre la
+página en vivo:
+1. La franja `0% / 8-12% / 24-48h` **eliminada** (HTML + CSS). `0%` junto a
+   `8-12%` se leía como contradicción y el owner no quiere comunicar comisiones.
+   Nota honesta: esa franja nació el 24-07 de una ingeniería inversa de la LP de
+   Semrush — se copió el contenedor (números gigantes) sin tener el contenido
+   (Semrush escribe `28M` porque tiene 28M usuarios).
+2. H1 de ~93px a 60px máx; h2 en proporción.
+3. El "hueco" bajo el header: la causa real era `min-height: 860px` + centrado
+   vertical, no el padding. Hero a 660px; el formulario entero entra ya en el
+   primer pantallazo.
+4. Rayita decorativa del eyebrow eliminada (`::before` y su gemela `::after`).
+5. Vía "vente" fuera del formulario; tarjeta 03 convertida en pasarela a `/vendre/`.
+6. Las 6 tarjetas de servicio reescritas de características a beneficios.
+
+**`/vendre` reconstruida.** La anterior (7 jun) era una **réplica de la LP de
+Semrush** con su tipografía **Lazzer auto-alojada** y `onsubmit="return false"`:
+no enviaba nada, era un agujero de leads. La nueva se clona de `/proprietaires`
+para heredar GTM + Consent Mode, el form de 3 pasos → `contact_submissions` +
+`notify-lead`, y el responsive ya validado. Leads marcados
+`Vendeur — Landing (…)`. Paso 1 cualifica: `estimation` / `vendre` / `hesite`.
+
+**Restricción respetada:** la landing de venta está escrita **solo con lo que el
+owner confirmó** (estimación gratuita, sin exclusividad, equipo local
+francófono). Sin comisiones, sin plazos de venta, sin cifras de mercado, sin
+prometer visitas ni acompañamiento notarial — nada de eso está confirmado.
+
+**Verificación:** `verify.sh` verde · los 3 bloques `<script>` inline de cada
+landing pasan `node --check` · flujo del formulario probado con Playwright en
+ambas (elección → paso 2 → barra de progreso) · 0px de desbordamiento horizontal
+a 390px · 0 errores de consola.
+
+**Bloqueado por Khalid (no inventar):** (a) quién enseña el bien cuando el
+propietario vive en Francia — sin eso no se puede escribir "vendez sans vous
+déplacer", que es la objeción #1 que eligió el owner; (b) 2-3 testimonios reales
+— hueco ya reservado en el HTML, la prueba social sigue a cero en ambas landings.
+
+**Riesgo detectado, sin resolver (requiere OK para borrar):**
+`atlasrouge.com/vendre/fonts/Lazzer-Bold.woff` → HTTP 200 y
+`atlasrouge.com/prueba/` (réplica de la LP de Semrush) están **públicos en
+producción**. Lazzer es la fuente comercial de la identidad de Semrush; servirla
+desde el dominio del cliente es un riesgo de licencia real.
+
+---
+
 ## CIERRE de sesión — Claude Sonnet 5 — 2026-07-24 (análisis de competencia; sin cambios de código)
 
 **Realidad verificada, no supuesta:** `HEAD` = `origin/main` = `151bcc7c` (sin
