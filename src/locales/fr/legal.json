@@ -1,0 +1,150 @@
+{
+  "breadcrumbHome": "Accueil",
+  "legalNotice": {
+    "breadcrumb": "Mentions légales",
+    "title": "Mentions légales",
+    "updated": "Dernière mise à jour : 31 juillet 2026",
+    "sections": [
+      {
+        "title": "Éditeur du site",
+        "paragraphs": [
+          "Le site atlasrouge.com est édité par Atlas Rouge, dont le siège est situé au 79, Passage Prince Moulay Rachid, Marrakech 40000, Maroc.",
+          "Contact : info@atlasrouge.com"
+        ]
+      },
+      {
+        "title": "Hébergement",
+        "paragraphs": [
+          "Le site est hébergé par Netlify, Inc. (https://www.netlify.com). Les mentions légales de l'hébergeur sont disponibles sur son site.",
+          "La base de données, l'authentification et le stockage des fichiers sont fournis par Supabase Inc. (https://supabase.com)."
+        ]
+      },
+      {
+        "title": "Propriété intellectuelle",
+        "paragraphs": [
+          "L'ensemble des contenus présents sur ce site (textes, photographies, logos, mise en page) est la propriété d'Atlas Rouge ou de ses partenaires, sauf mention contraire, et ne peut être reproduit sans autorisation préalable."
+        ]
+      },
+      {
+        "title": "Contact",
+        "paragraphs": ["Pour toute question relative au site ou à son contenu : info@atlasrouge.com"]
+      }
+    ]
+  },
+  "privacy": {
+    "breadcrumb": "Politique de confidentialité",
+    "title": "Politique de confidentialité",
+    "updated": "Dernière mise à jour : 31 juillet 2026",
+    "intro": "Cette politique explique quelles données personnelles Atlas Rouge collecte via atlasrouge.com, pourquoi, et comment vous pouvez exercer vos droits.",
+    "sections": [
+      {
+        "title": "Responsable du traitement",
+        "paragraphs": ["Atlas Rouge, 79, Passage Prince Moulay Rachid, Marrakech 40000, Maroc — info@atlasrouge.com."]
+      },
+      {
+        "title": "Données collectées",
+        "paragraphs": [
+          "Lorsque vous utilisez un formulaire du site (contact, demande d'estimation, demande d'information sur un bien, inscription à la newsletter), nous collectons les données que vous saisissez : nom, e-mail, téléphone, message, et le cas échéant l'adresse du bien concerné ou une date souhaitée.",
+          "Lors de votre navigation, des données techniques (adresse IP, pages visitées, appareil) peuvent être collectées via des cookies de mesure d'audience et de publicité, uniquement avec votre consentement (voir la section Cookies ci-dessous)."
+        ]
+      },
+      {
+        "title": "Finalités",
+        "paragraphs": [
+          "Ces données sont utilisées pour répondre à vos demandes, assurer le suivi commercial, et — avec votre consentement — mesurer l'audience du site et optimiser nos campagnes publicitaires (Google Ads)."
+        ]
+      },
+      {
+        "title": "Base légale",
+        "paragraphs": [
+          "Le traitement des demandes envoyées via nos formulaires repose sur des mesures prises à votre demande. Les cookies non essentiels reposent sur votre consentement, que vous pouvez retirer à tout moment."
+        ]
+      },
+      {
+        "title": "Destinataires de vos données",
+        "paragraphs": [
+          "Vos données sont accessibles à l'équipe Atlas Rouge et à ses prestataires techniques : Supabase (hébergement de la base de données, authentification, stockage), Netlify (hébergement du site) et, uniquement si vous acceptez les cookies correspondants, Google (Google Tag Manager, Analytics et Ads)."
+        ]
+      },
+      {
+        "title": "Durée de conservation",
+        "paragraphs": [
+          "Les données issues des formulaires sont conservées le temps nécessaire au traitement de votre demande et à la relation commerciale qui peut en découler, puis supprimées ou archivées conformément aux obligations légales applicables."
+        ]
+      },
+      {
+        "title": "Transferts hors Union européenne",
+        "paragraphs": [
+          "Atlas Rouge est basé au Maroc, et certains prestataires techniques (Netlify, Supabase, Google) sont basés aux États-Unis. Ces transferts s'appuient sur les garanties proposées par ces prestataires (clauses contractuelles types ou cadres équivalents)."
+        ]
+      },
+      {
+        "title": "Vos droits",
+        "paragraphs": [
+          "Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité de vos données. Pour l'exercer, contactez-nous à info@atlasrouge.com.",
+          "Si vous résidez dans l'Union européenne, vous pouvez également introduire une réclamation auprès de l'autorité de protection des données compétente (par exemple la CNIL en France, www.cnil.fr)."
+        ]
+      },
+      {
+        "id": "cookies",
+        "title": "Cookies",
+        "paragraphs": [
+          "Notre bandeau de consentement vous permet d'accepter ou de refuser les cookies non essentiels (mesure d'audience, publicité). Les cookies strictement nécessaires au fonctionnement du site restent actifs quel que soit votre choix.",
+          "Vous pouvez modifier votre choix à tout moment en effaçant les données de navigation de ce site dans les réglages de votre navigateur, ce qui réaffichera le bandeau lors de votre prochaine visite."
+        ]
+      },
+      {
+        "title": "Contact",
+        "paragraphs": ["Pour toute question relative à vos données personnelles : info@atlasrouge.com"]
+      }
+    ]
+  },
+  "terms": {
+    "breadcrumb": "Conditions générales d'utilisation",
+    "title": "Conditions générales d'utilisation",
+    "updated": "Dernière mise à jour : 31 juillet 2026",
+    "intro": "L'utilisation du site atlasrouge.com implique l'acceptation pleine et entière des présentes conditions.",
+    "sections": [
+      {
+        "title": "Objet",
+        "paragraphs": [
+          "Atlas Rouge est un site vitrine de mise en relation immobilière à Marrakech, destiné à présenter des biens et à faciliter la prise de contact avec l'agence. Il ne permet aucune transaction financière en ligne : les échanges commerciaux (visite, offre, signature) se font directement avec l'agence."
+        ]
+      },
+      {
+        "title": "Contenu des annonces",
+        "paragraphs": [
+          "Les informations relatives aux biens (prix, surface, disponibilité) sont fournies à titre indicatif et peuvent évoluer sans préavis. Elles ne constituent pas une offre contractuelle et doivent être confirmées auprès de l'agence avant toute décision d'achat, de vente ou de location."
+        ]
+      },
+      {
+        "title": "Accès au site",
+        "paragraphs": [
+          "Atlas Rouge s'efforce d'assurer l'accès au site en continu, sans garantie de disponibilité, et peut interrompre le service à des fins de maintenance sans préavis."
+        ]
+      },
+      {
+        "title": "Responsabilité",
+        "paragraphs": [
+          "Atlas Rouge ne saurait être tenu responsable des dommages directs ou indirects résultant de l'utilisation du site, de son indisponibilité temporaire, ou de l'usage des informations qu'il contient."
+        ]
+      },
+      {
+        "title": "Liens externes",
+        "paragraphs": [
+          "Le site peut renvoyer vers des services tiers (réseaux sociaux, Airbnb, Booking.com) sur lesquels Atlas Rouge n'exerce aucun contrôle et dont il ne saurait être tenu responsable du contenu."
+        ]
+      },
+      {
+        "title": "Droit applicable",
+        "paragraphs": [
+          "Les présentes conditions sont soumises au droit marocain. Tout litige relève des tribunaux compétents de Marrakech, sous réserve des dispositions impératives applicables à votre situation."
+        ]
+      },
+      {
+        "title": "Contact",
+        "paragraphs": ["Pour toute question relative aux présentes conditions : info@atlasrouge.com"]
+      }
+    ]
+  }
+}

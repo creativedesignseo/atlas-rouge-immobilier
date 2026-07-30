@@ -1,0 +1,150 @@
+{
+  "breadcrumbHome": "Home",
+  "legalNotice": {
+    "breadcrumb": "Legal Notice",
+    "title": "Legal Notice",
+    "updated": "Last updated: July 31, 2026",
+    "sections": [
+      {
+        "title": "Website publisher",
+        "paragraphs": [
+          "The website atlasrouge.com is published by Atlas Rouge, located at 79, Passage Prince Moulay Rachid, Marrakech 40000, Morocco.",
+          "Contact: info@atlasrouge.com"
+        ]
+      },
+      {
+        "title": "Hosting",
+        "paragraphs": [
+          "The website is hosted by Netlify, Inc. (https://www.netlify.com). The hosting provider's own legal notice is available on its website.",
+          "The database, authentication and file storage are provided by Supabase Inc. (https://supabase.com)."
+        ]
+      },
+      {
+        "title": "Intellectual property",
+        "paragraphs": [
+          "All content on this site (text, photographs, logos, layout) is the property of Atlas Rouge or its partners, unless stated otherwise, and may not be reproduced without prior authorization."
+        ]
+      },
+      {
+        "title": "Contact",
+        "paragraphs": ["For any question about the website or its content: info@atlasrouge.com"]
+      }
+    ]
+  },
+  "privacy": {
+    "breadcrumb": "Privacy Policy",
+    "title": "Privacy Policy",
+    "updated": "Last updated: July 31, 2026",
+    "intro": "This policy explains what personal data Atlas Rouge collects through atlasrouge.com, why, and how you can exercise your rights.",
+    "sections": [
+      {
+        "title": "Data controller",
+        "paragraphs": ["Atlas Rouge, 79, Passage Prince Moulay Rachid, Marrakech 40000, Morocco — info@atlasrouge.com."]
+      },
+      {
+        "title": "Data we collect",
+        "paragraphs": [
+          "When you use a form on the site (contact, valuation request, property inquiry, newsletter sign-up), we collect the data you provide: name, email, phone number, message, and where relevant the property address or a preferred date.",
+          "While browsing, technical data (IP address, pages visited, device) may be collected via audience-measurement and advertising cookies, only with your consent (see the Cookies section below)."
+        ]
+      },
+      {
+        "title": "Purposes",
+        "paragraphs": [
+          "This data is used to respond to your requests, follow up commercially, and — with your consent — measure site traffic and optimize our advertising campaigns (Google Ads)."
+        ]
+      },
+      {
+        "title": "Legal basis",
+        "paragraphs": [
+          "Processing requests submitted through our forms is based on steps taken at your request. Non-essential cookies are based on your consent, which you may withdraw at any time."
+        ]
+      },
+      {
+        "title": "Who receives your data",
+        "paragraphs": [
+          "Your data is accessible to the Atlas Rouge team and its technical providers: Supabase (database hosting, authentication, storage), Netlify (website hosting), and, only if you accept the corresponding cookies, Google (Google Tag Manager, Analytics and Ads)."
+        ]
+      },
+      {
+        "title": "Retention period",
+        "paragraphs": [
+          "Data submitted through forms is kept for as long as needed to handle your request and any resulting business relationship, then deleted or archived in line with applicable legal obligations."
+        ]
+      },
+      {
+        "title": "Transfers outside the European Union",
+        "paragraphs": [
+          "Atlas Rouge is based in Morocco, and some technical providers (Netlify, Supabase, Google) are based in the United States. These transfers rely on the safeguards offered by those providers (standard contractual clauses or equivalent frameworks)."
+        ]
+      },
+      {
+        "title": "Your rights",
+        "paragraphs": [
+          "Under GDPR, you have the right to access, rectify, erase, restrict, object to, and port your data. To exercise it, contact us at info@atlasrouge.com.",
+          "If you reside in the European Union, you may also file a complaint with your national data protection authority (for example the CNIL in France, www.cnil.fr)."
+        ]
+      },
+      {
+        "id": "cookies",
+        "title": "Cookies",
+        "paragraphs": [
+          "Our consent banner lets you accept or decline non-essential cookies (audience measurement, advertising). Cookies strictly necessary for the site to function remain active regardless of your choice.",
+          "You can change your choice at any time by clearing this site's browsing data in your browser settings — the banner will reappear on your next visit."
+        ]
+      },
+      {
+        "title": "Contact",
+        "paragraphs": ["For any question about your personal data: info@atlasrouge.com"]
+      }
+    ]
+  },
+  "terms": {
+    "breadcrumb": "Terms of Use",
+    "title": "Terms of Use",
+    "updated": "Last updated: July 31, 2026",
+    "intro": "Using the atlasrouge.com website implies full acceptance of these terms.",
+    "sections": [
+      {
+        "title": "Purpose",
+        "paragraphs": [
+          "Atlas Rouge is a real estate showcase website for Marrakech, intended to present properties and facilitate contact with the agency. It does not support any online financial transaction: commercial dealings (viewing, offer, signature) take place directly with the agency."
+        ]
+      },
+      {
+        "title": "Listing content",
+        "paragraphs": [
+          "Information about properties (price, size, availability) is provided for guidance only and may change without notice. It does not constitute a contractual offer and must be confirmed with the agency before any decision to buy, sell, or rent."
+        ]
+      },
+      {
+        "title": "Access to the site",
+        "paragraphs": [
+          "Atlas Rouge makes reasonable efforts to keep the site available at all times, without guaranteeing continuous availability, and may interrupt the service for maintenance without prior notice."
+        ]
+      },
+      {
+        "title": "Liability",
+        "paragraphs": [
+          "Atlas Rouge cannot be held liable for direct or indirect damages resulting from use of the site, its temporary unavailability, or the use of the information it contains."
+        ]
+      },
+      {
+        "title": "External links",
+        "paragraphs": [
+          "The site may link to third-party services (social networks, Airbnb, Booking.com) over which Atlas Rouge exercises no control and for whose content it cannot be held responsible."
+        ]
+      },
+      {
+        "title": "Governing law",
+        "paragraphs": [
+          "These terms are governed by Moroccan law. Any dispute falls under the jurisdiction of the courts of Marrakech, subject to any mandatory provisions applicable to your situation."
+        ]
+      },
+      {
+        "title": "Contact",
+        "paragraphs": ["For any question about these terms: info@atlasrouge.com"]
+      }
+    ]
+  }
+}

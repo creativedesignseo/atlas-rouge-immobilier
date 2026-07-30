@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist', 'atlas-rouge-immobilier-v4']),
+  globalIgnores(['dist', 'atlas-rouge-immobilier-v4', 'brand']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [

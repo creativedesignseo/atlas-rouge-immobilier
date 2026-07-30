@@ -18,6 +18,7 @@ import enServices from './locales/en/services.json'
 import enAmenities from './locales/en/amenities.json'
 import enErrors from './locales/en/errors.json'
 import enBuyerGuide from './locales/en/buyerGuide.json'
+import enLegal from './locales/en/legal.json'
 
 import frNav from './locales/fr/nav.json'
 import frCommon from './locales/fr/common.json'
@@ -35,6 +36,7 @@ import frServices from './locales/fr/services.json'
 import frAmenities from './locales/fr/amenities.json'
 import frErrors from './locales/fr/errors.json'
 import frBuyerGuide from './locales/fr/buyerGuide.json'
+import frLegal from './locales/fr/legal.json'
 
 import esNav from './locales/es/nav.json'
 import esCommon from './locales/es/common.json'
@@ -52,6 +54,7 @@ import esServices from './locales/es/services.json'
 import esAmenities from './locales/es/amenities.json'
 import esErrors from './locales/es/errors.json'
 import esBuyerGuide from './locales/es/buyerGuide.json'
+import esLegal from './locales/es/legal.json'
 
 export const SUPPORTED_LANGUAGES = ['en', 'fr', 'es'] as const
 export type SupportedLanguage = typeof SUPPORTED_LANGUAGES[number]
@@ -78,21 +81,21 @@ i18n
         property: enProperty, contact: enContact, admin: enAdmin, search: enSearch,
         sell: enSell, about: enAbout, blog: enBlog, estimation: enEstimation,
         services: enServices, amenities: enAmenities, errors: enErrors,
-        buyerGuide: enBuyerGuide,
+        buyerGuide: enBuyerGuide, legal: enLegal,
       },
       fr: {
         nav: frNav, common: frCommon, home: frHome, footer: frFooter,
         property: frProperty, contact: frContact, admin: frAdmin, search: frSearch,
         sell: frSell, about: frAbout, blog: frBlog, estimation: frEstimation,
         services: frServices, amenities: frAmenities, errors: frErrors,
-        buyerGuide: frBuyerGuide,
+        buyerGuide: frBuyerGuide, legal: frLegal,
       },
       es: {
         nav: esNav, common: esCommon, home: esHome, footer: esFooter,
         property: esProperty, contact: esContact, admin: esAdmin, search: esSearch,
         sell: esSell, about: esAbout, blog: esBlog, estimation: esEstimation,
         services: esServices, amenities: esAmenities, errors: esErrors,
-        buyerGuide: esBuyerGuide,
+        buyerGuide: esBuyerGuide, legal: esLegal,
       },
     },
     defaultNS: 'common',

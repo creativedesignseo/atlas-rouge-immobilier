@@ -4,7 +4,15 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-07-27 (separación gestión/venta en dos landings — ver abajo)
+**Last updated:** 2026-07-31 (páginas legales para campaña de Ads — ver abajo)
+
+## Páginas legales (Aviso Legal / Privacidad / Términos) — 2026-07-31
+
+✅ Creadas y publicadas en FR/ES/EN, enlazadas desde el footer. Ver detalle
+verificado en `HANDOFF_REPORT.md`. Pendiente **solo si Khalid lo aporta**:
+número de registro de empresa (RC/ICE/IF) — hoy el aviso legal usa únicamente
+nombre comercial + dirección, sin inventar una forma jurídica o número que no
+se confirmó.
 
 ## Separación de públicos: `/proprietaires` = gestión, `/vendre` = venta — 2026-07-27
 

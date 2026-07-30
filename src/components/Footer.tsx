@@ -31,10 +31,10 @@ export default function Footer() {
     {
       titleKey: 'legal',
       links: [
-        { labelKey: 'legalNotice', href: '#' },
-        { labelKey: 'terms', href: '#' },
-        { labelKey: 'privacy', href: '#' },
-        { labelKey: 'cookies', href: '#' },
+        { labelKey: 'legalNotice', href: path('/legalNotice') },
+        { labelKey: 'terms', href: path('/terms') },
+        { labelKey: 'privacy', href: path('/privacy') },
+        { labelKey: 'cookies', href: `${path('/privacy')}#cookies` },
       ],
     },
   ]

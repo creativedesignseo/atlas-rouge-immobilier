@@ -15,6 +15,9 @@ export const ROUTES = {
   valuation: { fr: 'estimation', es: 'valoracion', en: 'valuation' },
   propertyManagement: { fr: 'gestion-locative', es: 'gestion-alquileres', en: 'property-management' },
   valuationStart: { fr: 'estimer', es: 'valorar', en: 'value' },
+  legalNotice: { fr: 'mentions-legales', es: 'aviso-legal', en: 'legal-notice' },
+  privacy: { fr: 'politique-de-confidentialite', es: 'politica-de-privacidad', en: 'privacy-policy' },
+  terms: { fr: 'conditions-generales-utilisation', es: 'terminos-y-condiciones', en: 'terms-of-use' },
 } as const
 
 export type RouteKey = keyof typeof ROUTES

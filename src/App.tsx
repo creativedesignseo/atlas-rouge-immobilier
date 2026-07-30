@@ -30,6 +30,9 @@ const Sell = lazy(() => import('./pages/Sell'))
 const BuyerGuide = lazy(() => import('./pages/BuyerGuide'))
 const Blog = lazy(() => import('./pages/Blog'))
 const BlogPost = lazy(() => import('./pages/BlogPost'))
+const LegalNotice = lazy(() => import('./pages/LegalNotice'))
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'))
+const Terms = lazy(() => import('./pages/Terms'))
 
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'))
 const AdminProperties = lazy(() => import('./pages/admin/AdminProperties'))
@@ -207,6 +210,15 @@ export default function App() {
             ))}
             {getAllSlugsForKey('valuationStart').map((slug) => (
               <Route key={`valstart-${slug}`} path={slug} element={<Estimer />} />
+            ))}
+            {getAllSlugsForKey('legalNotice').map((slug) => (
+              <Route key={`legal-${slug}`} path={slug} element={<LegalNotice />} />
+            ))}
+            {getAllSlugsForKey('privacy').map((slug) => (
+              <Route key={`privacy-${slug}`} path={slug} element={<PrivacyPolicy />} />
+            ))}
+            {getAllSlugsForKey('terms').map((slug) => (
+              <Route key={`terms-${slug}`} path={slug} element={<Terms />} />
             ))}
             <Route path="*" element={<NotFound />} />
           </Route>

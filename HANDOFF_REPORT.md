@@ -4,6 +4,65 @@
 
 ---
 
+## CIERRE de sesión — Claude Sonnet 5 — 2026-07-31 (páginas legales: Aviso Legal, Privacidad, Términos)
+
+**Motivo:** el owner está lanzando campañas de Ads y necesitaba una URL real de
+política de privacidad (Google/Meta la exigen para aprobar campañas con
+formularios de leads). Verificado en el código (no era una suposición): el
+`Footer.tsx` tenía los 3 enlaces legales apuntando a `href="#"` — placeholders
+sin página real detrás. No existía ninguna ruta `/mentions-legales`, `/privacy`,
+`/terms` en `App.tsx`.
+
+**Qué se creó** (FR/ES/EN, i18n completo, namespace `legal`):
+- `/mentions-legales` (+ es/en) — editor (Atlas Rouge, 79 Passage Prince Moulay
+  Rachid, Marrakech 40000, Maroc — dato dado por el owner), hosting (Netlify +
+  Supabase, verificado en el código), propiedad intelectual, contacto.
+- `/politique-de-confidentialite` (+ es/en) — responsable del tratamiento,
+  datos recogidos (verificado contra `leads.service.ts`/`contact.service.ts`:
+  nombre/email/teléfono/mensaje/dirección del bien/fecha), finalidades, base
+  legal, destinatarios (Supabase, Netlify, Google — GTM container `GTM-TW5NLSKR`
+  verificado en `index.html`, no hay Meta Pixel), transferencias fuera de la UE,
+  derechos RGPD, sección Cookies (ancla `#cookies` con scroll-to-hash, ya que
+  React Router no lo hace solo en una SPA).
+- `/conditions-generales-utilisation` (+ es/en) — objeto, contenido de
+  anuncios no contractual, responsabilidad, enlaces externos, ley aplicable
+  (marroquí, sede en Marrakech).
+
+**Dato pendiente de completar (no inventado):** el aviso legal NO incluye un
+número de registro de empresa (RC/ICE/IF) — el owner solo confirmó el nombre
+comercial "Atlas Rouge" y la dirección, sin forma jurídica ni número de
+registro. Si Khalid la aporta, hay que añadirla a `legal.json` (sección
+"Éditeur du site").
+
+**Cambios de código:**
+- `src/lib/routes.ts` — 3 claves nuevas (`legalNotice`, `privacy`, `terms`)
+  con slug por idioma, mismo patrón que el resto de rutas.
+- `src/locales/{fr,es,en}/legal.json` — contenido completo (nuevo namespace,
+  registrado en `src/i18n.ts`).
+- `src/components/legal/LegalPageLayout.tsx` — layout compartido por las 3
+  páginas (breadcrumb, título, secciones desde i18n vía `returnObjects`).
+- `src/pages/LegalNotice.tsx`, `PrivacyPolicy.tsx`, `Terms.tsx` — wrappers finos.
+- `src/App.tsx` — 3 rutas nuevas registradas igual que el resto (slug por
+  idioma vía `getAllSlugsForKey`).
+- `src/components/Footer.tsx` — los 4 enlaces legales dejan de ser `href="#"`
+  y apuntan a las páginas reales (`cookies` → privacidad `#cookies`).
+- `eslint.config.js` — **fix no relacionado descubierto en el camino**:
+  `npm run lint` escaneaba `brand/Agente/remotion/build/*.bundle.js` (artefactos
+  compilados del proyecto Remotion, con su propio ESLint) y fallaba con
+  decenas de "rule not found". Añadido `brand` a `globalIgnores` — `brand/`
+  nunca ha estado versionado ni es parte del sitio desplegado.
+
+**Verificación real (no supuesta):**
+- `git status` antes de empezar: HEAD = `origin/main` = `0e56106e`.
+- `bash scripts/verify.sh` → verde (build pasa; lint pasa tras el fix de
+  `eslint.config.js`; no hay script `typecheck`/`test`, como ya se sabía).
+- `npm run build && npm run preview` en local (puerto 4321) + navegador:
+  verificadas visualmente las 3 páginas en los 3 idiomas (contenido correcto,
+  sin claves i18n rotas), el footer con los 4 enlaces reales, y el scroll al
+  ancla `#cookies` (confirmado por árbol de accesibilidad — el screenshot de
+  la herramienta de navegador tuvo un glitch visual puntual, no relacionado
+  con el código).
+
 ## CIERRE de sesión — Claude Opus 5 — 2026-07-27 (separación gestión/venta en dos landings)
 
 **Decisión del owner** (revierte la recomendación del 24-07 de reutilizar
