@@ -6,7 +6,7 @@
 
 **Last updated:** 2026-07-31 (píxel de TikTok Ads instalado — ver abajo)
 
-## Píxel de TikTok Ads (D6AA6N3C77U2SG09BQN0) — 2026-07-31
+## Píxel de TikTok Ads (D9MSR03C77U9D4RN76K0) — 2026-07-31
 
 ✅ Instalado vía GTM (contenedor `GTM-TW5NLSKR`, cuenta `adspubli`), no
 hardcodeado en el código — dispara en `index.html` (SPA) y en las 2 landings
@@ -15,9 +15,11 @@ Evento de conversión `SubmitForm` enganchado al `generate_lead` ya existente.
 Verificado en vivo con tráfico real a `analytics.tiktok.com`. Detalle completo
 en `HANDOFF_REPORT.md`.
 
-📌 **Pendiente, no bloqueante:** el pixel no aparece en el Events Manager de
-TikTok bajo la cuenta de anuncios `aadvid=7607875888021192720` — puede vivir
-bajo otra cuenta/Business Center. Confirmar con el owner si quiere verlo ahí.
+✅ **Corregido:** el ID inicial (`D6AA6N3C77U2SG09BQN0`) no pertenecía a la
+cuenta de anuncios del owner (Sanz0217) — nunca se había creado un pixel ahí.
+Se creó uno nuevo, real, dentro de esa cuenta ("Atlas Rouge Immobilier -
+Web") y se corrigió en GTM. **ID vigente: `D9MSR03C77U9D4RN76K0`**, visible
+en el Events Manager del owner.
 
 📌 **Mejora futura:** TikTok Events API (server-side, vía `notify-lead.js`)
 para mejorar el match rate — no se hizo esta sesión.

@@ -4,6 +4,32 @@
 
 ---
 
+## CORRECCIÓN — Claude Sonnet 5 — 2026-07-31 (Pixel ID de TikTok era el equivocado)
+
+El ID `D6AA6N3C77U2SG09BQN0` usado en la entrada de abajo **no pertenece a la
+cuenta de anuncios del owner** (Sanz0217, `aadvid=7607875888021192720`) — de
+ahí que nunca apareciera en su Events Manager por más que se buscara. El
+owner confirmó que esa cuenta nunca había tenido un pixel creado.
+
+**Corregido:** se creó un pixel nuevo, real, dentro de la cuenta correcta
+("Atlas Rouge Immobilier - Web") — **ID verificado: `D9MSR03C77U9D4RN76K0`**.
+En GTM se borró la tag `[6]` (ID viejo) y se creó `[8]` con el mismo nombre
+"TikTok Pixel - Base Code" y los mismos triggers (`2147479553` All Pages +
+`[4]` cookie_consent_accepted). La tag `[7]` "TikTok Pixel - Lead
+(SubmitForm)" no necesitó cambios — no referencia el ID, solo llama a
+`window.ttq.track('SubmitForm')`. Publicado como versión 4 del contenedor
+(confirmación explícita del owner en chat, tras que el clasificador de
+seguridad bloqueara el primer intento de `gtm publish` automático).
+
+Verificado en `atlasrouge.com/proprietaires/` en vivo: `gtm.js` publicado ya
+NO contiene el ID viejo (`grep -c` → 0) y SÍ contiene el nuevo; el script
+inyectado en el navegador es
+`analytics.tiktok.com/i18n/pixel/events.js?sdkid=D9MSR03C77U9D4RN76K0`.
+
+**Todas las referencias a `D6AA6N3C77U2SG09BQN0` más abajo en este documento
+son historial de lo que se intentó, no del estado actual — el ID correcto y
+vigente es `D9MSR03C77U9D4RN76K0`.**
+
 ## CIERRE de sesión — Claude Sonnet 5 — 2026-07-31 (TikTok Pixel instalado)
 
 **Motivo:** el owner creó su cuenta de TikTok Ads Manager y su pixel
@@ -48,9 +74,12 @@ visita anterior, no para quien acepta en el momento.
 - `src/locales/{fr,es,en}/legal.json` — añadido TikTok a "Destinatarios de tus datos" en la Política de Privacidad (publicada hace días, factualmente desactualizada en cuanto se instaló el pixel).
 
 **Verificación real (no supuesta):**
-- `bash scripts/verify.sh` → verde.
-- GTM: `gtm list-tags`/`list-triggers` confirmaron el estado final antes de publicar.
-- (Completar tras `gtm publish`: confirmar versión live + probar en `atlasrouge.com` que `window.ttq` aparece tras aceptar cookies y que se ve tráfico real a `analytics.tiktok.com`.)
+- `bash scripts/verify.sh` → verde (antes y después de añadir el `dataLayer.push`).
+- GTM: `gtm list-tags`/`list-triggers` confirmaron el estado antes de publicar; `gtm publish` → versión 3 publicada.
+- `atlasrouge.com/proprietaires/` en vivo, repetido en pestaña nueva dos veces: `window.ttq` pasa de `undefined` a objeto real tras `localStorage.setItem('atlas-rouge-cookie-consent','accepted')` + recarga; el script inyectado es `analytics.tiktok.com/i18n/pixel/events.js?sdkid=D6AA6N3C77U2SG09BQN0&lib=ttq` (ID exacto, no genérico). Primera prueba salió en falso por caché de `gtm.js` (~1-2 min de propagación) — confirmado con `curl` directo al `gtm.js` publicado, que ya traía el ID antes de que el navegador lo reflejara.
+- Evento `generate_lead` simulado (sin insertar lead falso en Supabase) → no lanza error.
+- `dataLayer.push({event:'cookie_consent_accepted'})` real de `CookieBanner.tsx` (React, no el snippet de código directo) probado en local haciendo clic real en "Accepter" — aparece en el `dataLayer`.
+- **No encontrado** en el Events Manager de TikTok (`Data sources`) bajo la cuenta de anuncios `aadvid=7607875888021192720` — ni por nombre ni por Pixel ID exacto ("No data sources yet"). El pixel puede vivir bajo otra cuenta/Business Center del owner. No bloquea nada (el pixel funciona, confirmado por tráfico real), pero si el owner quiere verlo en el dashboard de TikTok, hay que confirmar la cuenta de anuncios correcta.
 
 **Pendiente / mejora futura, no bloqueante:** TikTok Events API (server-side,
 vía `notify-lead.js`) para mejorar el match rate — no se hizo esta sesión,
