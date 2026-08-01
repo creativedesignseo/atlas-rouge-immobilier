@@ -4,7 +4,23 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-07-31 (páginas legales para campaña de Ads — ver abajo)
+**Last updated:** 2026-07-31 (píxel de TikTok Ads instalado — ver abajo)
+
+## Píxel de TikTok Ads (D6AA6N3C77U2SG09BQN0) — 2026-07-31
+
+✅ Instalado vía GTM (contenedor `GTM-TW5NLSKR`, cuenta `adspubli`), no
+hardcodeado en el código — dispara en `index.html` (SPA) y en las 2 landings
+estáticas (`/proprietaires/`, `/vendre/`), respetando el banner de cookies.
+Evento de conversión `SubmitForm` enganchado al `generate_lead` ya existente.
+Verificado en vivo con tráfico real a `analytics.tiktok.com`. Detalle completo
+en `HANDOFF_REPORT.md`.
+
+📌 **Pendiente, no bloqueante:** el pixel no aparece en el Events Manager de
+TikTok bajo la cuenta de anuncios `aadvid=7607875888021192720` — puede vivir
+bajo otra cuenta/Business Center. Confirmar con el owner si quiere verlo ahí.
+
+📌 **Mejora futura:** TikTok Events API (server-side, vía `notify-lead.js`)
+para mejorar el match rate — no se hizo esta sesión.
 
 ## Páginas legales (Aviso Legal / Privacidad / Términos) — 2026-07-31
 

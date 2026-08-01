@@ -50,13 +50,22 @@ export default function CookieBanner() {
     // 'accepted' se conceden analytics/ads; con 'rejected' se mantienen
     // denegados, así GTM/GA4 no rastrean sin consentimiento (RGPD).
     const granted = c === 'accepted'
-    const w = window as unknown as { gtag?: (...args: unknown[]) => void }
+    const w = window as unknown as {
+      gtag?: (...args: unknown[]) => void
+      dataLayer?: Record<string, unknown>[]
+    }
     w.gtag?.('consent', 'update', {
       ad_storage: granted ? 'granted' : 'denied',
       ad_user_data: granted ? 'granted' : 'denied',
       ad_personalization: granted ? 'granted' : 'denied',
       analytics_storage: granted ? 'granted' : 'denied',
     })
+    // dataLayer event so GTM tags that Google's Consent Mode can't gate
+    // natively (e.g. TikTok Pixel) can trigger off cookie acceptance too.
+    if (granted) {
+      w.dataLayer = w.dataLayer || []
+      w.dataLayer.push({ event: 'cookie_consent_accepted' })
+    }
     window.dispatchEvent(
       new CustomEvent('atlasrouge:cookie-consent', { detail: c }),
     )

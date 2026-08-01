@@ -4,6 +4,58 @@
 
 ---
 
+## CIERRE de sesión — Claude Sonnet 5 — 2026-07-31 (TikTok Pixel instalado)
+
+**Motivo:** el owner creó su cuenta de TikTok Ads Manager y su pixel
+(`LeadAd_1771348827_7607875888021192720`, ID `D6AA6N3C77U2SG09BQN0`, AAM
+activado) para la campaña de captación de propietarios/vendedores.
+
+**Camino descartado #1:** el TikTok "for Business MCP Server" (gestión de
+campañas vía MCP) requiere que el owner autorice OAuth con su cuenta —
+fuera de alcance de una sesión no interactiva.
+
+**Camino descartado #2 (falsa alarma, corregida):** primero se concluyó que
+el contenedor `GTM-TW5NLSKR` no estaba accesible por CLI porque ninguna
+CUENTA de `gtm list-accounts` se llamaba "Atlas Rouge". Error de búsqueda:
+el contenedor vive **dentro de la cuenta `adspubli`** (account id
+`6203566842`), con nombre propio "Atlas Rouge Immobilier" (container id
+`259110871`). El owner señaló la captura de Tag Assistant con el ID GTM
+visible y pidió verificar de nuevo — correcto tenerlo en cuenta.
+
+**Camino real usado — instalado vía GTM** (no hardcodeado en HTML, se
+descartó una primera versión hardcodeada en `index.html` +
+`public/proprietaires/index.html` + `public/vendre/index.html` antes de
+publicarla, al confirmar que el contenedor sí era editable — evita
+duplicar el pixel a mano en 3 archivos Y el riesgo de doble disparo si
+algún día también se gestiona desde GTM). TikTok no respeta el Consent
+Mode de Google nativamente, así que el gate de RGPD se hace dentro de la
+propia Custom HTML tag (`localStorage['atlas-rouge-cookie-consent'] === 'accepted'`).
+
+Workspace 3 del contenedor `259110871` (account `6203566842`,
+`creativedesignseo@gmail.com`, vía CLI `gtm`):
+- **Trigger [4]** `Custom Event - cookie_consent_accepted` — dataLayer event nuevo, pusheado al aceptar cookies (visitante en la misma sesión).
+- **Trigger [5]** `Custom Event - generate_lead` — ya existía en el dataLayer (lo pushea `track('generate_lead', …)` en ambas landings, sin cambios).
+- **Tag [6]** `TikTok Pixel - Base Code` (Custom HTML) — dispara en All Pages (`2147479553`, visitantes que ya habían aceptado) **y** en el trigger `[4]` (aceptación durante la sesión). Contiene el snippet oficial `ttq.load('D6AA6N3C77U2SG09BQN0')` + `ttq.page()`.
+- **Tag [7]** `TikTok Pixel - Lead (SubmitForm)` (Custom HTML) — dispara en `[5]`; `if (window.ttq) window.ttq.track('SubmitForm')`.
+
+**Único cambio de código necesario** (mínimo, una línea por archivo — el
+resto vive en GTM): `dataLayer.push({event: 'cookie_consent_accepted'})`
+cuando se acepta, en `src/components/CookieBanner.tsx` (SPA) y en
+`decideCookie()` de ambas landings estáticas. Sin este push, el pixel solo
+arrancaría para visitantes que YA tenían el consentimiento guardado de una
+visita anterior, no para quien acepta en el momento.
+
+- `src/locales/{fr,es,en}/legal.json` — añadido TikTok a "Destinatarios de tus datos" en la Política de Privacidad (publicada hace días, factualmente desactualizada en cuanto se instaló el pixel).
+
+**Verificación real (no supuesta):**
+- `bash scripts/verify.sh` → verde.
+- GTM: `gtm list-tags`/`list-triggers` confirmaron el estado final antes de publicar.
+- (Completar tras `gtm publish`: confirmar versión live + probar en `atlasrouge.com` que `window.ttq` aparece tras aceptar cookies y que se ve tráfico real a `analytics.tiktok.com`.)
+
+**Pendiente / mejora futura, no bloqueante:** TikTok Events API (server-side,
+vía `notify-lead.js`) para mejorar el match rate — no se hizo esta sesión,
+solo el pixel client-side vía GTM.
+
 ## CIERRE de sesión — Claude Sonnet 5 — 2026-07-31 (páginas legales: Aviso Legal, Privacidad, Términos)
 
 **Motivo:** el owner está lanzando campañas de Ads y necesitaba una URL real de

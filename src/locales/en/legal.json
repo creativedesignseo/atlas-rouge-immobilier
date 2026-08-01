@@ -63,7 +63,7 @@
       {
         "title": "Who receives your data",
         "paragraphs": [
-          "Your data is accessible to the Atlas Rouge team and its technical providers: Supabase (database hosting, authentication, storage), Netlify (website hosting), and, only if you accept the corresponding cookies, Google (Google Tag Manager, Analytics and Ads)."
+          "Your data is accessible to the Atlas Rouge team and its technical providers: Supabase (database hosting, authentication, storage), Netlify (website hosting), and, only if you accept the corresponding cookies, Google (Google Tag Manager, Analytics and Ads) and TikTok (TikTok Pixel, for advertising campaign measurement and optimization)."
         ]
       },
       {

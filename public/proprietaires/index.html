@@ -1021,6 +1021,7 @@
         ad_personalization: granted ? 'granted' : 'denied',
         analytics_storage: granted ? 'granted' : 'denied',
       });
+      if (granted) { window.dataLayer.push({ event: 'cookie_consent_accepted' }); }
     }
   </script>
 </body>
