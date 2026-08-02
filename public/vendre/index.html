@@ -354,6 +354,18 @@
     }
     .field-hint { font-size: .8125rem; color: #727987; margin: 6px 0 0; line-height: 1.4; }
     .opt { font-weight: 500; color: #8b919c; letter-spacing: 0; }
+
+    /* Sección "cómo se hace": tipografía deliberadamente grande. El cliente
+       pidió menos textos pequeños y más contexto legible — estos 3 bloques
+       sustituyen a los micro-chips que había en el hero. */
+    #how .section-head h2 { font-size: clamp(2rem, 3.2vw, 2.9rem); }
+    #how .section-head p { font-size: clamp(1.1rem, 1.5vw, 1.3rem); }
+    #how .service-card h3 { font-size: 1.4rem; margin-bottom: 8px; }
+    #how .service-card p { font-size: 1.1rem; line-height: 1.6; }
+    @media (max-width: 820px) {
+      #how .service-card h3 { font-size: 1.3rem; }
+      #how .service-card p { font-size: 1.05rem; }
+    }
     .bridge { text-align: center; margin: 0 0 -18px; font-size: .9375rem; }
     .bridge a { color: var(--terracotta); font-weight: 700; text-decoration: none; }
     .privacy { font-size: .875rem; color: #727987; margin: 12px 0 0; line-height: 1.45; }
@@ -688,14 +700,8 @@
     <section class="hero" aria-labelledby="hero-title">
       <div class="container hero-inner">
         <div class="hero-copy">
-          <div class="eyebrow">Vente immobilière à Marrakech</div>
           <h1 id="hero-title">Vendez votre bien <span>à Marrakech.</span></h1>
           <p class="hero-lead">Laissez-nous vos coordonnées. Une équipe francophone sur place vous rappelle et vous dit ce que vaut votre bien.</p>
-          <div class="trust-row" aria-label="Avantages principaux">
-            <span class="trust-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Estimation gratuite</span>
-            <span class="trust-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Sans exclusivité</span>
-            <span class="trust-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Équipe sur place à Marrakech</span>
-          </div>
         </div>
 
         <aside class="lead-card" id="lead" aria-labelledby="lead-title">
@@ -739,6 +745,32 @@
             <a class="btn btn-secondary btn-block" href="mailto:info@atlasrouge.com">Écrire à Atlas Rouge</a>
           </div>
         </aside>
+      </div>
+    </section>
+
+    <section id="how" aria-labelledby="how-title">
+      <div class="container">
+        <div class="section-head center">
+          <h2 id="how-title">Trois champs, un appel, une estimation.</h2>
+          <p>Vous ne remplissez rien d’autre. Le reste, on en parle de vive voix.</p>
+        </div>
+        <div class="services-grid">
+          <article class="service-card">
+            <div class="step-num">1</div>
+            <h3>Vous laissez vos coordonnées</h3>
+            <p>Votre nom et votre téléphone. Rien de plus.</p>
+          </article>
+          <article class="service-card">
+            <div class="step-num">2</div>
+            <h3>Un conseiller vous rappelle</h3>
+            <p>Une équipe francophone, basée à Marrakech.</p>
+          </article>
+          <article class="service-card">
+            <div class="step-num">3</div>
+            <h3>Vous recevez votre estimation</h3>
+            <p>Gratuite, sans exclusivité et sans engagement.</p>
+          </article>
+        </div>
       </div>
     </section>
 
