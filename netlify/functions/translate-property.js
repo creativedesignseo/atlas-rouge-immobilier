@@ -249,7 +249,7 @@ function cleanModelResponse(text) {
     .trim()
 }
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   const cors = resolveCors(event)
   const json = makeJson(cors.headers)
 

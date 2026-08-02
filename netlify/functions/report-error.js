@@ -65,7 +65,7 @@ async function sendTelegram(report) {
   return res.json()
 }
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   const cors = resolveCors(event)
 
   if (event.httpMethod === 'OPTIONS') {
