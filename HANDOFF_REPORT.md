@@ -4,6 +4,81 @@
 
 ---
 
+## CIERRE de sesión — Claude Opus 5 — 2026-08-02 (medición de conversiones montada; campañas AÚN NO activables)
+
+Objetivo del owner: activar hoy `Atlas Rouge - FR-Diaspora` y `Atlas Rouge - Maroc`
+(Google Ads, cuenta **freecoche / Amsip MCC 407-193-7268** — confirmada por el
+owner como la cuenta que gestiona los anuncios de Atlas Rouge), aterrizando en
+`/proprietaires/` (gestión) y `/vendre/` (venta).
+
+### Hecho y VERIFICADO en producción (no supuesto)
+
+1. **CSP corregida** (`netlify.toml`, commit `55a10a54`). Hallazgo real: el pixel
+   de TikTok **nunca había disparado**. Reproducido en la página viva con
+   `performance.getEntriesByType('resource')`: el `<script>` de
+   `analytics.tiktok.com` estaba en el DOM pero con `transferSize=0`,
+   `duration=0` — cero bytes, bloqueado por `script-src`. Parecía sano porque
+   `window.ttq` existe igualmente (lo crea el fragmento inline, permitido por
+   `'unsafe-inline'`). **Corrección de un reporte anterior mío:** en el cierre del
+   2026-07-31 di el pixel por funcionando basándome en que `window.ttq` existía y
+   el script estaba inyectado; eso no probaba que cargara.
+   Verificado hoy: la cabecera en vivo ya incluye `analytics.tiktok.com`,
+   `googleadservices.com` y `googleads.g.doubleclick.net`.
+2. **GA4 ↔ Google Ads vinculado**: propiedad `546727602` (Atlas Rouge Immobilier,
+   `G-DW0QTJH33V`) enlazada a la cuenta de Ads. Antes solo estaba la de FreeCoche.
+3. **Acción de conversión creada**: *"Atlas Rouge - Lead formulario (web)"*,
+   **ID `17958357718`**, **label `KUABCKCQrdocENaVm_NC`**. Categoría "Envío de
+   formulario para clientes potenciales", recuento **Una**, ventana 90 días.
+   Creada como **Secundaria** a propósito: la cuenta es compartida con freecoche,
+   que tiene una campaña ACTIVA, y marcarla Principal habría entrado en los
+   objetivos de cuenta alterando su puja.
+4. **GTM publicado (versión 5)**, contenedor `GTM-TW5NLSKR` (account 6203566842,
+   container 259110871). 3 etiquetas nuevas sobre el trigger `[5] generate_lead`
+   ya existente:
+   - `[9] Google Ads - Conversion Lead (Atlas Rouge)` (`awct`)
+   - `[10] GA4 Event - generate_lead` (`gaawe`) → cierra el hueco: `generate_lead`
+     no llegaba a GA4 (0 eventos en los 90 días de vida de la propiedad).
+   - `[11] Conversion Linker` (`gclidw`) en All Pages → sin él se perdía el
+     `gclid` en Safari/ITP.
+5. **Prueba end-to-end en producción** (`/vendre/`, empujando `generate_lead`):
+   salieron peticiones reales a
+   `googleadservices.com/pagead/conversion/17958357718/?...&label=KUABCKCQrdocENaVm_NC`,
+   a `doubleclick` (viewthrough), 2 `/collect` de GA4, y TikTok
+   `api/v2/pixel` + `api/v2/pixel/act` — es decir, TikTok **ahora sí envía**.
+
+**Verificación de cierre (hoy):** `HEAD` = `origin/main` = `55a10a54` ·
+`verify.sh` verde · `/proprietaires/` y `/vendre/` HTTP 200 · `gtm.js` publicado
+contiene el AW id, el label y las 3 etiquetas · CSP en vivo con los 3 dominios.
+
+### NO hecho — bloquea la activación
+
+- **Las 10 URLs finales de los anuncios siguen apuntando al SPA**
+  (`/fr/vendre`, `/fr/gestion-locative`, `/fr/estimation`). **8 de 10 caen en
+  páginas SIN formulario** (`Sell.tsx`, `GestionLocative.tsx`: 0 `<form>`), así
+  que ~80% del presupuesto iría donde el visitante no puede dejar sus datos y la
+  conversión recién montada no se dispararía nunca. Mapeo correcto en
+  `tasks/current.md`. Se intentó la edición masiva en la UI de Ads pero
+  "Cambiar anuncios" aplica la MISMA URL a todos los seleccionados y aquí cada
+  grupo necesita una distinta → hay que editar los 10 uno a uno. **No se aplicó
+  ningún cambio**; el menú se cerró sin tocar nada.
+- **Método de pago de la cuenta Ads bloqueado** ("Se requiere un nuevo método de
+  pago"). El owner dice tener 500 € de crédito y luz verde de Google; **no
+  verificado por mí** en la UI, que sigue mostrando el aviso y los grupos como
+  "Entidad no apta".
+- **Decisión pendiente del cliente:** los anuncios prometen *"Estimation Gratuite
+  en 24h"*. Ese plazo no está en las landings y nunca lo confirmó el owner (las
+  landings se escribieron deliberadamente sin plazos). O se garantiza o se quita
+  del anuncio.
+
+### Deuda menor
+
+- Fila de prueba `ZZTEST Claude BORRAR` en `contact_submissions` (creada al
+  verificar el arreglo de leads) + la fila basura del 31/07. Borrarlas es
+  destructivo → requiere OK del owner. Si se borran, se puede promover la
+  constraint con `VALIDATE CONSTRAINT`.
+- Las páginas React siguen sin empujar `generate_lead`: los leads que entren por
+  `/contact` o por ficha de inmueble siguen sin medirse. Solo miden las 2 landings.
+
 ## CIERRE de sesión — Claude Opus 5 — 2026-08-02 (BUG CRÍTICO: pérdida silenciosa de leads — ARREGLADO)
 
 **Encontrado durante una auditoría previa a activar Google Ads.** Es el hallazgo

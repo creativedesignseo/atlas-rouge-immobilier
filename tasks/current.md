@@ -18,7 +18,38 @@ ninguna vía de contacto). Detalle completo en `HANDOFF_REPORT.md`.
 - Borrar la fila basura del 31/07 (`subject:'buy'`, sin ningún dato). Si se
   borra, se puede promover la constraint con `VALIDATE CONSTRAINT`.
 
-## 🟠 Activación de Google Ads (FR-Diaspora + Maroc) — BLOQUEADA 2026-08-02
+## 🟢 Medición de conversiones — MONTADA Y VERIFICADA 2026-08-02
+
+✅ CSP corregida (el pixel de TikTok llevaba desde su instalación sin disparar,
+bloqueado; reproducido con `transferSize=0`). Commit `55a10a54`.
+✅ GA4 `546727602` vinculada a la cuenta de Ads.
+✅ Conversión creada: **"Atlas Rouge - Lead formulario (web)"**, ID
+`17958357718`, label `KUABCKCQrdocENaVm_NC`, **Secundaria** (cuenta compartida
+con freecoche, que tiene campaña activa).
+✅ GTM v5 publicado: `[9]` conversión Ads + `[10]` evento GA4 `generate_lead`
++ `[11]` Conversion Linker, todos sobre el trigger `generate_lead` existente.
+✅ Probado end-to-end en producción: salen las peticiones reales a
+googleadservices, GA4 y TikTok.
+
+## 🔴 LO ÚNICO QUE BLOQUEA ACTIVAR — las 10 URLs de los anuncios
+
+Siguen apuntando al SPA. **8 de 10 van a páginas sin formulario.** Hay que
+editarlas UNA A UNA en la UI de Ads (la edición masiva pone la misma URL a
+todos y aquí cada grupo necesita la suya). Aplica igual a FR-Diaspora y Maroc,
+cambiando `utm_campaign` a `fr-diaspora` o `maroc`:
+
+| Grupo | URL final |
+|---|---|
+| A - Vendre | `https://atlasrouge.com/vendre/?service=vendre&utm_source=google&utm_medium=cpc&utm_campaign=<c>&utm_content=vendre` |
+| B1 - Gestion locative | `https://atlasrouge.com/proprietaires/?service=location&utm_source=google&utm_medium=cpc&utm_campaign=<c>&utm_content=gestion-locative` |
+| B2 - Gestion Airbnb | `https://atlasrouge.com/proprietaires/?service=airbnb&utm_source=google&utm_medium=cpc&utm_campaign=<c>&utm_content=gestion-airbnb` |
+| C - Estimation | `https://atlasrouge.com/vendre/?service=estimation&utm_source=google&utm_medium=cpc&utm_campaign=<c>&utm_content=estimation` |
+| D - Agence | `https://atlasrouge.com/vendre/?utm_source=google&utm_medium=cpc&utm_campaign=<c>&utm_content=agence` |
+
+El parámetro `?service=` YA funciona en producción: preselecciona el paso 1 del
+formulario. No hay que programar nada.
+
+## 🟠 Otros bloqueantes de la activación — 2026-08-02
 
 Auditoría de 6 agentes previa a activar. **No se puede activar todavía.**
 Campañas dentro de la cuenta Ads `freecoche / Amsip MCC (407-193-7268)`.
