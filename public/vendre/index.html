@@ -363,6 +363,10 @@
     #how .service-card h3 { font-size: 1.4rem; margin-bottom: 8px; }
     #how .service-card p { font-size: 1.1rem; line-height: 1.6; }
     @media (max-width: 820px) {
+      #how .section-head { margin-bottom: 28px; }
+      #how .services-grid { gap: 6px; }
+      #how .service-card { padding-top: 20px; }
+      #how .step-num { width: 42px; height: 42px; margin-bottom: 12px; }
       #how .service-card h3 { font-size: 1.3rem; }
       #how .service-card p { font-size: 1.05rem; }
     }
@@ -587,6 +591,7 @@
     }
 
     @media (max-width: 600px) {
+      section { padding: 56px 0; }
       .container { width: min(calc(100% - 28px), var(--container)); }
       .topline { display: none; }
       .site-header { top: 0; padding-top: 14px; }
@@ -595,7 +600,7 @@
       .header-contact .btn-primary { padding: 10px 14px; min-height: 44px; font-size: .8125rem; white-space: nowrap; }
       .cta-desktop { display: none; }
       .cta-mobile { display: inline; }
-      .hero-inner { padding-top: 98px; padding-bottom: 54px; }
+      .hero-inner { padding-top: 66px; padding-bottom: 40px; }
       h1 { font-size: clamp(2.6rem, 12.5vw, 3.6rem); line-height: 1.03; margin-bottom: 18px; }
       h2 { font-size: clamp(2rem, 9.4vw, 2.85rem); line-height: 1.06; }
       .hero-lead { font-size: 1.15rem; line-height: 1.6; margin-bottom: 24px; }
@@ -618,7 +623,9 @@
       .trust-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
       .trust-chip { font-size: .875rem; justify-content: center; }
       .trust-chip:nth-child(3) { display: none; }
-      .lead-card { padding: 22px 18px; border-radius: 20px; }
+      .lead-card { padding: 20px 18px; border-radius: 20px; }
+      .lead-card-top { margin-bottom: 14px; }
+      .field { margin-bottom: 10px; }
       .lead-card-top { display: block; }
       .free-badge { display: inline-flex; margin-top: 12px; }
       .grid-2 { grid-template-columns: 1fr; gap: 0; }
@@ -654,7 +661,7 @@
       .container { width: min(calc(100% - 22px), var(--container)); }
       .brand-logo { width: 132px; }
       .header-contact .btn-primary { padding-inline: 11px; }
-      h1 { font-size: 2.2rem; }
+      h1 { font-size: 2.7rem; line-height: 1.04; }
       .lead-card { padding-inline: 15px; }
     }
 
@@ -708,7 +715,6 @@
           <div class="lead-card-top">
             <div>
               <h3 id="lead-title">Estimons votre bien</h3>
-              <p>Réponse par téléphone.</p>
             </div>
             <span class="free-badge">Gratuit</span>
           </div>
