@@ -636,6 +636,9 @@
       .intent-card { padding: 24px; min-height: 0; }
       .services-grid { grid-template-columns: 1fr; }
       .service-card { display: grid; grid-template-columns: 44px 1fr; column-gap: 14px; padding: 18px 0; }
+      /* El párrafo debe cruzar ambas columnas: si no, cae bajo el número
+         (44px de ancho) y se parte una palabra por línea. */
+      #how .service-card p { grid-column: 1 / -1; margin-top: 6px; }
       .service-icon { width: 44px; grid-row: 1 / 3; margin: 0; }
       .service-icon svg { width: 28px; height: 28px; }
       .service-card h3 { margin: 1px 0 5px; }

@@ -47,6 +47,19 @@ de dar su teléfono: *qué pasa después de enviar*.
      con 30px de margen**.
    - Secciones en móvil de 88px → 56px de aire. Altura total 2518 → 2395px.
 
+**Tercer fallo propio, detectado por el owner (commit `4b2a...`):** en móvil el
+párrafo de las 3 tarjetas se partía **una palabra por línea**. Causa: la regla
+`@media (max-width:600px) .service-card { display:grid; grid-template-columns:
+44px 1fr }` estaba pensada para el marcado ANTIGUO (2 hijos: icono + texto).
+Las tarjetas nuevas de `#how` tienen 3 hijos (número, h3, p), así que el
+párrafo caía en la columna de 44px. Medido: `p` a **44px de ancho y 215px de
+alto**. Arreglado con `#how .service-card p { grid-column: 1 / -1 }` → párrafo
+a 353px, sección de 1125px → **713px**, página de 2395px → **1983px**.
+**Lección:** las verificaciones anteriores midieron alturas y posiciones pero
+nunca el ANCHO del texto, por eso no lo detectaron. Se añadió un barrido que
+busca cualquier elemento con texto estrecho y muchas líneas → 0 restantes.
+`/proprietaires/` se comprobó y NO tiene el fallo (su `p` mide 295px).
+
 **Regresión cazada durante las pruebas:** al eliminar la barra de progreso, el
 handler de envío seguía intentando ocultarla (`querySelector('.progress')`
 → null) y petaba justo antes de mostrar el mensaje de éxito: el formulario
