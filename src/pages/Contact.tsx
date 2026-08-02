@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { submitContactForm } from '@/services/contact.service'
+import { trackLead } from '@/lib/tracking'
 import { Link } from 'react-router-dom'
 import { useLang } from '@/hooks/useLang'
 import { EMAIL, INSTAGRAM_URL, PHONE_NUMBER, PHONE_NUMBER_DISPLAY, TIKTOK_URL } from '@/lib/contact'
@@ -108,6 +109,7 @@ export default function Contact() {
     setSubmitting(false)
     if (result.success) {
       setSubmitted(true)
+      trackLead('contact')
     } else {
       setSubmitError(result.error || t('form.errorGeneric'))
     }

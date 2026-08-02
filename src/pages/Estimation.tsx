@@ -16,6 +16,7 @@ import {
 } from 'lucide-react'
 import SectionReveal from '@/components/SectionReveal'
 import { submitEstimationRequest } from '@/services/leads.service'
+import { trackLead } from '@/lib/tracking'
 import { toast } from 'sonner'
 
 export default function Estimation() {
@@ -49,6 +50,7 @@ export default function Estimation() {
     setSubmitting(false)
     if (result.success) {
       setSubmitted(true)
+      trackLead('estimation')
       toast.success(
         t('expert.successToast'),
       )
