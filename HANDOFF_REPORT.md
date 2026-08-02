@@ -69,7 +69,22 @@ ambos desde la landing `/proprietaires/`), y `Bormio` / `Nor` (2026-04-24).
 Todos con `status = 'new'` — **nadie los ha trabajado**, lo cual encaja con que
 el aviso por correo nunca haya funcionado.
 
-Se ven en el panel: **`atlasrouge.com/admin/contacts`**.
+**Dónde viven exactamente** (verificado, no supuesto):
+- Panel: `atlasrouge.com/admin/contacts` (formularios) y `/admin/leads`
+  (estimaciones). Ambas rutas responden **HTTP 200**; login en `/admin/login`.
+  Registradas en `src/App.tsx:148-149`.
+- Base de datos: proyecto Supabase **`slxlkbrqcjabsfuhlwdf`**, cuenta
+  `adspublioficial@gmail.com`, tablas `contact_submissions` y
+  `estimation_requests`. Exportables a CSV desde el Table Editor.
+
+**⚠️ Caveat honesto sobre la "realidad" de esos leads.** En los dos del 24/07
+el nombre y el correo NO cuadran entre sí: *Jormen* → `kaliddebe@gmail.com`,
+*Pierre* → `yassin_elazouzi@icloud.com`. Puede ser gente real que escribió un
+nombre distinto al de su correo (frecuente), o pruebas internas del equipo.
+**No es determinable desde el código ni desde la BD.** Los de abril
+(`Bormio` → `bormio@gmail.com`, `Nor` → `nor@gmail.com`) tienen correos
+genéricos que también parecen de desarrollo. Conviene confirmar con el equipo
+antes de que Khalid los llame.
 
 ### 4. `/proprietaires/` rehecha (`5ede67a5`)
 
