@@ -18,6 +18,37 @@ ninguna vía de contacto). Detalle completo en `HANDOFF_REPORT.md`.
 - Borrar la fila basura del 31/07 (`subject:'buy'`, sin ningún dato). Si se
   borra, se puede promover la constraint con `VALIDATE CONSTRAINT`.
 
+## 🔴 Avisos de lead — FUNCIÓN ARREGLADA, FALTA ELEGIR CANAL 2026-08-02
+
+✅ **Bug crítico corregido** (`eaf8b1d5`): las 3 Netlify Functions estaban en
+CommonJS con `"type": "module"` en package.json → fallaban al arrancar **desde
+el commit inicial**. `notify-lead` devolvía 502. Nunca se envió un solo aviso.
+Ahora devuelve **HTTP 200**.
+
+📌 **DECISIÓN DEL OWNER PENDIENTE — qué canal usar.** La función responde
+`skipped: no RESEND_API_KEY` y `skipped: no TELEGRAM env`. Opciones:
+- **Telegram** — ya programado, no requiere código. Solo `TELEGRAM_BOT_TOKEN`
+  + `TELEGRAM_CHAT_ID` en Netlify. (Recomendado: llega al móvil al instante.)
+- **Resend** — ya programado. Solo `RESEND_API_KEY`. *(Nota: Resend lo
+  introdujo el commit `75ef1ff6` del 2026-05-20, no es propuesta nueva.)*
+- **Zoho Mail** — ya se paga para atlasrouge.com; requiere cambio de código.
+- **Ninguno** — los leads no se pierden, se ven en `/admin/contacts`.
+
+## 📋 Inventario real de leads (2026-08-02, consultado)
+
+`contact_submissions` 12 filas (5 son pruebas mías) · `estimation_requests` 3 ·
+`newsletter_subscribers` 0. Reales probables: **Jormen** y **Pierre**
+(24/07, desde `/proprietaires/`), **Bormio** y **Nor** (24/04). Todos con
+`status = 'new'` — nadie los ha trabajado, coherente con que el aviso nunca
+funcionó. Panel: `atlasrouge.com/admin/contacts`.
+
+## 🟢 Landing `/proprietaires/` — REHECHA 2026-08-02
+
+✅ Mismo tratamiento que `/vendre/` (`5ede67a5`): 1 paso, 3 campos, sin
+preguntas, micro-etiquetas fuera, sección de contexto en letra grande.
+51.1 KB → 42.9 KB. Intent por `?service=`. Los dos fallos de móvil de
+`/vendre/` se aplicaron por adelantado, nunca llegaron a producción aquí.
+
 ## 🟢 Landing `/vendre/` — REHECHA 2026-08-02
 
 ✅ Formulario de 2 pasos con preguntas → **1 paso, 3 campos** (nombre, teléfono,

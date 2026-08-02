@@ -4,6 +4,100 @@
 
 ---
 
+## CIERRE de sesión — Claude Opus 5 — 2026-08-02 (BUG CRÍTICO: las Netlify Functions nunca han funcionado — ARREGLADO; /proprietaires/ rehecha)
+
+### 1. BUG CRÍTICO: ninguna Netlify Function ha ejecutado jamás
+
+Detectado al responder a una pregunta del owner: *"¿dónde llegan los leads de
+estas campañas?"*. Llamar a `notify-lead` en producción devolvía **502**.
+Llamando directo a Netlify (saltando Cloudflare) apareció la causa exacta:
+
+```
+ReferenceError: module is not defined in ES module scope
+This file is being treated as an ES module because it has a '.js' file
+extension and '/var/task/package.json' contains "type": "module"
+```
+
+`package.json` lleva `"type": "module"` **desde el commit inicial**, y las tres
+funciones estaban en CommonJS (`exports.handler`). Es decir: `notify-lead`,
+`report-error` y `translate-property` **han fallado al arrancar durante toda la
+vida del sitio**. Nunca se ejecutó ninguna.
+
+**Consecuencia real:** los leads SÍ se guardaban en `contact_submissions`, pero
+**el aviso al agente nunca se ha enviado**. Falla en silencio porque las
+landings llaman a la función dentro de un `try/catch` con `keepalive` — la
+misma forma de fallo que el bug de `email NOT NULL` arreglado esta mañana.
+
+**Arreglo (`eaf8b1d5`):** una línea por archivo, `exports.handler` →
+`export const handler`. No había `require()` ni `__dirname`, así que no hizo
+falta nada más. `node --check` pasa en los tres.
+
+**Verificado tras desplegar:** `POST /.netlify/functions/notify-lead` devuelve
+ahora **HTTP 200** tanto directo en Netlify como a través de Cloudflare.
+
+### 2. Los avisos siguen SIN salir — pero ya no por un fallo
+
+La respuesta de la función es explícita:
+```json
+{"ok":true,"channels":[
+  {"ok":true,"info":{"skipped":"no RESEND_API_KEY"}},
+  {"ok":true,"info":{"skipped":"no TELEGRAM env"}}]}
+```
+Ninguno de los dos canales está configurado. **Esto no es un bug**: el código
+contempla 3 vías (Resend, Telegram, y log a stdout como último recurso) y
+ninguna variable de entorno está puesta. Configurarlas es cosa del owner —
+no puedo leer ni escribir variables de entorno de Netlify.
+
+**Aclaración pedida por el owner:** Resend NO es una propuesta de esta sesión.
+Entró el **2026-05-20** en el commit `75ef1ff6` ("production hardening
+sprint"). Lo único que se tocó hoy en ese archivo es la línea del export.
+El owner no está obligado a usar Resend: **Telegram ya está programado** y no
+requiere cambios de código, y existe la opción de usar el Zoho Mail que ya
+paga para `atlasrouge.com` (requeriría un pequeño cambio).
+
+### 3. Inventario REAL de leads (consultado, no supuesto)
+
+| Tabla | Filas | Nota |
+|---|---|---|
+| `contact_submissions` | 12 | 5 son pruebas mías (`ZZTEST`/`PRUEBA`), + basura antigua |
+| `estimation_requests` | 3 | del formulario React `/fr/estimation` |
+| `newsletter_subscribers` | 0 | |
+
+**Leads que parecen reales** (no pruebas): `Jormen` y `Pierre` (2026-07-24,
+ambos desde la landing `/proprietaires/`), y `Bormio` / `Nor` (2026-04-24).
+`DIAG`, `Albert (Test)` y las `khalid test` son claramente pruebas.
+Todos con `status = 'new'` — **nadie los ha trabajado**, lo cual encaja con que
+el aviso por correo nunca haya funcionado.
+
+Se ven en el panel: **`atlasrouge.com/admin/contacts`**.
+
+### 4. `/proprietaires/` rehecha (`5ede67a5`)
+
+Mismo tratamiento que `/vendre/`: fuera el paso de preguntas (Airbnb vs larga
+duración), fuera las micro-etiquetas, fuera servicios/FAQ/CTA final, y una
+sección de contexto en letra grande. Formulario de 1 paso y 3 campos. 51.1 KB
+→ 42.9 KB. El intent llega por `?service=` — verificado con un envío real en
+`?service=airbnb`, guardado como *"Propriétaire — Landing (Location
+saisonnière / Airbnb)"*.
+
+Se aplicaron **por adelantado** los dos fallos de móvil descubiertos en
+`/vendre/` (h1 encogido en ≤380px, y el párrafo colapsando a 44px por el grid
+de 2 columnas), así que nunca llegaron a producción aquí.
+
+### Verificación de cierre (hoy, contra producción)
+
+`HEAD` = `origin/main` = `eaf8b1d5` · `verify.sh` verde ·
+`/vendre/` y `/proprietaires/` HTTP 200, ambas con **3 campos y 0 preguntas** ·
+`notify-lead` HTTP **200** (antes 502) · `gtm.js` publicado con AW
+`17958357718`, `__awct`, `__gaawe` y `__gclidw`.
+
+### Pendiente
+
+- **Las 10 URLs de los anuncios** — único bloqueante real para activar.
+- **Decidir canal de aviso de leads** (Telegram / Resend / Zoho / ninguno).
+- **6 filas de prueba** en `contact_submissions`; el DELETE lo bloquea el
+  clasificador de seguridad pese a la autorización del owner.
+
 ## CIERRE de sesión — Claude Opus 5 — 2026-08-02 (landing /vendre/ rehecha: menos texto, formulario de 3 campos, móvil arreglado)
 
 Feedback del owner tras ver `https://www.semrush.com/lp/product-free-trial/`:
