@@ -29,6 +29,23 @@
 # Aplicados a todo el sitio. CSP es relativamente permisiva para Supabase,
 # Mapbox (api/events.mapbox.com tiles + blob workers), CartoCDN, Google Fonts
 # y nuestro propio /img/ proxy.
+#
+# Ad-tech (añadido 2026-08-02, tras reproducir el bloqueo en producción):
+#   analytics.tiktok.com    — el pixel de TikTok se inyecta desde GTM y estaba
+#     SIENDO BLOQUEADO. Medido en /proprietaires/ con
+#     performance.getEntriesByType('resource'): el <script> aparecía en el DOM
+#     pero con transferSize=0 y duration=0, es decir cero bytes descargados.
+#     El objeto window.ttq existía igualmente porque lo crea el fragmento
+#     inline (permitido por 'unsafe-inline'), lo que hacía parecer que
+#     funcionaba. Nunca envió un solo evento.
+#   googleadservices.com / googleads.g.doubleclick.net — necesarios para la
+#     etiqueta de conversión de Google Ads y el Conversion Linker. Se añaden
+#     ANTES de crear la etiqueta para que no le pase lo mismo que a TikTok.
+#   *.google-analytics.com / *.analytics.google.com — GA4 usa endpoints
+#     regionales (region1.google-analytics.com…) además de www. Solo estaba
+#     www, así que se amplía por robustez.
+# frame-src se declara explícitamente: antes no existía y caía en
+# default-src 'self', lo que bloqueaba el <iframe> noscript de GTM.
 [[headers]]
   for = "/*"
   [headers.values]
@@ -37,7 +54,7 @@
     X-Frame-Options              = "DENY"
     Referrer-Policy              = "strict-origin-when-cross-origin"
     Permissions-Policy           = "geolocation=(self), camera=(), microphone=(), payment=()"
-    Content-Security-Policy      = "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com; worker-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co https://basemaps.cartocdn.com https://api.mapbox.com https://events.mapbox.com https://www.google-analytics.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+    Content-Security-Policy      = "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://www.googletagmanager.com https://*.googletagmanager.com https://www.google-analytics.com https://analytics.tiktok.com https://www.googleadservices.com https://googleads.g.doubleclick.net; worker-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co https://basemaps.cartocdn.com https://api.mapbox.com https://events.mapbox.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://analytics.tiktok.com https://www.googleadservices.com https://googleads.g.doubleclick.net; frame-src 'self' https://www.googletagmanager.com https://td.doubleclick.net https://bid.g.doubleclick.net; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
 
 # Cache largo para assets versionados de Vite
 [[headers]]
