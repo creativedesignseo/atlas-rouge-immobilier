@@ -4,6 +4,62 @@
 
 ---
 
+## CIERRE de sesión — Claude Opus 5 — 2026-08-02 (BUG CRÍTICO: pérdida silenciosa de leads — ARREGLADO)
+
+**Encontrado durante una auditoría previa a activar Google Ads.** Es el hallazgo
+más grave de todo el proyecto hasta la fecha: **la web estaba perdiendo leads
+reales en silencio.**
+
+**El bug.** `public.contact_submissions.email` era `NOT NULL` en producción,
+pero las dos landings de campaña (`public/proprietaires/index.html`,
+`public/vendre/index.html`) piden **nombre + teléfono** como obligatorios y
+ofrecen el **email como opcional** (el campo de teléfono incluso lleva el texto
+"pour vous rappeler"). Cuando el visitante dejaba el email vacío, el cliente
+enviaba `email: null` y PostgREST devolvía:
+
+```
+POST /rest/v1/contact_submissions -> HTTP 400
+{"code":"23502","message":"null value in column \"email\" of relation
+ \"contact_submissions\" violates not-null constraint"}
+```
+
+El `.catch()` de la landing mostraba "Une erreur est survenue", y el lead
+**no se guardaba, no disparaba `notify-lead` (sin email al agente) y no
+empujaba `generate_lead`** — invisible en todas partes e irrecuperable.
+El visitante que solo deja teléfono es el caso MAYORITARIO, no un caso límite.
+
+**Reproducido antes de arreglar** (contrato reproduce-first de AGENTS.md):
+POST real con `email:null` + `phone` → `400 / 23502`. No fue teoría.
+
+**Arreglo:** migración `016_contact_submissions_email_optional.sql`:
+1. `ALTER COLUMN email DROP NOT NULL`.
+2. `CHECK (email no vacío OR phone no vacío) NOT VALID` — exige al menos una vía
+   de contacto en todo INSERT/UPDATE nuevo, sin revalidar filas antiguas.
+
+`NOT VALID` fue necesario: un primer intento con CHECK normal abortó con
+`23514` por **una fila basura del 2026-07-31** (`subject:'buy'`, sin nombre,
+sin email, sin teléfono, sin mensaje — bot o prueba). Esa fila sigue en la
+tabla; borrarla es destructivo y requiere OK del owner.
+
+**Aplicada por el owner** en Supabase SQL Editor (proyecto
+`slxlkbrqcjabsfuhlwdf`, cuenta `adspublioficial@gmail.com`) tras bloquearse el
+`npm run migrate` automático por el clasificador de seguridad.
+
+**Verificación post-arreglo (real, no supuesta):**
+- Esquema: `email is_nullable = YES`; constraint `contact_submissions_has_contact_channel` existe con `convalidated = false` (esperado por `NOT VALID`).
+- POST solo con teléfono → **HTTP 201** (antes 400). Bug cerrado.
+- POST sin email y sin teléfono → **HTTP 400 / 23514**. La barandilla funciona.
+- Quedó una fila de prueba `ZZTEST Claude BORRAR` creada por esa verificación —
+  pendiente de borrar con OK del owner.
+
+**Contexto:** salió de una auditoría de 6 agentes en paralelo previa a activar
+las campañas `Atlas Rouge - FR-Diaspora` y `Atlas Rouge - Maroc`. El resto de
+hallazgos de esa auditoría (medición rota, URLs de anuncios apuntando a páginas
+sin formulario, CSP que puede bloquear las etiquetas) siguen SIN arreglar —
+ver `tasks/current.md`.
+
+---
+
 ## CORRECCIÓN — Claude Sonnet 5 — 2026-07-31 (Pixel ID de TikTok era el equivocado)
 
 El ID `D6AA6N3C77U2SG09BQN0` usado en la entrada de abajo **no pertenece a la

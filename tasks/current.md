@@ -4,7 +4,44 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-07-31 (píxel de TikTok Ads instalado — ver abajo)
+**Last updated:** 2026-08-02 (bug de pérdida de leads ARREGLADO + auditoría pre-Ads)
+
+## 🔴 Bug de pérdida de leads — ARREGLADO 2026-08-02
+
+✅ `contact_submissions.email` era NOT NULL mientras las landings lo ofrecían
+como opcional → todo lead con solo teléfono se perdía en silencio (400/23502).
+Migración `016` aplicada y verificada (201 con solo teléfono; 400 si no hay
+ninguna vía de contacto). Detalle completo en `HANDOFF_REPORT.md`.
+
+📌 Pendientes menores, requieren OK del owner (destructivos):
+- Borrar la fila de prueba `ZZTEST Claude BORRAR` (creada al verificar).
+- Borrar la fila basura del 31/07 (`subject:'buy'`, sin ningún dato). Si se
+  borra, se puede promover la constraint con `VALIDATE CONSTRAINT`.
+
+## 🟠 Activación de Google Ads (FR-Diaspora + Maroc) — BLOQUEADA 2026-08-02
+
+Auditoría de 6 agentes previa a activar. **No se puede activar todavía.**
+Campañas dentro de la cuenta Ads `freecoche / Amsip MCC (407-193-7268)`.
+
+Bloqueantes vivos, ninguno arreglado aún:
+1. **Método de pago bloqueado** en la cuenta Ads → nada se sirve. (Solo owner.)
+2. **Cero señal de conversión**: no hay acción de conversión de Atlas Rouge en
+   la cuenta (las 2 que hay son de FreeCoche) ni etiqueta `AW-` en GTM
+   (0 coincidencias de `AW-`/`__awct`/`__gclidw` en los 346 KB del gtm.js vivo).
+3. **8 de 10 grupos aterrizan en páginas sin formulario** (`/fr/vendre`,
+   `/fr/gestion-locative`). Deben ir a `/proprietaires/` y `/vendre/`.
+4. **`generate_lead` no llega a GA4**: el trigger solo alimenta el píxel de
+   TikTok. 0 eventos `generate_lead` en los 90 días de vida de la propiedad
+   GA4 546727602 (G-DW0QTJH33V), con 115 page_views registrados.
+5. **CSP de producción no incluye `googleadservices.com`** (ni
+   `analytics.tiktok.com`) → puede bloquear las etiquetas. Verificar antes.
+
+Mapeo correcto grupo → landing (los 5 grupos son idénticos en ambas campañas):
+`A - Vendre` → `/vendre/` · `B1 - Gestion locative` → `/proprietaires/` ·
+`B2 - Gestion Airbnb` → `/proprietaires/` · `C - Estimation` → `/vendre/` ·
+`D - Agence` → `/vendre/` (mantiene la intención original del CSV).
+
+## Píxel de TikTok Ads (D9MSR03C77U9D4RN76K0) — 2026-07-31
 
 ## Píxel de TikTok Ads (D9MSR03C77U9D4RN76K0) — 2026-07-31
 
