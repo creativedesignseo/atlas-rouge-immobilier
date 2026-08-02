@@ -18,6 +18,24 @@ ninguna vía de contacto). Detalle completo en `HANDOFF_REPORT.md`.
 - Borrar la fila basura del 31/07 (`subject:'buy'`, sin ningún dato). Si se
   borra, se puede promover la constraint con `VALIDATE CONSTRAINT`.
 
+## 🟢 Landing `/vendre/` — REHECHA 2026-08-02
+
+✅ Formulario de 2 pasos con preguntas → **1 paso, 3 campos** (nombre, teléfono,
+e-mail opcional). La intención se lee de `?service=` en la URL, no se pregunta.
+✅ Fuera micro-etiquetas (eyebrow + 3 chips). Entra sección **"Trois champs, un
+appel, une estimation."** en letra grande (h2 41px, cuerpo 17.6px).
+✅ Móvil arreglado (medido a 375×812): h1 35.2px → **43.2px** (faltaba el
+breakpoint ≤380px); botón de enviar de y=837 → **y=782, visible sin scroll**.
+Altura 2518 → 2395px.
+
+📌 **`/proprietaires/` sigue con el formato viejo** (paso de preguntas +
+secciones largas). Aplicarle lo mismo para que las dos landings sean coherentes.
+
+📌 **Filas de prueba pendientes de borrar**: 3 `ZZTEST` + 1 basura de bot
+(10 filas totales, 6 leads reales). El owner lo autorizó pero **el clasificador
+de seguridad bloquea el DELETE desde Claude** — el SQL con los IDs exactos está
+en el chat, hay que ejecutarlo en Supabase SQL Editor.
+
 ## 🟢 Medición de conversiones — MONTADA Y VERIFICADA 2026-08-02
 
 ✅ CSP corregida (el pixel de TikTok llevaba desde su instalación sin disparar,

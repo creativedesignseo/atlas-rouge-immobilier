@@ -4,6 +4,80 @@
 
 ---
 
+## CIERRE de sesión — Claude Opus 5 — 2026-08-02 (landing /vendre/ rehecha: menos texto, formulario de 3 campos, móvil arreglado)
+
+Feedback del owner tras ver `https://www.semrush.com/lp/product-free-trial/`:
+la página tenía demasiado texto que nadie lee, y el formulario hacía preguntas
+antes de pedir el teléfono. Después, un segundo aviso: **no estaba optimizada
+para móvil**.
+
+### Qué se cambió (3 commits: `2bfd4b88`, `c699efa8`, `249bfae6`)
+
+**1. Formulario: de 2 pasos con preguntas → 1 paso, 3 campos.**
+Se eliminó el paso 1 (tres botones: "je veux connaître sa valeur / je suis
+décidé à vendre / j'hésite"). Ahora pide solo **nombre, teléfono, e-mail**
+(e-mail opcional, que es lo que la migración 016 hizo almacenable).
+
+**Decisión clave:** la intención NO se pierde. El anuncio ya sabe si el
+visitante viene de "vender" o de "estimación", así que `project` se lee de
+`?service=` en la URL en vez de preguntárselo. Verificado con envíos reales:
+`?service=vendre` guardó el lead como *"Décidé à vendre"* y
+`?service=estimation` como *"Estimation seule"*, sin que el visitante
+respondiera nada.
+
+**2. Menos texto pequeño, más contexto en letra grande.**
+Primera pasada cortó demasiado (fuera servicios, FAQ y CTA final). El owner
+aclaró que lo que sobraba eran las **micro-etiquetas**: el eyebrow "Vente
+immobilière à Marrakech" y los 3 chips con palomita. Se quitaron, y en su
+lugar entró la sección **"Trois champs, un appel, une estimation."** con 3
+bloques en letra grande (h2 a 41px, cuerpo a 17.6px) que llevan la misma
+información que los chips Y responden lo que todo el mundo se pregunta antes
+de dar su teléfono: *qué pasa después de enviar*.
+
+**3. Móvil (medido a 375×812, no a ojo).** Dos fallos reales:
+   - **El titular salía a 35.2px** en pantallas ≤380px (iPhone SE/mini y
+     muchos Android). Al agrandar la tipografía se tocaron la regla base y la
+     de ≤600px, pero **se olvidó el breakpoint de ≤380px**, que seguía fijando
+     `h1: 2.2rem`. Corregido a `2.7rem` → medido **43.2px**.
+   - **El botón de enviar quedaba fuera de pantalla** (y=837 en una pantalla
+     de 812). El visitante veía el formulario pero no el botón. Se recuperó
+     espacio quitando el subtítulo redundante "Réponse par téléphone." y
+     apretando el hero (98/54 → 66/40), la tarjeta (22 → 20), su cabecera
+     (22 → 14) y los huecos entre campos (14 → 10). Botón ahora en **y=782,
+     con 30px de margen**.
+   - Secciones en móvil de 88px → 56px de aire. Altura total 2518 → 2395px.
+
+**Regresión cazada durante las pruebas:** al eliminar la barra de progreso, el
+handler de envío seguía intentando ocultarla (`querySelector('.progress')`
+→ null) y petaba justo antes de mostrar el mensaje de éxito: el formulario
+desaparecía sin confirmación. Corregido y reverificado con dos envíos reales
+de punta a punta.
+
+### Verificación de cierre (hoy, contra producción)
+
+`HEAD` = `origin/main` = `249bfae6` · `verify.sh` verde ·
+`/vendre/` y `/proprietaires/` HTTP 200 · en el HTML servido: la regla
+`h1 { font-size: 2.7rem }` presente, `padding-top: 66px; padding-bottom: 40px`
+presente, **0** apariciones de "Réponse par téléphone", sección "Trois champs"
+presente, formulario con exactamente `name` / `phone` / `email` ·
+`gtm.js` publicado sigue con AW `17958357718`, `__awct` y `__gaawe`.
+
+**Nota de fiabilidad:** la herramienta de capturas devolvió fotogramas en
+blanco durante toda la sesión. Todo lo visual se verificó midiendo estilos
+calculados y posiciones reales en el DOM, no con capturas.
+
+### Pendiente
+
+- **`/proprietaires/` sigue con el formato viejo**: paso de preguntas +
+  secciones largas. Necesita el mismo tratamiento para que las dos landings
+  sean coherentes.
+- **Las 10 URLs de los anuncios** siguen sin cambiar — sigue siendo el
+  bloqueante real para activar.
+- **3 filas `ZZTEST` + 1 basura** siguen en `contact_submissions` (10 filas
+  totales, 6 leads reales). El borrado está **bloqueado por el clasificador de
+  seguridad** aunque el owner lo autorizó: no es una decisión mía, es una
+  barandilla del sistema. El SQL con los IDs exactos se le entregó en el chat.
+
 ## CIERRE de sesión — Claude Opus 5 — 2026-08-02 (medición de conversiones montada; campañas AÚN NO activables)
 
 Objetivo del owner: activar hoy `Atlas Rouge - FR-Diaspora` y `Atlas Rouge - Maroc`
