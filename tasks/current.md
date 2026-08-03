@@ -21,8 +21,30 @@ La de captación es la que **no** lleva `/fr` y **sí** lleva barra final.
 `/proprietaires/?service=airbnb` → `forms:1`, `project=airbnb`.
 
 📌 **El owner las edita a mano en la UI de Ads**, una por grupo (la edición
-masiva no vale: unos van a `/vendre/`, otros a `/proprietaires/`). Hecha 1,
-**faltan 9**. Tabla de URLs más abajo.
+masiva no vale: unos van a `/vendre/`, otros a `/proprietaires/`).
+
+**Estado `fr-diaspora`: 3 de 5 hechas.** ✅ B2 - Gestion Airbnb ·
+✅ C - Estimation · ✅ B1 - Gestion locative · ⏳ A - Vendre · ⏳ D - Agence.
+Faltan además las campañas `maroc` + la tercera (mismas URLs, otro
+`utm_campaign`). Tabla completa más abajo.
+
+⚠️ **Fallo más fácil de cometer: cruzar el grupo con el `?service=`.** Ya pasó
+una vez (se pegó `service=location` en B2 - Gestion Airbnb, corregido antes de
+guardar). Al revisar, comprobar SIEMPRE que el nombre del grupo cuadra con el
+`?service=`. Un cruce mezcla los dos servicios en los informes y hace que
+Khalid llame con el guion equivocado.
+
+ℹ️ "Ruta visible" mostrando `www.example.com` es el **placeholder de Google**,
+no un valor guardado. No requiere acción.
+
+📌 **Títulos de B1 reescritos por el "Ask Advisor" de Google Ads** (no por
+Claude): 3 huecos rellenados + 6 reescrituras, eficacia *Baja* → *Excelente*.
+**NO verificado aquí** — no hay acceso de API a Google Ads en este entorno.
+Además el propio asistente dijo *"todavía no he guardado nada"*: **confirmar en
+la UI que los títulos se guardaron**.
+
+📌 Abiertos en el anuncio de B1: **Nombre de empresa** vacío (0/25) y **sin
+imágenes**. Mejoran el rendimiento real aunque el medidor marque el máximo.
 
 📌 **UTM sin columnas propias.** `public/vendre/index.html:864-867` mete los UTM
 como texto dentro de `message`. Se leen, pero no se puede filtrar ni agregar por

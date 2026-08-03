@@ -4,6 +4,67 @@
 
 ---
 
+## ACTUALIZACIÓN — Claude Opus 5 — 2026-08-03 (URLs de anuncios: 4 de 10 corregidas)
+
+### Progreso del cambio de URLs
+
+El owner las está editando a mano en la UI de Ads. Estado a esta hora,
+**campaña `fr-diaspora`**:
+
+| Grupo | URL asignada | Landing verificada en prod |
+|---|---|---|
+| B2 - Gestion Airbnb | `/proprietaires/?service=airbnb&…&utm_content=gestion-airbnb` | ✅ `forms:1`, `project=airbnb` |
+| C - Estimation | `/vendre/?service=estimation&…&utm_content=estimation` | ✅ `forms:1` (landing ya verificada) |
+| B1 - Gestion locative | `/proprietaires/?service=location&…&utm_content=gestion-locative` | ✅ `forms:1`, `project=location` |
+| A - Vendre | `/vendre/?service=vendre&…&utm_content=vendre` | ⏳ pendiente de asignar |
+| D - Agence | `/vendre/?service=agence&…&utm_content=agence` | ⏳ pendiente de asignar |
+
+Faltan además las dos campañas restantes (`maroc` + la tercera), que son las
+mismas URLs cambiando `utm_campaign`.
+
+**Error interceptado durante el proceso:** el owner pegó inicialmente
+`?service=location` en el grupo **B2 - Gestion Airbnb**. Habría etiquetado los
+leads de conciergerie/Airbnb como larga duración, mezclando los dos servicios en
+los informes y haciendo que Khalid llamase con el guion equivocado. Corregido a
+`?service=airbnb` antes de guardar. **Este cruce grupo↔`service=` es el fallo
+más fácil de cometer aquí** — al revisar, comprobar siempre que el nombre del
+grupo cuadra con el `?service=`.
+
+**Falsa alarma descartada:** el campo "Ruta visible" mostraba `www.example.com`.
+Es el placeholder de Google, no un valor guardado. El owner lo aclaró; no
+requiere acción.
+
+### Reescritura de títulos en B1 — hecha por el asistente de Google Ads, NO verificada aquí
+
+El owner reportó que **el "Ask Advisor" de Google Ads** (no Claude) reescribió
+los títulos del grupo B1 - Gestion locative: rellenó los 3 huecos vacíos
+("Mettre en Location Appartement", "Gestion Location Longue Durée", "Gérer Mon
+Appartement Locatif") y reescribió 6 más para quitar repeticiones de "Votre
+Bien" / "Appartement" / "Locatif" / "Marrakech". La eficacia del anuncio habría
+pasado de *Baja* a *Excelente*.
+
+⚠️ **No verificado por Claude.** No hay CLI ni acceso de API a Google Ads en este
+entorno — solo `gtm`, `ga4` y `gsc`. Todo lo anterior es **reporte de terceros**,
+no medición. No tratarlo como hecho confirmado.
+
+⚠️ **Aviso relevante:** ese mismo asistente declaró literalmente *"todavía no he
+guardado nada"* y pidió permiso para pulsar "Guardar anuncio". **Está sin
+confirmar si los títulos llegaron a guardarse.** Verificar en la UI antes de
+darlo por bueno.
+
+📌 Pendientes que el asistente de Ads señaló y que siguen abiertos: el campo
+**Nombre de empresa** está vacío (0/25) y **no hay imágenes** en el anuncio.
+Ambas cosas mejoran el rendimiento real aunque el medidor marque el máximo.
+
+### Verificación de esta actualización
+
+`verify.sh` verde. Landings medidas en producción con los parámetros reales de
+cada grupo (tabla arriba). **Sin cambios de código.** El estado de Google Ads
+proviene del owner y de su asistente, no de una medición propia — marcado como
+tal arriba.
+
+---
+
 ## CIERRE de sesión — Claude Opus 5 — 2026-08-03 (por qué los anuncios no captaban: apuntaban a una página sin formulario)
 
 ### 1. Hallazgo: `/fr/vendre` no tiene ningún formulario
