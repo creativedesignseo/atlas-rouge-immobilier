@@ -4,6 +4,81 @@
 
 ---
 
+## AUDITORÍA — Claude Opus 5 — 2026-08-03 (dónde acaban los leads y qué mide cada landing — todo medido)
+
+Pregunta del owner: *"¿dónde van los contactos de estas dos páginas y están
+midiendo conversión?"*. Respondido midiendo, no leyendo.
+
+### 1. Destino del dato — idéntico en las dos landings
+
+`/vendre/` y `/proprietaires/` hacen exactamente lo mismo al enviar:
+
+1. `POST` a `SUPA/rest/v1/contact_submissions` con la anon key
+   (`public/vendre/index.html:883`, `public/proprietaires/index.html:875`).
+   Campos: `name`, `email|null`, `phone|null`, `subject`, `message`,
+   `property_slug:null`.
+2. `POST` a `/.netlify/functions/notify-lead` — responde 200, **no envía nada**
+   (sin canal configurado, ver cierre 2026-08-02).
+3. `dataLayer.push({event:'generate_lead'})`.
+
+El `subject` distingue el origen: `"Vendeur — Landing (…)"` vs
+`"Propriétaire — Landing (…)"`. Los UTM y el `gclid` van concatenados dentro de
+`message`.
+
+**Panel:** `/admin/contacts` (`contact_submissions`) y `/admin/leads`
+(`estimation_requests`).
+
+### 2. Medición verificada disparando el evento en producción
+
+Se hizo `dataLayer.push({event:'generate_lead'})` en cada landing (sin crear
+ningún lead falso) y se observó qué se activaba:
+
+| | `/vendre/` | `/proprietaires/` |
+|---|---|---|
+| GTM `GTM-TW5NLSKR` | ✅ | ✅ |
+| GA4 `G-DW0QTJH33V` | ✅ `g/collect` enviado | ✅ enviado |
+| Ads `AW-17958357718` | ✅ se instancia con el evento | ✅ |
+| TikTok `ttq` | ❌ `undefined` | ❌ `undefined` |
+
+El contenedor de Ads **no está presente al cargar** — aparece solo al disparar
+`generate_lead`. Es el comportamiento correcto para una conversión.
+
+⚠️ **El píxel de TikTok NO está en estas dos landings.** Vive en el SPA, no
+aquí. Irrelevante mientras no se anuncie en TikTok; bloqueante si se hace.
+
+### 3. Sistema de agentes: existe, no se usa (consultado en la BD)
+
+Consultado autenticado como admin contra `slxlkbrqcjabsfuhlwdf`:
+
+- **`agents`: 1 fila** — `Jonatan`, `role=admin`, `is_active=true`.
+- **`contact_submissions`: 13 filas · 0 con `assigned_to_agent_id` · 13 sin.**
+
+La columna existe desde `001_agents.sql:84`, pero **las landings no la rellenan
+al insertar** y nadie asigna a mano. Todos en `status='new'`.
+
+**Hoy no da problema** porque `src/services/admin/contactAdmin.service.ts:42`
+filtra por agente **solo si el usuario NO es admin**; el owner es admin y ve
+todo. **Se convierte en bloqueante el día que se dé de alta a un comercial no
+admin: no vería ni un lead**, porque ninguno tiene dueño. Decidir entonces entre
+asignación automática en el insert o reparto manual desde el panel.
+
+### 4. Lead nuevo sin identificar
+
+Aparece un contacto **`Juan`**, `status='new'`, sin agente, más reciente que las
+filas `ZZTEST`. **No consta que sea prueba de Claude** — ninguna prueba de estas
+sesiones usó ese nombre. Pendiente de que el owner confirme si lo creó él;
+si no, es un lead real esperando respuesta.
+
+Siguen las ~6 filas `ZZTEST`/basura ensuciando el panel (borrado pendiente).
+
+### Verificación de cierre
+
+`verify.sh` verde. Medición y destino comprobados en producción sobre ambas
+landings; `agents` y `contact_submissions` consultadas en vivo con sesión de
+admin. **Sin cambios de código.**
+
+---
+
 ## ⚠️ CORRECCIÓN — Claude Opus 5 — 2026-08-03 (`?service=agence` NO existe — error de Claude ya propagado a Ads)
 
 ### El error

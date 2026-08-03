@@ -106,6 +106,34 @@ Ahora devuelve **HTTP 200**.
 - **Zoho Mail** — ya se paga para atlasrouge.com; requiere cambio de código.
 - **Ninguno** — los leads no se pierden, se ven en `/admin/contacts`.
 
+## 🟢 Medición de las 2 landings — VERIFICADA 2026-08-03
+
+Disparado `generate_lead` en producción en ambas: GTM `GTM-TW5NLSKR` ✅,
+GA4 `G-DW0QTJH33V` ✅ (`g/collect` enviado), Ads `AW-17958357718` ✅ (se
+instancia con el evento, no antes — correcto).
+
+⚠️ **TikTok `ttq: undefined` en las DOS landings.** El píxel vive en el SPA, no
+aquí. Da igual mientras no se anuncie en TikTok; bloqueante si se hace.
+
+Destino del dato (idéntico en las dos): `POST` a `rest/v1/contact_submissions`
+→ `notify-lead` (200, sin canal) → `generate_lead`. Panel `/admin/contacts`.
+
+## 🟡 Agentes: la columna existe, nadie la usa
+
+Consultado en vivo: `agents` = **1 fila** (`Jonatan`, admin, activo).
+`contact_submissions` = **13 filas, 0 con `assigned_to_agent_id`**.
+
+Las landings no rellenan ese campo y nadie asigna a mano. **Hoy no molesta**:
+`contactAdmin.service.ts:42` solo filtra por agente si el usuario NO es admin.
+🔴 **Se rompe el día que entre un comercial no admin: no vería ni un lead.**
+Decidir entonces: asignación automática en el insert o reparto desde el panel.
+
+## ❓ Lead `Juan` sin identificar (2026-08-03)
+
+Contacto `Juan`, `status='new'`, más reciente que las `ZZTEST`. **No es prueba
+de Claude.** Pendiente de que el owner confirme si lo creó él; si no, es un lead
+real esperando.
+
 ## 📋 Inventario real de leads (2026-08-02, consultado)
 
 `contact_submissions` 12 filas (5 son pruebas mías) · `estimation_requests` 3 ·
