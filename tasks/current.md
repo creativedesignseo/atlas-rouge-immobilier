@@ -4,7 +4,34 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-08-02 (bug de pérdida de leads ARREGLADO + auditoría pre-Ads)
+**Last updated:** 2026-08-03 (verificado por qué los anuncios no captaban: URL sin formulario)
+
+## 🔴 URLs de los anuncios — EN CURSO, 1 de 10 hecha 2026-08-03
+
+✅ **Causa confirmada en producción.** El anuncio `A - Vendre / FR-Diaspora`
+apuntaba a `https://atlasrouge.com/fr/vendre?...` → medido con Playwright:
+**`forms: 0`, `inputs: []`**. Es la sección informativa del SPA, no la landing.
+El clic se paga y no hay dónde dejar datos; la conversión tampoco dispara.
+
+⚠️ **`/fr/vendre` ≠ `/vendre/`.** Nombres casi idénticos, páginas distintas.
+La de captación es la que **no** lleva `/fr` y **sí** lleva barra final.
+
+✅ Las dos landings buenas verificadas en vivo con parámetros reales:
+`/vendre/?service=vendre` → `forms:1`, `project=vendre` ·
+`/proprietaires/?service=airbnb` → `forms:1`, `project=airbnb`.
+
+📌 **El owner las edita a mano en la UI de Ads**, una por grupo (la edición
+masiva no vale: unos van a `/vendre/`, otros a `/proprietaires/`). Hecha 1,
+**faltan 9**. Tabla de URLs más abajo.
+
+📌 **UTM sin columnas propias.** `public/vendre/index.html:864-867` mete los UTM
+como texto dentro de `message`. Se leen, pero no se puede filtrar ni agregar por
+campaña con una query. Promoverlos a columnas es cambio pequeño — **requiere OK**.
+
+📌 **Los UTM los generó Claude**, no el owner (venían de la tabla de este mismo
+archivo). El owner los pegó sin que nadie le explicara qué significaban. Regla:
+`utm_campaign` = campaña, `utm_content` = grupo de anuncios; `utm_source=google`
+y `utm_medium=cpc` son fijos.
 
 ## 🔴 Bug de pérdida de leads — ARREGLADO 2026-08-02
 

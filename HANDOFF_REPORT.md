@@ -4,6 +4,120 @@
 
 ---
 
+## CIERRE de sesión — Claude Opus 5 — 2026-08-03 (por qué los anuncios no captaban: apuntaban a una página sin formulario)
+
+### 1. Hallazgo: `/fr/vendre` no tiene ningún formulario
+
+El owner preguntó adónde iban los datos recogidos por la URL de aterrizaje de
+su anuncio `A - Vendre / FR-Diaspora`:
+
+```
+https://atlasrouge.com/fr/vendre?utm_source=google&utm_medium=cpc&utm_campaign=fr-diaspora&utm_content=vendre
+```
+
+**Respuesta verificada: de esa página no sale ningún dato, porque no se recoge
+ninguno.** Medido en producción con Playwright sobre esa URL exacta:
+
+```json
+{ "forms": 0, "inputs": [] }
+```
+
+Cero formularios, cero campos. Lo que hay son botones ("Estimer mon bien",
+"Nous contacter"), un FAQ y enlaces a guías — todos llevan a **otra** página.
+Coincide con el código: `src/pages/Sell.tsx` no importa ningún componente de
+formulario, no hace ningún `insert`, y sus únicos enlaces son `path('/valuation')`,
+`path('/contact')` y el ancla `#comment` (líneas 207-276).
+
+**Consecuencia:** el clic se paga, el visitante lee, y para dejar sus datos
+necesita **un segundo clic**. La conversión de Ads tampoco dispara ahí, porque
+no hay envío que medir. Esto es la manifestación concreta del "8 de 10 URLs van
+a páginas sin formulario" que ya constaba en `tasks/current.md`.
+
+⚠️ **Trampa de nomenclatura que causó la confusión:** `/fr/vendre` (sección
+informativa del SPA) y `/vendre/` (landing de captación estática) son **dos
+páginas distintas** con nombre casi idéntico. Se diferencian en el prefijo `/fr`
+y en la barra final. Cualquiera que retome esto debe tenerlo presente.
+
+### 2. `/vendre/` y `/proprietaires/` verificadas — funcionan
+
+Ambas medidas en vivo con los parámetros reales de campaña:
+
+| Landing | `forms` | `project` leído de `?service=` | UTM capturados |
+|---|---|---|---|
+| `/vendre/?service=vendre&...` | 1 | `vendre` | source/medium/campaign OK |
+| `/proprietaires/?service=airbnb&...` | 1 | `airbnb` | source/medium/campaign OK |
+
+Las dos muestran los mismos 3 campos visibles (`Prénom et nom`, `+33… / +212…`,
+`vous@email.com`) más 6 ocultos que se rellenan solos desde la URL: `project`,
+`utm_source`, `utm_medium`, `utm_campaign`, `gclid`, `fbclid`.
+
+### 3. Los UTM se guardan en `message`, NO en columnas propias
+
+Hallazgo relevante para medir. `public/vendre/index.html:864-867` concatena los
+UTM como **texto dentro del campo `message`** del lead:
+
+```js
+data.utm_source && `utm_source=${data.utm_source}`,
+data.utm_medium && `utm_medium=${data.utm_medium}`,
+data.utm_campaign && `utm_campaign=${data.utm_campaign}`,
+data.gclid && `gclid=${data.gclid}`,
+```
+
+Quedan registrados y son legibles, pero **no se puede filtrar ni agregar por
+campaña con una query**: habría que parsear el texto de cada fila. Si se quiere
+comparar rendimiento entre campañas en serio, hay que promoverlos a columnas
+propias de `contact_submissions`. Cambio pequeño, **no hecho** — pendiente de OK.
+
+### 4. Recorrido completo del dato (verificado, no supuesto)
+
+Clic en anuncio → landing con UTM en la URL → JS los copia a los campos ocultos
+→ el visitante rellena nombre + teléfono → al enviar:
+
+1. Insert en Supabase `contact_submissions`, con `subject` tipo
+   `"Vendeur — Landing (Décidé à vendre)"` (`public/vendre/index.html:875`).
+2. Llamada a `notify-lead` (responde 200, pero **no envía nada**: sigue sin
+   canal configurado — ver cierre del 2026-08-02).
+3. `track('generate_lead')` → GTM → conversión a Google Ads + GA4.
+
+Visible en `atlasrouge.com/admin/contacts`.
+
+### 5. Origen de los UTM: los generó Claude, no el owner
+
+El owner preguntó explícitamente quién había puesto esos parámetros y por qué.
+**Los propuso Claude en una sesión anterior**; están en `tasks/current.md` como
+tabla de "URLs finales" a copiar en los 10 grupos. El owner los pegó sin que
+nadie le explicara qué eran. Anotado aquí para que no se vuelva a entregar
+configuración de Ads sin explicar su significado.
+
+Regla de construcción (solo cambian dos cosas): `utm_campaign` = nombre de la
+campaña (`fr-diaspora` / `maroc` / la tercera); `utm_content` = nombre del grupo
+de anuncios. `utm_source=google` y `utm_medium=cpc` son fijos en todo Google Ads.
+
+### 6. Estado del cambio de URLs
+
+El owner las está editando **a mano en la UI de Ads**, una por grupo (la edición
+masiva no sirve: unos grupos van a `/vendre/` y otros a `/proprietaires/`).
+Confirmó haber hecho **el primero** durante esta sesión; los 9 restantes
+pendientes. Las 5 URLs de `fr-diaspora` se le entregaron listas; las otras dos
+campañas son las mismas cambiando `utm_campaign`.
+
+### Verificación de cierre
+
+`verify.sh` **verde** (lint + build; typecheck/test siguen sin script).
+`/fr/vendre` → `forms: 0` · `/vendre/?service=vendre` → `forms: 1`, `project=vendre` ·
+`/proprietaires/?service=airbnb` → `forms: 1`, `project=airbnb`. Todo medido en
+producción, no inferido. **Sin cambios de código en esta sesión** — es una
+sesión de diagnóstico y documentación.
+
+### Pendiente tras esta sesión
+
+- **9 URLs de anuncios** por cambiar en la UI de Ads (1 de 10 hecha).
+- **Promover los UTM a columnas propias** de `contact_submissions` (requiere OK).
+- **Canal de aviso de leads** sigue sin decidir (Telegram / Resend / Zoho).
+- **6 filas de prueba** por borrar en Supabase.
+
+---
+
 ## CIERRE de sesión — Claude Opus 5 — 2026-08-02 (BUG CRÍTICO: las Netlify Functions nunca han funcionado — ARREGLADO; /proprietaires/ rehecha)
 
 ### 1. BUG CRÍTICO: ninguna Netlify Function ha ejecutado jamás
