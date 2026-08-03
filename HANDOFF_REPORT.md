@@ -4,6 +4,81 @@
 
 ---
 
+## ⚠️ CORRECCIÓN — Claude Opus 5 — 2026-08-03 (`?service=agence` NO existe — error de Claude ya propagado a Ads)
+
+### El error
+
+La tabla de URLs de `tasks/current.md` — **escrita por Claude en una sesión
+anterior** — asignaba al grupo `D - Agence` la URL
+`/vendre/?service=agence`. **Ese valor no existe en la landing.**
+
+Verificado en producción sobre la URL exacta:
+
+```json
+{ "forms": 1, "project": "" }
+```
+
+La página carga y el formulario funciona, pero el campo oculto `project` queda
+**vacío**. `public/vendre/index.html:853` solo reconoce tres valores:
+
+```js
+const projectLabel = { estimation: 'Estimation seule', vendre: 'Décidé à vendre', hesite: 'Hésite vendre / louer' };
+```
+
+Cualquier otro valor se ignora en silencio. Un lead entrado por ahí se guarda
+como `"Vendeur — Landing ()"`, con el paréntesis vacío: **el lead no se pierde,
+pero se pierde su intención**.
+
+### Estado: el error YA está en producción de Ads
+
+El owner confirmó haber asignado esa URL a `D - Agence` antes de que se
+detectara. **Hay que corregirla en la UI de Ads.** URL correcta:
+
+```
+https://atlasrouge.com/vendre/?service=vendre&utm_source=google&utm_medium=cpc&utm_campaign=fr-diaspora&utm_content=agence
+```
+
+`service=vendre` (valor válido, marca la intención en la página) +
+`utm_content=agence` (etiqueta libre, identifica el grupo de origen). Son dos
+campos con funciones distintas y hacen falta los dos.
+
+### Regla para no repetirlo
+
+**`?service=` solo admite valores del contrato de cada landing.** Antes de
+publicar cualquier URL nueva, medirla en producción y comprobar que el campo
+oculto `project` sale relleno. Los valores válidos hoy:
+
+| Landing | Valores válidos de `?service=` |
+|---|---|
+| `/vendre/` | `estimation`, `vendre`, `hesite` |
+| `/proprietaires/` | `location`, `airbnb` (verificados en vivo) |
+
+`utm_content` en cambio es texto libre y no lo valida nadie.
+
+### Optimización RSA de `D - Agence` (reporte del asistente de Ads, no verificado aquí)
+
+El owner reportó que el Ask Advisor de Google llevó el anuncio de *Media* a
+*Excelente*: añadió los 3 títulos que faltaban hasta 15/15 ("Meilleure Agence à
+Marrakech", "Vendre au Juste Prix", "Prenez Rendez-vous en Ligne") y **desfijó
+el título 1** ("Agence Francophone à Marrakech"), que estaba anclado a posición
+1 — según el reporte, ese desfijado fue el cambio determinante.
+
+⚠️ **Sin verificar desde aquí** (no hay acceso de API a Google Ads en este
+entorno) y, de nuevo, el asistente **dejó el anuncio sin guardar** a propósito.
+Anuncio ID `815830933607`, campaña `Atlas Rouge – FR-Diaspora`.
+
+📌 Consecuencia operativa a tener en cuenta: al guardar, un RSA editado
+**reinicia su fase de aprendizaje**; no juzgar rendimiento durante ~1-2 semanas.
+
+📌 Decisión abierta que dejó el asistente: si por marca se quiere el título
+"Agence Francophone à Marrakech" siempre en posición 1, se puede volver a fijar
+asumiendo que la eficacia baje. Es criterio del owner, no técnico.
+
+📌 Siguen abiertos en este anuncio: **Nombre de empresa** vacío (0/25) y sin
+formulario de clientes potenciales.
+
+---
+
 ## ACTUALIZACIÓN — Claude Opus 5 — 2026-08-03 (URLs de anuncios: 4 de 10 corregidas)
 
 ### Progreso del cambio de URLs

@@ -23,8 +23,31 @@ La de captación es la que **no** lleva `/fr` y **sí** lleva barra final.
 📌 **El owner las edita a mano en la UI de Ads**, una por grupo (la edición
 masiva no vale: unos van a `/vendre/`, otros a `/proprietaires/`).
 
-**Estado `fr-diaspora`: 3 de 5 hechas.** ✅ B2 - Gestion Airbnb ·
-✅ C - Estimation · ✅ B1 - Gestion locative · ⏳ A - Vendre · ⏳ D - Agence.
+**Estado `fr-diaspora`: 5 de 5 asignadas, 1 A CORREGIR.** ✅ A - Vendre ·
+✅ B1 - Gestion locative · ✅ B2 - Gestion Airbnb · ✅ C - Estimation ·
+🔴 **D - Agence lleva `?service=agence`, que NO EXISTE** — ver abajo.
+
+## 🔴 `?service=agence` no existe — corregir D - Agence
+
+Error de Claude en la tabla original, **ya propagado a producción de Ads**.
+Medido en vivo: `/vendre/?service=agence` → `forms:1` pero `project:""` (vacío).
+`public/vendre/index.html:853` solo acepta `estimation` | `vendre` | `hesite`.
+El lead NO se pierde, pero entra como `"Vendeur — Landing ()"` sin intención.
+
+URL correcta para D - Agence:
+```
+https://atlasrouge.com/vendre/?service=vendre&utm_source=google&utm_medium=cpc&utm_campaign=fr-diaspora&utm_content=agence
+```
+
+**Regla:** `?service=` solo admite valores del contrato de cada landing;
+`utm_content` es texto libre. Valores válidos verificados en vivo:
+`/vendre/` → `estimation`, `vendre`, `hesite` · `/proprietaires/` → `location`,
+`airbnb`. **Medir toda URL nueva en prod y comprobar que `project` sale relleno.**
+
+📌 **RSA de D - Agence optimizado por el Ask Advisor de Google** (no verificado
+aquí): 15/15 títulos, título 1 desfijado, eficacia *Media* → *Excelente*.
+Anuncio ID `815830933607`. **Dejado sin guardar** por el asistente. Al guardar,
+el RSA reinicia aprendizaje: no juzgar rendimiento ~1-2 semanas.
 Faltan además las campañas `maroc` + la tercera (mismas URLs, otro
 `utm_campaign`). Tabla completa más abajo.
 
