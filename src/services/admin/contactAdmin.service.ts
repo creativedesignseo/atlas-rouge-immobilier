@@ -1,11 +1,16 @@
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
+import { adminRestRequest } from '@/lib/adminRest'
 import { getCached, refetch, invalidate } from '@/lib/queryCache'
 import type { ContactSubmissionRow } from '@/types/supabase'
+
+const CONTACT_SUBMISSIONS = '/rest/v1/contact_submissions'
 
 export interface ContactSubmission {
   id: string
   name: string
-  email: string
+  // Null for phone-only leads (see migration 016). Callers must not assume a
+  // string — `email.toLowerCase()` on a phone-only lead crashed the search.
+  email: string | null
   phone: string | null
   subject: string
   message: string
@@ -65,14 +70,23 @@ export async function getContactSubmissions(
   return fresh
 }
 
+/**
+ * Deletes a lead via direct REST.
+ *
+ * Not supabase-js: that client refreshes the agent token before every call, so
+ * a delete cost two sequential round-trips (~1-1.5s of spinner) and could hang
+ * forever if the refresh stalled. adminRestRequest sends one request with an
+ * explicit token and an AbortController timeout.
+ *
+ * `return=representation` also makes RLS refusals visible: PostgREST answers
+ * 200 with an empty array when the row exists but policy forbids deleting it,
+ * which previously surfaced as a false "deleted" toast.
+ */
 export async function deleteContact(id: string): Promise<void> {
-  if (!isSupabaseConfigured) throw new Error('Supabase not configured')
-
-  const { error } = await supabase
-    .from('contact_submissions')
-    .delete()
-    .eq('id', id)
-
-  if (error) throw error
+  const deleted = await adminRestRequest<Pick<ContactSubmissionRow, 'id'>[]>(
+    `${CONTACT_SUBMISSIONS}?id=eq.${encodeURIComponent(id)}&select=id`,
+    { method: 'DELETE', timeoutMs: 10000 },
+  )
+  if (!deleted?.length) throw new Error('Nothing was deleted')
   invalidate('contacts:')
 }

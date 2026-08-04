@@ -131,7 +131,9 @@ export type PropertyUpdate = Partial<PropertyInsert>
 export type ContactSubmissionRow = {
   id: string
   name: string
-  email: string
+  // Nullable since migration 016: a lead that leaves only a phone number is
+  // still a lead. The CHECK constraint guarantees email OR phone is present.
+  email: string | null
   phone: string | null
   subject: string
   message: string

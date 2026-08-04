@@ -60,12 +60,15 @@ export default function AdminContacts() {
       return
     }
     const q = search.toLowerCase()
+    // Every field is optional-safe: phone-only leads have no email (migration
+    // 016), and `null.toLowerCase()` used to crash the whole page. Phone and
+    // message are searchable too — the message carries the campaign
+    // attribution, so "fr-diaspora" finds the leads a campaign brought in.
     setFiltered(
-      contacts.filter(
-        (c) =>
-          c.name.toLowerCase().includes(q) ||
-          c.email.toLowerCase().includes(q) ||
-          c.subject.toLowerCase().includes(q)
+      contacts.filter((c) =>
+        [c.name, c.email, c.phone, c.subject, c.message].some((field) =>
+          field?.toLowerCase().includes(q)
+        )
       )
     )
   }, [search, contacts])
@@ -80,12 +83,17 @@ export default function AdminContacts() {
     })
     if (!ok) return
 
+    // Optimistic: drop the row now and restore it if the server refuses.
+    // Waiting for the round-trip meant ~1-1.5s of spinner for an operation
+    // that practically always succeeds.
+    const previous = contacts
     setDeleting(id)
+    setContacts((prev) => prev.filter((c) => c.id !== id))
     try {
       await deleteContact(id)
       toast.success(t('contacts.deleteSuccess'))
-      setContacts((prev) => prev.filter((c) => c.id !== id))
     } catch {
+      setContacts(previous)
       toast.error(t('contacts.deleteError'))
     } finally {
       setDeleting(null)
@@ -134,9 +142,14 @@ export default function AdminContacts() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-3 flex-wrap">
                         <h4 className="font-medium text-text-primary">{contact.name}</h4>
-                        <span className="text-sm text-text-secondary">{contact.email}</span>
+                        {contact.email && (
+                          <span className="text-sm text-text-secondary">{contact.email}</span>
+                        )}
                         {contact.phone && (
-                          <span className="text-sm text-text-secondary">• {contact.phone}</span>
+                          <span className="text-sm text-text-secondary">
+                            {contact.email ? '• ' : ''}
+                            {contact.phone}
+                          </span>
                         )}
                       </div>
                       <p className="text-sm font-medium text-text-primary mt-1">{contact.subject}</p>
