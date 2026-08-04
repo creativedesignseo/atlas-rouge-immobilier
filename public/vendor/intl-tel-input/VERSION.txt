@@ -1,0 +1,2 @@
+intl-tel-input v29.1.3 — copiado de node_modules/intl-tel-input/dist el 2026-08-04
+No editar a mano. Para actualizar: npm update intl-tel-input y volver a copiar css/js/img.
