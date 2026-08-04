@@ -77,12 +77,12 @@
     "dashboard": "Panel",
     "properties": "Inmuebles",
     "blog": "Blog",
-    "contacts": "Contactos",
+    "contacts": "Leads",
     "profile": "Mi perfil",
     "settings": "Configuración",
     "backToSite": "Volver al sitio",
     "neighborhoods": "Barrios",
-    "leads": "Prospectos"
+    "leads": "Estimaciones"
   },
   "dashboard": {
     "title": "Panel de control",
@@ -94,7 +94,7 @@
     "newContacts": "Nuevos contactos",
     "activeListings": "Anuncios activos",
     "recentProperties": "Inmuebles recientes",
-    "recentContacts": "Contactos recientes",
+    "recentContacts": "Leads recientes",
     "viewAll": "Ver todo",
     "noProperty": "Sin inmuebles",
     "noContact": "Sin contactos"
@@ -217,7 +217,7 @@
     "highlightLangPlaceholder": "Añadir característica..."
   },
   "contacts": {
-    "title": "Contactos",
+    "title": "Leads",
     "noContacts": "Aún no hay contactos",
     "noResults": "Sin contactos encontrados",
     "searchPlaceholder": "Buscar un contacto...",
@@ -298,7 +298,7 @@
     "backToLogin": "Volver al login"
   },
   "leads": {
-    "title": "Prospectos",
+    "title": "Estimaciones",
     "subtitle": "Solicitudes de estimación y suscriptores de la newsletter.",
     "tabs": {
       "estimations": "Estimaciones",

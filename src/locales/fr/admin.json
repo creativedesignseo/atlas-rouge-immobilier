@@ -77,12 +77,12 @@
     "dashboard": "Tableau de bord",
     "properties": "Biens",
     "blog": "Blog",
-    "contacts": "Contacts",
+    "contacts": "Prospects",
     "profile": "Mon profil",
     "settings": "Paramètres",
     "backToSite": "Retour au site",
     "neighborhoods": "Quartiers",
-    "leads": "Prospects"
+    "leads": "Estimations"
   },
   "dashboard": {
     "title": "Tableau de bord",
@@ -94,7 +94,7 @@
     "newContacts": "Nouveaux contacts",
     "activeListings": "Annonces actives",
     "recentProperties": "Propriétés récentes",
-    "recentContacts": "Contacts récents",
+    "recentContacts": "Prospects récents",
     "viewAll": "Voir tout",
     "noProperty": "Aucune propriété",
     "noContact": "Aucun contact"
@@ -217,7 +217,7 @@
     "highlightLangPlaceholder": "Ajouter une caractéristique..."
   },
   "contacts": {
-    "title": "Contacts",
+    "title": "Prospects",
     "noContacts": "Aucun contact pour l'instant",
     "noResults": "Aucun contact trouvé",
     "searchPlaceholder": "Rechercher un contact...",
@@ -298,7 +298,7 @@
     "backToLogin": "Retour à la connexion"
   },
   "leads": {
-    "title": "Prospects",
+    "title": "Estimations",
     "subtitle": "Demandes d'estimation et abonnés à la newsletter.",
     "tabs": {
       "estimations": "Estimations",

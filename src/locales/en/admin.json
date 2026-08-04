@@ -77,12 +77,12 @@
     "dashboard": "Dashboard",
     "properties": "Properties",
     "blog": "Blog",
-    "contacts": "Contacts",
+    "contacts": "Leads",
     "profile": "My profile",
     "settings": "Settings",
     "backToSite": "Back to site",
     "neighborhoods": "Neighborhoods",
-    "leads": "Leads"
+    "leads": "Estimates"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -94,7 +94,7 @@
     "newContacts": "New contacts",
     "activeListings": "Active listings",
     "recentProperties": "Recent properties",
-    "recentContacts": "Recent contacts",
+    "recentContacts": "Recent leads",
     "viewAll": "View all",
     "noProperty": "No properties",
     "noContact": "No contacts"
@@ -217,7 +217,7 @@
     "highlightLangPlaceholder": "Add feature..."
   },
   "contacts": {
-    "title": "Contacts",
+    "title": "Leads",
     "noContacts": "No contacts yet",
     "noResults": "No contacts found",
     "searchPlaceholder": "Search a contact...",
@@ -298,7 +298,7 @@
     "backToLogin": "Back to login"
   },
   "leads": {
-    "title": "Leads",
+    "title": "Estimates",
     "subtitle": "Estimation requests and newsletter subscribers.",
     "tabs": {
       "estimations": "Estimations",
