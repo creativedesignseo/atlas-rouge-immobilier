@@ -182,6 +182,9 @@ matches one of the above and you have a self-contained brief for it.
 - `verify` — run the local verification pipeline
 - `docs-sync` — find and fix doc/reality drift
 - `deploy-check` — pre-deploy safety checklist
+- `reporte` — informe de rendición de cuentas: actualiza `docs/BITACORA.md`
+  con los commits nuevos y presenta qué se ha hecho en la web. Invocable con
+  `/reporte`, `/reporte agosto`, `/reporte cliente`, `/reporte incidentes`.
 
 ---
 
