@@ -238,7 +238,24 @@
     "markNew": "Marquer nouveau",
     "property": "Bien concerné",
     "noProperty": "Demande générale",
-    "receivedOn": "Reçu le"
+    "receivedOn": "Reçu le",
+    "call": "Appeler",
+    "whatsapp": "WhatsApp",
+    "email": "E-mail",
+    "copy": "Copier",
+    "copied": "Copié dans le presse-papiers",
+    "copyError": "Copie impossible",
+    "stats": {
+      "total": "Total",
+      "week": "7 jours",
+      "today": "Aujourd'hui"
+    },
+    "filters": {
+      "all": "Tous",
+      "today": "Aujourd'hui",
+      "week": "7 jours",
+      "month": "30 jours"
+    }
   },
   "profile": {
     "title": "Mon profil",

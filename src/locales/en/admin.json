@@ -238,7 +238,24 @@
     "markNew": "Mark as new",
     "property": "Property",
     "noProperty": "General inquiry",
-    "receivedOn": "Received on"
+    "receivedOn": "Received on",
+    "call": "Call",
+    "whatsapp": "WhatsApp",
+    "email": "Email",
+    "copy": "Copy",
+    "copied": "Copied to clipboard",
+    "copyError": "Could not copy",
+    "stats": {
+      "total": "Total",
+      "week": "7 days",
+      "today": "Today"
+    },
+    "filters": {
+      "all": "All",
+      "today": "Today",
+      "week": "7 days",
+      "month": "30 days"
+    }
   },
   "profile": {
     "title": "My profile",

@@ -238,7 +238,24 @@
     "markNew": "Marcar como nuevo",
     "property": "Inmueble relacionado",
     "noProperty": "Consulta general",
-    "receivedOn": "Recibido el"
+    "receivedOn": "Recibido el",
+    "call": "Llamar",
+    "whatsapp": "WhatsApp",
+    "email": "Email",
+    "copy": "Copiar",
+    "copied": "Copiado al portapapeles",
+    "copyError": "No se pudo copiar",
+    "stats": {
+      "total": "Total",
+      "week": "7 días",
+      "today": "Hoy"
+    },
+    "filters": {
+      "all": "Todos",
+      "today": "Hoy",
+      "week": "7 días",
+      "month": "30 días"
+    }
   },
   "profile": {
     "title": "Mi perfil",
