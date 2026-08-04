@@ -635,8 +635,8 @@
     "semantic_hash": "ee0aa76ac0f057978e254021868f4eb0"
   },
   "src/locales/en/admin.json": {
-    "mtime": 1785854486.096921,
-    "ast_hash": "5ef7b7f4d1af37e8fd488336a680a49f",
+    "mtime": 1785886212.067701,
+    "ast_hash": "9283204ff13a4d317ca40a7e73018abd",
     "semantic_hash": ""
   },
   "src/locales/en/amenities.json": {
@@ -715,8 +715,8 @@
     "semantic_hash": "7281967068fab8eb19afb221dcec0e04"
   },
   "src/locales/es/admin.json": {
-    "mtime": 1785854486.0871956,
-    "ast_hash": "6afb5d8d8fd96e631cee073440eec031",
+    "mtime": 1785886212.067203,
+    "ast_hash": "57780cc411359e4ed9e1dcd7ba1fb95c",
     "semantic_hash": ""
   },
   "src/locales/es/amenities.json": {
@@ -795,8 +795,8 @@
     "semantic_hash": "edebc303fb6d07bcdaacbf949a91ad23"
   },
   "src/locales/fr/admin.json": {
-    "mtime": 1785854486.0775316,
-    "ast_hash": "3aa2abbe978ef790c641565c5d4eb26d",
+    "mtime": 1785886212.0665436,
+    "ast_hash": "441beb13969f97d07060516e1686e4fb",
     "semantic_hash": ""
   },
   "src/locales/fr/amenities.json": {
@@ -975,8 +975,8 @@
     "semantic_hash": "30f5505b051de7a911744bc0bb1989ac"
   },
   "src/pages/admin/AdminContacts.tsx": {
-    "mtime": 1785851606.1045,
-    "ast_hash": "9ff1b03d7c3a5c17ede34a2a638cd03e",
+    "mtime": 1785885943.1351526,
+    "ast_hash": "8e2727854fddeba1773774b6cc2ca150",
     "semantic_hash": ""
   },
   "src/pages/admin/AdminDashboard.tsx": {
@@ -1285,8 +1285,8 @@
     "semantic_hash": "ea71fe20d99a449aeddd9e54a8d1027b"
   },
   "HANDOFF_REPORT.md": {
-    "mtime": 1785852721.685094,
-    "ast_hash": "6d26aecd4d5515121b35820b9a112362",
+    "mtime": 1785886342.5457184,
+    "ast_hash": "43e76e26ce9cde639ab663b08424cb55",
     "semantic_hash": ""
   },
   "PROJECT_CONTEXT.md": {
@@ -1500,8 +1500,8 @@
     "semantic_hash": ""
   },
   "tasks/current.md": {
-    "mtime": 1785852747.9475255,
-    "ast_hash": "42bd934cbbc1f9c4e47f1b34552674fd",
+    "mtime": 1785886342.5462732,
+    "ast_hash": "279b9ee8c5734a71629444d8cdf82096",
     "semantic_hash": ""
   },
   "public/favicon.svg": {

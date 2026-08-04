@@ -33,6 +33,59 @@ se ve raro al entrar, es ahí donde hay que mirar primero.
 
 ---
 
+## CIERRE — 2026-08-05 madrugada (la pantalla de Leads ya existe + se termina el renombrado)
+
+⚠️ **Este cierre invalida en parte el de más abajo (mismo día).** Entre ambos
+entró trabajo de otra sesión.
+
+### 1. Centro de leads reconstruido (commit `c1e8ab4e`, otra sesión, 01:26)
+
+`AdminContacts.tsx` reescrito: contadores (total / semana / hoy), filtros por
+rango (todo / hoy / semana / mes), barra de herramientas fija en móvil,
+avatares con inicial y color estable por lead, y acciones directas —
+**llamar, WhatsApp y copiar**. **Corrige el diagnóstico anterior**: la pantalla
+de seguimiento ya no está totalmente ausente. Sigue SIN existir el cambio de
+estado ni la asignación a agente (las columnas siguen sin usarse: los 13 leads
+en `new`, ninguno asignado).
+
+### 2. El renombrado a Leads estaba a medias — TERMINADO (commit `c12382a5`)
+
+`a801dce6` renombró el menú y el título, pero **todas las etiquetas de dentro
+seguían diciendo "contacto"**: buscador, contador, estado vacío y mensajes de
+borrado/carga. Corregidas 8 por idioma. Vocabulario: **`prospect` en francés**
+(término del sector inmobiliario francés; el owner del sitio es francés) y
+**`lead` en español e inglés**.
+
+Editado con parse/dump de JSON para no alterar el orden de claves ni el resto
+del archivo, y comprobado tras escribir que los 3 idiomas comparten el mismo
+set de claves bajo `contacts`.
+
+**Verificado en el bundle que sirve producción** (`assets/index-nqM00k9a.js`):
+"Buscar un lead", "Rechercher un prospect", "Search a lead", "leads en total",
+"prospects au total", "leads total" → 1 cada uno; los cuatro textos antiguos
+→ 0. *No verificado visualmente dentro del panel*: requiere sesión de admin y
+el navegador aislado no la tiene.
+
+📌 **Trampa para quien audite estas claves:** `countLabel` NO existe como clave
+suelta, solo como variantes de plural de i18next (`countLabel_one` /
+`countLabel_other`). Un comprobador que busque la clave desnuda reporta un
+falso "falta". Me pasó.
+
+### 3. Graph regenerado
+
+`graphify update .` → **3.046 nodos, 4.709 aristas, 245 comunidades**
+(antes 3.023 / 4.686). El desfase era real: `AdminContacts.tsx` y los tres
+`admin.json`. Solo código, por la misma razón de siempre (la clave LLM de
+`.env.local` es un placeholder).
+
+### Pendiente tras este cierre
+
+Sin cambios en los tres bloqueos del owner (canal de aviso, URLs de anuncios,
+tipografías Lazzer). Del CRM sigue faltando lo que de verdad cambia el trabajo
+diario: **estados del lead y asignación a agente**.
+
+---
+
 ## VERIFICACIÓN — 2026-08-05 (sin cambios de código; solo comprobación de realidad)
 
 Repaso pedido por el owner. **No se tocó código**: `HEAD == origin/main ==

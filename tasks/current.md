@@ -18,6 +18,23 @@ Pendiente relacionado: el estado del lead (`new`/asignado) sigue sin UI — ese
 es el trabajo de CRM fase 1, más abajo.
 
 
+## 🟢 Pantalla de Leads — reconstruida y renombrada del todo (2026-08-05)
+
+- ✅ `c1e8ab4e` (otra sesión) — centro de leads reconstruido: contadores,
+  filtros por rango, barra fija en móvil, avatares, y acciones de **llamar /
+  WhatsApp / copiar**.
+- ✅ `c12382a5` — terminado el renombrado: las etiquetas de DENTRO seguían
+  diciendo "contacto". 8 por idioma. FR usa `prospect`, ES/EN `lead`.
+  Verificado en el bundle de producción.
+
+⚠️ **`countLabel` no existe como clave suelta**, solo como `countLabel_one` /
+`countLabel_other` (plurales de i18next). Un chequeo de claves que busque la
+desnuda da un falso negativo.
+
+🔴 **Falta lo que cambia el trabajo diario**: cambiar el estado del lead y
+asignarlo a un agente. Las columnas existen desde el origen y las traducciones
+también; los 13 leads siguen en `new` y sin asignar.
+
 ## 🟢 Verificado el 2026-08-05 — nada nuevo que arreglar
 
 `HEAD == origin/main == a4796db1`, `verify.sh` verde, Graph sin desfase.
