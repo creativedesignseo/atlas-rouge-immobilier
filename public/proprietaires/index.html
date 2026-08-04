@@ -363,10 +363,27 @@
     .iti__country-container { padding: 1px; }
     .iti__selected-country { border-radius: 11px 0 0 11px; background: transparent; }
     .iti__selected-country:hover, .iti__selected-country:focus { background: rgba(0,0,0,.04); }
-    /* La liste déroulante doit passer au-dessus de la carte du formulaire. */
-    .iti__dropdown-content { z-index: 30; border-radius: 12px; box-shadow: 0 12px 32px rgba(0,0,0,.16); }
-    .iti__search-input { min-height: 42px; padding: 10px 12px; font-size: 1rem; }
+    /* Le menu déroulant. En v29 le conteneur est .iti__country-selector
+       (.iti__dropdown-content n'existe plus — une première version de ces
+       règles visait cette classe morte, d'où un menu sans style). */
+    .iti__country-selector { z-index: 30; border-radius: 12px; box-shadow: 0 12px 32px rgba(0,0,0,.16); overflow: hidden; background: var(--white); }
     .iti__country-list { max-height: 260px; }
+    /* Champ de recherche du menu : il vit DANS .field, donc la règle générale
+       `.field input` (plus spécifique que celle du plugin) lui imposait son
+       padding de 14px et sa bordure — la loupe, posée en absolu à gauche,
+       se superposait au texte ("Qearch"). On rend au plugin l'espace qu'il
+       réserve à ses icônes, avec une spécificité supérieure, et on l'intègre
+       à plat dans le menu (le séparateur vient du wrapper, pas d'une bordure). */
+    .field .iti__search-input {
+      min-height: 44px;
+      font-size: 1rem;
+      border: 0;
+      border-radius: 12px 12px 0 0;
+      background: var(--white);
+      padding: 10px calc(2 * var(--iti-spacer-horizontal) + var(--iti-clear-icon-size))
+               10px calc(2 * var(--iti-spacer-horizontal) + var(--iti-globe-icon-size));
+    }
+    .field .iti__search-input:focus { border: 0; box-shadow: none; }
     /* Numéro rejeté par la validation : bordure rouge + message sous le champ. */
     .field input.is-invalid { border-color: #c0392b; }
     .field input.is-invalid:focus { box-shadow: 0 0 0 4px rgba(192,57,43,.12); }
