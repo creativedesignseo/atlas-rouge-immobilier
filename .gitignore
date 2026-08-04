@@ -61,3 +61,14 @@ mapbox-*-verify.png
 graphify-out/cache/
 graphify-out/.graphify_python
 graphify-out/.graphify_root
+
+# June 2026 design study: a local copy of another company's landing page.
+# Never committed, so never served from atlasrouge.com — verified 2026-08-04.
+# Ignored so a wide `git add public/` cannot publish it by accident.
+public/prueba/
+
+# NOTE: public/vendre/fonts/ (commercial Lazzer typeface) is NOT listed here.
+# Those files are already TRACKED, and .gitignore does not apply to tracked
+# files — listing them would only create a false sense of protection. They are
+# live at atlasrouge.com/vendre/fonts/*.woff (verified 2026-08-04: HTTP 200,
+# application/font-woff). Removing them needs the owner's explicit approval.
