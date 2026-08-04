@@ -1,4 +1,6 @@
-import { supabase, isSupabaseConfigured } from '@/lib/supabase'
+// supabasePublic, not supabase — see the note in contact.service.ts: these are
+// anonymous writes and must not queue behind a session token refresh.
+import { supabasePublic, isSupabaseConfigured } from '@/lib/supabase'
 import { notifyLead } from '@/services/contact.service'
 
 // ============================================================================
@@ -37,7 +39,7 @@ export async function submitEstimationRequest(
     return { success: false, error: 'Nombre y teléfono son obligatorios' }
   }
 
-  const { error } = await supabase.from('estimation_requests').insert({
+  const { error } = await supabasePublic.from('estimation_requests').insert({
     name: payload.name.trim(),
     phone: payload.phone.trim(),
     email: payload.email?.trim() || null,
@@ -84,7 +86,9 @@ export async function subscribeNewsletter(
   }
 
   // upsert por email único — si ya está, no rompe
-  const { error } = await supabase
+  // ignoreDuplicates makes this INSERT ... ON CONFLICT DO NOTHING, so the
+  // anon INSERT policy is enough — no UPDATE permission is required.
+  const { error } = await supabasePublic
     .from('newsletter_subscribers')
     .upsert(
       {

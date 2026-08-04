@@ -1,4 +1,9 @@
-import { supabase, isSupabaseConfigured } from '@/lib/supabase'
+// supabasePublic, not supabase: this insert runs for anonymous visitors, and
+// the session client resolves/refreshes a token before every PostgREST call.
+// A visitor carrying a stale session would have their submission queued behind
+// that refresh — the exact failure ADR-002 documents for public reads. RLS
+// allows the `anon` role to insert here, so no session is needed.
+import { supabasePublic, isSupabaseConfigured } from '@/lib/supabase'
 
 export interface ContactFormData {
   name: string
@@ -43,7 +48,7 @@ export async function submitContactForm(data: ContactFormData): Promise<{ succes
     return { success: true }
   }
 
-  const { error } = await supabase.from('contact_submissions').insert({
+  const { error } = await supabasePublic.from('contact_submissions').insert({
     name: data.name,
     email: data.email,
     phone: data.phone || null,
