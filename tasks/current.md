@@ -4,7 +4,19 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-08-05 (verificación de realidad; sin cambios de código)
+**Last updated:** 2026-08-05 (rediseño del centro de leads — `c1e8ab4e`, en vivo)
+
+## 🟢 Centro de leads rediseñado — EN VIVO 2026-08-05 (`c1e8ab4e`)
+
+`/admin/contacts` pasa de filas de texto densas a un centro de leads orientado
+a la acción: tiles de cifras, búsqueda pegajosa con chips de rango, tarjetas
+con avatar de iniciales y botones grandes de Llamar / WhatsApp / Email / Ver
+propiedad. Solo presentación — datos y RLS intactos. Falta pasar el ojo del
+owner con sesión iniciada (no se pudo verificar autenticado desde aquí).
+
+Pendiente relacionado: el estado del lead (`new`/asignado) sigue sin UI — ese
+es el trabajo de CRM fase 1, más abajo.
+
 
 ## 🟢 Verificado el 2026-08-05 — nada nuevo que arreglar
 

@@ -4,6 +4,35 @@
 
 ---
 
+## CIERRE — Claude Opus 5 — 2026-08-05 (rediseño del centro de leads del panel)
+
+Commit **`c1e8ab4e`** — `feat(admin): rebuild the leads center for
+mobile-first, action-driven triage`. Desplegado y comprobado en vivo: el bundle
+publicado (`assets/index-nqM00k9a.js`) carga el chunk
+`assets/AdminContacts-bDYuHQX_.js`, que ya contiene las claves nuevas
+(`contacts.whatsapp`). `verify.sh` en verde antes del push.
+
+Qué cambia en `/admin/contacts` (solo capa de presentación — la consulta, la
+RLS y el borrado optimista siguen igual):
+
+- Tres tiles de cifras grandes arriba: total, últimos 7 días, hoy.
+- Barra de búsqueda de 48 px, pegajosa en móvil, con botón de limpiar, más
+  chips de rango (todos / hoy / 7 días / 30 días). El filtrado pasó a `useMemo`
+  (antes era un `useEffect` que duplicaba la lista en estado).
+- Lista en tarjetas (una columna en móvil, dos en pantallas ≥1280 px) con
+  avatar de iniciales de 48-56 px y tinte estable por lead.
+- Acciones grandes por lead: **Llamar** (`tel:`), **WhatsApp** (`wa.me`, con el
+  número normalizado a solo dígitos), **Email** (`mailto:`) y **Ver propiedad**.
+  Botones de 48 px de alto; copiar email/teléfono al portapapeles.
+- Claves i18n nuevas en FR/ES/EN: `contacts.call/whatsapp/email/copy/copied/
+  copyError`, `contacts.stats.*`, `contacts.filters.*`.
+
+**No verificado con sesión real de admin** (requiere login del owner): la
+comprobación fue build verde + bundle desplegado con el código nuevo. Si algo
+se ve raro al entrar, es ahí donde hay que mirar primero.
+
+---
+
 ## VERIFICACIÓN — 2026-08-05 (sin cambios de código; solo comprobación de realidad)
 
 Repaso pedido por el owner. **No se tocó código**: `HEAD == origin/main ==
