@@ -1,1527 +1,2927 @@
 {
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/.claude/settings.local.json": {
+  ".claude/settings.local.json": {
     "mtime": 1783300825.58419,
     "ast_hash": "3563123e01ffb2f8d40469ac37b26b3f",
     "semantic_hash": "3563123e01ffb2f8d40469ac37b26b3f"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/components.json": {
+  "components.json": {
     "mtime": 1776994990.0,
     "ast_hash": "8df57b256ec5ade8f4832fd28cf7bdd4",
     "semantic_hash": "8df57b256ec5ade8f4832fd28cf7bdd4"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/eslint.config.js": {
-    "mtime": 1777553691.4904633,
-    "ast_hash": "618f6b72b8312e7ee86ff35c19fc27d0",
-    "semantic_hash": "618f6b72b8312e7ee86ff35c19fc27d0"
+  "eslint.config.js": {
+    "mtime": 1785451448.5784376,
+    "ast_hash": "456955b61b00650a2979836b5ebb1fb3",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/netlify/edge-functions/img-proxy.ts": {
+  "netlify/edge-functions/img-proxy.ts": {
     "mtime": 1777553784.7419732,
     "ast_hash": "f59e92153b11c15f5db120f21395c55a",
     "semantic_hash": "f59e92153b11c15f5db120f21395c55a"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/netlify/edge-functions/og-rewrite.ts": {
+  "netlify/edge-functions/og-rewrite.ts": {
     "mtime": 1780176989.6892817,
     "ast_hash": "5ecd6aceca7ebe836d858a9c46a23f76",
     "semantic_hash": "5ecd6aceca7ebe836d858a9c46a23f76"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/netlify/functions/notify-lead.js": {
-    "mtime": 1780829683.1319935,
-    "ast_hash": "69c3ffd9af04de407bf0d14b0d3490e6",
-    "semantic_hash": "69c3ffd9af04de407bf0d14b0d3490e6"
+  "netlify/functions/notify-lead.js": {
+    "mtime": 1785702352.838879,
+    "ast_hash": "d2fb6f7fcb966003c05bfdc208e7f5b0",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/netlify/functions/report-error.js": {
-    "mtime": 1780686392.9423506,
-    "ast_hash": "c206c95dd77f744f7ded3245a55bf5a6",
-    "semantic_hash": "c206c95dd77f744f7ded3245a55bf5a6"
+  "netlify/functions/report-error.js": {
+    "mtime": 1785702352.8392234,
+    "ast_hash": "27ddba9d9f680468a7d403dcaaeac37f",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/netlify/functions/translate-property.js": {
-    "mtime": 1780336034.9194605,
-    "ast_hash": "6a43234a2058887822dbb4cd8cc50cff",
-    "semantic_hash": "6a43234a2058887822dbb4cd8cc50cff"
+  "netlify/functions/translate-property.js": {
+    "mtime": 1785702352.8395627,
+    "ast_hash": "cdef3ab0cec9e76fa8aa31c95344d7f5",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/package.json": {
-    "mtime": 1780322888.1406224,
-    "ast_hash": "7788b4db89d46ead5d9fdc2a526019c7",
-    "semantic_hash": "7788b4db89d46ead5d9fdc2a526019c7"
+  "package.json": {
+    "mtime": 1785873221.5942595,
+    "ast_hash": "fa3d4f76576e31393b4667eb81055479",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/postcss.config.js": {
+  "postcss.config.js": {
     "mtime": 1776994990.0,
     "ast_hash": "ef3ba2a81ba19f8ea5ddf625521e96f0",
     "semantic_hash": "ef3ba2a81ba19f8ea5ddf625521e96f0"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/scripts/apply-migration.mjs": {
+  "scripts/apply-migration.mjs": {
     "mtime": 1780317539.519725,
     "ast_hash": "801f6e1b8d73091e13c81163f26ea9bf",
     "semantic_hash": "801f6e1b8d73091e13c81163f26ea9bf"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/scripts/audit-rls.mjs": {
+  "scripts/audit-rls.mjs": {
     "mtime": 1780322877.2395537,
     "ast_hash": "c1f2227be7be3adb912c084b863757db",
     "semantic_hash": "c1f2227be7be3adb912c084b863757db"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/scripts/generate-seed.ts": {
+  "scripts/generate-seed.ts": {
     "mtime": 1777011189.7747936,
     "ast_hash": "f4471b13319d34bce9397c68687574ac",
     "semantic_hash": "f4471b13319d34bce9397c68687574ac"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/scripts/generate-sitemap.mjs": {
+  "scripts/generate-sitemap.mjs": {
     "mtime": 1780059586.730756,
     "ast_hash": "6977468b3d175d7059c0f5209fa72d14",
     "semantic_hash": "6977468b3d175d7059c0f5209fa72d14"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/scripts/translate-existing-properties.mjs": {
+  "scripts/translate-existing-properties.mjs": {
     "mtime": 1780176989.714175,
     "ast_hash": "33676a11dc5d3cc4bdad1a7ccc94d33d",
     "semantic_hash": "33676a11dc5d3cc4bdad1a7ccc94d33d"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/scripts/verify.sh": {
+  "scripts/verify.sh": {
     "mtime": 1779820761.8580596,
     "ast_hash": "0dfd27990888d895a7441119175dd1f0",
     "semantic_hash": "0dfd27990888d895a7441119175dd1f0"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/App.tsx": {
-    "mtime": 1782139025.4547496,
-    "ast_hash": "f73c1aa1883b61101a8a4765b3d6c224",
-    "semantic_hash": "f73c1aa1883b61101a8a4765b3d6c224"
+  "src/App.tsx": {
+    "mtime": 1785451184.5355203,
+    "ast_hash": "9e1d81799e5276c2a83749113d855fce",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/CookieBanner.tsx": {
-    "mtime": 1779714414.871649,
-    "ast_hash": "be26efd7c764e933031a3615c88f2bc0",
-    "semantic_hash": "be26efd7c764e933031a3615c88f2bc0"
+  "src/components/CookieBanner.tsx": {
+    "mtime": 1785557063.772659,
+    "ast_hash": "fa0f50b65af97cfd62fbedcc7b8c6ef2",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ErrorBoundary.tsx": {
+  "src/components/ErrorBoundary.tsx": {
     "mtime": 1780829683.1286979,
     "ast_hash": "532dc993baba27ce42dbaa1f161d6e14",
     "semantic_hash": "532dc993baba27ce42dbaa1f161d6e14"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/Footer.tsx": {
-    "mtime": 1780597814.600561,
-    "ast_hash": "99597c0b11cc5d87b7eb9f9d88367cad",
-    "semantic_hash": "99597c0b11cc5d87b7eb9f9d88367cad"
+  "src/components/Footer.tsx": {
+    "mtime": 1785451189.764178,
+    "ast_hash": "71635b0c86109d2b29b792211de2f7a1",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/HeroSearch.tsx": {
+  "src/components/HeroSearch.tsx": {
     "mtime": 1779200534.2790112,
     "ast_hash": "5acc01d66bd85283345b861442d459c5",
     "semantic_hash": "5acc01d66bd85283345b861442d459c5"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/LanguageSwitcher.tsx": {
+  "src/components/LanguageSwitcher.tsx": {
     "mtime": 1779153910.9464517,
     "ast_hash": "3bc0d11d7c31cca03dcb6eab0f8a02bd",
     "semantic_hash": "3bc0d11d7c31cca03dcb6eab0f8a02bd"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/Layout.tsx": {
-    "mtime": 1779200534.2791922,
-    "ast_hash": "83b31cda1cf142b6cbfbcab85d51a2f2",
-    "semantic_hash": "83b31cda1cf142b6cbfbcab85d51a2f2"
+  "src/components/Layout.tsx": {
+    "mtime": 1784731263.7953553,
+    "ast_hash": "c68895c8f58b26eef21eaaffb61eb279",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/Navbar.tsx": {
+  "src/components/Navbar.tsx": {
     "mtime": 1780597802.8903685,
     "ast_hash": "f607054662589e6fca8577373001ddb0",
     "semantic_hash": "f607054662589e6fca8577373001ddb0"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/NeighborhoodCard.tsx": {
-    "mtime": 1779153911.0088754,
-    "ast_hash": "ae2a92aae414732c5ea54e957a5893ba",
-    "semantic_hash": "ae2a92aae414732c5ea54e957a5893ba"
+  "src/components/NeighborhoodCard.tsx": {
+    "mtime": 1784732618.2632978,
+    "ast_hash": "871c92033ea3287f91fff6f0d494b55f",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/PropertyCard.tsx": {
-    "mtime": 1780365250.5969872,
-    "ast_hash": "1b4c21108e97b18172cb7ae197624b92",
-    "semantic_hash": "1b4c21108e97b18172cb7ae197624b92"
+  "src/components/PropertyCard.tsx": {
+    "mtime": 1784732224.8655734,
+    "ast_hash": "5d10caaf7334828fb24b8a4bf5acfeb5",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/SectionReveal.tsx": {
+  "src/components/SectionReveal.tsx": {
     "mtime": 1779304208.9993281,
     "ast_hash": "92b23c2eafbf154037523df250573d26",
     "semantic_hash": "92b23c2eafbf154037523df250573d26"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ServiceCard.tsx": {
+  "src/components/ServiceCard.tsx": {
     "mtime": 1779280032.4708624,
     "ast_hash": "6d282cfdf5c92a4e8a46a60a73cc44af",
     "semantic_hash": "6d282cfdf5c92a4e8a46a60a73cc44af"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/admin/AdminHeader.tsx": {
+  "src/components/admin/AdminHeader.tsx": {
     "mtime": 1777589523.6981897,
     "ast_hash": "42d63a8755fd0d5fb18476e3de2906e1",
     "semantic_hash": "42d63a8755fd0d5fb18476e3de2906e1"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/admin/AdminLayout.tsx": {
+  "src/components/admin/AdminLayout.tsx": {
     "mtime": 1780343948.207256,
     "ast_hash": "0b34e54a8486a04743cfadea0165dce8",
     "semantic_hash": "0b34e54a8486a04743cfadea0165dce8"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/admin/AdminSidebar.tsx": {
+  "src/components/admin/AdminSidebar.tsx": {
     "mtime": 1780497938.5885315,
     "ast_hash": "46a7b4eea6a0acf91f9dfc60fb6f942d",
     "semantic_hash": "46a7b4eea6a0acf91f9dfc60fb6f942d"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/admin/AgentCredential.tsx": {
+  "src/components/admin/AgentCredential.tsx": {
     "mtime": 1777596626.7126694,
     "ast_hash": "c65e061ed745b89e9069a9bad277fb87",
     "semantic_hash": "c65e061ed745b89e9069a9bad277fb87"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/admin/AvatarUpload.tsx": {
+  "src/components/admin/AvatarUpload.tsx": {
     "mtime": 1777596536.515597,
     "ast_hash": "a1f013e3edf379f8772a9938df85c040",
     "semantic_hash": "a1f013e3edf379f8772a9938df85c040"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/admin/ConfirmDialog.tsx": {
+  "src/components/admin/ConfirmDialog.tsx": {
     "mtime": 1780343940.5588725,
     "ast_hash": "52c260bb846ba37598b5f99e2ab0267e",
     "semantic_hash": "52c260bb846ba37598b5f99e2ab0267e"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/admin/ImageUploader.tsx": {
-    "mtime": 1780336765.3937585,
-    "ast_hash": "70d4ed761a017799edb92f9bf12c5683",
-    "semantic_hash": "70d4ed761a017799edb92f9bf12c5683"
+  "src/components/admin/ImageUploader.tsx": {
+    "mtime": 1783353745.9755256,
+    "ast_hash": "d9443d54d9045e292dc9faf2182a9369",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/admin/NeighborhoodForm.tsx": {
+  "src/components/admin/NeighborhoodForm.tsx": {
     "mtime": 1780445573.7812626,
     "ast_hash": "081bcd7d5ea39b4cb94ccbb295972074",
     "semantic_hash": "081bcd7d5ea39b4cb94ccbb295972074"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/admin/PasswordChangeForm.tsx": {
+  "src/components/admin/PasswordChangeForm.tsx": {
     "mtime": 1777595633.8763773,
     "ast_hash": "9c35806ceb712cead3e7da5f617c31b6",
     "semantic_hash": "9c35806ceb712cead3e7da5f617c31b6"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/admin/ProfileForm.tsx": {
+  "src/components/admin/ProfileForm.tsx": {
     "mtime": 1777595605.47689,
     "ast_hash": "0c0de732fa36bb2dde5e286731eaa7ce",
     "semantic_hash": "0c0de732fa36bb2dde5e286731eaa7ce"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/admin/PropertyForm.tsx": {
+  "src/components/admin/PropertyForm.tsx": {
     "mtime": 1780686304.5083334,
     "ast_hash": "873588c9f693907586836e2cc256ae86",
     "semantic_hash": "873588c9f693907586836e2cc256ae86"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/admin/ProtectedRoute.tsx": {
+  "src/components/admin/ProtectedRoute.tsx": {
     "mtime": 1777475400.7872508,
     "ast_hash": "2efade07a6812cdb2db4ec1732e16914",
     "semantic_hash": "2efade07a6812cdb2db4ec1732e16914"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/admin/StatCard.tsx": {
+  "src/components/admin/StatCard.tsx": {
     "mtime": 1777426587.3957255,
     "ast_hash": "b1160ae52539097aa828570d1cdb6bae",
     "semantic_hash": "b1160ae52539097aa828570d1cdb6bae"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/blog/RichTextEditor.tsx": {
+  "src/components/blog/RichTextEditor.tsx": {
     "mtime": 1779227645.6526663,
     "ast_hash": "11e979c55a8f5e21398c69e67630706f",
     "semantic_hash": "11e979c55a8f5e21398c69e67630706f"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/blog/RichTextRenderer.tsx": {
+  "src/components/blog/RichTextRenderer.tsx": {
     "mtime": 1779821574.7906497,
     "ast_hash": "56c4e560fb9a5c481cc60ded569f3e66",
     "semantic_hash": "56c4e560fb9a5c481cc60ded569f3e66"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/blog/TableOfContents.tsx": {
+  "src/components/blog/TableOfContents.tsx": {
     "mtime": 1779714442.4417794,
     "ast_hash": "91d49f5315346e720befa83ba83f4242",
     "semantic_hash": "91d49f5315346e720befa83ba83f4242"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/forms/PhoneField.tsx": {
-    "mtime": 1779408804.4840038,
-    "ast_hash": "67c6ef468efd75aaca34c6d231b4ae58",
-    "semantic_hash": "67c6ef468efd75aaca34c6d231b4ae58"
+  "src/components/forms/PhoneField.tsx": {
+    "mtime": 1784733084.3305783,
+    "ast_hash": "e9b552ee8ed7f88815c9b5b28995f65e",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/property/LocationMap.tsx": {
+  "src/components/property/LocationMap.tsx": {
     "mtime": 1780829683.1293955,
     "ast_hash": "2f090e0ed70987501b4a2008044030f4",
     "semantic_hash": "2f090e0ed70987501b4a2008044030f4"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/accordion.tsx": {
+  "src/components/ui/accordion.tsx": {
     "mtime": 1776994990.0,
     "ast_hash": "581b83215a419af526e5447e6d01fcdb",
     "semantic_hash": "581b83215a419af526e5447e6d01fcdb"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/alert-dialog.tsx": {
+  "src/components/ui/alert-dialog.tsx": {
     "mtime": 1776994990.0,
     "ast_hash": "815fc512f7d24dfa437dee6622e027f7",
     "semantic_hash": "815fc512f7d24dfa437dee6622e027f7"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/alert.tsx": {
+  "src/components/ui/alert.tsx": {
     "mtime": 1776994990.0,
     "ast_hash": "8e59179ed2f0f6e33320d0081b9782fa",
     "semantic_hash": "8e59179ed2f0f6e33320d0081b9782fa"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/aspect-ratio.tsx": {
+  "src/components/ui/aspect-ratio.tsx": {
     "mtime": 1776994990.0,
     "ast_hash": "be7a9b030095db724fb3d9ca4e62293c",
     "semantic_hash": "be7a9b030095db724fb3d9ca4e62293c"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/avatar.tsx": {
+  "src/components/ui/avatar.tsx": {
     "mtime": 1776994990.0,
     "ast_hash": "a94ddb60cff346499b10e164b2db790d",
     "semantic_hash": "a94ddb60cff346499b10e164b2db790d"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/badge.tsx": {
+  "src/components/ui/badge.tsx": {
     "mtime": 1777558829.4941013,
     "ast_hash": "c1a13bdda4a5ba4864cab2325628c91b",
     "semantic_hash": "c1a13bdda4a5ba4864cab2325628c91b"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/breadcrumb.tsx": {
+  "src/components/ui/breadcrumb.tsx": {
     "mtime": 1776994990.0,
     "ast_hash": "14763038175abd2410d97d8166c89480",
     "semantic_hash": "14763038175abd2410d97d8166c89480"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/button-group.tsx": {
+  "src/components/ui/button-group.tsx": {
     "mtime": 1777558992.2657683,
     "ast_hash": "cddfc32364f4d900e5dd2e524071a09a",
     "semantic_hash": "cddfc32364f4d900e5dd2e524071a09a"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/button.tsx": {
+  "src/components/ui/button.tsx": {
     "mtime": 1777558832.2582786,
     "ast_hash": "e2da610ef9331a3456bb1dc21735cd05",
     "semantic_hash": "e2da610ef9331a3456bb1dc21735cd05"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/calendar.tsx": {
+  "src/components/ui/calendar.tsx": {
     "mtime": 1776994990.0,
     "ast_hash": "5d3fb01c5e7002fb7d8a3a9b7eb490da",
     "semantic_hash": "5d3fb01c5e7002fb7d8a3a9b7eb490da"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/card.tsx": {
+  "src/components/ui/card.tsx": {
     "mtime": 1776994990.0,
     "ast_hash": "a6752f4d1da504c7f03196d90cde4b2c",
     "semantic_hash": "a6752f4d1da504c7f03196d90cde4b2c"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/carousel.tsx": {
+  "src/components/ui/carousel.tsx": {
     "mtime": 1776994990.0,
     "ast_hash": "002c75de6ce1dec35a6dd9f6c0d1d07b",
     "semantic_hash": "002c75de6ce1dec35a6dd9f6c0d1d07b"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/chart.tsx": {
+  "src/components/ui/chart.tsx": {
     "mtime": 1776994990.0,
     "ast_hash": "fda4a5662ef4c6d63fe3ae0323e502a5",
     "semantic_hash": "fda4a5662ef4c6d63fe3ae0323e502a5"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/checkbox.tsx": {
+  "src/components/ui/checkbox.tsx": {
     "mtime": 1776994990.0,
     "ast_hash": "4b0b973d7b0463443696a35f9f73743d",
     "semantic_hash": "4b0b973d7b0463443696a35f9f73743d"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/collapsible.tsx": {
+  "src/components/ui/collapsible.tsx": {
     "mtime": 1776994990.0,
     "ast_hash": "e978727a4d734730f3b7bfd0c2e22ea6",
     "semantic_hash": "e978727a4d734730f3b7bfd0c2e22ea6"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/command.tsx": {
+  "src/components/ui/command.tsx": {
     "mtime": 1776994990.0,
     "ast_hash": "2fb812963643e439707b72a80b3a5628",
     "semantic_hash": "2fb812963643e439707b72a80b3a5628"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/context-menu.tsx": {
+  "src/components/ui/context-menu.tsx": {
     "mtime": 1776994990.0,
     "ast_hash": "e427ed2770f6d3a8018481c61f90d24b",
     "semantic_hash": "e427ed2770f6d3a8018481c61f90d24b"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/dialog.tsx": {
+  "src/components/ui/dialog.tsx": {
     "mtime": 1776994990.0,
     "ast_hash": "3f1e562b11b0d89ddfdf756ca4a8d71d",
     "semantic_hash": "3f1e562b11b0d89ddfdf756ca4a8d71d"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/drawer.tsx": {
+  "src/components/ui/drawer.tsx": {
     "mtime": 1776994990.0,
     "ast_hash": "d2f77e51ad7cefcf112c855235a172dc",
     "semantic_hash": "d2f77e51ad7cefcf112c855235a172dc"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/dropdown-menu.tsx": {
+  "src/components/ui/dropdown-menu.tsx": {
     "mtime": 1776994990.0,
     "ast_hash": "8a7f49b4f303577830fafaaaedb8c4f3",
     "semantic_hash": "8a7f49b4f303577830fafaaaedb8c4f3"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/empty.tsx": {
+  "src/components/ui/empty.tsx": {
     "mtime": 1776994990.0,
     "ast_hash": "82cc505b749945f1cc9ff2f28cca5010",
     "semantic_hash": "82cc505b749945f1cc9ff2f28cca5010"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/field.tsx": {
+  "src/components/ui/field.tsx": {
     "mtime": 1776994990.0,
     "ast_hash": "9e1f956571f6fb6ec2db4f9530d3a501",
     "semantic_hash": "9e1f956571f6fb6ec2db4f9530d3a501"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/form.tsx": {
+  "src/components/ui/form.tsx": {
     "mtime": 1777558994.018026,
     "ast_hash": "31f3ea1890a26a737dee46db52ff3697",
     "semantic_hash": "31f3ea1890a26a737dee46db52ff3697"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/hover-card.tsx": {
+  "src/components/ui/hover-card.tsx": {
     "mtime": 1776994990.0,
     "ast_hash": "a1010352934f4cdf860caa32491a3706",
     "semantic_hash": "a1010352934f4cdf860caa32491a3706"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/input-group.tsx": {
+  "src/components/ui/input-group.tsx": {
     "mtime": 1776994990.0,
     "ast_hash": "0543d798938fe000ce50c08db1623194",
     "semantic_hash": "0543d798938fe000ce50c08db1623194"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/input-otp.tsx": {
+  "src/components/ui/input-otp.tsx": {
     "mtime": 1776994990.0,
     "ast_hash": "225d01c4ef58e641b5e1da4a625b3a92",
     "semantic_hash": "225d01c4ef58e641b5e1da4a625b3a92"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/input.tsx": {
+  "src/components/ui/input.tsx": {
     "mtime": 1776994991.0,
     "ast_hash": "6666f8369b53c79d39be8060dc6c4ce5",
     "semantic_hash": "6666f8369b53c79d39be8060dc6c4ce5"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/item.tsx": {
+  "src/components/ui/item.tsx": {
     "mtime": 1776994991.0,
     "ast_hash": "4e417a2db9cd3144bd5d1f2f0ad399fa",
     "semantic_hash": "4e417a2db9cd3144bd5d1f2f0ad399fa"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/kbd.tsx": {
+  "src/components/ui/kbd.tsx": {
     "mtime": 1776994991.0,
     "ast_hash": "226fdb1bb271e6fe392e96e7742c28b2",
     "semantic_hash": "226fdb1bb271e6fe392e96e7742c28b2"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/label.tsx": {
+  "src/components/ui/label.tsx": {
     "mtime": 1776994991.0,
     "ast_hash": "14f124762142b39a666ce10d3b42d28c",
     "semantic_hash": "14f124762142b39a666ce10d3b42d28c"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/menubar.tsx": {
+  "src/components/ui/menubar.tsx": {
     "mtime": 1776994991.0,
     "ast_hash": "002ba75dff73bd945ffd9ab3e6c95613",
     "semantic_hash": "002ba75dff73bd945ffd9ab3e6c95613"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/navigation-menu.tsx": {
+  "src/components/ui/navigation-menu.tsx": {
     "mtime": 1777559003.873265,
     "ast_hash": "2487221d47f0fac791bb19bf6e5007f7",
     "semantic_hash": "2487221d47f0fac791bb19bf6e5007f7"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/pagination.tsx": {
+  "src/components/ui/pagination.tsx": {
     "mtime": 1776994991.0,
     "ast_hash": "ba23d7233a420983feef894ee045234d",
     "semantic_hash": "ba23d7233a420983feef894ee045234d"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/popover.tsx": {
+  "src/components/ui/popover.tsx": {
     "mtime": 1776994991.0,
     "ast_hash": "d7255316c532c766cee7792d775e4d0f",
     "semantic_hash": "d7255316c532c766cee7792d775e4d0f"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/progress.tsx": {
+  "src/components/ui/progress.tsx": {
     "mtime": 1776994991.0,
     "ast_hash": "99485ee3f0e4ca4498b61ce92ea1a2a9",
     "semantic_hash": "99485ee3f0e4ca4498b61ce92ea1a2a9"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/radio-group.tsx": {
+  "src/components/ui/radio-group.tsx": {
     "mtime": 1776994991.0,
     "ast_hash": "42634c5e24aebafa3f4ce9c91960dbfe",
     "semantic_hash": "42634c5e24aebafa3f4ce9c91960dbfe"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/resizable.tsx": {
+  "src/components/ui/resizable.tsx": {
     "mtime": 1776994991.0,
     "ast_hash": "ba59b159222ff15aace4bf830adf1b3d",
     "semantic_hash": "ba59b159222ff15aace4bf830adf1b3d"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/scroll-area.tsx": {
+  "src/components/ui/scroll-area.tsx": {
     "mtime": 1776994991.0,
     "ast_hash": "360243727fcdcb4d509af4516aaa9d0d",
     "semantic_hash": "360243727fcdcb4d509af4516aaa9d0d"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/select.tsx": {
+  "src/components/ui/select.tsx": {
     "mtime": 1776994991.0,
     "ast_hash": "321b9fcc46c1b24952663ccc7c46d6a2",
     "semantic_hash": "321b9fcc46c1b24952663ccc7c46d6a2"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/separator.tsx": {
+  "src/components/ui/separator.tsx": {
     "mtime": 1776994991.0,
     "ast_hash": "07b35dc35f811b26a1ee3982582ba9fb",
     "semantic_hash": "07b35dc35f811b26a1ee3982582ba9fb"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/sheet.tsx": {
+  "src/components/ui/sheet.tsx": {
     "mtime": 1776994991.0,
     "ast_hash": "6945241f834cad4ca26b2b06a7c49a50",
     "semantic_hash": "6945241f834cad4ca26b2b06a7c49a50"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/sidebar.tsx": {
+  "src/components/ui/sidebar.tsx": {
     "mtime": 1777559012.4685197,
     "ast_hash": "6e4f0932ae17d3e32ebd4f21f042c52e",
     "semantic_hash": "6e4f0932ae17d3e32ebd4f21f042c52e"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/skeleton.tsx": {
+  "src/components/ui/skeleton.tsx": {
     "mtime": 1776994991.0,
     "ast_hash": "ee5017bac14efeda715feaceb488382a",
     "semantic_hash": "ee5017bac14efeda715feaceb488382a"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/slider.tsx": {
+  "src/components/ui/slider.tsx": {
     "mtime": 1776994991.0,
     "ast_hash": "d2fa780e560966380be921f5fda38615",
     "semantic_hash": "d2fa780e560966380be921f5fda38615"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/sonner.tsx": {
+  "src/components/ui/sonner.tsx": {
     "mtime": 1777427252.3157167,
     "ast_hash": "cfd39dfe0d2296152524beb6cfedc3ef",
     "semantic_hash": "cfd39dfe0d2296152524beb6cfedc3ef"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/spinner.tsx": {
+  "src/components/ui/spinner.tsx": {
     "mtime": 1776994991.0,
     "ast_hash": "28b695734ef3b6840b47d713ae3d31ce",
     "semantic_hash": "28b695734ef3b6840b47d713ae3d31ce"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/switch.tsx": {
+  "src/components/ui/switch.tsx": {
     "mtime": 1776994991.0,
     "ast_hash": "f93349e0eb061fc4e6c055ded4cff087",
     "semantic_hash": "f93349e0eb061fc4e6c055ded4cff087"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/table.tsx": {
+  "src/components/ui/table.tsx": {
     "mtime": 1776994991.0,
     "ast_hash": "bad93c98f980433a2dda868c4289e942",
     "semantic_hash": "bad93c98f980433a2dda868c4289e942"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/tabs.tsx": {
+  "src/components/ui/tabs.tsx": {
     "mtime": 1776994991.0,
     "ast_hash": "65854b541abbc3c9f39cb075d4cb43ca",
     "semantic_hash": "65854b541abbc3c9f39cb075d4cb43ca"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/textarea.tsx": {
+  "src/components/ui/textarea.tsx": {
     "mtime": 1776994991.0,
     "ast_hash": "04f9af2a78672f7018b16db2bcec5036",
     "semantic_hash": "04f9af2a78672f7018b16db2bcec5036"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/toggle-group.tsx": {
+  "src/components/ui/toggle-group.tsx": {
     "mtime": 1776994991.0,
     "ast_hash": "27b499cb2dc497e3ab9691a1d3557469",
     "semantic_hash": "27b499cb2dc497e3ab9691a1d3557469"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/toggle.tsx": {
+  "src/components/ui/toggle.tsx": {
     "mtime": 1777558836.5545154,
     "ast_hash": "968aa6670d00aad689becefb876c8508",
     "semantic_hash": "968aa6670d00aad689becefb876c8508"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/components/ui/tooltip.tsx": {
+  "src/components/ui/tooltip.tsx": {
     "mtime": 1776994991.0,
     "ast_hash": "34079b3ac4d0eb8851c6cab74bd68e00",
     "semantic_hash": "34079b3ac4d0eb8851c6cab74bd68e00"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/data/filters.ts": {
+  "src/data/filters.ts": {
     "mtime": 1776996158.0,
     "ast_hash": "d2deda91da2daf911b7616039f2108e4",
     "semantic_hash": "d2deda91da2daf911b7616039f2108e4"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/data/neighborhoods.ts": {
+  "src/data/neighborhoods.ts": {
     "mtime": 1780445487.68246,
     "ast_hash": "1b5b383f8773bb41c42b8cc59d596484",
     "semantic_hash": "1b5b383f8773bb41c42b8cc59d596484"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/data/properties.ts": {
+  "src/data/properties.ts": {
     "mtime": 1780365059.7721703,
     "ast_hash": "5dac152c7b3c74421403b83ad0fac93b",
     "semantic_hash": "5dac152c7b3c74421403b83ad0fac93b"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/hooks/use-mobile.ts": {
+  "src/hooks/use-mobile.ts": {
     "mtime": 1776994991.0,
     "ast_hash": "209b5193af16624cdd89d3591480dd48",
     "semantic_hash": "209b5193af16624cdd89d3591480dd48"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/hooks/useAuth.tsx": {
+  "src/hooks/useAuth.tsx": {
     "mtime": 1780343479.3879318,
     "ast_hash": "695f69e29a5b6c9679293515de751950",
     "semantic_hash": "695f69e29a5b6c9679293515de751950"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/hooks/useCurrency.ts": {
+  "src/hooks/useCurrency.ts": {
     "mtime": 1777009140.8233793,
     "ast_hash": "205ab89fd12944ea61784f4c15a2475f",
     "semantic_hash": "205ab89fd12944ea61784f4c15a2475f"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/hooks/useFavorites.tsx": {
+  "src/hooks/useFavorites.tsx": {
     "mtime": 1780690213.163434,
     "ast_hash": "fc0fd2f712600b7bb614a04ed9f733ba",
     "semantic_hash": "fc0fd2f712600b7bb614a04ed9f733ba"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/hooks/useLang.ts": {
+  "src/hooks/useLang.ts": {
     "mtime": 1779153910.9490423,
     "ast_hash": "f4be8c604891d9882f511337dcae55e2",
     "semantic_hash": "f4be8c604891d9882f511337dcae55e2"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/hooks/useLocalizedProperty.ts": {
+  "src/hooks/useLocalizedProperty.ts": {
     "mtime": 1777488655.9142869,
     "ast_hash": "6133161b8f1d8da1583d2d04d9f6a39a",
     "semantic_hash": "6133161b8f1d8da1583d2d04d9f6a39a"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/hooks/usePropertyPrice.ts": {
+  "src/hooks/usePropertyPrice.ts": {
     "mtime": 1780365118.6867437,
     "ast_hash": "f9b64cd3f7f5a3d2bf5aed2078b59410",
     "semantic_hash": "f9b64cd3f7f5a3d2bf5aed2078b59410"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/hooks/useSiteSettings.ts": {
+  "src/hooks/useSiteSettings.ts": {
     "mtime": 1777053879.3805678,
     "ast_hash": "311fa332cbc1f257a8d37907f8dfdb64",
     "semantic_hash": "311fa332cbc1f257a8d37907f8dfdb64"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/i18n.ts": {
-    "mtime": 1779976496.8404777,
-    "ast_hash": "dbffd4b5ffbb83dc9e543ac7932403f5",
-    "semantic_hash": "dbffd4b5ffbb83dc9e543ac7932403f5"
+  "src/i18n.ts": {
+    "mtime": 1785451129.9592662,
+    "ast_hash": "73a4802fedf7ccb5826bed12aea628b4",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/lib/adminRest.ts": {
+  "src/lib/adminRest.ts": {
     "mtime": 1780445432.5250063,
     "ast_hash": "96aadda48bcf8d9647904d14811cef3f",
     "semantic_hash": "96aadda48bcf8d9647904d14811cef3f"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/lib/amenities.ts": {
+  "src/lib/amenities.ts": {
     "mtime": 1780176980.6143773,
     "ast_hash": "7b3765a0eb6c9c222e62015889353d9f",
     "semantic_hash": "7b3765a0eb6c9c222e62015889353d9f"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/lib/authSession.ts": {
+  "src/lib/authSession.ts": {
     "mtime": 1780336716.289561,
     "ast_hash": "0e695f4fb0b06fb4719a2776b67419d8",
     "semantic_hash": "0e695f4fb0b06fb4719a2776b67419d8"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/lib/contact.ts": {
-    "mtime": 1779153910.949582,
-    "ast_hash": "d97fa69dd040f458c4ad77084e0da983",
-    "semantic_hash": "d97fa69dd040f458c4ad77084e0da983"
+  "src/lib/contact.ts": {
+    "mtime": 1784730839.6407526,
+    "ast_hash": "0682b0ea0f3c6a4a743e629827f7c794",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/lib/geoLanguage.ts": {
+  "src/lib/geoLanguage.ts": {
     "mtime": 1780453796.1329753,
     "ast_hash": "b7780af52d54790255aa456c46725e32",
     "semantic_hash": "b7780af52d54790255aa456c46725e32"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/lib/imageCompress.ts": {
-    "mtime": 1780445538.8741963,
-    "ast_hash": "0186b3cb19c529a3a32240db6a8dda27",
-    "semantic_hash": "0186b3cb19c529a3a32240db6a8dda27"
+  "src/lib/imageCompress.ts": {
+    "mtime": 1783353789.502581,
+    "ast_hash": "86cadb0bd9c69b55befd4f25c50c993c",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/lib/mapbox.ts": {
+  "src/lib/mapbox.ts": {
     "mtime": 1780166241.6632462,
     "ast_hash": "56edab262eb6cf5a9788763b03df882e",
     "semantic_hash": "56edab262eb6cf5a9788763b03df882e"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/lib/queryCache.ts": {
+  "src/lib/queryCache.ts": {
     "mtime": 1777648853.5051332,
     "ast_hash": "861cf050722158e7311be5d85f7d6e75",
     "semantic_hash": "861cf050722158e7311be5d85f7d6e75"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/lib/reportError.ts": {
+  "src/lib/reportError.ts": {
     "mtime": 1780686414.4088862,
     "ast_hash": "f3bf96accc8d92f3478725475f3b79e1",
     "semantic_hash": "f3bf96accc8d92f3478725475f3b79e1"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/lib/retry.ts": {
+  "src/lib/retry.ts": {
     "mtime": 1780685886.3737092,
     "ast_hash": "61fa7c2a0804e431989474b99ecc738d",
     "semantic_hash": "61fa7c2a0804e431989474b99ecc738d"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/lib/routes.ts": {
-    "mtime": 1779153910.9497573,
-    "ast_hash": "4bb4c32f2c6ab49afbc40208dfc1076a",
-    "semantic_hash": "4bb4c32f2c6ab49afbc40208dfc1076a"
+  "src/lib/routes.ts": {
+    "mtime": 1785450997.1912887,
+    "ast_hash": "d85eead22a467517c9f700475071694d",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/lib/staleChunk.ts": {
+  "src/lib/staleChunk.ts": {
     "mtime": 1780685863.5171452,
     "ast_hash": "bfebc50ffe4ca6771143e54442fd4b27",
     "semantic_hash": "bfebc50ffe4ca6771143e54442fd4b27"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/lib/storage.ts": {
+  "src/lib/storage.ts": {
     "mtime": 1779326099.1275556,
     "ast_hash": "be32f13719fcd9a39f7c4bf5f51e36e9",
     "semantic_hash": "be32f13719fcd9a39f7c4bf5f51e36e9"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/lib/supabase.ts": {
+  "src/lib/supabase.ts": {
     "mtime": 1780690011.9137542,
     "ast_hash": "71657a6013195de0da247f81ee0b7510",
     "semantic_hash": "71657a6013195de0da247f81ee0b7510"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/lib/utils.ts": {
+  "src/lib/utils.ts": {
     "mtime": 1776996158.0,
     "ast_hash": "e13a74156ac112797554f0d0d034cb36",
     "semantic_hash": "e13a74156ac112797554f0d0d034cb36"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/en/about.json": {
+  "src/locales/en/about.json": {
     "mtime": 1779976595.6296368,
     "ast_hash": "ee0aa76ac0f057978e254021868f4eb0",
     "semantic_hash": "ee0aa76ac0f057978e254021868f4eb0"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/en/admin.json": {
-    "mtime": 1780498034.2902677,
-    "ast_hash": "4c48d73875ed6886149ad2dfc1599209",
-    "semantic_hash": "4c48d73875ed6886149ad2dfc1599209"
+  "src/locales/en/admin.json": {
+    "mtime": 1785854486.096921,
+    "ast_hash": "5ef7b7f4d1af37e8fd488336a680a49f",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/en/amenities.json": {
+  "src/locales/en/amenities.json": {
     "mtime": 1780177332.894794,
     "ast_hash": "a8548ec5b003134a05b35eaab92f44db",
     "semantic_hash": "a8548ec5b003134a05b35eaab92f44db"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/en/blog.json": {
+  "src/locales/en/blog.json": {
     "mtime": 1779495376.2620866,
     "ast_hash": "e0f3c2d536ec348dc6017b10c9655763",
     "semantic_hash": "e0f3c2d536ec348dc6017b10c9655763"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/en/buyerGuide.json": {
+  "src/locales/en/buyerGuide.json": {
     "mtime": 1779976807.9664364,
     "ast_hash": "309c7b20c59010c0e4942c4b3b56888a",
     "semantic_hash": "309c7b20c59010c0e4942c4b3b56888a"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/en/common.json": {
+  "src/locales/en/common.json": {
     "mtime": 1780498051.2972257,
     "ast_hash": "457a308db453d7498d9e28e7dcb6e58d",
     "semantic_hash": "457a308db453d7498d9e28e7dcb6e58d"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/en/contact.json": {
-    "mtime": 1779408337.405678,
-    "ast_hash": "4ff564982a98b7807723d1596aa116bf",
-    "semantic_hash": "4ff564982a98b7807723d1596aa116bf"
+  "src/locales/en/contact.json": {
+    "mtime": 1784733105.6254435,
+    "ast_hash": "284946888af9ea4a317569177518cf14",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/en/errors.json": {
+  "src/locales/en/errors.json": {
     "mtime": 1780176989.690079,
     "ast_hash": "273fd8e9644f7acd8cecc8726b921a23",
     "semantic_hash": "273fd8e9644f7acd8cecc8726b921a23"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/en/estimation.json": {
+  "src/locales/en/estimation.json": {
     "mtime": 1779495376.2602334,
     "ast_hash": "b9de53c4dce03e47c2ae41cb020cacd5",
     "semantic_hash": "b9de53c4dce03e47c2ae41cb020cacd5"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/en/footer.json": {
-    "mtime": 1777488201.559103,
-    "ast_hash": "5dc1da86f586bb23a3c891e146c71fd7",
-    "semantic_hash": "5dc1da86f586bb23a3c891e146c71fd7"
+  "src/locales/en/footer.json": {
+    "mtime": 1784728930.6531427,
+    "ast_hash": "0cd03e2bcb83daf0e1eb15967df91671",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/en/home.json": {
+  "src/locales/en/home.json": {
     "mtime": 1781117775.896285,
     "ast_hash": "572134e61c26eb35682e97e29129b344",
     "semantic_hash": "572134e61c26eb35682e97e29129b344"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/en/nav.json": {
+  "src/locales/en/nav.json": {
     "mtime": 1779153910.9529185,
     "ast_hash": "3bd99d0c652744447f975a3cf881d939",
     "semantic_hash": "3bd99d0c652744447f975a3cf881d939"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/en/property.json": {
+  "src/locales/en/property.json": {
     "mtime": 1780761180.5448766,
     "ast_hash": "f9e921bd46238dd41629a3f3aa650e4d",
     "semantic_hash": "f9e921bd46238dd41629a3f3aa650e4d"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/en/search.json": {
+  "src/locales/en/search.json": {
     "mtime": 1780497909.2785785,
     "ast_hash": "a78fcffa958f8c841f608e760efc6556",
     "semantic_hash": "a78fcffa958f8c841f608e760efc6556"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/en/sell.json": {
+  "src/locales/en/sell.json": {
     "mtime": 1779153910.9539285,
     "ast_hash": "92d8e4f8a6883d702712d7d2f00b682b",
     "semantic_hash": "92d8e4f8a6883d702712d7d2f00b682b"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/en/services.json": {
-    "mtime": 1781117691.654043,
-    "ast_hash": "c47dd2ca518ad92c52164fcc75d5d0dc",
-    "semantic_hash": "c47dd2ca518ad92c52164fcc75d5d0dc"
+  "src/locales/en/services.json": {
+    "mtime": 1784611232.0558693,
+    "ast_hash": "270386f8e083cf09b1d525e764ddb6f2",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/es/about.json": {
+  "src/locales/es/about.json": {
     "mtime": 1779976583.868625,
     "ast_hash": "7281967068fab8eb19afb221dcec0e04",
     "semantic_hash": "7281967068fab8eb19afb221dcec0e04"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/es/admin.json": {
-    "mtime": 1780498022.7522597,
-    "ast_hash": "253829f9c044ed7e756239e171505ee0",
-    "semantic_hash": "253829f9c044ed7e756239e171505ee0"
+  "src/locales/es/admin.json": {
+    "mtime": 1785854486.0871956,
+    "ast_hash": "6afb5d8d8fd96e631cee073440eec031",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/es/amenities.json": {
+  "src/locales/es/amenities.json": {
     "mtime": 1780177307.2933981,
     "ast_hash": "9278d5096ceff03e427d95aef69f5230",
     "semantic_hash": "9278d5096ceff03e427d95aef69f5230"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/es/blog.json": {
+  "src/locales/es/blog.json": {
     "mtime": 1779495376.2617102,
     "ast_hash": "03ec16bb930f7ffe5097c7fcd6ea5a81",
     "semantic_hash": "03ec16bb930f7ffe5097c7fcd6ea5a81"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/es/buyerGuide.json": {
+  "src/locales/es/buyerGuide.json": {
     "mtime": 1779976760.9619658,
     "ast_hash": "f0906308ebfc21b0d728ada46637ecbf",
     "semantic_hash": "f0906308ebfc21b0d728ada46637ecbf"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/es/common.json": {
+  "src/locales/es/common.json": {
     "mtime": 1780498050.2544417,
     "ast_hash": "3ce630e91ab821eae27a0f81d9f42a2c",
     "semantic_hash": "3ce630e91ab821eae27a0f81d9f42a2c"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/es/contact.json": {
-    "mtime": 1779408337.405428,
-    "ast_hash": "7542f7e182912f3b0a75eb8781c53f7c",
-    "semantic_hash": "7542f7e182912f3b0a75eb8781c53f7c"
+  "src/locales/es/contact.json": {
+    "mtime": 1784733105.6250272,
+    "ast_hash": "83a6fde97def36ba4917a0b2772eb995",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/es/errors.json": {
+  "src/locales/es/errors.json": {
     "mtime": 1780176989.6901982,
     "ast_hash": "089140a68167892630e6434e3a6568f0",
     "semantic_hash": "089140a68167892630e6434e3a6568f0"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/es/estimation.json": {
+  "src/locales/es/estimation.json": {
     "mtime": 1779495376.2599745,
     "ast_hash": "84387fe69bbbede205fd6cb3847dacce",
     "semantic_hash": "84387fe69bbbede205fd6cb3847dacce"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/es/footer.json": {
-    "mtime": 1777488202.6567109,
-    "ast_hash": "6345fd2d5437699a6119285b23442a9e",
-    "semantic_hash": "6345fd2d5437699a6119285b23442a9e"
+  "src/locales/es/footer.json": {
+    "mtime": 1784728930.634905,
+    "ast_hash": "97ee7c379c645fc5c4381f20c1c6a494",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/es/home.json": {
+  "src/locales/es/home.json": {
     "mtime": 1781117785.270872,
     "ast_hash": "67f10dde18ad3004fdb7c3014bad2e7c",
     "semantic_hash": "67f10dde18ad3004fdb7c3014bad2e7c"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/es/nav.json": {
+  "src/locales/es/nav.json": {
     "mtime": 1779153910.9559684,
     "ast_hash": "47a1f9f68f2ea6da1f46b127d1e8dbd9",
     "semantic_hash": "47a1f9f68f2ea6da1f46b127d1e8dbd9"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/es/property.json": {
+  "src/locales/es/property.json": {
     "mtime": 1780761180.544476,
     "ast_hash": "103abc5c5bd08645d1d609d10abaa7f1",
     "semantic_hash": "103abc5c5bd08645d1d609d10abaa7f1"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/es/search.json": {
+  "src/locales/es/search.json": {
     "mtime": 1780497906.4398935,
     "ast_hash": "32632865001cd59351ca7ca0bfc14609",
     "semantic_hash": "32632865001cd59351ca7ca0bfc14609"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/es/sell.json": {
+  "src/locales/es/sell.json": {
     "mtime": 1779153910.9568331,
     "ast_hash": "22b5a8da2fea953b65f3dbf92c27eb79",
     "semantic_hash": "22b5a8da2fea953b65f3dbf92c27eb79"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/es/services.json": {
-    "mtime": 1781117677.5813017,
-    "ast_hash": "2ce5232ec99b578ae480a2be845aa600",
-    "semantic_hash": "2ce5232ec99b578ae480a2be845aa600"
+  "src/locales/es/services.json": {
+    "mtime": 1784611232.05535,
+    "ast_hash": "96bda7e8baf5970ed635ef1b4bc75b10",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/fr/about.json": {
+  "src/locales/fr/about.json": {
     "mtime": 1779976568.9820125,
     "ast_hash": "edebc303fb6d07bcdaacbf949a91ad23",
     "semantic_hash": "edebc303fb6d07bcdaacbf949a91ad23"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/fr/admin.json": {
-    "mtime": 1780498001.8556247,
-    "ast_hash": "8df5743a41388acea844438b20467d5a",
-    "semantic_hash": "8df5743a41388acea844438b20467d5a"
+  "src/locales/fr/admin.json": {
+    "mtime": 1785854486.0775316,
+    "ast_hash": "3aa2abbe978ef790c641565c5d4eb26d",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/fr/amenities.json": {
+  "src/locales/fr/amenities.json": {
     "mtime": 1780177326.413243,
     "ast_hash": "30e78a70cdc48df491573c66743d1e2b",
     "semantic_hash": "30e78a70cdc48df491573c66743d1e2b"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/fr/blog.json": {
+  "src/locales/fr/blog.json": {
     "mtime": 1779495376.2613075,
     "ast_hash": "a9dc0fef1683d98084987d51d89b3297",
     "semantic_hash": "a9dc0fef1683d98084987d51d89b3297"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/fr/buyerGuide.json": {
+  "src/locales/fr/buyerGuide.json": {
     "mtime": 1779976705.1857686,
     "ast_hash": "d83b0b0666eaf1346de5e525bb569a6d",
     "semantic_hash": "d83b0b0666eaf1346de5e525bb569a6d"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/fr/common.json": {
+  "src/locales/fr/common.json": {
     "mtime": 1780498048.8543403,
     "ast_hash": "41c2965868dfd1592866383e39bc7b18",
     "semantic_hash": "41c2965868dfd1592866383e39bc7b18"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/fr/contact.json": {
-    "mtime": 1779408337.4051352,
-    "ast_hash": "596dbb656cc28aaea09180d340ccfe01",
-    "semantic_hash": "596dbb656cc28aaea09180d340ccfe01"
+  "src/locales/fr/contact.json": {
+    "mtime": 1784733105.6245687,
+    "ast_hash": "a6a25298c4b9e75a9a4773602c1b2a0d",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/fr/errors.json": {
+  "src/locales/fr/errors.json": {
     "mtime": 1780176989.6903236,
     "ast_hash": "57f8dd62775fd7ff319ef186e00d2dca",
     "semantic_hash": "57f8dd62775fd7ff319ef186e00d2dca"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/fr/estimation.json": {
+  "src/locales/fr/estimation.json": {
     "mtime": 1779495376.2597399,
     "ast_hash": "3fdda4de820ac84aa0c851c9c89be33c",
     "semantic_hash": "3fdda4de820ac84aa0c851c9c89be33c"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/fr/footer.json": {
-    "mtime": 1777488202.1667678,
-    "ast_hash": "6b439dad8a98b4c6e549b3eedbd88ef4",
-    "semantic_hash": "6b439dad8a98b4c6e549b3eedbd88ef4"
+  "src/locales/fr/footer.json": {
+    "mtime": 1784728930.614182,
+    "ast_hash": "8e8035b2d3f43414b23cc30f1f05ea26",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/fr/home.json": {
+  "src/locales/fr/home.json": {
     "mtime": 1781117764.1197662,
     "ast_hash": "ddea991f1dc7ea78e7a70182b61e7367",
     "semantic_hash": "ddea991f1dc7ea78e7a70182b61e7367"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/fr/nav.json": {
+  "src/locales/fr/nav.json": {
     "mtime": 1779153910.9582267,
     "ast_hash": "bb87992aa50ae54a0d4853ddab2cfe02",
     "semantic_hash": "bb87992aa50ae54a0d4853ddab2cfe02"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/fr/property.json": {
+  "src/locales/fr/property.json": {
     "mtime": 1780761180.544028,
     "ast_hash": "08c0d8158c7d260fedbe84db00f5178e",
     "semantic_hash": "08c0d8158c7d260fedbe84db00f5178e"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/fr/search.json": {
+  "src/locales/fr/search.json": {
     "mtime": 1780497903.6565652,
     "ast_hash": "0a124c8527114cae1911a2618a6fe426",
     "semantic_hash": "0a124c8527114cae1911a2618a6fe426"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/fr/sell.json": {
+  "src/locales/fr/sell.json": {
     "mtime": 1779153910.9589942,
     "ast_hash": "e5d5d1a8ce30b0c315539a3fa55b48c8",
     "semantic_hash": "e5d5d1a8ce30b0c315539a3fa55b48c8"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/locales/fr/services.json": {
-    "mtime": 1781117658.3316271,
-    "ast_hash": "43952daa3981d2a0ecfe70125e354911",
-    "semantic_hash": "43952daa3981d2a0ecfe70125e354911"
+  "src/locales/fr/services.json": {
+    "mtime": 1784611232.0544715,
+    "ast_hash": "a82e788ccbcd0b0deeb4c3e073cfe40e",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/main.tsx": {
+  "src/main.tsx": {
     "mtime": 1780686433.662514,
     "ast_hash": "8ec69cb9511942c7a1178ca6fd041959",
     "semantic_hash": "8ec69cb9511942c7a1178ca6fd041959"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/About.tsx": {
-    "mtime": 1779976775.404294,
-    "ast_hash": "f2d8258774a306bf7d116fc780e4ffae",
-    "semantic_hash": "f2d8258774a306bf7d116fc780e4ffae"
+  "src/pages/About.tsx": {
+    "mtime": 1784611165.8326142,
+    "ast_hash": "63edf50cf6fb8075791ff373f9f94563",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/Blog.tsx": {
+  "src/pages/Blog.tsx": {
     "mtime": 1779714351.6073327,
     "ast_hash": "f13eefcfb1d9eec7b2f3a6e3ddb718d8",
     "semantic_hash": "f13eefcfb1d9eec7b2f3a6e3ddb718d8"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/BlogPost.tsx": {
+  "src/pages/BlogPost.tsx": {
     "mtime": 1780498097.5498004,
     "ast_hash": "4035feff89053f097752598d19e3ffc0",
     "semantic_hash": "4035feff89053f097752598d19e3ffc0"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/BuyerGuide.tsx": {
-    "mtime": 1779976987.1812468,
-    "ast_hash": "1eb088ba9c2597a454bede41e0172fe8",
-    "semantic_hash": "1eb088ba9c2597a454bede41e0172fe8"
+  "src/pages/BuyerGuide.tsx": {
+    "mtime": 1784732081.1317275,
+    "ast_hash": "c89efddff7d27af18a3b66a07a4ad66e",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/Contact.tsx": {
-    "mtime": 1780453850.1867752,
-    "ast_hash": "b8d017e4a5eeb527792d00b4394d8473",
-    "semantic_hash": "b8d017e4a5eeb527792d00b4394d8473"
+  "src/pages/Contact.tsx": {
+    "mtime": 1785698357.2448564,
+    "ast_hash": "6cb98957017ef530bb2bdf91f0ab39b2",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/DesignSystem.tsx": {
+  "src/pages/DesignSystem.tsx": {
     "mtime": 1780833110.6800017,
     "ast_hash": "79cad0f273c89659b88a1ea06ee6e189",
     "semantic_hash": "79cad0f273c89659b88a1ea06ee6e189"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/Estimation.tsx": {
-    "mtime": 1779714237.8653402,
-    "ast_hash": "26135f486810c9c2be43c514db822a60",
-    "semantic_hash": "26135f486810c9c2be43c514db822a60"
+  "src/pages/Estimation.tsx": {
+    "mtime": 1785698329.280332,
+    "ast_hash": "1444b234de3dd18addd2bbf39f273c7e",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/Estimer.tsx": {
-    "mtime": 1779153911.01183,
-    "ast_hash": "0ba9c6ea1a8c3df60a93c2636a06f109",
-    "semantic_hash": "0ba9c6ea1a8c3df60a93c2636a06f109"
+  "src/pages/Estimer.tsx": {
+    "mtime": 1784732034.6047385,
+    "ast_hash": "5181e07391fc055892ed0426563ac4e5",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/Favorites.tsx": {
-    "mtime": 1780497986.3658433,
-    "ast_hash": "b3f7633997baf702e1135a94351561e8",
-    "semantic_hash": "b3f7633997baf702e1135a94351561e8"
+  "src/pages/Favorites.tsx": {
+    "mtime": 1784732144.7295032,
+    "ast_hash": "18803d2365939290dfd6a938b9dcb08d",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/FrenchModernDirection.tsx": {
+  "src/pages/FrenchModernDirection.tsx": {
     "mtime": 1782139016.8215175,
     "ast_hash": "14a98818269e9bd12ece845f28fae474",
     "semantic_hash": "14a98818269e9bd12ece845f28fae474"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/GestionLocative.tsx": {
-    "mtime": 1781117728.5389774,
-    "ast_hash": "cffa22b38609123c5b1c9b1c9f3834a4",
-    "semantic_hash": "cffa22b38609123c5b1c9b1c9f3834a4"
+  "src/pages/GestionLocative.tsx": {
+    "mtime": 1784731901.8219721,
+    "ast_hash": "60b6f3621c226536168c30a7551b5147",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/Home.tsx": {
+  "src/pages/Home.tsx": {
     "mtime": 1780686741.5232573,
     "ast_hash": "349b28c3e96bf5d07e3a46dc688cbfb1",
     "semantic_hash": "349b28c3e96bf5d07e3a46dc688cbfb1"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/MiniDesignDirection.tsx": {
+  "src/pages/MiniDesignDirection.tsx": {
     "mtime": 1782136098.548161,
     "ast_hash": "03daf480e018aa24803f7ae70837a4f4",
     "semantic_hash": "03daf480e018aa24803f7ae70837a4f4"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/ModernRealEstatePrototype.tsx": {
+  "src/pages/ModernRealEstatePrototype.tsx": {
     "mtime": 1782138463.6260266,
     "ast_hash": "c5c2c935a5ec163fa1464b8d5e1720ad",
     "semantic_hash": "c5c2c935a5ec163fa1464b8d5e1720ad"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/NotFound.tsx": {
+  "src/pages/NotFound.tsx": {
     "mtime": 1779153911.0131254,
     "ast_hash": "6f90b1c172ce6bbc88ffd7ecaa20443d",
     "semantic_hash": "6f90b1c172ce6bbc88ffd7ecaa20443d"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/PropertyDetail.tsx": {
-    "mtime": 1780762842.0958085,
-    "ast_hash": "832d270c6321672eae16573687e936bc",
-    "semantic_hash": "832d270c6321672eae16573687e936bc"
+  "src/pages/PropertyDetail.tsx": {
+    "mtime": 1784732548.7136462,
+    "ast_hash": "24a4e89bf6aebaf37afd4a07a3660955",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/Search.tsx": {
-    "mtime": 1780829683.13115,
-    "ast_hash": "e6607dbc7b02519093e0d62ecc5009cd",
-    "semantic_hash": "e6607dbc7b02519093e0d62ecc5009cd"
+  "src/pages/Search.tsx": {
+    "mtime": 1784732340.1005096,
+    "ast_hash": "7a29013a83914e58e765092c99bfd61f",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/Sell.tsx": {
+  "src/pages/Sell.tsx": {
     "mtime": 1779304256.9149995,
     "ast_hash": "dfdf42b36ad96b6f8b0510b6bf7ad8e4",
     "semantic_hash": "dfdf42b36ad96b6f8b0510b6bf7ad8e4"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/admin/AdminBlog.tsx": {
+  "src/pages/admin/AdminBlog.tsx": {
     "mtime": 1780344146.2456203,
     "ast_hash": "66a2b3024a5d739346d1279a3cd13d6a",
     "semantic_hash": "66a2b3024a5d739346d1279a3cd13d6a"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/admin/AdminBlogForm.tsx": {
+  "src/pages/admin/AdminBlogForm.tsx": {
     "mtime": 1779714567.0044515,
     "ast_hash": "30f5505b051de7a911744bc0bb1989ac",
     "semantic_hash": "30f5505b051de7a911744bc0bb1989ac"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/admin/AdminContacts.tsx": {
-    "mtime": 1780497955.379527,
-    "ast_hash": "daaeab090dcd219c34512a38355b9700",
-    "semantic_hash": "daaeab090dcd219c34512a38355b9700"
+  "src/pages/admin/AdminContacts.tsx": {
+    "mtime": 1785851606.1045,
+    "ast_hash": "9ff1b03d7c3a5c17ede34a2a638cd03e",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/admin/AdminDashboard.tsx": {
+  "src/pages/admin/AdminDashboard.tsx": {
     "mtime": 1777650017.8112602,
     "ast_hash": "d3081bac4cbb07f71c72b642d37801be",
     "semantic_hash": "d3081bac4cbb07f71c72b642d37801be"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/admin/AdminLeads.tsx": {
+  "src/pages/admin/AdminLeads.tsx": {
     "mtime": 1780497920.2351062,
     "ast_hash": "fa84f6983d6bcda18d4d141c7d58e16c",
     "semantic_hash": "fa84f6983d6bcda18d4d141c7d58e16c"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/admin/AdminLogin.tsx": {
-    "mtime": 1780176980.6160927,
-    "ast_hash": "74ea2690b67b75bdaa8d9a7922b5df71",
-    "semantic_hash": "74ea2690b67b75bdaa8d9a7922b5df71"
+  "src/pages/admin/AdminLogin.tsx": {
+    "mtime": 1784150023.4485283,
+    "ast_hash": "89b02c2f196a3e81528d7b2e45dc7391",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/admin/AdminNeighborhoods.tsx": {
+  "src/pages/admin/AdminNeighborhoods.tsx": {
     "mtime": 1780445612.9435515,
     "ast_hash": "0c677e09b263decac16b2ea91f0e0119",
     "semantic_hash": "0c677e09b263decac16b2ea91f0e0119"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/admin/AdminPasswordReset.tsx": {
+  "src/pages/admin/AdminPasswordReset.tsx": {
     "mtime": 1779830671.7410827,
     "ast_hash": "8de32fd4ffb2349b97f4c08daea2679b",
     "semantic_hash": "8de32fd4ffb2349b97f4c08daea2679b"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/admin/AdminProperties.tsx": {
+  "src/pages/admin/AdminProperties.tsx": {
     "mtime": 1780344082.968349,
     "ast_hash": "6a5ea8ac22fb96a194283ee225875cc7",
     "semantic_hash": "6a5ea8ac22fb96a194283ee225875cc7"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/admin/AdminPropertyEdit.tsx": {
+  "src/pages/admin/AdminPropertyEdit.tsx": {
     "mtime": 1777611767.7969837,
     "ast_hash": "41427b9e3bfea5691a42feae61b935a8",
     "semantic_hash": "41427b9e3bfea5691a42feae61b935a8"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/admin/AdminPropertyNew.tsx": {
+  "src/pages/admin/AdminPropertyNew.tsx": {
     "mtime": 1777611758.5537145,
     "ast_hash": "2ceb4c6cb491c8e634a5e1e4b915be96",
     "semantic_hash": "2ceb4c6cb491c8e634a5e1e4b915be96"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/pages/admin/AgentProfile.tsx": {
+  "src/pages/admin/AgentProfile.tsx": {
     "mtime": 1777595578.8417773,
     "ast_hash": "88538dcf70782eff3a903d23051cfb7f",
     "semantic_hash": "88538dcf70782eff3a903d23051cfb7f"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/services/admin/contactAdmin.service.ts": {
-    "mtime": 1777649010.4418838,
-    "ast_hash": "14a4aae75ec4fed52942fdcdc902eabd",
-    "semantic_hash": "14a4aae75ec4fed52942fdcdc902eabd"
+  "src/services/admin/contactAdmin.service.ts": {
+    "mtime": 1785851568.369287,
+    "ast_hash": "09ff08823a4888e96efa78a920318b34",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/services/admin/leadsAdmin.service.ts": {
+  "src/services/admin/leadsAdmin.service.ts": {
     "mtime": 1780497884.7768457,
     "ast_hash": "b9ed079838364efe5aaead5ef566903f",
     "semantic_hash": "b9ed079838364efe5aaead5ef566903f"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/services/admin/neighborhoodAdmin.service.ts": {
+  "src/services/admin/neighborhoodAdmin.service.ts": {
     "mtime": 1780445454.1598804,
     "ast_hash": "131ed4a61681ef039f79edf90107f49f",
     "semantic_hash": "131ed4a61681ef039f79edf90107f49f"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/services/admin/propertyAdmin.service.ts": {
+  "src/services/admin/propertyAdmin.service.ts": {
     "mtime": 1780365107.4548745,
     "ast_hash": "4b1d0058f6d8260d19f11b243d499969",
     "semantic_hash": "4b1d0058f6d8260d19f11b243d499969"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/services/auth.service.ts": {
+  "src/services/auth.service.ts": {
     "mtime": 1780334811.116631,
     "ast_hash": "266ebaade7ce660c59d99a65d08e20d6",
     "semantic_hash": "266ebaade7ce660c59d99a65d08e20d6"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/services/blog.service.ts": {
+  "src/services/blog.service.ts": {
     "mtime": 1780690167.8545268,
     "ast_hash": "e26f0b0a78af3d73a10b26caee6ca465",
     "semantic_hash": "e26f0b0a78af3d73a10b26caee6ca465"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/services/contact.service.ts": {
-    "mtime": 1779301855.1972017,
-    "ast_hash": "3298dd482c51c3aa94131852f6b7fd12",
-    "semantic_hash": "3298dd482c51c3aa94131852f6b7fd12"
+  "src/services/contact.service.ts": {
+    "mtime": 1785852414.2481735,
+    "ast_hash": "ff2b62c8e629867fdc15f0aef594ebaf",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/services/leads.service.ts": {
-    "mtime": 1779301871.5056665,
-    "ast_hash": "b228f8bef5972c08d598a53f049c4a2f",
-    "semantic_hash": "b228f8bef5972c08d598a53f049c4a2f"
+  "src/services/leads.service.ts": {
+    "mtime": 1785852444.7479444,
+    "ast_hash": "d86330aa8f3736926d926c5734007b4c",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/services/neighborhood.service.ts": {
+  "src/services/neighborhood.service.ts": {
     "mtime": 1780690094.6367304,
     "ast_hash": "34fddc2e24983a43ea0824787a52c1a4",
     "semantic_hash": "34fddc2e24983a43ea0824787a52c1a4"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/services/property.service.ts": {
+  "src/services/property.service.ts": {
     "mtime": 1780690087.6494002,
     "ast_hash": "35587e63aadc46e747996cf2360e7303",
     "semantic_hash": "35587e63aadc46e747996cf2360e7303"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/services/settings.service.ts": {
-    "mtime": 1777053879.382515,
-    "ast_hash": "484bff2cf68fcb9e2952481b82bd8ff1",
-    "semantic_hash": "484bff2cf68fcb9e2952481b82bd8ff1"
+  "src/services/settings.service.ts": {
+    "mtime": 1784731122.3303013,
+    "ast_hash": "b5dc43e945ce4ac98293d297e44edefb",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/services/translation.service.ts": {
+  "src/services/translation.service.ts": {
     "mtime": 1780336729.0172665,
     "ast_hash": "767b6f57fd52daaf7350ba2d88dafb4e",
     "semantic_hash": "767b6f57fd52daaf7350ba2d88dafb4e"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/types/supabase.ts": {
-    "mtime": 1780445775.1693368,
-    "ast_hash": "5b11e975d3cf1d7095659ca3cc75332d",
-    "semantic_hash": "5b11e975d3cf1d7095659ca3cc75332d"
+  "src/types/supabase.ts": {
+    "mtime": 1785851548.5040739,
+    "ast_hash": "29cfa74b69e2c9748b5642c9acdf9a76",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/src/vite-env.d.ts": {
+  "src/vite-env.d.ts": {
     "mtime": 1780166241.6637628,
     "ast_hash": "f42ed6673c364a311cf1d279435a3e0f",
     "semantic_hash": "f42ed6673c364a311cf1d279435a3e0f"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/supabase/migrate_existing.sql": {
+  "supabase/migrate_existing.sql": {
     "mtime": 1777579081.0925677,
     "ast_hash": "f65e8974aeb3a8e2c866e286167a9d28",
     "semantic_hash": "f65e8974aeb3a8e2c866e286167a9d28"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/supabase/migrations/000_base_schema.sql": {
+  "supabase/migrations/000_base_schema.sql": {
     "mtime": 1780058932.1243837,
     "ast_hash": "286e4287fac46ebeac50d4928971b506",
     "semantic_hash": "286e4287fac46ebeac50d4928971b506"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/supabase/migrations/001_agents.sql": {
+  "supabase/migrations/001_agents.sql": {
     "mtime": 1777471343.639464,
     "ast_hash": "55b7d60be6c406c869d33f015dbb8a13",
     "semantic_hash": "55b7d60be6c406c869d33f015dbb8a13"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/supabase/migrations/002_multilingual.sql": {
+  "supabase/migrations/002_multilingual.sql": {
     "mtime": 1777488604.3995295,
     "ast_hash": "06087fc571ecbc0024e84e49f602893b",
     "semantic_hash": "06087fc571ecbc0024e84e49f602893b"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/supabase/migrations/003_blog.sql": {
+  "supabase/migrations/003_blog.sql": {
     "mtime": 1779227645.6607969,
     "ast_hash": "8c02984cf9abbcbd6ff0fb6981385d5e",
     "semantic_hash": "8c02984cf9abbcbd6ff0fb6981385d5e"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/supabase/migrations/004_leads.sql": {
+  "supabase/migrations/004_leads.sql": {
     "mtime": 1779301069.2854369,
     "ast_hash": "516d25ec5b170adfb389de0dd4de8547",
     "semantic_hash": "516d25ec5b170adfb389de0dd4de8547"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/supabase/migrations/005_agents_auto_provisioning.sql": {
+  "supabase/migrations/005_agents_auto_provisioning.sql": {
     "mtime": 1779832210.7686853,
     "ast_hash": "237d421cb282436a5ccd3851550e1f62",
     "semantic_hash": "237d421cb282436a5ccd3851550e1f62"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/supabase/migrations/006_fix_agent_update_rls.sql": {
+  "supabase/migrations/006_fix_agent_update_rls.sql": {
     "mtime": 1780275453.6992414,
     "ast_hash": "3c091e1f7b0c055f6bf9f3363de65f4e",
     "semantic_hash": "3c091e1f7b0c055f6bf9f3363de65f4e"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/supabase/migrations/007_storage_property_images_rls.sql": {
+  "supabase/migrations/007_storage_property_images_rls.sql": {
     "mtime": 1780318034.0412488,
     "ast_hash": "dc266cad069fe68ee0e2a00bb06bc238",
     "semantic_hash": "dc266cad069fe68ee0e2a00bb06bc238"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/supabase/migrations/008_unify_admin_role.sql": {
+  "supabase/migrations/008_unify_admin_role.sql": {
     "mtime": 1780321153.9275277,
     "ast_hash": "63642a710167f50f93ebf53117828864",
     "semantic_hash": "63642a710167f50f93ebf53117828864"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/supabase/migrations/009_rls_audit_fixes.sql": {
+  "supabase/migrations/009_rls_audit_fixes.sql": {
     "mtime": 1780322815.4433987,
     "ast_hash": "a893c95a27fbb8994912925aa18ed303",
     "semantic_hash": "a893c95a27fbb8994912925aa18ed303"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/supabase/migrations/010_price_on_request.sql": {
+  "supabase/migrations/010_price_on_request.sql": {
     "mtime": 1780365057.3684351,
     "ast_hash": "bacecde8641db4f56df99c130cc196a3",
     "semantic_hash": "bacecde8641db4f56df99c130cc196a3"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/supabase/migrations/011_neighborhood_admin.sql": {
+  "supabase/migrations/011_neighborhood_admin.sql": {
     "mtime": 1780445415.1760976,
     "ast_hash": "8b813ab7dbcf45a3d2bb4009631207de",
     "semantic_hash": "8b813ab7dbcf45a3d2bb4009631207de"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/supabase/schema.sql": {
+  "supabase/schema.sql": {
     "mtime": 1777578428.5131993,
     "ast_hash": "0c7aed29ca16edb258fc422d1b934a6f",
     "semantic_hash": "0c7aed29ca16edb258fc422d1b934a6f"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/supabase/seed.sql": {
-    "mtime": 1777416571.5977805,
-    "ast_hash": "7df6b16173630bd9f5e05f0f476a271a",
-    "semantic_hash": "7df6b16173630bd9f5e05f0f476a271a"
+  "supabase/seed.sql": {
+    "mtime": 1784731354.7769349,
+    "ast_hash": "07090ba0097337afca73099c0bae3d84",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/supabase_migracion_simple.sql": {
+  "supabase_migracion_simple.sql": {
     "mtime": 1777477070.5477626,
     "ast_hash": "a2fc3fadf25141aa658bb78949d3dd06",
     "semantic_hash": "a2fc3fadf25141aa658bb78949d3dd06"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/tailwind.config.js": {
+  "tailwind.config.js": {
     "mtime": 1780829431.772704,
     "ast_hash": "47bdb9e61210b160e8fdff764d51fc92",
     "semantic_hash": "47bdb9e61210b160e8fdff764d51fc92"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/tsconfig.app.json": {
+  "tsconfig.app.json": {
     "mtime": 1776994991.0,
     "ast_hash": "0b48ddb9ffef9f0cd9d905cf7ced2988",
     "semantic_hash": "0b48ddb9ffef9f0cd9d905cf7ced2988"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/tsconfig.json": {
+  "tsconfig.json": {
     "mtime": 1776994991.0,
     "ast_hash": "438582e60f2170ca48077f93c4297acc",
     "semantic_hash": "438582e60f2170ca48077f93c4297acc"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/tsconfig.node.json": {
+  "tsconfig.node.json": {
     "mtime": 1776994991.0,
     "ast_hash": "eec85c9d7c6b599801557f1afd86672c",
     "semantic_hash": "eec85c9d7c6b599801557f1afd86672c"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/vite.config.ts": {
+  "vite.config.ts": {
     "mtime": 1780453774.7408025,
     "ast_hash": "8d09b37623ec428733a9db538c291e0b",
     "semantic_hash": "8d09b37623ec428733a9db538c291e0b"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/.claude/agents/deployment-guardian.md": {
+  ".claude/agents/deployment-guardian.md": {
     "mtime": 1779820761.8585892,
     "ast_hash": "3155eeacff327c8ec5178fe2525ba1f3",
     "semantic_hash": "3155eeacff327c8ec5178fe2525ba1f3"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/.claude/agents/docs-curator.md": {
+  ".claude/agents/docs-curator.md": {
     "mtime": 1779820761.8586702,
     "ast_hash": "1abacbeff5a127417907c6e89aec1766",
     "semantic_hash": "1abacbeff5a127417907c6e89aec1766"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/.claude/agents/implementer.md": {
+  ".claude/agents/implementer.md": {
     "mtime": 1779820761.858427,
     "ast_hash": "334b8ebf324eb5ba5d9908142b7aac13",
     "semantic_hash": "334b8ebf324eb5ba5d9908142b7aac13"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/.claude/agents/orchestrator.md": {
+  ".claude/agents/orchestrator.md": {
     "mtime": 1779820761.858344,
     "ast_hash": "ab8b2acea1952abab6d5f3e2c2d9f856",
     "semantic_hash": "ab8b2acea1952abab6d5f3e2c2d9f856"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/.claude/agents/reviewer.md": {
+  ".claude/agents/reviewer.md": {
     "mtime": 1779820761.8585045,
     "ast_hash": "f3c5d538393783afe5714fdfd38570c6",
     "semantic_hash": "f3c5d538393783afe5714fdfd38570c6"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/.claude/skills/deploy-check/SKILL.md": {
+  ".claude/skills/deploy-check/SKILL.md": {
     "mtime": 1779820761.8590155,
     "ast_hash": "56e614a2284628bcde0ea9e6bd395641",
     "semantic_hash": "56e614a2284628bcde0ea9e6bd395641"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/.claude/skills/docs-sync/SKILL.md": {
+  ".claude/skills/docs-sync/SKILL.md": {
     "mtime": 1779820761.8589342,
     "ast_hash": "a22c4d2400a18df31bc5f3649e15523e",
     "semantic_hash": "a22c4d2400a18df31bc5f3649e15523e"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/.claude/skills/premium-ui-upgrader/SKILL.md": {
+  ".claude/skills/premium-ui-upgrader/SKILL.md": {
     "mtime": 1779153910.9443796,
     "ast_hash": "99721055aca88c11cbc33bba4c355861",
     "semantic_hash": "99721055aca88c11cbc33bba4c355861"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/.claude/skills/session-start/SKILL.md": {
+  ".claude/skills/session-start/SKILL.md": {
     "mtime": 1779820761.8587527,
     "ast_hash": "357515948ef6bf3fc1bab92e7bbae786",
     "semantic_hash": "357515948ef6bf3fc1bab92e7bbae786"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/.claude/skills/verify/SKILL.md": {
+  ".claude/skills/verify/SKILL.md": {
     "mtime": 1779820761.8588467,
     "ast_hash": "c43f7d2f0a2e9f1e6e9dd6faf239722f",
     "semantic_hash": "c43f7d2f0a2e9f1e6e9dd6faf239722f"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/AGENTS.md": {
+  "AGENTS.md": {
     "mtime": 1780695168.9191244,
     "ast_hash": "f8476db8ccf2a109fa7ebd3843fb1763",
     "semantic_hash": "f8476db8ccf2a109fa7ebd3843fb1763"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/AUDIT_REPORT.2026-05-26.md": {
+  "AUDIT_REPORT.2026-05-26.md": {
     "mtime": 1780453492.4526327,
     "ast_hash": "7b6737a812b1b2a81def3f33ad4c866b",
     "semantic_hash": "7b6737a812b1b2a81def3f33ad4c866b"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/AUDIT_REPORT.md": {
+  "AUDIT_REPORT.md": {
     "mtime": 1780453632.069502,
     "ast_hash": "3796dc647c559a0f63f27e3620106175",
     "semantic_hash": "3796dc647c559a0f63f27e3620106175"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/CLAUDE.md": {
-    "mtime": 1780751208.195592,
-    "ast_hash": "94a9eba3b20c7ce5ebb2438417b92403",
-    "semantic_hash": "94a9eba3b20c7ce5ebb2438417b92403"
+  "CLAUDE.md": {
+    "mtime": 1785852913.6868577,
+    "ast_hash": "894b49400753482292d31b047022b44b",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/CODEX_HANDOFF_401.md": {
+  "CODEX_HANDOFF_401.md": {
     "mtime": 1780338417.559707,
     "ast_hash": "84a79fe04d1428d165fd3cb337b9704f",
     "semantic_hash": "84a79fe04d1428d165fd3cb337b9704f"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/GITHUB_IDE_GUIDE.md": {
+  "GITHUB_IDE_GUIDE.md": {
     "mtime": 1777000267.0,
     "ast_hash": "c49413da8b8e5b444cea12e594e03e8a",
     "semantic_hash": "c49413da8b8e5b444cea12e594e03e8a"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/HANDOFF.md": {
+  "HANDOFF.md": {
     "mtime": 1780179290.6259215,
     "ast_hash": "ea71fe20d99a449aeddd9e54a8d1027b",
     "semantic_hash": "ea71fe20d99a449aeddd9e54a8d1027b"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/HANDOFF_REPORT.md": {
-    "mtime": 1783349614.9995158,
-    "ast_hash": "f9b1525a81744437ad3d02ad3c548764",
-    "semantic_hash": "f9b1525a81744437ad3d02ad3c548764"
+  "HANDOFF_REPORT.md": {
+    "mtime": 1785852721.685094,
+    "ast_hash": "6d26aecd4d5515121b35820b9a112362",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/PROJECT_CONTEXT.md": {
+  "PROJECT_CONTEXT.md": {
     "mtime": 1779998434.4061568,
     "ast_hash": "fc44e6cd2385e157b2530623d3e1c726",
     "semantic_hash": "fc44e6cd2385e157b2530623d3e1c726"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/PROJECT_HANDBOOK.md": {
+  "PROJECT_HANDBOOK.md": {
     "mtime": 1777553691.658031,
     "ast_hash": "5b62ded39bc3df5987a55f7d090323ec",
     "semantic_hash": "5b62ded39bc3df5987a55f7d090323ec"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/README.md": {
-    "mtime": 1777553691.6046236,
-    "ast_hash": "b8fdd291cba11b7372fe284f83913207",
-    "semantic_hash": "b8fdd291cba11b7372fe284f83913207"
+  "README.md": {
+    "mtime": 1783353676.4332943,
+    "ast_hash": "70255b5c16f331cdbd71ff5ae036785d",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/TODO.md": {
+  "TODO.md": {
     "mtime": 1783351142.379209,
     "ast_hash": "d9d47e9d6e6c9b87801e2783ebb9fbf4",
     "semantic_hash": "d9d47e9d6e6c9b87801e2783ebb9fbf4"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/docs/admin-rls-audit.md": {
+  "docs/admin-rls-audit.md": {
     "mtime": 1780322919.8671546,
     "ast_hash": "9d0864f97ee63e5a1e918107ff857b5e",
     "semantic_hash": "9d0864f97ee63e5a1e918107ff857b5e"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/docs/decisions/ADR-001-auth-agents-coupling.md": {
+  "docs/decisions/ADR-001-auth-agents-coupling.md": {
     "mtime": 1779832217.4398582,
     "ast_hash": "460d99f1a19591e17cca995e149b98b6",
     "semantic_hash": "460d99f1a19591e17cca995e149b98b6"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/docs/decisions/ADR-002-anonymous-client-for-public-reads.md": {
+  "docs/decisions/ADR-002-anonymous-client-for-public-reads.md": {
     "mtime": 1780695135.401336,
     "ast_hash": "9362c2b9c8d2ed9e7d66d8a828d1b91e",
     "semantic_hash": "9362c2b9c8d2ed9e7d66d8a828d1b91e"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/docs/design-directions/french-modern-direction.md": {
+  "docs/design-directions/french-modern-direction.md": {
     "mtime": 1782139559.3276403,
     "ast_hash": "45ca1989cdd6699dd83967fe5d2770d9",
     "semantic_hash": "45ca1989cdd6699dd83967fe5d2770d9"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/docs/runbooks/login-no-puedo-entrar.md": {
+  "docs/runbooks/login-no-puedo-entrar.md": {
     "mtime": 1779892348.1305606,
     "ast_hash": "18c7d65b82a2dd16bad44c7dc43249ca",
     "semantic_hash": "18c7d65b82a2dd16bad44c7dc43249ca"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/docs/runbooks/phase0-cierre.md": {
+  "docs/runbooks/phase0-cierre.md": {
     "mtime": 1780153557.6310074,
     "ast_hash": "f5da503b44fe607e786fcee37aaeaf33",
     "semantic_hash": "f5da503b44fe607e786fcee37aaeaf33"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/docs/supabase-connection.md": {
+  "docs/supabase-connection.md": {
     "mtime": 1780320141.0351796,
     "ast_hash": "61223e2c761a112f05e0484e40c3e54d",
     "semantic_hash": "61223e2c761a112f05e0484e40c3e54d"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/index.html": {
-    "mtime": 1782136083.4638047,
-    "ast_hash": "3e72c8b9ca9668f423d8b5d37dcdc187",
-    "semantic_hash": "3e72c8b9ca9668f423d8b5d37dcdc187"
+  "index.html": {
+    "mtime": 1785556979.6217577,
+    "ast_hash": "9888e645f38425605e0b8e4a71bd6d21",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/info.md": {
+  "info.md": {
     "mtime": 1776994990.0,
     "ast_hash": "1bdf950c33ac0cd2a999bbe70d79b317",
     "semantic_hash": "1bdf950c33ac0cd2a999bbe70d79b317"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/marketing/README.md": {
-    "mtime": 1780761532.4596336,
-    "ast_hash": "47278dd640228e87d26097b5ac7f8cd7",
-    "semantic_hash": "47278dd640228e87d26097b5ac7f8cd7"
+  "marketing/README.md": {
+    "mtime": 1785502790.2757375,
+    "ast_hash": "b813d3fbf33a3f64a21697e50a0bc429",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/marketing/google-ads-como-importar.md": {
+  "marketing/google-ads-como-importar.md": {
     "mtime": 1783346103.5459683,
     "ast_hash": "9a2ac8d41d8ba89809484c2563473542",
     "semantic_hash": "9a2ac8d41d8ba89809484c2563473542"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/marketing/google-ads-propietarios.md": {
+  "marketing/google-ads-propietarios.md": {
     "mtime": 1780684840.5003147,
     "ast_hash": "693ac3b43d1657e926809ccf2109d3ba",
     "semantic_hash": "693ac3b43d1657e926809ccf2109d3ba"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/progress/2026-05-26-orphan-user-incident.md": {
+  "progress/2026-05-26-orphan-user-incident.md": {
     "mtime": 1779831607.5776532,
     "ast_hash": "562554dffd91ed7f1450f855b96a4c39",
     "semantic_hash": "562554dffd91ed7f1450f855b96a4c39"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/progress/2026-05-26-saas-audit-and-i18n.md": {
+  "progress/2026-05-26-saas-audit-and-i18n.md": {
     "mtime": 1779980295.1173358,
     "ast_hash": "cac20414990f7f19bab48dd2968f3149",
     "semantic_hash": "cac20414990f7f19bab48dd2968f3149"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/progress/2026-05-29-phase0-security-seo.md": {
+  "progress/2026-05-29-phase0-security-seo.md": {
     "mtime": 1780059842.9474509,
     "ast_hash": "73303142a11c55a506f8496e05b6d3f2",
     "semantic_hash": "73303142a11c55a506f8496e05b6d3f2"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/progress/2026-05-30-i18n-admin-amenities.md": {
+  "progress/2026-05-30-i18n-admin-amenities.md": {
     "mtime": 1780177493.4770226,
     "ast_hash": "ea79c0a40cdf028d751c1b27c51cee0f",
     "semantic_hash": "ea79c0a40cdf028d751c1b27c51cee0f"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/progress/2026-05-30-mapbox-migration.md": {
+  "progress/2026-05-30-mapbox-migration.md": {
     "mtime": 1780166473.2663078,
     "ast_hash": "8e5aad6801f446e125871138f03a0880",
     "semantic_hash": "8e5aad6801f446e125871138f03a0880"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/progress/2026-06-01-fix-admin-properties-list-hang.md": {
+  "progress/2026-06-01-fix-admin-properties-list-hang.md": {
     "mtime": 1780337930.7310026,
     "ast_hash": "9432cda33f6d50c1c139ff7599c71a9c",
     "semantic_hash": "9432cda33f6d50c1c139ff7599c71a9c"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/progress/2026-06-01-fix-image-upload-hang.md": {
+  "progress/2026-06-01-fix-image-upload-hang.md": {
     "mtime": 1780336872.938738,
     "ast_hash": "392dd4ee50790f4ed9c9fa87aa085e51",
     "semantic_hash": "392dd4ee50790f4ed9c9fa87aa085e51"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/progress/2026-06-01-fix-property-create-400.md": {
+  "progress/2026-06-01-fix-property-create-400.md": {
     "mtime": 1780334270.650748,
     "ast_hash": "4a0742cdce5f7ab9d77ba6b127d3e9fb",
     "semantic_hash": "4a0742cdce5f7ab9d77ba6b127d3e9fb"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/progress/2026-06-01-fix-property-save-hang.md": {
+  "progress/2026-06-01-fix-property-save-hang.md": {
     "mtime": 1780337398.8226287,
     "ast_hash": "6a561f39e41fd13fe814e9dda42e774d",
     "semantic_hash": "6a561f39e41fd13fe814e9dda42e774d"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/progress/2026-06-01-fix-translate-property-401.md": {
+  "progress/2026-06-01-fix-translate-property-401.md": {
     "mtime": 1780336009.6667109,
     "ast_hash": "a3781e88b05bfb6508d26b9938da83d5",
     "semantic_hash": "a3781e88b05bfb6508d26b9938da83d5"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/progress/2026-06-02-price-on-request.md": {
+  "progress/2026-06-02-price-on-request.md": {
     "mtime": 1780366970.0277445,
     "ast_hash": "35d01c2e2aaf6bff8b0a936cacd4ae7a",
     "semantic_hash": "35d01c2e2aaf6bff8b0a936cacd4ae7a"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/progress/2026-06-03-add-route-de-ouarzazate.md": {
+  "progress/2026-06-03-add-route-de-ouarzazate.md": {
     "mtime": 1780445167.0773144,
     "ast_hash": "30a08f5398ef85f3d7c7b2a0e519c13e",
     "semantic_hash": "30a08f5398ef85f3d7c7b2a0e519c13e"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/progress/2026-06-03-neighborhood-admin-crud.md": {
+  "progress/2026-06-03-neighborhood-admin-crud.md": {
     "mtime": 1780445917.9603734,
     "ast_hash": "49df05404612ff8efb0485fa830b726d",
     "semantic_hash": "49df05404612ff8efb0485fa830b726d"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/progress/2026-06-04-logo-vectorization.md": {
+  "progress/2026-06-04-logo-vectorization.md": {
     "mtime": 1780597881.661638,
     "ast_hash": "50f97c4647bc3fad91e8bc49ab75983e",
     "semantic_hash": "50f97c4647bc3fad91e8bc49ab75983e"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/progress/2026-06-05-first-load-resilience.md": {
+  "progress/2026-06-05-first-load-resilience.md": {
     "mtime": 1780690393.4444873,
     "ast_hash": "ad8d1ad88f6e630525543b694be8edf9",
     "semantic_hash": "ad8d1ad88f6e630525543b694be8edf9"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/progress/2026-06-10-concierge-short-let-service.md": {
+  "progress/2026-06-10-concierge-short-let-service.md": {
     "mtime": 1781119436.991206,
     "ast_hash": "aa1eed644bb38ccca0f6d21c60bb327c",
     "semantic_hash": "aa1eed644bb38ccca0f6d21c60bb327c"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/progress/2026-06-22-french-modern-direction.md": {
+  "progress/2026-06-22-french-modern-direction.md": {
     "mtime": 1782140067.1442547,
     "ast_hash": "bc8368cc68261498ef3e1361a0b5691b",
     "semantic_hash": "bc8368cc68261498ef3e1361a0b5691b"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/progress/2026-07-06-google-ads-campaigns-live.md": {
+  "progress/2026-07-06-google-ads-campaigns-live.md": {
     "mtime": 1783349669.038497,
     "ast_hash": "fa581b19d3e6fc650b5bde63437687e4",
     "semantic_hash": "fa581b19d3e6fc650b5bde63437687e4"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/progress/README.md": {
+  "progress/README.md": {
     "mtime": 1779820761.85826,
     "ast_hash": "b642ec1b434ed253d1e13ed552f182d9",
     "semantic_hash": "b642ec1b434ed253d1e13ed552f182d9"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/public/atlas-luxe/index.html": {
+  "public/atlas-luxe/index.html": {
     "mtime": 1780834226.7618656,
     "ast_hash": "705737b505fc85861f8077b9ea0f0227",
     "semantic_hash": "705737b505fc85861f8077b9ea0f0227"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/public/design-books/french-modern-direction/index.html": {
+  "public/design-books/french-modern-direction/index.html": {
     "mtime": 1782139598.4753764,
     "ast_hash": "c506dfe0336f0cbbc05ffca3bcc6ebcc",
     "semantic_hash": "c506dfe0336f0cbbc05ffca3bcc6ebcc"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/public/epure/index.html": {
+  "public/epure/index.html": {
     "mtime": 1780869470.6536436,
     "ast_hash": "df11d4a0efbbbd601c14320f1cf5703e",
     "semantic_hash": "df11d4a0efbbbd601c14320f1cf5703e"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/public/lumiere/index.html": {
+  "public/lumiere/index.html": {
     "mtime": 1780839410.4556031,
     "ast_hash": "eb35d7032af60e556f1033b67546bf23",
     "semantic_hash": "eb35d7032af60e556f1033b67546bf23"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/public/prestige/index.html": {
+  "public/prestige/index.html": {
     "mtime": 1780838209.13312,
     "ast_hash": "7ce709d5fbf73ca1a31107134e3b1b3a",
     "semantic_hash": "7ce709d5fbf73ca1a31107134e3b1b3a"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/public/robots.txt": {
+  "public/robots.txt": {
     "mtime": 1779804937.2234697,
     "ast_hash": "f8af2c412d001785ffbaf80d05f6c864",
     "semantic_hash": "f8af2c412d001785ffbaf80d05f6c864"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/public/vendre/index.html": {
-    "mtime": 1780837419.841614,
-    "ast_hash": "e74825861022d50b9f7f1172ad283615",
-    "semantic_hash": "e74825861022d50b9f7f1172ad283615"
+  "public/vendre/index.html": {
+    "mtime": 1785876919.3270626,
+    "ast_hash": "ee5d9e5b2947b31e0de499c679dd1902",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/tasks/current.md": {
-    "mtime": 1783349642.2794273,
-    "ast_hash": "2b1a745b1e55956bf92c60717b7490ea",
-    "semantic_hash": "2b1a745b1e55956bf92c60717b7490ea"
+  "tasks/current.md": {
+    "mtime": 1785852747.9475255,
+    "ast_hash": "42bd934cbbc1f9c4e47f1b34552674fd",
+    "semantic_hash": ""
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/public/favicon.svg": {
+  "public/favicon.svg": {
     "mtime": 1780453812.298905,
     "ast_hash": "cb7a2955c34d913e8f4fb8f5f67336f0",
     "semantic_hash": "cb7a2955c34d913e8f4fb8f5f67336f0"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/public/logo-reverse.svg": {
+  "public/logo-reverse.svg": {
     "mtime": 1780597778.107948,
     "ast_hash": "44e8fd9b4f3e7fc14840d1907eb51503",
     "semantic_hash": "44e8fd9b4f3e7fc14840d1907eb51503"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/public/logo.svg": {
+  "public/logo.svg": {
     "mtime": 1780597768.496252,
     "ast_hash": "8941ff0d9d9284cf83e6167fca5e2758",
     "semantic_hash": "8941ff0d9d9284cf83e6167fca5e2758"
   },
-  "/Users/aimac/Documents/Workspace/Clients/atlas-rouge-immobilier/semrush-lp-full.jpeg": {
+  "semrush-lp-full.jpeg": {
     "mtime": 1780838274.6899781,
     "ast_hash": "238066d026c3b17028cc4a979499d3af",
     "semantic_hash": "238066d026c3b17028cc4a979499d3af"
+  },
+  ".netlify/state.json": {
+    "mtime": 1777008970.602209,
+    "ast_hash": "83183ef864cf08b9c25c5d6502cc9e7a",
+    "semantic_hash": ""
+  },
+  "brand/Agente/blender-render/create_shelving.py": {
+    "mtime": 1784688650.684282,
+    "ast_hash": "141ccb7732bce946b16f8c6e22f6dc19",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/package.json": {
+    "mtime": 1785357727.7979364,
+    "ast_hash": "9a1dad54c72bddf2ef3046282ea4df98",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/inmobiliaria-vende-woman/captions.json": {
+    "mtime": 1785358345.6162105,
+    "ast_hash": "7fed4f1b2c9cd8550f31b40eb405f166",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/inmobiliaria-vende/captions.json": {
+    "mtime": 1785357783.528856,
+    "ast_hash": "b8d90f1407d6c1606033c1c5ae7c218e",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/remotion.config.ts": {
+    "mtime": 1782260504.2655613,
+    "ast_hash": "c5e216bcacbeec7692889b4e47b42c91",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/AtlasRougeVideo.tsx": {
+    "mtime": 1782262463.5598304,
+    "ast_hash": "4ab18fc15dd974e4465221f7df7835ff",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/ConciergerieVideo.tsx": {
+    "mtime": 1783391821.6825109,
+    "ast_hash": "25420fbb0c1bdcd77925e4a3a1ffc85f",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/InmobiliariaVendeEdit.tsx": {
+    "mtime": 1785456351.5386407,
+    "ast_hash": "0fb0fe5a10cc8a03d8bb475254583c37",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/InmobiliariaVendeWomanEdit.tsx": {
+    "mtime": 1785456531.7910142,
+    "ast_hash": "0ed27251204185cd77d365d48270951f",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/KineticConciergerie.tsx": {
+    "mtime": 1785443055.6005285,
+    "ast_hash": "6642d68646607315ec3f1b00a76c7e78",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/Root.tsx": {
+    "mtime": 1785443055.6872346,
+    "ast_hash": "83ad03d574417e8452829b1affc9c549",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/Video1.tsx": {
+    "mtime": 1783455755.843292,
+    "ast_hash": "daa272d92b2af9e1fb43c50a1fd4bec6",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/Video2Kinetic.tsx": {
+    "mtime": 1784002899.6932385,
+    "ast_hash": "cb5fbf62de46d9d237c1d819839977ac",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/Video2KineticES.tsx": {
+    "mtime": 1784003442.957631,
+    "ast_hash": "198427f7c677a4a784a4eb63ec64f79f",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/Video2Premium.tsx": {
+    "mtime": 1784005458.6523075,
+    "ast_hash": "83e4dabd6f714baf49eea0cc507db35a",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/Video2PremiumV2.tsx": {
+    "mtime": 1784007248.8090317,
+    "ast_hash": "a6b7aca32f34a7db106860b7da9aaa72",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/Video3Vendre.tsx": {
+    "mtime": 1785354101.1429539,
+    "ast_hash": "db9989920e06b3dbcbf7f52c8c537c5b",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/VideoCon.tsx": {
+    "mtime": 1785502001.6751034,
+    "ast_hash": "d471cf015397de78f8c1630c8581234b",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/VideoKinetic3D.tsx": {
+    "mtime": 1784612517.0645874,
+    "ast_hash": "147fdf6da7b02a1cc91d5199dc430d95",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/VideoKineticGsap.tsx": {
+    "mtime": 1784590190.6055326,
+    "ast_hash": "c7a507ac266ff4261b164cbe111a33fe",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/VideoKineticMontage.tsx": {
+    "mtime": 1785458545.860137,
+    "ast_hash": "0434dcd549571cbd773cdd26073feaba",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/captions.ts": {
+    "mtime": 1785354087.0304363,
+    "ast_hash": "a71a7ee8bd462b3e57dd1987e2d1be34",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/components/ClipScene.tsx": {
+    "mtime": 1782260546.0287142,
+    "ast_hash": "71f655bb8d734fe2d77f649912e1f646",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/components/ConciergerieScene.tsx": {
+    "mtime": 1785354073.0746157,
+    "ast_hash": "ad4215494bc8417c01b8c743f04b5f42",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/components/Gsap3DKineticText.tsx": {
+    "mtime": 1784602073.5261838,
+    "ast_hash": "b07f22ccabddc7f7c475ef5c85253178",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/components/Gsap3DLogoReveal.tsx": {
+    "mtime": 1784599059.9782572,
+    "ast_hash": "f68b80427618970ed0cf05c0b78f97e0",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/components/GsapKineticText.tsx": {
+    "mtime": 1785443055.509822,
+    "ast_hash": "d575d06878803b5c9e5ab47deb2ec134",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/components/GsapLogoReveal.tsx": {
+    "mtime": 1784590106.5867078,
+    "ast_hash": "60ac71dbbb8bb291d3658b3ec6f7dc66",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/components/Intro.tsx": {
+    "mtime": 1782260552.1595721,
+    "ast_hash": "47e35efdf14728f6d78b774b291680a1",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/components/KeywordCallout.tsx": {
+    "mtime": 1783390377.40302,
+    "ast_hash": "621cd9b9614e7c7e7d13fc05b8e33ebd",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/components/KineticPanel.tsx": {
+    "mtime": 1784001691.5853858,
+    "ast_hash": "2d71be44095d7a9639c7b6bf21e45b29",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/components/KineticWordBlast.tsx": {
+    "mtime": 1784006918.7584105,
+    "ast_hash": "53d90afe5904cc0f8ae09c48ee07eb93",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/components/Logo.tsx": {
+    "mtime": 1782260521.6781988,
+    "ast_hash": "8c13c704f3f2e08fa4f6cfbbc951d07c",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/components/MarrakechBlendWord.tsx": {
+    "mtime": 1784006180.7384238,
+    "ast_hash": "e9f2d06f0d7c8ed9ebd30be702a6b8e3",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/components/Outro.tsx": {
+    "mtime": 1782262469.3885446,
+    "ast_hash": "6c73ada87b3919d86928a70deaa912a4",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/components/PremiumIcons.tsx": {
+    "mtime": 1784007012.0534945,
+    "ast_hash": "993fcb44245a202b20ee0e26c3a93eee",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/components/PremiumScene.tsx": {
+    "mtime": 1784005057.1991923,
+    "ast_hash": "7a35970af0929fb08584ae0d7a2e1fc7",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/components/PremiumWordFlow.tsx": {
+    "mtime": 1784004990.0619974,
+    "ast_hash": "20373bf18d2a8a679d594598224ce553",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/components/StingerTransition.tsx": {
+    "mtime": 1783389863.4423618,
+    "ast_hash": "d8decd85a76a1d06b6d54b3707b51bd6",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/components/Subtitles.tsx": {
+    "mtime": 1783380599.1960547,
+    "ast_hash": "9eca4411358c3f44fc2ce4bc294acebf",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/index.ts": {
+    "mtime": 1782260506.511887,
+    "ast_hash": "d92d9dee1ab16aa44a75ae7fbfb843ca",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/src/theme.ts": {
+    "mtime": 1785354081.8250844,
+    "ast_hash": "aa47b22bad674b5b7b79f6972efb5209",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/tsconfig.json": {
+    "mtime": 1782260502.2560146,
+    "ast_hash": "ef36d818b0e6f470d43fb0864614b9e4",
+    "semantic_hash": ""
+  },
+  "brand/build_logo.py": {
+    "mtime": 1780593318.0823529,
+    "ast_hash": "9d4ade5b34abd6f8d9ec414179c8aa0a",
+    "semantic_hash": ""
+  },
+  "brand/concepts/fresh-logo-16x9/build.py": {
+    "mtime": 1780593660.584135,
+    "ast_hash": "38162a9db4fa4abda09de0453ddafc7c",
+    "semantic_hash": ""
+  },
+  "brand/render.sh": {
+    "mtime": 1780584738.4622638,
+    "ast_hash": "65cb9c780263aaf02c5f2cc3a5caa952",
+    "semantic_hash": ""
+  },
+  "public/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js": {
+    "mtime": 1785873316.986115,
+    "ast_hash": "a71a12e4067165f647de42766fda3c85",
+    "semantic_hash": ""
+  },
+  "src/components/FloatingWhatsApp.tsx": {
+    "mtime": 1784731245.7936416,
+    "ast_hash": "73d5e189421ce118f743ea8df83e7041",
+    "semantic_hash": ""
+  },
+  "src/components/icons/SocialIcons.tsx": {
+    "mtime": 1784731207.772789,
+    "ast_hash": "f395963457f6babf6579721bbb699341",
+    "semantic_hash": ""
+  },
+  "src/components/legal/LegalPageLayout.tsx": {
+    "mtime": 1785451610.6491532,
+    "ast_hash": "65e838695fb12768aaecd8f4f899e049",
+    "semantic_hash": ""
+  },
+  "src/lib/tracking.ts": {
+    "mtime": 1785698304.4276187,
+    "ast_hash": "4fd96e5bb0a8fc47bafd78d17232f872",
+    "semantic_hash": ""
+  },
+  "src/locales/en/legal.json": {
+    "mtime": 1785556570.6767426,
+    "ast_hash": "e43b9f1c389607f2bb7d663127b55962",
+    "semantic_hash": ""
+  },
+  "src/locales/es/legal.json": {
+    "mtime": 1785556560.7646503,
+    "ast_hash": "42ff9698c17f5a29b2fe045bf0d6ce6d",
+    "semantic_hash": ""
+  },
+  "src/locales/fr/legal.json": {
+    "mtime": 1785556550.709539,
+    "ast_hash": "3f2185c9dce45807773a06a1db99d170",
+    "semantic_hash": ""
+  },
+  "src/pages/LegalNotice.tsx": {
+    "mtime": 1785451166.0157523,
+    "ast_hash": "0e257d13ae9e7b5bc521949635b4edac",
+    "semantic_hash": ""
+  },
+  "src/pages/PrivacyPolicy.tsx": {
+    "mtime": 1785451169.9653482,
+    "ast_hash": "72bb98695ea47606c011c2180388cf43",
+    "semantic_hash": ""
+  },
+  "src/pages/Terms.tsx": {
+    "mtime": 1785451174.3711886,
+    "ast_hash": "6acbc312ad560e624fe06cbf19ba166b",
+    "semantic_hash": ""
+  },
+  "supabase/migrations/012_update_contact_phone.sql": {
+    "mtime": 1784612155.86306,
+    "ast_hash": "56ebbea870aa8e217241bd267533c065",
+    "semantic_hash": ""
+  },
+  "supabase/migrations/013_social_links.sql": {
+    "mtime": 1784729008.4998882,
+    "ast_hash": "a5cf5596696c285b72677a172ed4809b",
+    "semantic_hash": ""
+  },
+  "supabase/migrations/014_contact_email_drop_address.sql": {
+    "mtime": 1784731381.857188,
+    "ast_hash": "7a984b87945ad216f2e29dc46d4ad218",
+    "semantic_hash": ""
+  },
+  "supabase/migrations/015_fix_stale_contact_insert_policy.sql": {
+    "mtime": 1784910809.8027828,
+    "ast_hash": "2fee467b2b3d0662b8693fe38a1a8e7e",
+    "semantic_hash": ""
+  },
+  "supabase/migrations/016_contact_submissions_email_optional.sql": {
+    "mtime": 1785632441.5960732,
+    "ast_hash": "9b28627fd9993811822112a01ab41dc7",
+    "semantic_hash": ""
+  },
+  ".claude/skills/reporte/SKILL.md": {
+    "mtime": 1785852905.1501205,
+    "ast_hash": "0f01e4ba1b2e79adb022d9d6f9e78fc6",
+    "semantic_hash": ""
+  },
+  "Landing Page/atlas-rouge-landing-v2-package/README.txt": {
+    "mtime": 1784908174.0,
+    "ast_hash": "c44b69d4692c49d3dd32cb05193aa628",
+    "semantic_hash": ""
+  },
+  "Landing Page/atlas-rouge-landing-v2-package/index.html": {
+    "mtime": 1784908174.0,
+    "ast_hash": "f35996bf714eadc7989591a51b9eaba2",
+    "semantic_hash": ""
+  },
+  "Presentacion-Progreso-AtlasRouge.html": {
+    "mtime": 1783356244.2163932,
+    "ast_hash": "735eebe8faa3b444b566162d096e7764",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 1/kling-clips/plano1-en-test.txt": {
+    "mtime": 1783449580.58409,
+    "ast_hash": "f261f76288218a6ef814a2c7b3a8b1c1",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 1/kling-clips/plano1-en-v2.txt": {
+    "mtime": 1783451076.9939246,
+    "ast_hash": "aa7bac8937fe544ce4e0ca1c60691d61",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 1/kling-clips/plano2-en.txt": {
+    "mtime": 1783452175.2416677,
+    "ast_hash": "79fc89ea41e0911c948849c2acee362e",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 1/kling-clips/plano3-broll-en.txt": {
+    "mtime": 1783452178.08521,
+    "ast_hash": "de69a5e9ea95f10a2ee71e14ed70a602",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 1/kling-clips/plano4-en.txt": {
+    "mtime": 1783452180.9944582,
+    "ast_hash": "52dd9132f497bead6af9ca5cbe20a791",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 1/kling-clips/plano5-broll-en.txt": {
+    "mtime": 1783452184.438014,
+    "ast_hash": "27e64af4b83d412158770839af959bc2",
+    "semantic_hash": ""
+  },
+  "brand/Agente/progress/2026-07-21-kinetic-typography-video.md": {
+    "mtime": 1784610814.7572415,
+    "ast_hash": "bd98cc8bb6e1b5fc0f6a12c73db71a7a",
+    "semantic_hash": ""
+  },
+  "brand/Agente/progress/2026-07-22-blender-shelving-render.md": {
+    "mtime": 1784688650.7759578,
+    "ast_hash": "df4a5c42b59b0e051e5cf328425614cc",
+    "semantic_hash": ""
+  },
+  "brand/Agente/progress/2026-07-29-inmobiliaria-vende-edit.md": {
+    "mtime": 1785357833.8012056,
+    "ast_hash": "9213812e3f1161d6b3b2f8fe50066979",
+    "semantic_hash": ""
+  },
+  "brand/Agente/progress/2026-07-29-inmobiliaria-vende-woman-edit.md": {
+    "mtime": 1785358416.7568622,
+    "ast_hash": "d47d930a3b81972cffd000a7daad825e",
+    "semantic_hash": ""
+  },
+  "brand/README.md": {
+    "mtime": 1780593375.2999787,
+    "ast_hash": "53085b0935658db98fc956ae87424a0f",
+    "semantic_hash": ""
+  },
+  "brand/concepts/fresh-logo-16x9/README.md": {
+    "mtime": 1780593660.5849245,
+    "ast_hash": "3213d61ff71f981e96a6774f95600540",
+    "semantic_hash": ""
+  },
+  "docs/BITACORA.md": {
+    "mtime": 1785874920.929486,
+    "ast_hash": "f59f8b7aa5417bc6b96b4550b9db08aa",
+    "semantic_hash": ""
+  },
+  "document/atlas-landing/README.md": {
+    "mtime": 1780831712.0,
+    "ast_hash": "f78df1a663882ae51fc958f505300fcb",
+    "semantic_hash": ""
+  },
+  "document/atlas-landing/index.html": {
+    "mtime": 1780831712.0,
+    "ast_hash": "ae5628a565cb7f0c893a70482f80946b",
+    "semantic_hash": ""
+  },
+  "marketing/competencia-barnes-marrakech.md": {
+    "mtime": 1785009516.7111318,
+    "ast_hash": "d1f868245377f5d598256d45a123663f",
+    "semantic_hash": ""
+  },
+  "marketing/guiones-video-atlas-rouge.md": {
+    "mtime": 1785502779.9498692,
+    "ast_hash": "c32f7f22df80662edc2369f4a010b5fa",
+    "semantic_hash": ""
+  },
+  "progress/2026-08-02-conversion-tracking-google-ads.md": {
+    "mtime": 1785639494.4271195,
+    "ast_hash": "686b8c06ef26ccd972e0bfc544a42978",
+    "semantic_hash": ""
+  },
+  "progress/2026-08-02-landing-vendre-simplificada.md": {
+    "mtime": 1785695568.4570413,
+    "ast_hash": "281d15b5fac0d9a39297e4f161ab217f",
+    "semantic_hash": ""
+  },
+  "progress/2026-08-02-netlify-functions-nunca-ejecutaron.md": {
+    "mtime": 1785706686.5493174,
+    "ast_hash": "6c1d1d2bab14b94a14fcb4c60d4b1277",
+    "semantic_hash": ""
+  },
+  "progress/2026-08-03-ads-landing-url-diagnosis.md": {
+    "mtime": 1785723280.1546102,
+    "ast_hash": "126dc0cb6947fcdcc986e5a086c1b0a4",
+    "semantic_hash": ""
+  },
+  "public/atlas-landing/index.html": {
+    "mtime": 1780833533.358103,
+    "ast_hash": "ae5628a565cb7f0c893a70482f80946b",
+    "semantic_hash": ""
+  },
+  "public/proprietaires/index.html": {
+    "mtime": 1785876919.3279579,
+    "ast_hash": "c33a0eb3de7dbaf4b23b4d94904d957e",
+    "semantic_hash": ""
+  },
+  "public/vendor/intl-tel-input/VERSION.txt": {
+    "mtime": 1785873317.0531695,
+    "ast_hash": "926996b65e27f1b598383c73a40d4376",
+    "semantic_hash": ""
+  },
+  "Atlas-Rouge-Campanas-GoogleAds.pdf": {
+    "mtime": 1783357438.1714795,
+    "ast_hash": "3a4fed3e2a29488f9b2d4373600f6ce6",
+    "semantic_hash": ""
+  },
+  "Landing Page/atlas-rouge-landing-v2-package/logo-atlas-rouge.svg": {
+    "mtime": 1784908174.0,
+    "ast_hash": "f6d8bd0204ac2c6960f9e798301a9190",
+    "semantic_hash": ""
+  },
+  "brand/Agente/ChatGPT Image 24 jun 2026, 02_03_12 a.m. (1).png": {
+    "mtime": 1782259392.1787567,
+    "ast_hash": "0b3b456e30487df82ab9ce4a005b477d",
+    "semantic_hash": ""
+  },
+  "brand/Agente/ChatGPT Image 24 jun 2026, 02_03_12 a.m. (2).png": {
+    "mtime": 1782259397.9903212,
+    "ast_hash": "3815f5963d2a98441209f1a19174418c",
+    "semantic_hash": ""
+  },
+  "brand/Agente/ChatGPT Image 24 jun 2026, 02_03_12 a.m. (3).png": {
+    "mtime": 1782259397.9812253,
+    "ast_hash": "3a111b9fd3465b976a13fd74684cd369",
+    "semantic_hash": ""
+  },
+  "brand/Agente/ChatGPT Image 24 jun 2026, 02_03_12 a.m. (4).png": {
+    "mtime": 1782259397.986443,
+    "ast_hash": "7d9fd5a325d347c5a454294c8ae7bb6b",
+    "semantic_hash": ""
+  },
+  "brand/Agente/ChatGPT Image 24 jun 2026, 02_03_12 a.m. (5).png": {
+    "mtime": 1782259397.9883332,
+    "ast_hash": "783a6dde8e964832dff5962d4c177c21",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 2/Airbnb_Logo_Be\u0301lo (1).svg": {
+    "mtime": 1784004148.4404373,
+    "ast_hash": "2a1a6c94fd154fff6afe235cf73ecbba",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 2/booking-com-logo-png_seeklogo-288834.png": {
+    "mtime": 1784004208.8269036,
+    "ast_hash": "0a64c790a612e71de01de7291e1b686e",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 2/booking-com-seeklogo.png": {
+    "mtime": 1730884086.0,
+    "ast_hash": "7a123db67ef77c7841eddded1a5a31fa",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video con/ChatGPT Image 30 jul 2026, 09_50_27 p.m..png": {
+    "mtime": 1785441027.7793093,
+    "ast_hash": "b14bfa61d55682846bc29c6eeb5cd2a8",
+    "semantic_hash": ""
+  },
+  "brand/Agente/agent-1.png": {
+    "mtime": 1782257368.317561,
+    "ast_hash": "5c64bbb8421cd20d46102e95481be7a7",
+    "semantic_hash": ""
+  },
+  "brand/Agente/blender-render/render_principal.png": {
+    "mtime": 1784688663.9140544,
+    "ast_hash": "c6697ef4683ed6dec168713304f35932",
+    "semantic_hash": ""
+  },
+  "brand/Agente/blender-render/render_segunda_vista.png": {
+    "mtime": 1784688666.4553535,
+    "ast_hash": "e597158133573f4127b2ac73f0bf71ab",
+    "semantic_hash": ""
+  },
+  "brand/Agente/logo.svg": {
+    "mtime": 1780597768.496252,
+    "ast_hash": "8941ff0d9d9284cf83e6167fca5e2758",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/airbnb-logo.svg": {
+    "mtime": 1784006808.233902,
+    "ast_hash": "2a1a6c94fd154fff6afe235cf73ecbba",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/booking-logo.png": {
+    "mtime": 1784006808.2382123,
+    "ast_hash": "7a123db67ef77c7841eddded1a5a31fa",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/inmobiliaria-vende/logo.svg": {
+    "mtime": 1785357439.159625,
+    "ast_hash": "8941ff0d9d9284cf83e6167fca5e2758",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/kinetic-conciergerie/logo.svg": {
+    "mtime": 1785443034.9895914,
+    "ast_hash": "f6d8bd0204ac2c6960f9e798301a9190",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/logo-atlasrouge-v1.svg": {
+    "mtime": 1784589948.8538775,
+    "ast_hash": "f6d8bd0204ac2c6960f9e798301a9190",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/logo.svg": {
+    "mtime": 1782260376.6655834,
+    "ast_hash": "8941ff0d9d9284cf83e6167fca5e2758",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/video-con/logo-atlasrouge-v1.svg": {
+    "mtime": 1785420408.9168203,
+    "ast_hash": "f6d8bd0204ac2c6960f9e798301a9190",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/remotion/public/logo-atlasrouge-v1.svg": {
+    "mtime": 1784610736.1993835,
+    "ast_hash": "f6d8bd0204ac2c6960f9e798301a9190",
+    "semantic_hash": ""
+  },
+  "brand/Icono-logo.png": {
+    "mtime": 1785448311.0725555,
+    "ast_hash": "97cb4dff0172cc35eee0f1cc987975c8",
+    "semantic_hash": ""
+  },
+  "brand/logo-atlasrouge-tiktok.png": {
+    "mtime": 1785448505.0496695,
+    "ast_hash": "13fbc7755b67fb81e06593e77ea2f324",
+    "semantic_hash": ""
+  },
+  "brand/logo-atlasrouge-v1.svg": {
+    "mtime": 1780597464.8648398,
+    "ast_hash": "f6d8bd0204ac2c6960f9e798301a9190",
+    "semantic_hash": ""
+  },
+  "document/ChatGPT Image 6 jun 2026, 05_17_50 p.m..png": {
+    "mtime": 1780759070.3627086,
+    "ast_hash": "c24f61c13ed8fb14fc4a0a134f0ad294",
+    "semantic_hash": ""
+  },
+  "document/atlas-landing/assets/flags/au.svg": {
+    "mtime": 1780831738.0,
+    "ast_hash": "8723b9d1e1333aed9d4788e620c5bd5d",
+    "semantic_hash": ""
+  },
+  "document/atlas-landing/assets/flags/br.svg": {
+    "mtime": 1780831738.0,
+    "ast_hash": "a0d07b7ccbe82137db1e13a2a93b34d3",
+    "semantic_hash": ""
+  },
+  "document/atlas-landing/assets/flags/ca.svg": {
+    "mtime": 1780831738.0,
+    "ast_hash": "65f8303f49709d85f4cf510472b4ff5c",
+    "semantic_hash": ""
+  },
+  "document/atlas-landing/assets/flags/de.svg": {
+    "mtime": 1780831738.0,
+    "ast_hash": "6804f5cec3623eb517a751a7af1c9d5f",
+    "semantic_hash": ""
+  },
+  "document/atlas-landing/assets/flags/eu.svg": {
+    "mtime": 1780831738.0,
+    "ast_hash": "eb87def82f8cf3fdc3a8c6b0cd5d949d",
+    "semantic_hash": ""
+  },
+  "document/atlas-landing/assets/flags/fr.svg": {
+    "mtime": 1780831738.0,
+    "ast_hash": "a1c1a5a996881684258e61e0002f4cff",
+    "semantic_hash": ""
+  },
+  "document/atlas-landing/assets/flags/gb.svg": {
+    "mtime": 1780831738.0,
+    "ast_hash": "88015371b43e5d4512d1d3e9eb267921",
+    "semantic_hash": ""
+  },
+  "document/atlas-landing/assets/flags/ie.svg": {
+    "mtime": 1780831738.0,
+    "ast_hash": "d578b289c230ff5768f2ce5df96c8c58",
+    "semantic_hash": ""
+  },
+  "document/atlas-landing/assets/flags/it.svg": {
+    "mtime": 1780831738.0,
+    "ast_hash": "a5d78e22c53d2ee7c3bdaa93c7ca2655",
+    "semantic_hash": ""
+  },
+  "document/atlas-landing/assets/flags/jp.svg": {
+    "mtime": 1780831738.0,
+    "ast_hash": "91134e9777d509606263fb44472a4675",
+    "semantic_hash": ""
+  },
+  "document/atlas-landing/assets/flags/us.svg": {
+    "mtime": 1780831738.0,
+    "ast_hash": "1dcb677b96883d4352b6fe6067710315",
+    "semantic_hash": ""
+  },
+  "document/atlas-landing/assets/properties/hero-property.svg": {
+    "mtime": 1780831738.0,
+    "ast_hash": "892cd794585b864d017c03c1e95740d1",
+    "semantic_hash": ""
+  },
+  "document/atlas-landing/assets/properties/property-1.svg": {
+    "mtime": 1780831738.0,
+    "ast_hash": "451fca618737e5d45a0c5555d1db8da2",
+    "semantic_hash": ""
+  },
+  "document/atlas-landing/assets/properties/property-2.svg": {
+    "mtime": 1780831738.0,
+    "ast_hash": "28423b692c99a0d16b6e5784e874f384",
+    "semantic_hash": ""
+  },
+  "document/atlas-landing/assets/properties/property-3.svg": {
+    "mtime": 1780831738.0,
+    "ast_hash": "530f81806a9a814367e8eee1e7a6de55",
+    "semantic_hash": ""
+  },
+  "document/b325903e88e8a89f37b1ca8b9280d0d1 (1).jpg": {
+    "mtime": 1780756590.5652697,
+    "ast_hash": "2f19f5420cdc41ba3a9d45317a9d286a",
+    "semantic_hash": ""
+  },
+  "public/atlas-landing/assets/flags/au.svg": {
+    "mtime": 1780833533.3610857,
+    "ast_hash": "8723b9d1e1333aed9d4788e620c5bd5d",
+    "semantic_hash": ""
+  },
+  "public/atlas-landing/assets/flags/br.svg": {
+    "mtime": 1780833533.3618705,
+    "ast_hash": "a0d07b7ccbe82137db1e13a2a93b34d3",
+    "semantic_hash": ""
+  },
+  "public/atlas-landing/assets/flags/ca.svg": {
+    "mtime": 1780833533.361608,
+    "ast_hash": "65f8303f49709d85f4cf510472b4ff5c",
+    "semantic_hash": ""
+  },
+  "public/atlas-landing/assets/flags/de.svg": {
+    "mtime": 1780833533.3623834,
+    "ast_hash": "6804f5cec3623eb517a751a7af1c9d5f",
+    "semantic_hash": ""
+  },
+  "public/atlas-landing/assets/flags/eu.svg": {
+    "mtime": 1780833533.3626428,
+    "ast_hash": "eb87def82f8cf3fdc3a8c6b0cd5d949d",
+    "semantic_hash": ""
+  },
+  "public/atlas-landing/assets/flags/fr.svg": {
+    "mtime": 1780833533.3594847,
+    "ast_hash": "a1c1a5a996881684258e61e0002f4cff",
+    "semantic_hash": ""
+  },
+  "public/atlas-landing/assets/flags/gb.svg": {
+    "mtime": 1780833533.3607738,
+    "ast_hash": "88015371b43e5d4512d1d3e9eb267921",
+    "semantic_hash": ""
+  },
+  "public/atlas-landing/assets/flags/ie.svg": {
+    "mtime": 1780833533.3628962,
+    "ast_hash": "d578b289c230ff5768f2ce5df96c8c58",
+    "semantic_hash": ""
+  },
+  "public/atlas-landing/assets/flags/it.svg": {
+    "mtime": 1780833533.3621328,
+    "ast_hash": "a5d78e22c53d2ee7c3bdaa93c7ca2655",
+    "semantic_hash": ""
+  },
+  "public/atlas-landing/assets/flags/jp.svg": {
+    "mtime": 1780833533.3599224,
+    "ast_hash": "91134e9777d509606263fb44472a4675",
+    "semantic_hash": ""
+  },
+  "public/atlas-landing/assets/flags/us.svg": {
+    "mtime": 1780833533.3613527,
+    "ast_hash": "1dcb677b96883d4352b6fe6067710315",
+    "semantic_hash": ""
+  },
+  "public/atlas-landing/assets/properties/hero-property.svg": {
+    "mtime": 1780833533.3638687,
+    "ast_hash": "892cd794585b864d017c03c1e95740d1",
+    "semantic_hash": ""
+  },
+  "public/atlas-landing/assets/properties/property-1.svg": {
+    "mtime": 1780833533.364207,
+    "ast_hash": "451fca618737e5d45a0c5555d1db8da2",
+    "semantic_hash": ""
+  },
+  "public/atlas-landing/assets/properties/property-2.svg": {
+    "mtime": 1780833533.363603,
+    "ast_hash": "28423b692c99a0d16b6e5784e874f384",
+    "semantic_hash": ""
+  },
+  "public/atlas-landing/assets/properties/property-3.svg": {
+    "mtime": 1780833533.3633296,
+    "ast_hash": "530f81806a9a814367e8eee1e7a6de55",
+    "semantic_hash": ""
+  },
+  "public/proprietaires/atlas-rouge-logo.svg": {
+    "mtime": 1784912324.6206696,
+    "ast_hash": "422f4bc2afef2e69d2b90ac303eb3c98",
+    "semantic_hash": ""
+  },
+  "public/vendor/intl-tel-input/img/flags.webp": {
+    "mtime": 1785873316.9891775,
+    "ast_hash": "8997ff4d0c2b39085b923977e723088e",
+    "semantic_hash": ""
+  },
+  "public/vendor/intl-tel-input/img/flags@2x.webp": {
+    "mtime": 1785873316.9902396,
+    "ast_hash": "ff107af69bd493f9f9deb06978cb92e8",
+    "semantic_hash": ""
+  },
+  "public/vendre/atlas-rouge-logo.svg": {
+    "mtime": 1785116927.4723406,
+    "ast_hash": "422f4bc2afef2e69d2b90ac303eb3c98",
+    "semantic_hash": ""
+  },
+  "brand/Agente/2-Inmobiliaria_vende_bien_Marrakech_202607292229.mp4": {
+    "mtime": 1785356945.6213832,
+    "ast_hash": "a14620e2e5d8c583dc9aa0f81123fff2",
+    "semantic_hash": ""
+  },
+  "brand/Agente/2-Woman_speaking_French_about_selling_202607292121.mp4": {
+    "mtime": 1785358233.5802906,
+    "ast_hash": "188b32127df4c336bcacc47a5c54c50f",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Musica/jean-paul-v-a-mirage-of-marrakech-song-2-264566.mp3": {
+    "mtime": 1782261912.32811,
+    "ast_hash": "e37bcc81bc565c53e8b39ce7483be75f",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Musica/leberch-real-estate-262604.mp3": {
+    "mtime": 1782262026.213693,
+    "ast_hash": "1205642e4348d958585ed7902a3b2f5c",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Musica/sleepvolume-corporate-business-instrumental-tune-for-marketing-session-3-334166.mp3": {
+    "mtime": 1782261717.4759269,
+    "ast_hash": "1009a22e5b8c6f36265ebab0fef340cb",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Musica/u_98673jp944-marrakech-alley-344787.mp3": {
+    "mtime": 1782261868.6521037,
+    "ast_hash": "49f4f2b9a138efb863cad874194a6902",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 1/Mujer_habla_en_france\u0301s_Marrakech_202607070123.mp4": {
+    "mtime": 1783380220.3934014,
+    "ast_hash": "ffadb5a71b0f7fd5058852018401f5ec",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 1/Mujer_habla_france\u0301s_sobre_aparta\u2026_202607070122.mp4": {
+    "mtime": 1783380156.561762,
+    "ast_hash": "122eaf2cd1c00c0f77f8646d391fb5b4",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 1/Mujer_habla_france\u0301s_y_dice_202607070123.mp4": {
+    "mtime": 1783380213.0581467,
+    "ast_hash": "ad015bc94255c3532f7d5afdf9adc25c",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 1/kling-clips/plano1-en-test.mp4": {
+    "mtime": 1783449576.5303621,
+    "ast_hash": "935dd8561231cde04775d0243a34f784",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 1/kling-clips/plano1-en-v2.mp4": {
+    "mtime": 1783451065.2777064,
+    "ast_hash": "3e9c1dc32e6fa05ebf3ec11b49c45fe4",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 1/kling-clips/plano1-hook.mp4": {
+    "mtime": 1783447841.5760431,
+    "ast_hash": "ff14330bd76bb20c301f2d3d7a85898d",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 1/kling-clips/plano2-en.mp4": {
+    "mtime": 1783452160.0814118,
+    "ast_hash": "fae9c1d1b198eea9f0224f83e19f5704",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 1/kling-clips/plano2-problema.mp4": {
+    "mtime": 1783447843.2258224,
+    "ast_hash": "505dc51ae5fb123ead4a7409e5a13b65",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 1/kling-clips/plano3-broll-en.mp4": {
+    "mtime": 1783452159.7748652,
+    "ast_hash": "bb5e7466f8a842236ed3f0f768afd840",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 1/kling-clips/plano4-en.mp4": {
+    "mtime": 1783452160.394486,
+    "ast_hash": "5de1959757172a5f52b40a3a916314df",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 1/kling-clips/plano4-solucion.mp4": {
+    "mtime": 1783447845.3830848,
+    "ast_hash": "06a3fbc6d1f7c34bee4ff1cc37bc4707",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 1/kling-clips/plano5-broll-en.mp4": {
+    "mtime": 1783452159.371775,
+    "ast_hash": "43c486b7da886a00272d9a7afda15458",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 2/Escena_inicial_-_2026-07-14_202607140547.mp4": {
+    "mtime": 1784000844.8192062,
+    "ast_hash": "d342fe97bf37a21a2785b15f21440687",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 2/tonisound-ads-attack-156765.mp3": {
+    "mtime": 1784001362.8017557,
+    "ast_hash": "8c8e7bcf9da95032c92a188d886b97a2",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 3/Woman_speaking_French_about_selling_202607292121.mp4": {
+    "mtime": 1785353665.1171126,
+    "ast_hash": "48e9f711528e2cf60aeb1c7b9cbc675c",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video 3/paulyudin-piano-piano-music-508963.mp3": {
+    "mtime": 1785353665.1260598,
+    "ast_hash": "4f500556353ba59f32ee75a83c44fdda",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video con/Atlas_Rouge_representative_enter\u2026_202607301551.mp4": {
+    "mtime": 1785419468.3353543,
+    "ast_hash": "8d049981f67e8c23c1b6a8952e5bd119",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video con/ElevenLabs_2026-07-30T14_16_24_Simon - Cheerful, Energetic and Rapid_pvc_sp108_s100_sb67_v3.mp3": {
+    "mtime": 1785421003.974281,
+    "ast_hash": "f4b04ddc4673f3cb745de564e2055643",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video con/Guest_waiting_messages_unanswere\u2026_1080p_202607301558.mp4": {
+    "mtime": 1785419920.5230074,
+    "ast_hash": "f9ab421355c1006af4e3fe831028bd8d",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video con/Mujer_francesa_revisa_tele\u0301fono_M\u2026_202607301552.mp4": {
+    "mtime": 1785419545.9295785,
+    "ast_hash": "72ad1298380a8059721aec4aa2f734dd",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video con/Woman_receives_property_messages\u2026_1080p_202607301554.mp4": {
+    "mtime": 1785419686.4091194,
+    "ast_hash": "5da1999180e1f14847a8290946970969",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video con/paulyudin-piano-piano-music-508963.mp3": {
+    "mtime": 1785353665.1260598,
+    "ast_hash": "4f500556353ba59f32ee75a83c44fdda",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video con/u_98673jp944-marrakech-alley-344787.mp3": {
+    "mtime": 1785421261.658675,
+    "ast_hash": "49f4f2b9a138efb863cad874194a6902",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video kinetic typography /Audio-2_2026-07-21T01_30_11_Liam - Energetic, Social Media Creator_pre_sp100_s50_sb75_v3.mp3": {
+    "mtime": 1784597445.0435886,
+    "ast_hash": "e7dd18a0919e569cb245826473479f79",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video kinetic typography /ElevenLabs_2026-07-20T23_16_22_Adina - Young, Welcoming and Joyful_pvc_sp87_s32_sb83_f2-5.mp3": {
+    "mtime": 1784589400.4583137,
+    "ast_hash": "dd7eefd6cd51381d45116dd64ceebcf5",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video kinetic typography /marrakech/137321-766532290_medium.mp4": {
+    "mtime": 1784600270.074691,
+    "ast_hash": "0e7b2d287534d311e63cc9eea2489ad9",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video kinetic typography /marrakech/137528-766715311_medium.mp4": {
+    "mtime": 1784600221.9401126,
+    "ast_hash": "2933dc44555225e3fc9ed1e73fc49d6a",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video kinetic typography /marrakech/137535-766715327_medium.mp4": {
+    "mtime": 1784600240.6889322,
+    "ast_hash": "7c0fdaaaba0ecec61121d8ae2d794a5f",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video kinetic typography /marrakech/159727-819369000_medium.mp4": {
+    "mtime": 1784600252.808346,
+    "ast_hash": "b0ecd18adf62453e16cd4d34c932d4ae",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video kinetic typography /marrakech/245025_medium.mp4": {
+    "mtime": 1784600312.9486856,
+    "ast_hash": "aa1494d65926a5b63d77a9de258b718d",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video kinetic typography /marrakech/b.mp4": {
+    "mtime": 1784600626.7454855,
+    "ast_hash": "04831b625ca2573f31f1a7137e611515",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video kinetic typography /marrakech/vecteezy_modern-architecture-in-a-clean-courtyard-in-greece_73284194.mp4": {
+    "mtime": 1784600808.011029,
+    "ast_hash": "dee9f4d6174da4e31aefc5355e08097e",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video kinetic typography /real state/vecteezy_modern-home-with-pool-and-lounge-chairs-reflecting-sunset_58755189.mp4": {
+    "mtime": 1784601066.3681483,
+    "ast_hash": "a01d12d1ae3e389742d315dd46863a09",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video kinetic typography /real state/vecteezy_modern-living-room-interior-with-natural-light-and-wood_72741285.mp4": {
+    "mtime": 1784600960.0385616,
+    "ast_hash": "31e94d0c7da799086c2c9f6df48714e9",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video kinetic typography /real state/vecteezy_modern-luxury-villa-with-palm-trees-and-a-swimming-pool_77047570.mp4": {
+    "mtime": 1784600696.4067473,
+    "ast_hash": "c0798004b465899415d8e8c01a2dd6bd",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video kinetic typography /vecteezy_asian-father-and-mother-taking-their-daughter-pink-bike-in_7432622.mp4": {
+    "mtime": 1784601214.199323,
+    "ast_hash": "714c9ab9bc46c92f97226e29d8569a18",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video kinetic typography /vecteezy_paris-france-from-above-eiffel-tower-drone-panorama-autumn_6277033.mov": {
+    "mtime": 1784601383.124747,
+    "ast_hash": "7619b65d87f70a673062ff8577f5cde3",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Video kinetic typography /vecteezy_paris-france-from-above-eiffel-tower-drone-panorama-autumn_6289925.mov": {
+    "mtime": 1784601438.882154,
+    "ast_hash": "192443e84ecaf0d8d69e76f2a422d381",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Vous_avez_un_appartement_une (1).mp4": {
+    "mtime": 1782259541.3990834,
+    "ast_hash": "7f21e64d229112662b8759ded272a2e3",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Vous_avez_un_appartement_une 2.mp4": {
+    "mtime": 1782259558.4745417,
+    "ast_hash": "d589b3d9d83613058004d63c6c7fee6c",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Vous_avez_un_appartement_une.mp4": {
+    "mtime": 1782257864.4201345,
+    "ast_hash": "7f21e64d229112662b8759ded272a2e3",
+    "semantic_hash": ""
+  },
+  "brand/Agente/Woman_speaking_French_about_selling_202607292121.mp4": {
+    "mtime": 1785352902.6126373,
+    "ast_hash": "48e9f711528e2cf60aeb1c7b9cbc675c",
+    "semantic_hash": ""
+  },
+  "brand/Agente/musica-opciones/Opcion-A.mp3": {
+    "mtime": 1782262279.651717,
+    "ast_hash": "5330f20da05354ea8fa051e94d31782b",
+    "semantic_hash": ""
+  },
+  "brand/Agente/musica-opciones/Opcion-B.mp3": {
+    "mtime": 1782262279.6536703,
+    "ast_hash": "45d0d7ee7b7eb0fb6ef641c54778afa8",
+    "semantic_hash": ""
+  },
+  "brand/Agente/musica-opciones/Opcion-C.mp3": {
+    "mtime": 1782262279.6556764,
+    "ast_hash": "556d4739a1fef6228ea70e14c56ec5ba",
+    "semantic_hash": ""
+  },
+  "brand/Agente/musica-opciones/Opcion-D.mp3": {
+    "mtime": 1782262279.6582704,
+    "ast_hash": "7e90c0d7de8b4f3e40e8747cc1aade97",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/c1-hook-problema.mp4": {
+    "mtime": 1783380507.6989884,
+    "ast_hash": "122eaf2cd1c00c0f77f8646d391fb5b4",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/c2-solucion-equipo.mp4": {
+    "mtime": 1783380507.7024198,
+    "ast_hash": "ad015bc94255c3532f7d5afdf9adc25c",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/c3-cta.mp4": {
+    "mtime": 1783380507.7073965,
+    "ast_hash": "ffadb5a71b0f7fd5058852018401f5ec",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/inmobiliaria-vende-woman/piano.mp3": {
+    "mtime": 1785358350.423418,
+    "ast_hash": "4f500556353ba59f32ee75a83c44fdda",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/inmobiliaria-vende-woman/source.mp4": {
+    "mtime": 1785358350.413997,
+    "ast_hash": "188b32127df4c336bcacc47a5c54c50f",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/inmobiliaria-vende-woman/voice-mastered.mp3": {
+    "mtime": 1785358350.6510117,
+    "ast_hash": "8c4a2eadc9393379076ea73606fac604",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/inmobiliaria-vende/piano.mp3": {
+    "mtime": 1785357439.1662436,
+    "ast_hash": "4f500556353ba59f32ee75a83c44fdda",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/inmobiliaria-vende/source.mp4": {
+    "mtime": 1785357439.1567192,
+    "ast_hash": "a14620e2e5d8c583dc9aa0f81123fff2",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/inmobiliaria-vende/voice-mastered.mp3": {
+    "mtime": 1785357439.489782,
+    "ast_hash": "a112df7ebafa80b8face6421781b18a9",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/kinetic-adina-voice.mp3": {
+    "mtime": 1784589948.8501995,
+    "ast_hash": "dd7eefd6cd51381d45116dd64ceebcf5",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/kinetic-conciergerie/marrakech/riad-1.mp4": {
+    "mtime": 1785443034.8804712,
+    "ast_hash": "0e7b2d287534d311e63cc9eea2489ad9",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/kinetic-conciergerie/marrakech/riad-2.mp4": {
+    "mtime": 1785443034.9109323,
+    "ast_hash": "7c0fdaaaba0ecec61121d8ae2d794a5f",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/kinetic-conciergerie/marrakech/riad-3.mp4": {
+    "mtime": 1785443034.9176834,
+    "ast_hash": "b0ecd18adf62453e16cd4d34c932d4ae",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/kinetic-conciergerie/real-state/interior.mp4": {
+    "mtime": 1785443034.9821227,
+    "ast_hash": "31e94d0c7da799086c2c9f6df48714e9",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/kinetic-conciergerie/real-state/villa.mp4": {
+    "mtime": 1785443034.9469805,
+    "ast_hash": "c0798004b465899415d8e8c01a2dd6bd",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/kinetic-conciergerie/voiceover.mp3": {
+    "mtime": 1785443034.9863508,
+    "ast_hash": "f4b04ddc4673f3cb745de564e2055643",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/kinetic-liam-voice.mp3": {
+    "mtime": 1784598832.9236684,
+    "ast_hash": "e7dd18a0919e569cb245826473479f79",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/kinetic-montage/family-bike.mp4": {
+    "mtime": 1784603991.9701464,
+    "ast_hash": "714c9ab9bc46c92f97226e29d8569a18",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/kinetic-montage/jemaa-el-fna.mp4": {
+    "mtime": 1784606857.161959,
+    "ast_hash": "0e7b2d287534d311e63cc9eea2489ad9",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/kinetic-montage/juice-stall.mp4": {
+    "mtime": 1784606857.2110047,
+    "ast_hash": "aa1494d65926a5b63d77a9de258b718d",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/kinetic-montage/koutoubia.mp4": {
+    "mtime": 1784606857.1993089,
+    "ast_hash": "b0ecd18adf62453e16cd4d34c932d4ae",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/kinetic-montage/liam-voice-mastered.mp3": {
+    "mtime": 1784607722.1233451,
+    "ast_hash": "0d1345148de8e0f1291899c083bc3656",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/kinetic-montage/liam-voice.mp3": {
+    "mtime": 1784603991.9728544,
+    "ast_hash": "e7dd18a0919e569cb245826473479f79",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/kinetic-montage/living-room.mp4": {
+    "mtime": 1784606857.2520726,
+    "ast_hash": "31e94d0c7da799086c2c9f6df48714e9",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/kinetic-montage/marrakech-drone.mp4": {
+    "mtime": 1784606857.1495345,
+    "ast_hash": "04831b625ca2573f31f1a7137e611515",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/kinetic-montage/medina-alley.mp4": {
+    "mtime": 1784606857.1937938,
+    "ast_hash": "7c0fdaaaba0ecec61121d8ae2d794a5f",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/kinetic-montage/paris-eiffel-dark.mov": {
+    "mtime": 1784603991.8102999,
+    "ast_hash": "7619b65d87f70a673062ff8577f5cde3",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/kinetic-montage/paris-eiffel-day.mov": {
+    "mtime": 1784603991.821252,
+    "ast_hash": "192443e84ecaf0d8d69e76f2a422d381",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/kinetic-montage/spices.mp4": {
+    "mtime": 1784606857.1767554,
+    "ast_hash": "2933dc44555225e3fc9ed1e73fc49d6a",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/kinetic-montage/sunset-pool.mp4": {
+    "mtime": 1784606857.2701838,
+    "ast_hash": "a01d12d1ae3e389742d315dd46863a09",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/kinetic-montage/villa-palm-pool.mp4": {
+    "mtime": 1784606857.2303047,
+    "ast_hash": "c0798004b465899415d8e8c01a2dd6bd",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/kinetic-montage/white-courtyard.mp4": {
+    "mtime": 1784606857.219119,
+    "ast_hash": "dee9f4d6174da4e31aefc5355e08097e",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/music-conciergerie.mp3": {
+    "mtime": 1783380975.9931736,
+    "ast_hash": "1205642e4348d958585ed7902a3b2f5c",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/music-vendre.mp3": {
+    "mtime": 1785354031.1481004,
+    "ast_hash": "4f500556353ba59f32ee75a83c44fdda",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/music.mp3": {
+    "mtime": 1782262456.1272626,
+    "ast_hash": "d9b7c1207d3893163e2d195298596229",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/p1.mp4": {
+    "mtime": 1782260376.658546,
+    "ast_hash": "7f21e64d229112662b8759ded272a2e3",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/p2.mp4": {
+    "mtime": 1782260376.6632307,
+    "ast_hash": "d589b3d9d83613058004d63c6c7fee6c",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/v1-plano1.mp4": {
+    "mtime": 1783455683.2014349,
+    "ast_hash": "3e9c1dc32e6fa05ebf3ec11b49c45fe4",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/v1-plano2.mp4": {
+    "mtime": 1783455683.2169266,
+    "ast_hash": "fae9c1d1b198eea9f0224f83e19f5704",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/v1-plano3-broll.mp4": {
+    "mtime": 1783455683.235282,
+    "ast_hash": "bb5e7466f8a842236ed3f0f768afd840",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/v1-plano4.mp4": {
+    "mtime": 1783455683.257202,
+    "ast_hash": "5de1959757172a5f52b40a3a916314df",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/v1-plano5-broll.mp4": {
+    "mtime": 1783455683.2710636,
+    "ast_hash": "43c486b7da886a00272d9a7afda15458",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/v2-ads-attack-master.mp3": {
+    "mtime": 1784003353.728233,
+    "ast_hash": "c1e3f5eb5a56a08a95e956cf1d382139",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/v2-ads-attack.mp3": {
+    "mtime": 1784001667.9326165,
+    "ast_hash": "8c8e7bcf9da95032c92a188d886b97a2",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/v2-source.mp4": {
+    "mtime": 1784001667.9251661,
+    "ast_hash": "d342fe97bf37a21a2785b15f21440687",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/v3-vendre-clip.mp4": {
+    "mtime": 1785353743.8242636,
+    "ast_hash": "f407c7875df6945f60c0410fd1232fd7",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/video-con/guest-waiting.mp4": {
+    "mtime": 1785420256.9827383,
+    "ast_hash": "f9ab421355c1006af4e3fe831028bd8d",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/video-con/music.mp3": {
+    "mtime": 1785422140.5512967,
+    "ast_hash": "4f500556353ba59f32ee75a83c44fdda",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/video-con/representative.mp4": {
+    "mtime": 1785420256.998406,
+    "ast_hash": "8d049981f67e8c23c1b6a8952e5bd119",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/video-con/voiceover.mp3": {
+    "mtime": 1785421434.548392,
+    "ast_hash": "f4b04ddc4673f3cb745de564e2055643",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/video-con/woman-phone.mp4": {
+    "mtime": 1785420256.9696007,
+    "ast_hash": "72ad1298380a8059721aec4aa2f734dd",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/voice-v2k-es/raw1.mp3": {
+    "mtime": 1784003313.762714,
+    "ast_hash": "5ff295878d9461b538840031c0a4b324",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/voice-v2k-es/raw2.mp3": {
+    "mtime": 1784003313.6731596,
+    "ast_hash": "2d6afbdd473b11a8ab52052d0709dd1b",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/voice-v2k-es/raw3.mp3": {
+    "mtime": 1784003313.7009597,
+    "ast_hash": "cd7eb571a3195043a2c94719716cb277",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/voice-v2k-es/raw4.mp3": {
+    "mtime": 1784003313.6885352,
+    "ast_hash": "d2a5097f0542625fd615fff80b5b6c2c",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/voice-v2k-es/raw5.mp3": {
+    "mtime": 1784003313.6603684,
+    "ast_hash": "82e34fdcf10855d21fff29cb817f7faf",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/voice-v2k-es/raw6.mp3": {
+    "mtime": 1784003313.7428005,
+    "ast_hash": "2b5508686b8ec876f3242e689f261ce8",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/voice-v2k-es/voice1.mp3": {
+    "mtime": 1784003313.926514,
+    "ast_hash": "28bb626c4662abc21b7b4532697cc2e5",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/voice-v2k-es/voice2.mp3": {
+    "mtime": 1784003313.9769762,
+    "ast_hash": "dae642f2d2f5d825b502201df6e2d972",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/voice-v2k-es/voice3.mp3": {
+    "mtime": 1784003314.050273,
+    "ast_hash": "ac8243f6b8ba23850e2b6f846bd02e51",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/voice-v2k-es/voice4.mp3": {
+    "mtime": 1784003314.1170297,
+    "ast_hash": "fa3dbe037fb28cbaf6bfe049695364f5",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/voice-v2k-es/voice5.mp3": {
+    "mtime": 1784003314.1603527,
+    "ast_hash": "83cbde060d065e5803baf507a9489357",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/voice-v2k-es/voice6.mp3": {
+    "mtime": 1784003314.2568889,
+    "ast_hash": "9ed5e8a387840080ae70bb43682e7199",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/voice-v2k/raw1.mp3": {
+    "mtime": 1784002756.0531723,
+    "ast_hash": "a5aff913eab6b3e6420f3e214355f330",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/voice-v2k/raw2.mp3": {
+    "mtime": 1784002755.9856713,
+    "ast_hash": "c1574484a0e170ec3150e2f4b8c4a446",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/voice-v2k/raw3.mp3": {
+    "mtime": 1784002756.0115447,
+    "ast_hash": "7f4f59ba916a984d96671d77b89dd26d",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/voice-v2k/raw4.mp3": {
+    "mtime": 1784002755.9894001,
+    "ast_hash": "14ed61f8d32198a36efb718dd4d79a61",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/voice-v2k/raw5.mp3": {
+    "mtime": 1784002755.948476,
+    "ast_hash": "1bf882d0b3597e98ae97c91428a5fee4",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/voice-v2k/raw6.mp3": {
+    "mtime": 1784002756.0571272,
+    "ast_hash": "fd31324c997fdc1cfa8639987d2f527b",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/voice-v2k/voice1.mp3": {
+    "mtime": 1784002791.0120342,
+    "ast_hash": "3106c0dbc5981e5163ea19b59be1fd45",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/voice-v2k/voice2.mp3": {
+    "mtime": 1784002791.0624444,
+    "ast_hash": "a606b9ba942881ab2049631d17c7ad01",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/voice-v2k/voice3.mp3": {
+    "mtime": 1784002791.1374445,
+    "ast_hash": "41c7c61e3c2e36db7915eea3ba9dea48",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/voice-v2k/voice4.mp3": {
+    "mtime": 1784002791.188707,
+    "ast_hash": "96275ef55331bc8d4c3dc84753117163",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/voice-v2k/voice5.mp3": {
+    "mtime": 1784002791.2282872,
+    "ast_hash": "9e82782e41b7138eb16ff729925f6e4f",
+    "semantic_hash": ""
+  },
+  "brand/Agente/remotion/public/voice-v2k/voice6.mp3": {
+    "mtime": 1784002791.3256233,
+    "ast_hash": "f4730ea8feb63f8f1da48560321c2b5d",
+    "semantic_hash": ""
   }
 }

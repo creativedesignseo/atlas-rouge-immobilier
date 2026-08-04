@@ -4,7 +4,42 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-08-04 (dos fallos en vivo del panel arreglados + diseño del CRM)
+**Last updated:** 2026-08-04 noche (landings: teléfono internacional + WhatsApp, verificado en prod)
+
+## 🟢 Landings — EN VIVO y verificado 2026-08-04 noche
+
+- ✅ `cadfe641` — selector de teléfono internacional (intl-tel-input v29.1.3,
+  servido desde `public/vendor/`, no CDN). Guarda en E.164: un `06 12 34 56 78`
+  francés entra como `+33612345678`. Rechaza números imposibles antes del
+  insert. Detección de país por IP (ipapi.co, en la CSP), con caída a `fr` si
+  falla o tarda >1,5 s.
+- ✅ `cadfe641` — botón post-envío abre WhatsApp con mensaje pre-escrito
+  (nombre + intención). Evento `whatsapp_after_lead`.
+- ✅ `cadfe641` — "Gratuit" eliminado de las dos landings.
+- ✅ `4afe64dd` — arreglado el solapamiento lupa/texto en el buscador del
+  desplegable ("Qearch"), reportado por el owner con captura.
+
+⚠️ **Trampas de intl-tel-input v29** (las docs que circulan son de v21-25):
+no existen `geoIpLookup` ni `utilsScript`; son `initialCountryLookup` +
+`intlTelInputWithUtils`. `initialCountry` DEBE quedar vacío o el lookup no se
+ejecuta (`intlTelInput.js:3789`). El contenedor del menú es
+`.iti__country-selector`, no `.iti__dropdown-content`. Y el buscador del menú
+hereda `.field input`, que le gana en especificidad al plugin.
+
+## 🔴 Tipografías Lazzer publicadas — requiere OK del owner
+
+`public/vendre/fonts/Lazzer-*.woff` (5 archivos) están **trackeados en git y
+en producción**: `atlasrouge.com/vendre/fonts/Lazzer-Regular.woff` → 200,
+`application/font-woff`. Es tipografía comercial ajena servida desde el dominio
+del cliente. Retirarla es borrar archivos → autorización expresa.
+(`.gitignore` NO sirve aquí: no aplica a archivos ya trackeados.)
+`public/prueba/` sí es inocuo: untracked, nunca llegó al servidor.
+
+## 🟡 Dos etiquetas sin renombrar en la pantalla Leads
+
+Dentro de `/admin/contacts` siguen "N contactos en total" y
+"Buscar un contacto…". El menú y el título ya dicen Leads (`a801dce6`).
+
 
 ## 🟢 Panel de admin — arreglado y verificado en prod 2026-08-04
 

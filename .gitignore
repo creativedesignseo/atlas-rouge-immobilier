@@ -72,3 +72,7 @@ public/prueba/
 # files — listing them would only create a false sense of protection. They are
 # live at atlasrouge.com/vendre/fonts/*.woff (verified 2026-08-04: HTTP 200,
 # application/font-woff). Removing them needs the owner's explicit approval.
+
+# graphify writes a dated backup of the previous graph on every rebuild.
+# Regenerable and large (~50k lines); the current graph is what travels.
+graphify-out/20*/

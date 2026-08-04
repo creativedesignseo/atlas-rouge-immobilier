@@ -4,6 +4,95 @@
 
 ---
 
+## CIERRE — Claude Opus 5 — 2026-08-04 noche (landings: selector de teléfono internacional + WhatsApp)
+
+Petición del owner sobre `/vendre/` y `/proprietaires/`: quitar el distintivo
+"Gratuit", que el botón tras enviar abra WhatsApp con frase pre-escrita, y un
+selector de teléfono internacional (intl-tel-input) con banderas, detección de
+país por IP y validación. Todo EN VIVO y verificado en producción.
+
+### 1. Los tres cambios (commit `cadfe641`) — verificados en prod
+
+- **Selector de teléfono** (intl-tel-input v29.1.3, servido desde
+  `public/vendor/` — NO CDN: la CSP solo permite 'self' y añadir un CDN es
+  exactamente lo que dejó mudo el píxel de TikTok). Verificado en
+  `atlasrouge.com/vendre/` con el navegador: detección por IP funciona
+  (detectó `es`), un francés que teclea `06 12 34 56 78` ve `6 12 34 56 78` y
+  se guarda **`+33612345678`** (E.164). Números imposibles (`123`) se rechazan
+  ANTES del insert: borde rojo + mensaje, cero escrituras. Blindado: si la
+  detección IP falla o tarda >1,5 s cae a `fr` — la promesa de
+  `initialCountryLookup` NUNCA rechaza, porque sin país seleccionado
+  `getNumber()` devuelve el número crudo (reproducido en test).
+  ⚠️ v29 ≠ docs viejas: no existen `geoIpLookup` ni `utilsScript`
+  (ahora `initialCountryLookup` + `intlTelInputWithUtils`). Y `initialCountry`
+  debe quedar VACÍO o el lookup no corre (intlTelInput.js:3789).
+- **WhatsApp post-envío**: el botón del estado de éxito abre
+  `wa.me/212648024156` con mensaje pre-escrito (nombre + intención del
+  visitante). Evento `whatsapp_after_lead` al hacer clic. Sustituye al
+  `mailto:` anterior.
+- **"Gratuit" fuera** en las dos landings (badge + punto).
+- CSP: añadido `https://ipapi.co` a connect-src (`netlify.toml`).
+- Verificación sin ensuciar la BD: build de producción con la red interceptada
+  (número FR nacional → E.164, número MA → E.164, `123` rechazado sin insert).
+  **Confirmado además con tráfico real**: un lead entrado por la landing tras
+  el deploy quedó guardado en formato internacional.
+
+### 2. Fallo visual reportado por el owner — ARREGLADO (commit `4afe64dd`)
+
+Captura del owner: la lupa montada sobre "Search" ("Qearch") en el desplegable.
+Dos causas, ambas nuestras: (1) el buscador vive dentro de `.field` y la regla
+genérica `.field input` (0,1,1) le gana a `.iti__search-input` (0,1,0) del
+plugin, pisándole el padding reservado al icono; (2) los estilos del menú
+apuntaban a `.iti__dropdown-content`, clase que la v29 eliminó — el contenedor
+real es `.iti__country-selector`. Verificado en prod con el menú abierto:
+padding-left 37px, icono termina x=709, texto empieza x=719, y captura
+reproduciendo la escena exacta del owner (Sudáfrica + menú abierto) limpia.
+
+### 3. Corrección de una afirmación falsa mía (commit `ba6bd958`)
+
+Dije que las tipografías Lazzer no estaban publicadas. **Falso**: comprobé con
+`.woff2` cuando son `.woff` y el fallback del SPA me devolvió HTML que leí como
+"no existe". Realidad verificada: `atlasrouge.com/vendre/fonts/Lazzer-*.woff`
+→ 200, `application/font-woff`, 5 archivos trackeados en git, publicados en
+cada deploy. **Riesgo de licencia abierto; retirarlos requiere OK del owner.**
+`public/prueba/` sí que nunca llegó al servidor (untracked) y quedó blindado
+en `.gitignore`. BITACORA corregida dejando constancia del error de método.
+
+### 4. Estado de la BD (leído en vivo, solo lectura)
+
+12 leads, 0 ZZTEST (el owner borró las filas de prueba). **Dos entradas nuevas
+esta tarde-noche**, ambas por las landings y con el teléfono ya en formato
+internacional. Coinciden en hora con los despliegues, así que probablemente son
+pruebas del propio owner, **sin confirmar**: preguntar antes de llamar.
+(Datos concretos: consultarlos en `/admin/contacts`. No se copian aquí — este
+documento vive en un repositorio y no es un volcado de la base.)
+
+### 5. Graph refrescado (`graphify update .`)
+
+3.023 nodos, 4.686 aristas, 245 comunidades. Solo código: la extracción
+semántica de docs/imágenes necesita clave LLM y la `DEEPSEEK_API_KEY` de
+`.env.local` es un placeholder (73 chars, no empieza por `sk-`) — la real vive
+solo en Netlify y no se imprime. Si se quiere el Graph con docs: poner una
+clave real en `.env.local` y correr `/graphify --update`.
+
+### Verificación de este cierre
+
+`verify.sh` ✅ · `HEAD == origin/main` ✅ · landings en prod: badge 0,
+waButton 1, plugin 2, fixCSS 2 (ambas) ✅ · vendor con MIME correcto
+(js/css/webp) ✅ · CSP con ipapi.co ✅ · notify-lead ejecuta (valida payload;
+sigue SIN canal configurado) ✅ · menú "Leads" verificado visualmente en el
+panel tras el deploy de `a801dce6` ✅
+
+### Pendiente (sin cambios)
+
+1. Canal de aviso de leads (Telegram o email) — decisión del owner.
+2. URLs de anuncios en Google Ads — bloqueo para activar campañas.
+3. Autorización para retirar las 5 tipografías Lazzer.
+4. Dos etiquetas dentro de la pantalla Leads aún dicen "contacto".
+5. CRM fase 1 (diseño en `tasks/current.md`).
+
+---
+
 ## CIERRE — Claude Opus 5 — 2026-08-04 (dos fallos en vivo del panel + diseño del CRM)
 
 Preguntas del owner: *"¿por qué tarda tanto al borrar un lead?"* y *"esto debería
