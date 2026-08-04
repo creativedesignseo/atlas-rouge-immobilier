@@ -1,7 +1,7 @@
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 import { adminRestRequest } from '@/lib/adminRest'
 import { getCached, refetch, invalidate } from '@/lib/queryCache'
-import type { ContactSubmissionRow } from '@/types/supabase'
+import type { ContactSubmissionRow, LeadPriority, LeadStage } from '@/types/supabase'
 
 const CONTACT_SUBMISSIONS = '/rest/v1/contact_submissions'
 
@@ -15,6 +15,13 @@ export interface ContactSubmission {
   subject: string
   message: string
   property_slug: string | null
+  assigned_to_agent_id: string | null
+  stage: LeadStage
+  priority: LeadPriority
+  // Null only on the pre-016 junk row; callers fall back to created_at.
+  stage_changed_at: string | null
+  next_follow_up_at: string | null
+  lost_reason: string | null
   created_at: string
 }
 
@@ -27,6 +34,15 @@ function mapRow(row: ContactSubmissionRow): ContactSubmission {
     subject: row.subject,
     message: row.message,
     property_slug: row.property_slug,
+    assigned_to_agent_id: row.assigned_to_agent_id,
+    // `status` is the column; `stage` is what the CRM calls it. Renaming the
+    // column would break every insert path (forms, Netlify functions), so the
+    // translation happens here, once.
+    stage: row.status,
+    priority: row.priority,
+    stage_changed_at: row.stage_changed_at,
+    next_follow_up_at: row.next_follow_up_at,
+    lost_reason: row.lost_reason,
     created_at: row.created_at,
   }
 }

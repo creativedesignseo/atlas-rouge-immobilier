@@ -393,5 +393,120 @@
       "updated": "Neighborhood updated",
       "saveError": "Could not save the neighborhood"
     }
+  },
+  "crm": {
+    "header": {
+      "eyebrow": "ATLAS ROUGE · CRM",
+      "title": "Lead pipeline",
+      "subtitle": "Sort every lead by stage, move it through the funnel and take it to close from one screen.",
+      "export": "Export CSV"
+    },
+    "stats": {
+      "total": "Total",
+      "inProgress": "In progress",
+      "waiting": "Untouched",
+      "waitingHint": "More than 24h with no contact",
+      "conversion": "Conversion"
+    },
+    "pipeline": {
+      "kicker": "CLASSIFICATION",
+      "title": "Visual funnel by stage",
+      "copy": "Drag a card between columns to move the process forward. On mobile, tap a stage or use \"Move to stage\" on each card."
+    },
+    "stages": {
+      "new": {
+        "label": "Registered",
+        "hint": "Lead captured",
+        "empty": "No new leads"
+      },
+      "contacted": {
+        "label": "Contacted",
+        "hint": "First contact made",
+        "empty": "Nobody in contact"
+      },
+      "qualified": {
+        "label": "Qualified",
+        "hint": "Interest validated",
+        "empty": "No qualified leads"
+      },
+      "proposal": {
+        "label": "Proposal",
+        "hint": "Offer sent",
+        "empty": "No active proposals"
+      },
+      "won": {
+        "label": "Closed",
+        "hint": "Client converted",
+        "empty": "No closes yet"
+      },
+      "lost": {
+        "label": "Lost",
+        "hint": "Discarded",
+        "empty": "Nothing discarded"
+      }
+    },
+    "card": {
+      "high": "High",
+      "direct": "Direct",
+      "property": "Property",
+      "move": "Move to stage"
+    },
+    "time": {
+      "minutes_one": "{{count}} min ago",
+      "minutes_other": "{{count}} min ago",
+      "hours_one": "{{count}}h ago",
+      "hours_other": "{{count}}h ago",
+      "days_one": "{{count}} day ago",
+      "days_other": "{{count}} days ago"
+    },
+    "board": {
+      "dropHint": "Drop a card here to move it"
+    },
+    "stageSelector": {
+      "title": "Move to stage"
+    },
+    "drawer": {
+      "contact": "Contact",
+      "stage": "Stage",
+      "priority": "Priority",
+      "assignee": "Assigned to",
+      "unassigned": "Unassigned",
+      "followUp": "Next follow-up",
+      "followUpHint": "Stored with the lead; no reminders are sent yet.",
+      "message": "Original message",
+      "notes": "Notes",
+      "notePlaceholder": "Add useful context for the next contact…",
+      "addNote": "Add note",
+      "savingNote": "Saving…",
+      "activity": "Activity",
+      "noActivity": "No activity recorded",
+      "historyError": "History could not be loaded",
+      "markLost": "Discard",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "delete": "Delete lead"
+    },
+    "priority": {
+      "low": "Low",
+      "normal": "Normal",
+      "high": "High"
+    },
+    "activity": {
+      "stageChange": "Moved to {{to}}",
+      "assignment": "Assigned to {{name}}",
+      "note": "Note added",
+      "followUp": "Follow-up scheduled",
+      "other": "Update"
+    },
+    "toast": {
+      "moved": "{{name}} moved to {{stage}}",
+      "moveError": "The lead could not be moved",
+      "saved": "Changes saved",
+      "saveError": "Changes could not be saved",
+      "noteSaved": "Note added",
+      "noteError": "The note could not be saved",
+      "lost": "Lead discarded"
+    },
+    "retry": "Try again"
   }
 }

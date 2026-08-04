@@ -393,5 +393,120 @@
       "updated": "Quartier mis à jour",
       "saveError": "Impossible d'enregistrer le quartier"
     }
+  },
+  "crm": {
+    "header": {
+      "eyebrow": "ATLAS ROUGE · CRM",
+      "title": "Pipeline de prospects",
+      "subtitle": "Classez chaque prospect par étape, faites-le avancer et menez-le jusqu'à la signature depuis un seul écran.",
+      "export": "Exporter CSV"
+    },
+    "stats": {
+      "total": "Total",
+      "inProgress": "En cours",
+      "waiting": "Sans contact",
+      "waitingHint": "Plus de 24 h sans réponse",
+      "conversion": "Conversion"
+    },
+    "pipeline": {
+      "kicker": "CLASSIFICATION",
+      "title": "Entonnoir visuel par étapes",
+      "copy": "Glissez une fiche d'une colonne à l'autre pour faire avancer le processus. Sur mobile, touchez une étape ou utilisez « Changer d'étape » sur chaque fiche."
+    },
+    "stages": {
+      "new": {
+        "label": "Enregistré",
+        "hint": "Prospect capté",
+        "empty": "Aucun nouveau prospect"
+      },
+      "contacted": {
+        "label": "Contacté",
+        "hint": "Premier contact fait",
+        "empty": "Personne en contact"
+      },
+      "qualified": {
+        "label": "Qualifié",
+        "hint": "Intérêt validé",
+        "empty": "Aucun prospect qualifié"
+      },
+      "proposal": {
+        "label": "Proposition",
+        "hint": "Offre envoyée",
+        "empty": "Aucune proposition active"
+      },
+      "won": {
+        "label": "Conclu",
+        "hint": "Client converti",
+        "empty": "Aucune signature"
+      },
+      "lost": {
+        "label": "Perdu",
+        "hint": "Écarté",
+        "empty": "Rien d’écarté"
+      }
+    },
+    "card": {
+      "high": "Haute",
+      "direct": "Direct",
+      "property": "Bien",
+      "move": "Changer d'étape"
+    },
+    "time": {
+      "minutes_one": "Il y a {{count}} min",
+      "minutes_other": "Il y a {{count}} min",
+      "hours_one": "Il y a {{count}} h",
+      "hours_other": "Il y a {{count}} h",
+      "days_one": "Il y a {{count}} jour",
+      "days_other": "Il y a {{count}} jours"
+    },
+    "board": {
+      "dropHint": "Déposez une fiche ici pour la déplacer"
+    },
+    "stageSelector": {
+      "title": "Changer d'étape"
+    },
+    "drawer": {
+      "contact": "Contact",
+      "stage": "Étape",
+      "priority": "Priorité",
+      "assignee": "Assigné à",
+      "unassigned": "Non assigné",
+      "followUp": "Prochain suivi",
+      "followUpHint": "Enregistré avec le prospect ; aucun rappel n'est encore envoyé.",
+      "message": "Message initial",
+      "notes": "Notes",
+      "notePlaceholder": "Ajoutez un contexte utile pour le prochain contact…",
+      "addNote": "Ajouter une note",
+      "savingNote": "Enregistrement…",
+      "activity": "Activité",
+      "noActivity": "Aucune activité enregistrée",
+      "historyError": "L'historique n'a pas pu être chargé",
+      "markLost": "Écarter",
+      "save": "Enregistrer",
+      "saving": "Enregistrement…",
+      "delete": "Supprimer le prospect"
+    },
+    "priority": {
+      "low": "Basse",
+      "normal": "Normale",
+      "high": "Haute"
+    },
+    "activity": {
+      "stageChange": "Déplacé vers {{to}}",
+      "assignment": "Assigné à {{name}}",
+      "note": "Note ajoutée",
+      "followUp": "Suivi programmé",
+      "other": "Mise à jour"
+    },
+    "toast": {
+      "moved": "{{name}} déplacé vers {{stage}}",
+      "moveError": "Le prospect n'a pas pu être déplacé",
+      "saved": "Modifications enregistrées",
+      "saveError": "Les modifications n'ont pas pu être enregistrées",
+      "noteSaved": "Note ajoutée",
+      "noteError": "La note n'a pas pu être enregistrée",
+      "lost": "Prospect écarté"
+    },
+    "retry": "Réessayer"
   }
 }

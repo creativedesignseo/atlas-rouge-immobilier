@@ -139,7 +139,42 @@ export type ContactSubmissionRow = {
   message: string
   property_slug: string | null
   assigned_to_agent_id: string | null
-  status: 'new' | 'in_progress' | 'closed'
+  // CRM pipeline stage (migration 017). Stable ids, never the visible label —
+  // the UI translates them. Legacy in_progress/closed were mapped to
+  // contacted/won.
+  status: LeadStage
+  priority: LeadPriority
+  // Null on the pre-016 junk row, which no UPDATE can touch. Read it as
+  // `stage_changed_at ?? created_at`.
+  stage_changed_at: string | null
+  next_follow_up_at: string | null
+  lost_reason: string | null
+  created_at: string
+}
+
+export const LEAD_STAGES = ['new', 'contacted', 'qualified', 'proposal', 'won', 'lost'] as const
+export type LeadStage = (typeof LEAD_STAGES)[number]
+export type LeadPriority = 'low' | 'normal' | 'high'
+
+export type LeadNoteRow = {
+  id: string
+  contact_id: string
+  agent_id: string | null
+  body: string
+  created_at: string
+}
+
+export type LeadActivityType = 'stage_change' | 'assignment' | 'note' | 'follow_up' | 'contact'
+
+export type LeadActivityRow = {
+  id: string
+  contact_id: string
+  agent_id: string | null
+  agent_name: string | null
+  type: LeadActivityType
+  from_stage: string | null
+  to_stage: string | null
+  detail: string | null
   created_at: string
 }
 
