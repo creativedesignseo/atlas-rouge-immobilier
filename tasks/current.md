@@ -4,7 +4,18 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-08-04 noche (landings: teléfono internacional + WhatsApp, verificado en prod)
+**Last updated:** 2026-08-05 (verificación de realidad; sin cambios de código)
+
+## 🟢 Verificado el 2026-08-05 — nada nuevo que arreglar
+
+`HEAD == origin/main == a4796db1`, `verify.sh` verde, Graph sin desfase.
+Las dos landings, el panel y los formularios del sitio responden 200.
+**El selector de teléfono confirmado con tráfico real**: un lead entrado tras
+el despliegue guardó su número en formato internacional.
+
+Tabla de leads: **13 registros, los 13 en estado `new` y sin asignar** — el
+seguimiento sigue sin existir (ver CRM fase 1, abajo). Cero entradas el 5/08.
+
 
 ## 🟢 Landings — EN VIVO y verificado 2026-08-04 noche
 

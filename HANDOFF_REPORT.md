@@ -4,6 +4,39 @@
 
 ---
 
+## VERIFICACIÓN — 2026-08-05 (sin cambios de código; solo comprobación de realidad)
+
+Repaso pedido por el owner. **No se tocó código**: `HEAD == origin/main ==
+`a4796db1``, árbol limpio salvo working files del owner (`brand/*.af`, PDFs),
+`verify.sh` en verde. El Graph tampoco se regeneró porque **no tiene desfase**:
+ningún archivo de `src/`, `public/` o `netlify/` es más reciente que
+`graphify-out/graph.json` (3.023 nodos, 585 archivos en el manifest).
+
+Lo comprobado en vivo:
+
+| | Resultado |
+|---|---|
+| `/vendre/` y `/proprietaires/` | badge 0, waButton 1, plugin 2, fixCSS 2 (ambas) |
+| `/`, `/admin/contacts`, `/fr/contact`, `/fr/estimation` | 200 |
+| `notify-lead` | ejecuta y responde `ok:true`, **sigue sin canal**: `skipped: no RESEND_API_KEY` y `skipped: no TELEGRAM env` |
+| Tipografías Lazzer | **siguen publicadas** (200, `application/font-woff`) — riesgo abierto |
+
+**El selector de teléfono queda confirmado con tráfico real**, no solo en
+banco de pruebas: entró un lead por una landing después del despliegue y su
+teléfono quedó guardado en formato internacional. Es lo que faltaba para dar
+el cambio por bueno de verdad.
+
+Estado de la tabla de leads (lectura, sin escribir): **13 registros**, 8 con
+teléfono en formato internacional, **los 13 en estado `new` y ninguno
+asignado**. Cero entradas el 5 de agosto. El último llegó con la intención
+vacía en el asunto — coherente con que las URLs de los anuncios sigan sin
+corregir. *(Datos concretos en `/admin/contacts`; no se copian aquí.)*
+
+Nada más cambió respecto al cierre anterior. Los cinco bloqueos siguen
+idénticos, y los tres primeros dependen del owner.
+
+---
+
 ## CIERRE — Claude Opus 5 — 2026-08-04 noche (landings: selector de teléfono internacional + WhatsApp)
 
 Petición del owner sobre `/vendre/` y `/proprietaires/`: quitar el distintivo
