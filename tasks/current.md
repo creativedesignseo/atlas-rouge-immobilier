@@ -4,7 +4,65 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-08-03 (verificado por qué los anuncios no captaban: URL sin formulario)
+**Last updated:** 2026-08-04 (dos fallos en vivo del panel arreglados + diseño del CRM)
+
+## 🟢 Panel de admin — arreglado y verificado en prod 2026-08-04
+
+- ✅ `a09d9798` — buscador de contactos ya no revienta con leads sin email
+  (4 de 16 filas). Reproducido y re-verificado en prod. Busca además por
+  teléfono y `message` → `fr-diaspora` devuelve los leads de esa campaña.
+- ✅ `a09d9798` — borrado por `adminRest` (1 viaje, timeout 10 s) + optimista.
+  ⚠️ **No ejecutado en vivo**: borrar necesita OK del owner.
+- ✅ `10575705` — formularios públicos con `supabasePublic`. Verificado con un
+  envío real anónimo en prod (fila `ZZTEST anon client check`).
+
+## 🔴 CRM de leads — diseñado, sin implementar
+
+Detalle del diagnóstico en `HANDOFF_REPORT.md` (cierre 2026-08-04).
+
+**Fase 1 (imprescindible), en este orden:**
+
+1. **Aviso de lead nuevo.** 15 min, mayor retorno del paquete. `notify-lead`
+   responde 200 y no envía nada: faltan las variables de entorno.
+   🔴 **Bloqueado: el owner elige Telegram o email.**
+2. **Migración aditiva** sobre `contact_submissions`: 6 etapas, nota interna,
+   próxima acción, archivado, `utm_campaign`, `gclid`, formulario de origen.
+   Nada obligatorio, nada destructivo, sin tocar permisos de inserción anónima.
+   Mantener permitidos los valores viejos (`in_progress`, `closed`).
+3. **Migrar la lectura de contactos a `adminRest`** antes de construir encima.
+4. **La pantalla:** lista ordenada por urgencia (no kanban), chip de etapa,
+   teléfono clicable + WhatsApp, panel lateral con nota y próxima acción,
+   archivar en vez de borrar.
+
+**Nomenclatura acordada** (los 3 idiomas a la vez, mismo set de claves):
+`Contacts` → **`Prospects`** (FR) / **Prospectos** (ES) · Newsletter sale a su
+propia entrada · la pantalla actual de estimaciones pasa a pestaña secundaria.
+
+**Etapas (FR en pantalla, códigos en inglés en BD):** Nouveau · Sans réponse ·
+En discussion · Estimation · Mandat · Écarté.
+`Sans réponse` es la clave: se llama a franceses y diáspora, la mayoría no coge
+a la primera. `Mandat` es la única conversión que merece devolverse a Ads.
+
+**Descartado a propósito del ejemplo de Meta** (reabrir con >100 leads limpios
+o una 3ª persona en el equipo): kanban, % de conversión, "asignado a",
+etiquetas libres, etapas personalizables, edición masiva, recordatorios sin
+canal de aviso.
+
+**Fase 2:** guardar `utm_*`/`gclid` en columnas desde las landings — **una
+landing cada vez, con envío real y 24 h de observación**; exportación CSV con
+`gclid` para conversiones offline de Ads; deduplicar por teléfono.
+
+## 🔴 Bomba de relojería — antes de dar de alta a ningún agente
+
+`fetchContactSubmissions` filtra por `assigned_to_agent_id` si el usuario no es
+admin. Ninguna landing rellena ese campo → **el primer agente no-admin verá
+cero leads** y parecerá que el panel está roto. Decidir bandeja común vs
+asignación automática antes, no después.
+
+## 🔴 Mismo defecto de borrado en otras dos pantallas
+
+`AdminProperties` y `AdminBlog` siguen borrando con supabase-js sin timeout.
+Blog además recarga la lista entera tras borrar (3 viajes en vez de 1).
 
 ## 🔴 URLs de los anuncios — EN CURSO, 1 de 10 hecha 2026-08-03
 

@@ -4,6 +4,119 @@
 
 ---
 
+## CIERRE — Claude Opus 5 — 2026-08-04 (dos fallos en vivo del panel + diseño del CRM)
+
+Preguntas del owner: *"¿por qué tarda tanto al borrar un lead?"* y *"esto debería
+ser un CRM; 'Contactos' no son contactos, son leads"*. Ambas respondidas midiendo.
+Tenía razón en las dos, y por el camino aparecieron dos fallos peores.
+
+### 1. Buscador de contactos roto en producción — ARREGLADO (commit `a09d9798`)
+
+**Reproducido** en prod con la sesión de admin del owner: teclear `javier` en
+`/admin/contacts` → `ErrorBoundary`, pantalla en blanco, y en consola:
+
+```
+TypeError: Cannot read properties of null (reading 'toLowerCase')
+  at AdminContacts (Array.filter)
+```
+
+**Causa:** la migración 016 (mismo día) hizo `email` nullable para no perder
+leads que solo dejan teléfono, pero `ContactSubmissionRow.email` seguía
+declarado `string`, así que el compilador no podía ver `c.email.toLowerCase()`.
+Medido en prod: **4 de 16 filas sin email** → el buscador estaba muerto para
+cualquier admin desde el momento en que se aplicó la 016.
+
+**Arreglo:** tipo a `string | null` (fila y modelo del servicio) + filtro sobre
+un array de campos opcionales con `?.`. De paso el buscador ahora cubre
+**teléfono y `message`**: buscar `fr-diaspora` devuelve los leads de esa campaña.
+
+**Verificado en prod tras el deploy**, mismo caso que lo rompía: `javier` → 1
+resultado; `fr-diaspora` → 3 leads (1 real + 2 ZZTEST), incluyendo una fila sin
+email que antes hacía saltar el error.
+
+### 2. Borrado lento — ARREGLADO (mismo commit), NO ejecutado en vivo
+
+**Causa medida:** `deleteContact` usaba supabase-js, que resuelve/refresca el
+token antes de cada llamada PostgREST → **dos viajes secuenciales**. Medido
+contra el proyecto en vivo: **0,53–0,68 s por viaje** (3 iteraciones, `curl`),
+o sea 1–1,5 s de spinner. Sin `AbortController`: si el refresh se atascaba, el
+spinner giraba indefinidamente — el modo de fallo que ADR-002 y `adminRest.ts`
+ya existen para evitar. La lección estaba aplicada en Barrios, no aquí.
+
+**Arreglo:** `adminRestRequest` (un viaje, token explícito, timeout 10 s) +
+borrado optimista + `return=representation` para que un rechazo de RLS deje de
+mostrarse como un falso "eliminado".
+
+⚠️ **Desplegado pero NO ejecutado en producción**: borrar es destructivo y
+requiere OK del owner. La mejora está verificada por build y por lectura de
+código, **no** por una ejecución real.
+
+📌 **El mismo defecto sigue en `AdminProperties` y `AdminBlog`** (Blog además
+recarga la lista entera tras borrar: 3 viajes en vez de 1). Pendiente.
+
+### 3. Escrituras públicas con el cliente equivocado — ARREGLADO (commit `10575705`)
+
+Hueco de ADR-002: el ADR movió las **lecturas** públicas a `supabasePublic`,
+pero nadie auditó las **escrituras**. `contact.service.ts` y `leads.service.ts`
+insertaban con `supabase` (cliente con sesión). Un visitante con sesión rancia
+en `localStorage` puede quedarse con el envío encolado tras el refresh y perder
+el lead sin error visible. El visitante anónimo nunca lo reproduce — que es
+exactamente cómo el bug de ADR-002 estuvo oculto 6 semanas.
+
+**Comprobado antes de tocar** (`pg_policies`): las 3 tablas afectadas tienen
+política INSERT para `anon` con `with_check: true`, así que no hace falta
+sesión. El upsert de newsletter lleva `ignoreDuplicates` → `ON CONFLICT DO
+NOTHING`, cubierto por la política de INSERT.
+
+**Verificado end-to-end en prod** tras el deploy: envío real del formulario
+`/fr/contact` desde un navegador **sin sesión** (`localStorage` sin claves
+`sb-`/`auth`, comprobado) → fila `ZZTEST anon client check` en
+`contact_submissions` a las 14:10:51 UTC. El teléfono se normalizó a
+`+33600000042`.
+
+### 4. Falsa alarma de seguridad — descartada
+
+Un subagente reportó que su script de introspección "apareció reescrito por
+algo externo, sin candado de solo lectura y aceptando cualquier SQL contra
+producción". **No hubo incidente.** Era un helper que escribió el agente
+principal en el mismo scratchpad de sesión (`.../scratchpad/`) para una consulta
+puntual; el subagente lo encontró, no lo reconoció y lo borró. Confirmado
+inspeccionando el directorio. Anotado para que nadie lo persiga como brecha.
+
+### 5. El panel no es un CRM — diagnóstico
+
+- **La nomenclatura miente.** "Contactos" (`contact_submissions`) recibe el 100%
+  del tráfico de pago; "Prospectos" (`estimation_requests`) tiene 4 filas y
+  mezcla suscriptores de newsletter, que no son leads.
+- **El CRM ya está a medio construir y nadie lo terminó.** `contact_submissions`
+  tiene `status` y `assigned_to_agent_id` desde el inicio, y existen **33 claves
+  i18n muertas** (11 × 3 idiomas: "Marcar en curso", "Marcar cerrado"…) para una
+  UI que nunca se programó. Medido en prod: los 13 leads en `status='new'`,
+  ninguno asignado.
+- **Bomba de relojería:** `fetchContactSubmissions` filtra por
+  `assigned_to_agent_id` cuando el usuario no es admin. Como ninguna landing
+  rellena ese campo, **el primer agente no-admin verá cero leads** y parecerá
+  que el panel está roto. Hay que decidir la política (bandeja común vs
+  asignación automática) **antes** de dar de alta a nadie.
+- **Atribución no consultable:** no hay ni una columna `utm_*`/`gclid`; el
+  origen va concatenado dentro de `message`. Hoy no se puede responder "¿cuántos
+  leads dio la campaña X?" con SQL. Además `utm_content` (grupo de anuncios) no
+  se captura en ninguna landing, aunque todas las URLs de anuncio lo llevan.
+
+Diseño consolidado (6 etapas FR, lista ordenada por urgencia en vez de kanban,
+archivar en vez de borrar) y plan por fases: ver `tasks/current.md`.
+
+### Bloqueos que dependen del owner
+
+1. Canal de aviso de lead nuevo: **Telegram o email**. Hoy `notify-lead`
+   responde 200 y **no envía nada** (sin `RESEND_API_KEY` ni `TELEGRAM_*`).
+2. ¿Se abre el panel al equipo de Marrakech? Implica exponer datos personales
+   de ciudadanos europeos a cualquier agente activo.
+3. Borrado de las filas de prueba (ahora **6 ZZTEST** + 1 fila basura). Sigue
+   requiriendo OK explícito.
+
+---
+
 ## AUDITORÍA — Claude Opus 5 — 2026-08-03 (dónde acaban los leads y qué mide cada landing — todo medido)
 
 Pregunta del owner: *"¿dónde van los contactos de estas dos páginas y están
