@@ -4,6 +4,49 @@
 
 ---
 
+## CIERRE — Claude Opus 5 — 2026-08-05 (CRM: pipeline de leads en el panel)
+
+Commit **`96ed65b9`**. Desplegado y comprobado en vivo: bundle
+`assets/index-C0WvKHQ7.js` → chunk `assets/AdminContacts-Bae93Syq.js`, que ya
+contiene las claves `crm.stages`. `verify.sh` verde antes del push.
+
+`/admin/contacts` deja de ser una lista y pasa a ser un pipeline:
+
+- Embudo arriba (Registrado → Contactado → Calificado → Propuesta → Cerrado →
+  Perdido) con el recuento por fase; en móvil es además la navegación.
+- Tablero kanban: drag & drop en escritorio; en táctil, botón «Mover a etapa»
+  con selector a pantalla completa (el drag en móvil no es fiable).
+- Ficha lateral (panel derecho en escritorio, hoja inferior en móvil) con
+  etapa, prioridad, asignación (solo admin), próximo seguimiento, mensaje
+  original, notas e historial. El borrado de lead sigue ahí, dentro de la ficha.
+- Métricas calculadas de filas reales: total, en seguimiento, sin contactar
+  (>24 h en la primera fase) y conversión. **No hay tiempo de respuesta**: no
+  se registra cuándo se contactó por primera vez, y no se inventa el dato.
+- Exportar CSV de lo que esté filtrado.
+
+**Migración 017 aplicada a producción** (`npm run migrate`): `status` pasa a ser
+la etapa del pipeline con ids estables, más `stage_changed_at`,
+`next_follow_up_at`, `priority`, `lost_reason`, y las tablas nuevas
+`lead_notes` y `lead_activity` con RLS espejo de la visibilidad del lead.
+Los valores antiguos se mapearon (`in_progress→contacted`, `closed→won`), no se
+borró nada. Decisión razonada en `docs/decisions/ADR-003-*`.
+
+Comprobación de base de datos hecha dentro de `BEGIN … ROLLBACK`: mover un lead
+real a `qualified`, fijar prioridad y seguimiento, insertar nota y actividad —
+todo aceptado, y el estado posterior confirmó 0 notas, 0 actividad y 0 leads
+fuera de `new`. Cero datos de producción tocados.
+
+**Lo que NO está verificado:** el flujo con sesión de admin iniciada. Aquí no hay
+credenciales del panel, así que el drag & drop, el guardado de la ficha y el
+camino de rechazo por RLS no se han ejercitado contra el cliente real. Es lo
+primero que hay que mirar en el navegador.
+
+Pendiente conocido: el próximo seguimiento se guarda pero **no envía
+recordatorios**; no hay UI para crear o reordenar etapas (la estructura ya lo
+soporta).
+
+---
+
 ## CIERRE — Claude Opus 5 — 2026-08-05 (rediseño del centro de leads del panel)
 
 Commit **`c1e8ab4e`** — `feat(admin): rebuild the leads center for
