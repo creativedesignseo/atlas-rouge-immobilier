@@ -4,6 +4,26 @@
 
 ---
 
+## CIERRE — Claude Opus 5 — 2026-08-05 noche (borrar notas + «Centro de clientes potenciales»)
+
+Commit **`97bbc797`**, en vivo: `assets/index-CXtV_Vtk.js` →
+`assets/AdminContacts-D8KRcUi7.js` con la clave `deleteNote`. `verify.sh` verde.
+
+- **Las notas se pueden borrar.** La política DELETE ya existía desde la
+  migración 017 (autor o admin) — comprobado contra la BD: `lead_notes` tiene
+  las tres políticas (SELECT, INSERT, DELETE «Authors and admins delete
+  notes»). Faltaba el botón. Es optimista con rollback, y solo se muestra a
+  quien la RLS dejaría pasar de verdad.
+  **Editar una nota sigue sin existir a propósito**: una nota registra lo que se
+  dijo; se borra y se escribe otra, no se reescribe.
+- **El menú pasa a llamarse «Centro de clientes potenciales»** (FR «Centre de
+  prospects», EN «Lead center») con icono de ficha de contacto, el vocabulario
+  que el owner ve en Meta Business Suite. El texto es más largo que el ancho de
+  la barra: se trunca con el texto completo en el tooltip, no se parte en dos
+  líneas.
+
+---
+
 ## CIERRE — Claude Opus 5 — 2026-08-05 noche (tarjetas de lead en acordeón)
 
 Commit **`e56f8e9f`**, en vivo: chunk `assets/AdminContacts-fAm8nc1q.js` y la

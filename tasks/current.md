@@ -4,7 +4,7 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-08-05 (CRM pipeline + tarjetas en acordeón — `e56f8e9f`, en vivo)
+**Last updated:** 2026-08-05 (CRM pipeline, acordeón y borrado de notas — `97bbc797`, en vivo)
 
 ## 🟡 CRM pipeline — EN VIVO 2026-08-05 (`96ed65b9`), falta verlo con sesión
 

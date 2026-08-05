@@ -150,9 +150,9 @@
     "semantic_hash": "0b34e54a8486a04743cfadea0165dce8"
   },
   "src/components/admin/AdminSidebar.tsx": {
-    "mtime": 1780497938.5885315,
-    "ast_hash": "46a7b4eea6a0acf91f9dfc60fb6f942d",
-    "semantic_hash": "46a7b4eea6a0acf91f9dfc60fb6f942d"
+    "mtime": 1785889988.9288433,
+    "ast_hash": "f9320b7499ebf7bce0c8bba62adfb0e8",
+    "semantic_hash": ""
   },
   "src/components/admin/AgentCredential.tsx": {
     "mtime": 1777596626.7126694,
@@ -635,8 +635,8 @@
     "semantic_hash": "ee0aa76ac0f057978e254021868f4eb0"
   },
   "src/locales/en/admin.json": {
-    "mtime": 1785889057.529993,
-    "ast_hash": "7ded6014f755f69e315e3f4d94fb10fc",
+    "mtime": 1785889945.3074956,
+    "ast_hash": "6b4825d43ff6bf3fa7d0a685563c9176",
     "semantic_hash": ""
   },
   "src/locales/en/amenities.json": {
@@ -715,8 +715,8 @@
     "semantic_hash": "7281967068fab8eb19afb221dcec0e04"
   },
   "src/locales/es/admin.json": {
-    "mtime": 1785889057.528829,
-    "ast_hash": "4186cf11b4343fce2e9e0fed256bf118",
+    "mtime": 1785889945.3063293,
+    "ast_hash": "81179ace2c8f1c8cd16f428c553fdbfd",
     "semantic_hash": ""
   },
   "src/locales/es/amenities.json": {
@@ -795,8 +795,8 @@
     "semantic_hash": "edebc303fb6d07bcdaacbf949a91ad23"
   },
   "src/locales/fr/admin.json": {
-    "mtime": 1785889057.5294144,
-    "ast_hash": "f68683fd94afb35f7f583a802d9157dd",
+    "mtime": 1785889945.3070016,
+    "ast_hash": "0283e08c285526063a75d7ada434b622",
     "semantic_hash": ""
   },
   "src/locales/fr/amenities.json": {
@@ -1285,8 +1285,8 @@
     "semantic_hash": "ea71fe20d99a449aeddd9e54a8d1027b"
   },
   "HANDOFF_REPORT.md": {
-    "mtime": 1785888075.5451283,
-    "ast_hash": "9c5cdcbe983b63b2aa1a020470e0e6fc",
+    "mtime": 1785889376.4893944,
+    "ast_hash": "5cb280c7f232005fbc714ef578d9db37",
     "semantic_hash": ""
   },
   "PROJECT_CONTEXT.md": {
@@ -1500,8 +1500,8 @@
     "semantic_hash": ""
   },
   "tasks/current.md": {
-    "mtime": 1785888075.5457494,
-    "ast_hash": "81fc64c6d5b6ab3c9f144c01ff9ceefb",
+    "mtime": 1785889376.4897811,
+    "ast_hash": "4633a79f9e9c83c9b03c19b30da8685b",
     "semantic_hash": ""
   },
   "public/favicon.svg": {
@@ -2930,8 +2930,8 @@
     "semantic_hash": ""
   },
   "src/components/admin/crm/LeadDrawer.tsx": {
-    "mtime": 1785887883.0581758,
-    "ast_hash": "e3cd01cccbf64b96e66ae852aeea2ee6",
+    "mtime": 1785889906.524287,
+    "ast_hash": "cec979fdc9917e778e56a3714681b6fd",
     "semantic_hash": ""
   },
   "src/components/admin/crm/LeadStageSelector.tsx": {
@@ -2955,8 +2955,8 @@
     "semantic_hash": ""
   },
   "src/services/admin/crm.service.ts": {
-    "mtime": 1785887565.838591,
-    "ast_hash": "002e136c48d0557838b8dec0b4944c45",
+    "mtime": 1785889906.523784,
+    "ast_hash": "ca9d39eaf7d2ca608152c1b07fbe5bd2",
     "semantic_hash": ""
   },
   "supabase/migrations/017_crm_pipeline.sql": {
