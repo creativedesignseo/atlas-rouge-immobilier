@@ -449,7 +449,7 @@
       "high": "Haute",
       "direct": "Direct",
       "property": "Bien",
-      "move": "Changer d'étape"
+      "move": "Étape"
     },
     "time": {
       "minutes_one": "Il y a {{count}} min",

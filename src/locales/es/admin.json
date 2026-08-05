@@ -449,7 +449,7 @@
       "high": "Alta",
       "direct": "Directo",
       "property": "Inmueble",
-      "move": "Mover a etapa"
+      "move": "Mover"
     },
     "time": {
       "minutes_one": "Hace {{count}} min",

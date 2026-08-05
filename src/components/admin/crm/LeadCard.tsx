@@ -31,8 +31,12 @@ export default function LeadCard({ lead, pending, onOpen, onMove, onDragStart, o
         onDragStart(lead)
       }}
       onDragEnd={onDragEnd}
-      className={`group rounded-2xl border border-border-warm bg-white p-4 transition-shadow ${
-        pending ? 'opacity-50' : 'hover:shadow-md'
+      // Accordion: collapsed to one row so a column shows many leads at once,
+      // and it expands on hover (pointer devices) or focus-within (keyboard).
+      // Below lg there is no hover, so the card is simply always expanded —
+      // a phone user must not have to guess that content is hidden.
+      className={`group rounded-2xl border border-border-warm bg-white px-3 py-2.5 transition-shadow ${
+        pending ? 'opacity-50' : 'hover:shadow-md hover:border-ink/20'
       }`}
     >
       <button
@@ -40,90 +44,99 @@ export default function LeadCard({ lead, pending, onOpen, onMove, onDragStart, o
         onClick={() => onOpen(lead)}
         className="w-full text-left rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-terracotta/40"
       >
-        <div className="flex items-start gap-3">
+        <span className="flex items-center gap-2.5">
           <span
             aria-hidden
-            className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 font-display font-bold ${tintFor(
+            className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 font-display text-sm font-bold ${tintFor(
               lead.id
             )}`}
           >
             {initials(lead.name) || '—'}
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block font-display text-base sm:text-lg font-bold text-ink leading-tight truncate">
+            <span className="block font-display text-[15px] font-bold text-ink leading-tight truncate">
               {lead.name}
             </span>
-            <span className="block mt-0.5 text-sm text-stone truncate">
-              {lead.email || lead.phone || '—'}
-            </span>
+            <span className="block text-xs text-stone">{relative}</span>
           </span>
           {lead.priority === 'high' && (
-            <span className="inline-flex items-center gap-1 h-7 px-2 rounded-lg bg-terracotta/10 text-terracotta text-xs font-bold flex-shrink-0">
-              <Flame size={13} />
-              {t('crm.card.high')}
-            </span>
+            <Flame size={15} className="text-terracotta flex-shrink-0" aria-label={t('crm.card.high')} />
           )}
-        </div>
-
-        <div className="mt-3 flex flex-wrap items-center gap-1.5">
-          <span className="inline-flex items-center h-7 px-2.5 rounded-lg bg-cream-warm border border-border-subtle text-xs font-semibold text-stone">
-            {source || t('crm.card.direct')}
-          </span>
-          {campaign && (
-            <span className="inline-flex items-center h-7 px-2.5 rounded-lg bg-cream-warm border border-border-subtle text-xs font-semibold text-stone max-w-[60%] truncate">
-              {campaign}
-            </span>
-          )}
-          {lead.property_slug && (
-            <span className="inline-flex items-center gap-1 h-7 px-2.5 rounded-lg bg-cream-warm border border-border-subtle text-xs font-semibold text-stone">
-              <Home size={13} />
-              {t('crm.card.property')}
-            </span>
-          )}
-        </div>
-
-        <p className="mt-3 text-xs font-medium text-stone">{relative}</p>
+        </span>
       </button>
 
-      <div className="mt-3 pt-3 border-t border-border-subtle flex items-center gap-2">
-        <button
-          type="button"
-          onClick={() => onMove(lead)}
-          disabled={pending}
-          className="flex-1 h-11 inline-flex items-center justify-center gap-2 rounded-xl border border-border-warm text-sm font-semibold text-ink hover:border-ink/40 disabled:opacity-50 transition-colors"
-        >
-          <MoveRight size={17} />
-          {t('crm.card.move')}
-        </button>
-        {lead.phone && (
-          <a
-            href={`https://wa.me/${whatsappNumber(lead.phone)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={t('contacts.whatsapp')}
-            className="w-11 h-11 inline-flex items-center justify-center rounded-xl bg-palm text-white hover:bg-palm/90 transition-colors"
+      {/* The 0fr -> 1fr grid trick animates to the content's natural height,
+          which `height: auto` cannot do. */}
+      <div className="grid grid-rows-[1fr] lg:grid-rows-[0fr] lg:group-hover:grid-rows-[1fr] lg:group-focus-within:grid-rows-[1fr] transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none">
+        <div className="overflow-hidden">
+          <button
+            type="button"
+            onClick={() => onOpen(lead)}
+            className="w-full text-left pt-2 rounded-xl focus:outline-none"
           >
-            <MessageCircle size={19} />
-          </a>
-        )}
-        {lead.phone && (
-          <a
-            href={`tel:${lead.phone}`}
-            aria-label={t('contacts.call')}
-            className="w-11 h-11 inline-flex items-center justify-center rounded-xl border border-border-warm text-ink hover:border-ink/40 transition-colors"
-          >
-            <Phone size={19} />
-          </a>
-        )}
-        {lead.email && (
-          <a
-            href={`mailto:${lead.email}`}
-            aria-label={t('contacts.email')}
-            className="w-11 h-11 inline-flex items-center justify-center rounded-xl border border-border-warm text-ink hover:border-ink/40 transition-colors"
-          >
-            <Mail size={19} />
-          </a>
-        )}
+            <span className="block text-sm text-stone truncate">
+              {lead.email || lead.phone || '—'}
+            </span>
+            <span className="mt-2 flex flex-wrap items-center gap-1.5">
+              <span className="inline-flex items-center h-6 px-2 rounded-lg bg-cream-warm border border-border-subtle text-[11px] font-semibold text-stone">
+                {source || t('crm.card.direct')}
+              </span>
+              {campaign && (
+                <span className="inline-flex items-center h-6 px-2 rounded-lg bg-cream-warm border border-border-subtle text-[11px] font-semibold text-stone max-w-[60%] truncate">
+                  {campaign}
+                </span>
+              )}
+              {lead.property_slug && (
+                <span className="inline-flex items-center gap-1 h-6 px-2 rounded-lg bg-cream-warm border border-border-subtle text-[11px] font-semibold text-stone">
+                  <Home size={12} />
+                  {t('crm.card.property')}
+                </span>
+              )}
+            </span>
+          </button>
+
+          <div className="mt-2.5 pt-2.5 border-t border-border-subtle flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={() => onMove(lead)}
+              disabled={pending}
+              title={t('crm.stageSelector.title')}
+              className="flex-1 min-w-0 h-10 inline-flex items-center justify-center gap-1.5 rounded-xl border border-border-warm text-[13px] font-semibold text-ink whitespace-nowrap hover:border-ink/40 disabled:opacity-50 transition-colors"
+            >
+              <MoveRight size={16} className="flex-shrink-0" />
+              {t('crm.card.move')}
+            </button>
+            {lead.phone && (
+              <a
+                href={`https://wa.me/${whatsappNumber(lead.phone)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={t('contacts.whatsapp')}
+                className="w-10 h-10 flex-shrink-0 inline-flex items-center justify-center rounded-xl bg-palm text-white hover:bg-palm/90 transition-colors"
+              >
+                <MessageCircle size={17} />
+              </a>
+            )}
+            {lead.phone && (
+              <a
+                href={`tel:${lead.phone}`}
+                aria-label={t('contacts.call')}
+                className="w-10 h-10 flex-shrink-0 inline-flex items-center justify-center rounded-xl border border-border-warm text-ink hover:border-ink/40 transition-colors"
+              >
+                <Phone size={17} />
+              </a>
+            )}
+            {lead.email && (
+              <a
+                href={`mailto:${lead.email}`}
+                aria-label={t('contacts.email')}
+                className="w-10 h-10 flex-shrink-0 inline-flex items-center justify-center rounded-xl border border-border-warm text-ink hover:border-ink/40 transition-colors"
+              >
+                <Mail size={17} />
+              </a>
+            )}
+          </div>
+        </div>
       </div>
     </article>
   )

@@ -449,7 +449,7 @@
       "high": "High",
       "direct": "Direct",
       "property": "Property",
-      "move": "Move to stage"
+      "move": "Move"
     },
     "time": {
       "minutes_one": "{{count}} min ago",
