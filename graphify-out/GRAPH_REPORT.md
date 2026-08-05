@@ -1,16 +1,16 @@
 # Graph Report - atlas-rouge-immobilier  (2026-08-05)
 
 ## Corpus Check
-- 371 files · ~1,024,444 words
+- 381 files · ~1,038,268 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 3046 nodes · 4709 edges · 245 communities (223 shown, 22 thin omitted)
-- Extraction: 97% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 109 edges (avg confidence: 0.81)
+- 3113 nodes · 4878 edges · 250 communities (226 shown, 24 thin omitted)
+- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 109 edges (avg confidence: 0.81)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `5e24c488`
+- Built from commit: `7f857087`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -254,20 +254,27 @@
 - [[_COMMUNITY_Community 240|Community 240]]
 - [[_COMMUNITY_Community 241|Community 241]]
 - [[_COMMUNITY_Community 242|Community 242]]
+- [[_COMMUNITY_Community 245|Community 245]]
+- [[_COMMUNITY_Community 246|Community 246]]
+- [[_COMMUNITY_Community 247|Community 247]]
+- [[_COMMUNITY_Community 248|Community 248]]
+- [[_COMMUNITY_Community 249|Community 249]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `cn()` - 288 edges
-2. `tasks/current.md — Atlas Rouge active task queue` - 74 edges
-3. `Handoff Report - Atlas Rouge Immobilier` - 72 edges
+2. `tasks/current.md — Atlas Rouge active task queue` - 76 edges
+3. `Handoff Report - Atlas Rouge Immobilier` - 74 edges
 4. `useLang()` - 49 edges
 5. `useAuth()` - 33 edges
 6. `getImageUrl()` - 27 edges
 7. `compilerOptions` - 22 edges
 8. `compilerOptions` - 18 edges
 9. `n()` - 16 edges
-10. `SupportedLanguage` - 15 edges
+10. `adminRestRequest()` - 16 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `fetchProperty()` --shares_data_with--> `properties table`  [EXTRACTED]
+  netlify/edge-functions/og-rewrite.ts → docs/admin-rls-audit.md
 - `authorizeActiveAgent()` --shares_data_with--> `public.agents table`  [EXTRACTED]
   netlify/functions/translate-property.js → docs/admin-rls-audit.md
 - `plugin-inspect-react-code (inspectAttr) dev-only gating` --references--> `TECH-001: plugin-inspect-react-code loaded unconditionally in prod build`  [INFERRED]
@@ -276,8 +283,6 @@
   HANDOFF.md → vite.config.ts
 - `.claude/settings.local.json permissions` --shares_data_with--> `Supabase connection & environment variables doc`  [INFERRED]
   .claude/settings.local.json → docs/supabase-connection.md
-- `progress/2026-05-29-phase0-security-seo.md` --references--> `scripts/generate-sitemap.mjs`  [EXTRACTED]
-  docs/runbooks/phase0-cierre.md → netlify/edge-functions/og-rewrite.ts
 
 ## Import Cycles
 - None detected.
@@ -316,19 +321,19 @@
 - **Neighborhood admin CRUD feature (migration + service + property_count trigger)** — migrations_011_neighborhood_admin, neighborhoodadmin_service_neighborhoodadmin_service, db_trigger_properties_neighborhood_count, db_fn_recompute_neighborhood_count [EXTRACTED 0.95]
 - **Leads/newsletter pipeline gated by is_active_agent() role system** — migrations_004_leads, migrations_003_blog, db_fn_is_active_agent, db_table_agents [INFERRED 0.75]
 
-## Communities (245 total, 22 thin omitted)
+## Communities (250 total, 24 thin omitted)
 
 ### Community 0 - "shadcn/ui: Avatar, Breadcrumb"
 Cohesion: 0.04
-Nodes (60): cn(), Avatar(), AvatarFallback(), AvatarImage(), BreadcrumbEllipsis(), BreadcrumbItem(), BreadcrumbLink(), BreadcrumbList() (+52 more)
+Nodes (56): cn(), Avatar(), AvatarFallback(), AvatarImage(), BreadcrumbEllipsis(), BreadcrumbItem(), BreadcrumbLink(), BreadcrumbList() (+48 more)
 
 ### Community 1 - "package.json dependencies"
 Cohesion: 0.03
 Nodes (63): dependencies, class-variance-authority, clsx, cmdk, date-fns, embla-carousel-react, gsap, @gsap/react (+55 more)
 
 ### Community 2 - "Admin blog form + translation drafts"
-Cohesion: 0.10
-Nodes (27): AdminBlogForm(), AgentOption, CATEGORIES, CATEGORY_LABELS, emptyTranslation(), LOCALES, TranslationDraft, RichTextEditor() (+19 more)
+Cohesion: 0.16
+Nodes (14): AdminBlogForm(), AgentOption, CATEGORIES, CATEGORY_LABELS, emptyTranslation(), LOCALES, TranslationDraft, RichTextEditor() (+6 more)
 
 ### Community 3 - "Mobile hook + Sheet primitive"
 Cohesion: 0.06
@@ -339,84 +344,84 @@ Cohesion: 0.05
 Nodes (34): AdminLayout(), getAllSlugsForKey(), About, AdminBlog, AdminBlogForm, AdminContacts, AdminDashboard, AdminLeads (+26 more)
 
 ### Community 5 - "og-rewrite edge function + legacy tables"
-Cohesion: 0.08
-Nodes (36): legacy admins table, blog_posts / blog_post_translations tables, contact_submissions table, BLOG_SEGMENTS, buildHreflangBlock(), config, escapeHtml(), fetchBlogPost() (+28 more)
+Cohesion: 0.15
+Nodes (21): blog_posts / blog_post_translations tables, BLOG_SEGMENTS, buildHreflangBlock(), config, escapeHtml(), fetchBlogPost(), fetchProperty(), handler() (+13 more)
 
 ### Community 6 - "Audit 2026-05-26: P0 findings (privilege esc., SEO, drift)"
 Cohesion: 0.21
 Nodes (12): supabase_migracion_simple.sql (orphan SQL, agents table + RLS), agents_update_own policy created without WITH CHECK, AUDIT_REPORT.2026-05-26.md (22/100, prior audit), P0-1: Privilege escalation via agents UPDATE RLS, P0-4: Static canonical/hreflang collapses SEO, P0-5: Migration drift not reproducible, P0-6/7: Broken trilingual promise (GestionLocative/BuyerGuide/About hardcoded French), DB-001: Migration drift, prod DB not built from repo (+4 more)
 
 ### Community 7 - "Currency/price utils + Badge/Checkbox"
-Cohesion: 0.05
-Nodes (17): AccordionContent(), AccordionItem(), AccordionTrigger(), Badge(), badgeVariants, Checkbox(), HoverCardContent(), InputOTP() (+9 more)
+Cohesion: 0.06
+Nodes (14): formatPrice(), AccordionContent(), AccordionItem(), AccordionTrigger(), Badge(), badgeVariants, Checkbox(), HoverCardContent() (+6 more)
 
 ### Community 8 - "i18n namespaces (English)"
 Cohesion: 0.06
-Nodes (45): About translations (EN), Admin translations (EN), Amenities translations (EN), Blog translations (EN), Buyer guide translations (EN), Common translations (EN), Contact translations (EN), Errors translations (EN) (+37 more)
+Nodes (43): Admin translations (EN), Amenities translations (EN), Blog translations (EN), Buyer guide translations (EN), Common translations (EN), Contact translations (EN), Errors translations (EN), Estimation translations (EN) (+35 more)
 
 ### Community 9 - "Confirm dialog (replaces window.confirm)"
 Cohesion: 0.11
 Nodes (24): ConfirmContext, ConfirmFn, ConfirmOptions, ConfirmProvider(), AlertDialog(), AlertDialogAction(), AlertDialogCancel(), AlertDialogContent() (+16 more)
 
 ### Community 10 - "Neighborhood admin CRUD + image upload"
-Cohesion: 0.23
-Nodes (15): ImageUploaderProps, AdminNeighborhood, createNeighborhood(), deleteNeighborhood(), dropPublicCaches(), listAdminNeighborhoods(), NeighborhoodFormData, setNeighborhoodActive() (+7 more)
+Cohesion: 0.14
+Nodes (24): AdminLeads(), DATE_LOCALES, Tab, EstimationRequest, listEstimationRequests(), listNewsletterSubscribers(), NewsletterSubscriber, AdminNeighborhood (+16 more)
 
 ### Community 11 - "Contact admin service + query cache"
-Cohesion: 0.08
-Nodes (32): AVATAR_TINTS, DATE_LOCALES, RANGE_DAYS, RangeFilter, ContactSubmission, deleteContact(), getContactSubmissions(), cache (+24 more)
+Cohesion: 0.10
+Nodes (31): getContactSubmissions(), getAdminProperties(), cache, Entry, getCached(), Listener, refetch(), RetryOptions (+23 more)
 
 ### Community 12 - "Property form + auto-translation pipeline"
-Cohesion: 0.16
-Nodes (11): ImageUploader(), amenitiesList, LANG_LABELS, LANGS, PropertyForm(), PropertyFormProps, PropertyFormValues, propertySchema (+3 more)
+Cohesion: 0.13
+Nodes (11): French locale: property.json, useSiteSettings(), Contact(), AgentInfo, ContactPanel(), guideLinks, LocationMap, PropertyDetail() (+3 more)
 
 ### Community 13 - "Admin blog/contacts pages + header"
-Cohesion: 0.14
-Nodes (19): AdminBlog(), StatusFilter, AdminContacts(), AdminHeader(), getPageTitle(), AdminLogin(), AdminNeighborhoods(), AdminProperties() (+11 more)
+Cohesion: 0.09
+Nodes (28): AdminBlog(), StatusFilter, AdminContacts(), AdminHeader(), getPageTitle(), AdminLogin(), AdminNeighborhoods(), AdminProperties() (+20 more)
 
 ### Community 14 - "Public cards: Property, Neighborhood, Footer"
 Cohesion: 0.11
-Nodes (17): NeighborhoodCard(), NeighborhoodCardProps, ServiceCardProps, Neighborhood, Neighborhood type, getImageUrl(), ImageTransformOptions, isLocalDev() (+9 more)
+Nodes (19): NeighborhoodCard(), NeighborhoodCardProps, ServiceCardProps, Neighborhood, Neighborhood type, getImageUrl(), ImageTransformOptions, isLocalDev() (+11 more)
 
 ### Community 15 - "Section reveal + contact/services i18n"
-Cohesion: 0.07
-Nodes (30): FloatingWhatsApp(), Footer(), Layout(), Navbar(), SectionReveal(), SectionRevealProps, French locale: sell.json, IconProps (+22 more)
+Cohesion: 0.09
+Nodes (24): HeroSearch(), TabButton(), Transaction, TYPE_ICONS, TYPE_KEYS, TypeKey, French locale: sell.json, useLang() (+16 more)
 
 ### Community 16 - "Admin password reset + avatar upload"
 Cohesion: 0.13
 Nodes (18): Mode, AvatarUploadProps, Agent, AgentSelfUpdate, AuthCredentials, getAgent(), getSession(), getUser() (+10 more)
 
 ### Community 17 - "Search page + Mapbox + filters"
-Cohesion: 0.06
-Nodes (40): PropertyCard(), PropertyCardProps, Property, Property type, French locale: property.json, French locale: search.json, useCurrency(), useFavorites() (+32 more)
+Cohesion: 0.07
+Nodes (35): PropertyCard(), PropertyCardProps, Property, Property type, French locale: search.json, useCurrency(), FavoritesContext, FavoritesContextValue (+27 more)
 
 ### Community 18 - "tsconfig.app.json"
 Cohesion: 0.08
 Nodes (24): compilerOptions, allowImportingTsExtensions, baseUrl, erasableSyntaxOnly, jsx, lib, module, moduleDetection (+16 more)
 
 ### Community 19 - "ErrorBoundary component"
-Cohesion: 0.15
-Nodes (14): ErrorBoundary, Props, State, AuthProvider(), ErrorSource, reportError(), seen, isStaleChunkError() (+6 more)
+Cohesion: 0.18
+Nodes (12): ErrorBoundary, Props, State, AuthProvider(), ErrorSource, reportError(), seen, isStaleChunkError() (+4 more)
 
 ### Community 20 - "Language switcher + route translation"
 Cohesion: 0.11
-Nodes (15): LanguageSwitcher(), Props, translatePath(), LANGUAGE_NAMES, DropdownMenu(), DropdownMenuCheckboxItem(), DropdownMenuContent(), DropdownMenuItem() (+7 more)
+Nodes (14): LanguageSwitcher(), Props, LANGUAGE_NAMES, DropdownMenu(), DropdownMenuCheckboxItem(), DropdownMenuContent(), DropdownMenuItem(), DropdownMenuLabel() (+6 more)
 
 ### Community 21 - "translate-property function (DeepSeek)"
 Cohesion: 0.16
 Nodes (22): DeepSeek Chat Completions API, ALLOWED_ORIGINS, authApiKeys(), authorizeActiveAgent(), bearerToken(), cleanModelResponse(), clientIp(), decodeJwtPayload() (+14 more)
 
 ### Community 22 - "Supabase generated types"
-Cohesion: 0.10
-Nodes (20): AgentInsert, BlogPostInsert, BlogPostTranslationInsert, BlogPostTranslationRow, BlogPostTranslationUpdate, BlogPostUpdate, ContactSubmissionInsert, ContactSubmissionUpdate (+12 more)
+Cohesion: 0.06
+Nodes (39): AdminDashboard(), DATE_LOCALES, colorClasses, StatCard(), StatCardProps, table: estimation_requests, table: favorites, table: newsletter_subscribers (+31 more)
 
 ### Community 23 - "shadcn/ui: Command palette"
 Cohesion: 0.12
 Nodes (15): Command(), CommandDialog(), CommandGroup(), CommandInput(), CommandItem(), CommandList(), CommandSeparator(), CommandShortcut() (+7 more)
 
 ### Community 24 - "Admin property create/edit + service"
-Cohesion: 0.21
-Nodes (17): authenticatedJsonRequest(), createProperty(), deleteImage(), deleteProperty(), fetchAdminProperties(), firstReturnedProperty(), getAdminProperties(), getPropertyForEdit() (+9 more)
+Cohesion: 0.08
+Nodes (40): RANGE_DAYS, RangeFilter, ContactSubmission, deleteContact(), addLeadNote(), AgentOption, assignLead(), CrmActor (+32 more)
 
 ### Community 25 - "Blog rich-text renderer (ProseMirror JSON)"
 Cohesion: 0.16
@@ -439,56 +444,56 @@ Cohesion: 0.13
 Nodes (17): ButtonGroup(), ButtonGroupSeparator(), ButtonGroupText(), buttonGroupVariants, Item(), ItemActions(), ItemContent(), ItemDescription() (+9 more)
 
 ### Community 30 - "ADR-001: auth.users <-> agents coupling"
-Cohesion: 0.13
-Nodes (20): ADR-001 Acoplamiento auth.users <-> public.agents, ADR-001 acoplamiento auth.users/agents, public.agents table, auth.service.ts signIn(), src/services/auth.service.ts, auth.users table (Supabase Auth internal), estimation_requests table, is_active_agent() Postgres function (+12 more)
+Cohesion: 0.11
+Nodes (23): ADR-001 Acoplamiento auth.users <-> public.agents, ADR-001 acoplamiento auth.users/agents, public.agents table, auth.service.ts signIn(), src/services/auth.service.ts, auth.users table (Supabase Auth internal), CODEX_HANDOFF_401.md, estimation_requests table (+15 more)
 
 ### Community 31 - "components.json (shadcn aliases)"
 Cohesion: 0.11
 Nodes (18): aliases, components, hooks, lib, ui, utils, iconLibrary, registries (+10 more)
 
 ### Community 32 - "Admin leads page + service"
-Cohesion: 0.16
-Nodes (17): buildSourceContent(), ensureTranslationsOnSave(), handleAutoTranslate(), supabase-js hang mitigation pattern (withTimeout/withRetry/adminRest), AdminRequestOptions, Method, clearLocalSessionAndRedirect(), currentAccessToken() (+9 more)
+Cohesion: 0.07
+Nodes (45): ImageUploader(), ImageUploaderProps, authenticatedJsonRequest(), createProperty(), deleteImage(), deleteProperty(), fetchAdminProperties(), firstReturnedProperty() (+37 more)
 
 ### Community 33 - "Audit report: 13-agent findings (current)"
-Cohesion: 0.18
-Nodes (11): P0: canonical/hreflang estáticos (SEO), P0: i18n roto en 3 páginas, P0: sin Política de Privacidad/Mentions Légales, P0: drift de migraciones, P0: escalada de privilegios vía RLS, AUDIT_REPORT.md (auditoría 13 agentes), Migración i18n de About/GestionLocative/BuyerGuide, migration 006_fix_agent_update_rls.sql (+3 more)
+Cohesion: 0.12
+Nodes (17): P0: canonical/hreflang estáticos (SEO), P0: i18n roto en 3 páginas, P0: sin Política de Privacidad/Mentions Légales, P0: drift de migraciones, P0: escalada de privilegios vía RLS, AUDIT_REPORT.md (auditoría 13 agentes), scripts/generate-sitemap.mjs, Migración i18n de About/GestionLocative/BuyerGuide (+9 more)
 
 ### Community 34 - "Service cards + neighborhoods data"
 Cohesion: 0.03
-Nodes (68): 🟡 Agentes: la columna existe, nadie la usa, Ajustes finos landing /proprietaires — 2026-07-24 ✅ HECHO, Análisis de competencia + decisión pendiente sobre landing "vendre" — 2026-07-24, 🔴 Avisos de lead — FUNCIÓN ARREGLADA, FALTA ELEGIR CANAL 2026-08-02, Blocked, 🔴 Bomba de relojería — antes de dar de alta a ningún agente, Botón redundante del hero + formulario agrandado — 2026-07-24 ✅ HECHO, 🔴 Bug crítico auto-causado + fix del CTA "que no hace nada" — 2026-07-24 ✅ HECHO (+60 more)
+Nodes (70): 🟡 Agentes: la columna existe, nadie la usa, Ajustes finos landing /proprietaires — 2026-07-24 ✅ HECHO, Análisis de competencia + decisión pendiente sobre landing "vendre" — 2026-07-24, 🔴 Avisos de lead — FUNCIÓN ARREGLADA, FALTA ELEGIR CANAL 2026-08-02, Blocked, 🔴 Bomba de relojería — antes de dar de alta a ningún agente, Botón redundante del hero + formulario agrandado — 2026-07-24 ✅ HECHO, 🔴 Bug crítico auto-causado + fix del CTA "que no hace nada" — 2026-07-24 ✅ HECHO (+62 more)
 
 ### Community 35 - "Buyer guide page + rental i18n"
 Cohesion: 0.13
 Nodes (16): French locale: services.json (rental + concierge), banks, BuyerGuide(), creditDocuments, feesRows, precautionsList, relatedArticles, taxRows (+8 more)
 
 ### Community 36 - "Google Ads: 3 campaigns (FR-France/Diaspora/Maroc)"
-Cohesion: 0.22
-Nodes (11): a0(), buildMarkup(), c0(), c1(), #d1(), #e1(), ensureDropdownWidthSet(), h1() (+3 more)
+Cohesion: 0.14
+Nodes (15): legacy admins table, contact_submissions table, hreflang FR/ES/EN alternate links, Structured data (RealEstateAgent + WebSite JSON-LD), info.md (scaffold notes), is_admin() Postgres function, migration 008 (unify is_admin), migration 009 (close contact_submissions PII leak) (+7 more)
 
 ### Community 37 - "Favorites (localStorage) + site settings"
 Cohesion: 0.14
-Nodes (16): FavoritesContext, FavoritesContextValue, FavoritesProvider(), getAnonymousId(), isSupabaseConfigured, notify-lead Netlify Function, ContactFormData, notifyLead() (+8 more)
+Nodes (14): SectionReveal(), SectionRevealProps, LeadSource, trackLead(), notify-lead Netlify Function, Estimation(), Estimer(), ContactFormData (+6 more)
 
 ### Community 38 - "shadcn/ui: Menubar"
-Cohesion: 0.12
-Nodes (11): Menubar(), MenubarCheckboxItem(), MenubarContent(), MenubarItem(), MenubarLabel(), MenubarRadioItem(), MenubarSeparator(), MenubarShortcut() (+3 more)
+Cohesion: 0.22
+Nodes (9): FloatingWhatsApp(), Footer(), Layout(), Navbar(), IconProps, InstagramIcon(), TikTokIcon(), WhatsAppIcon() (+1 more)
 
 ### Community 39 - "shadcn/ui: Context menu"
-Cohesion: 0.20
-Nodes (10): table: estimation_requests, table: favorites, table: site_settings, AgentRow, BlogPostRow, ContactSubmissionRow, Database, EstimationRequestRow (+2 more)
+Cohesion: 0.12
+Nodes (9): ContextMenuCheckboxItem(), ContextMenuContent(), ContextMenuItem(), ContextMenuLabel(), ContextMenuRadioItem(), ContextMenuSeparator(), ContextMenuShortcut(), ContextMenuSubContent() (+1 more)
 
 ### Community 40 - "Hero search bar"
-Cohesion: 0.25
-Nodes (6): HeroSearch(), TabButton(), Transaction, TYPE_ICONS, TYPE_KEYS, TypeKey
+Cohesion: 0.23
+Nodes (10): BlogAuthor, BlogCategory, BlogTranslation, DbBlogPostRow, ListPostsOptions, mapDbToPost(), resolveTranslation(), slugify() (+2 more)
 
 ### Community 41 - "Project identity (Adspubli, Atlas Rouge, Netlify, Supabase)"
-Cohesion: 0.18
-Nodes (11): Adspubli (Jonatan, dev agency), Atlas Luxe design sample page, Atlas Rouge Immobilier (project), Netlify site atlasrouge.com, Supabase project slxlkbrqcjabsfuhlwdf, Concierge / short-let (Airbnb) management service concept, Épure landing — Vendre un bien d'exception, Khalid (project owner, France) (+3 more)
+Cohesion: 0.14
+Nodes (14): Adspubli (Jonatan, dev agency), Atlas Luxe design sample page, Atlas Rouge Immobilier (project), Netlify site atlasrouge.com, Supabase project slxlkbrqcjabsfuhlwdf, Concierge / short-let (Airbnb) management service concept, Épure landing — Vendre un bien d'exception, GestionLocative.tsx (landing gestión) (+6 more)
 
 ### Community 42 - "First-load resilience fix chain"
-Cohesion: 0.28
-Nodes (13): src/services/blog.service.ts, src/components/ErrorBoundary.tsx, progress/2026-06-05-first-load-resilience.md, src/pages/Home.tsx, src/main.tsx, src/services/neighborhood.service.ts, src/services/property.service.ts, report-error.js (Netlify Function) (+5 more)
+Cohesion: 0.21
+Nodes (17): src/services/blog.service.ts, src/components/ErrorBoundary.tsx, progress/2026-06-05-first-load-resilience.md, Fix: crear inmueble daba HTTP 400 (neighborhood_id slug→uuid), src/pages/Home.tsx, i18n panel admin + amenities (FR→ES/EN), src/main.tsx, src/services/neighborhood.service.ts (+9 more)
 
 ### Community 43 - "Property detail + amenities i18n"
 Cohesion: 0.09
@@ -507,8 +512,8 @@ Cohesion: 0.20
 Nodes (9): marketing/google-ads-como-importar.md (import flow doc), marketing/google-ads-propietarios.md (owner-acquisition Ads strategy), Google Ads MCC bulk-upload templates (5 CSV files, marketing/google-ads-templates/), Discipline, Naming, progress/ — multi-step task journal, Template, When to create an entry (+1 more)
 
 ### Community 47 - "RLS helper functions + core tables"
-Cohesion: 0.31
-Nodes (5): fn: is_admin_role(), fn: is_agent(), table: contact_submissions, table: properties, schema.sql (legacy pre-migration schema doc)
+Cohesion: 0.18
+Nodes (11): fn: is_admin() (unified), fn: is_admin_role(), fn: is_agent(), fn: recompute_neighborhood_count(), table: admins (legacy, deprecated), table: contact_submissions, table: neighborhoods, table: properties (+3 more)
 
 ### Community 48 - "Harness agents/skills + i18n admin fix"
 Cohesion: 0.29
@@ -523,12 +528,12 @@ Cohesion: 0.21
 Nodes (10): InputGroup(), InputGroupAddon(), inputGroupAddonVariants, InputGroupButton(), inputGroupButtonVariants, InputGroupInput(), InputGroupText(), InputGroupTextarea() (+2 more)
 
 ### Community 51 - "Agent profile + credential card"
-Cohesion: 0.26
-Nodes (8): AgentCredentialProps, DATE_LOCALES, AgentProfile(), Tab, ProfileForm(), ProfileFormProps, Agent, updateAgent()
+Cohesion: 0.22
+Nodes (9): NavigationMenu(), NavigationMenuContent(), NavigationMenuIndicator(), NavigationMenuItem(), NavigationMenuLink(), NavigationMenuList(), NavigationMenuTrigger(), navigationMenuTriggerStyle (+1 more)
 
 ### Community 52 - "Search filter option lists"
-Cohesion: 0.12
-Nodes (16): amenitiesList, budgetRanges, neighborhoods, propertyTypes, roomsOptions, sortOptions, surfaceRanges, Neighborhood interface (id, name, slug, image, description, subtitle, propertyCount, isActive) (+8 more)
+Cohesion: 0.16
+Nodes (13): amenitiesList, budgetRanges, neighborhoods, propertyTypes, roomsOptions, sortOptions, surfaceRanges, Neighborhood interface (id, name, slug, image, description, subtitle, propertyCount, isActive) (+5 more)
 
 ### Community 53 - "Batch property-translation script"
 Cohesion: 0.29
@@ -539,8 +544,8 @@ Cohesion: 0.10
 Nodes (22): Field(), FieldContent(), FieldDescription(), FieldError(), FieldGroup(), FieldLabel(), FieldLegend(), FieldSeparator() (+14 more)
 
 ### Community 55 - "Admin properties list + create/save hang fixes"
-Cohesion: 0.24
-Nodes (11): src/pages/admin/AdminProperties.tsx, Fix: listado admin colgado tras crear propiedad, Fix: subida de imágenes colgada en Subiendo..., Fix: guardar propiedad colgado en spinner, src/components/admin/ImageUploader.tsx, img-proxy.ts (edge function), src/services/admin/propertyAdmin.service.ts, src/lib/authSession.ts (+3 more)
+Cohesion: 0.23
+Nodes (12): src/pages/admin/AdminProperties.tsx, Fix: listado admin colgado tras crear propiedad, Fix: subida de imágenes colgada en Subiendo..., Fix: guardar propiedad colgado en spinner, src/components/admin/ImageUploader.tsx, img-proxy.ts (edge function), src/services/admin/propertyAdmin.service.ts, src/lib/authSession.ts (+4 more)
 
 ### Community 56 - "Migration runner + audit report + sitemap"
 Cohesion: 0.18
@@ -560,15 +565,15 @@ Nodes (6): DrawerContent(), DrawerDescription(), DrawerFooter(), DrawerHeader(),
 
 ### Community 60 - "shadcn/ui: Select"
 Cohesion: 0.04
-Nodes (52): Actualizacion De Esta Intervencion, ACTUALIZACIÓN — Claude Sonnet 5 — 2026-07-06 (las 3 campañas creadas EN LA CUENTA REAL vía Bulk Uploads), Bug RESUELTO Y DESPLEGADO: crear inmueble daba HTTP 400, Bug RESUELTO Y DESPLEGADO: sesión zombi → 401 en traducir/subir, CIERRE — Claude Opus 5 — 2026-08-05 (rediseño del centro de leads del panel), CIERRE de sesión — Claude Opus 4.8 — 2026-06-01 (noche), CIERRE de sesión — Claude Opus 4.8 — 2026-06-01 (noche, 2ª parte), CIERRE de sesión — Claude Opus 4.8 — 2026-06-01 (perf panel admin) (+44 more)
+Nodes (53): Actualizacion De Esta Intervencion, ACTUALIZACIÓN — Claude Sonnet 5 — 2026-07-06 (las 3 campañas creadas EN LA CUENTA REAL vía Bulk Uploads), Bug RESUELTO Y DESPLEGADO: crear inmueble daba HTTP 400, Bug RESUELTO Y DESPLEGADO: sesión zombi → 401 en traducir/subir, CIERRE — Claude Opus 5 — 2026-08-05 (CRM: pipeline de leads en el panel), CIERRE — Claude Opus 5 — 2026-08-05 (rediseño del centro de leads del panel), CIERRE de sesión — Claude Opus 4.8 — 2026-06-01 (noche), CIERRE de sesión — Claude Opus 4.8 — 2026-06-01 (noche, 2ª parte) (+45 more)
 
 ### Community 61 - "Admin dashboard + stat card"
-Cohesion: 0.22
-Nodes (6): AdminDashboard(), DATE_LOCALES, colorClasses, StatCard(), StatCardProps, PropertyRow
+Cohesion: 0.31
+Nodes (5): fn: handle_new_auth_user(), policy: agents_update_own, trigger: on_auth_user_created (auth.users), routes.ts (localized slug map, getAllSlugsForKey), tasks/current.md
 
 ### Community 62 - "ADR-002: anonymous client for public reads"
-Cohesion: 0.14
-Nodes (16): uploadImage(), ADR-002: anonymous client for public reads (rationale), clearLocalSessionAndRedirect, currentAccessToken, storedAccessToken, storage.objects bucket: property-images, getAnonymousId, supabase (session client) (+8 more)
+Cohesion: 0.22
+Nodes (10): ADR-002: anonymous client for public reads (rationale), getAnonymousId, supabasePublic (anonymous client), useCurrency hook, FavoritesProvider, toggleFavorite, useFavorites hook, usePropertyPrice hook (+2 more)
 
 ### Community 63 - "Leads pipeline tables (estimation, newsletter, settings)"
 Cohesion: 0.06
@@ -600,11 +605,11 @@ Nodes (4): Do not, Interpret results, Procedure, verify
 
 ### Community 70 - "RLS hardening + neighborhood count trigger"
 Cohesion: 0.11
-Nodes (22): #$1(), #B(), constructor(), #D(), #e(), f1(), forEachInstance(), #G() (+14 more)
+Nodes (23): a0(), #B(), buildMarkup(), c0(), c1(), constructor(), #d1(), #e() (+15 more)
 
 ### Community 71 - "Blog schema tables"
-Cohesion: 0.18
-Nodes (11): fn: handle_new_auth_user(), fn: is_active_agent(), policy: agents_update_own, table: agents, table: blog_post_translations, table: blog_posts, table: newsletter_subscribers, trigger: on_auth_user_created (auth.users) (+3 more)
+Cohesion: 0.31
+Nodes (7): fn: is_active_agent(), table: agents, table: blog_post_translations, table: blog_posts, view: blog_posts_published, migrate_existing.sql (legacy, superseded), BlogPostRow
 
 ### Community 72 - "apply-migration.mjs internals"
 Cohesion: 0.25
@@ -615,8 +620,8 @@ Cohesion: 0.29
 Nodes (7): Empty(), EmptyContent(), EmptyDescription(), EmptyHeader(), EmptyMedia(), emptyMediaVariants, EmptyTitle()
 
 ### Community 74 - "French Modern Direction route + brand book"
-Cohesion: 0.17
-Nodes (14): src/App.tsx, /french-modern-direction preview route, LangDetector() component, LangWrapper() component, docs/design-directions/french-modern-direction.md, 'French Modern Direction' reusable design direction, French Modern Direction brand book (standalone HTML), FrenchModernDirection.tsx (React preview page) (+6 more)
+Cohesion: 0.27
+Nodes (9): src/App.tsx, /french-modern-direction preview route, LangDetector() component, LangWrapper() component, docs/design-directions/french-modern-direction.md, 'French Modern Direction' reusable design direction, French Modern Direction brand book (standalone HTML), FrenchModernDirection.tsx (React preview page) (+1 more)
 
 ### Community 75 - "Phone field + country list"
 Cohesion: 0.38
@@ -643,8 +648,8 @@ Cohesion: 0.50
 Nodes (5): brand/build_logo.py, src/components/Footer.tsx, Vectorización logo + tipografía tagline, src/components/Navbar.tsx, public/logo.svg (v1 delivered)
 
 ### Community 81 - "Estimation landing + form"
-Cohesion: 0.22
-Nodes (11): CODEX_HANDOFF_401.md, Estimation.tsx (formulario real de estimación), Estimer.tsx (landing puente informativa), Fix: translate-property 401 con sesión fresca, AdGroup C · Estimation, migration 000_base_schema.sql, notify-lead.js (Netlify Function), progress/2026-05-29-phase0-security-seo.md (+3 more)
+Cohesion: 0.40
+Nodes (5): Estimation.tsx (formulario real de estimación), Estimer.tsx (landing puente informativa), AdGroup C · Estimation, notify-lead.js (Netlify Function), submitEstimationRequest()
 
 ### Community 82 - "French Modern Direction palette/typography"
 Cohesion: 0.25
@@ -707,8 +712,8 @@ Cohesion: 0.67
 Nodes (3): getImageUrl, getPropertyImageUrls, isLocalDev
 
 ### Community 101 - "About i18n (EN/ES)"
-Cohesion: 0.19
-Nodes (21): #C(), closeCountrySelector(), destroy(), isCountrySelectorOpen(), isLoading(), #l(), L0(), #m() (+13 more)
+Cohesion: 0.16
+Nodes (24): #$1(), #C(), closeCountrySelector(), destroy(), #i1(), isCountrySelectorOpen(), isLoading(), #l() (+16 more)
 
 ### Community 102 - "Buyer guide i18n (EN/ES)"
 Cohesion: 0.08
@@ -743,8 +748,8 @@ Cohesion: 0.18
 Nodes (12): GsapBeat, GsapKineticText(), Props, GsapLogoReveal(), Props, BEATS, clips, KineticConciergerie() (+4 more)
 
 ### Community 127 - "Community 127"
-Cohesion: 0.33
-Nodes (7): AdminLeads(), DATE_LOCALES, Tab, EstimationRequest, listEstimationRequests(), listNewsletterSubscribers(), NewsletterSubscriber
+Cohesion: 0.22
+Nodes (8): 2026-08-05 — CRM pipeline in the admin leads centre, Commands run, Files changed, Files inspected, Next step, Objective, Open risks, Verification result
 
 ### Community 128 - "Community 128"
 Cohesion: 0.12
@@ -875,12 +880,12 @@ Cohesion: 0.20
 Nodes (9): 2026-08-02 — Landing /vendre/: menos texto, formulario de 3 campos, móvil, Archivos cambiados, Decisiones no obvias, Errores propios cazados durante el trabajo, Objetivo, Qué se hizo, Riesgos abiertos, Siguiente paso (+1 more)
 
 ### Community 160 - "Community 160"
-Cohesion: 0.25
-Nodes (8): Fix: crear inmueble daba HTTP 400 (neighborhood_id slug→uuid), scripts/generate-sitemap.mjs, i18n panel admin + amenities (FR→ES/EN), netlify/functions/translate-property.js (DeepSeek-backed translation function), src/components/admin/PropertyForm.tsx, src/lib/amenities.ts (amenityLabel), Supabase `properties` table, scripts/translate-existing-properties.mjs
+Cohesion: 0.33
+Nodes (7): google-ads-ads-FR.csv (anuncios RSA), Campaña Atlas Rouge - FR-Diaspora, Campaña Atlas Rouge - FR-France, Campaña Atlas Rouge - Maroc, Cómo subir campañas a Google Ads sin API (doc), Google Ads Editor (herramienta desktop), marketing/google-ads-import-FR.csv
 
 ### Community 161 - "Community 161"
-Cohesion: 0.10
-Nodes (21): google-ads-ads-FR.csv (anuncios RSA), Campaña Atlas Rouge - FR-Diaspora, Campaña Atlas Rouge - FR-France, Campaña Atlas Rouge - Maroc, Cómo subir campañas a Google Ads sin API (doc), marketing/google-ads-como-importar.md, Bloqueante: sin tracking, no activar campañas, Google Ads Editor (herramienta desktop) (+13 more)
+Cohesion: 0.22
+Nodes (8): marketing/google-ads-como-importar.md, marketing/google-ads-propietarios.md, Convención para agentes (Claude / Codex / Kimi), marketing/ — Campañas y publicidad de Atlas Rouge, Notas, Índice, Semrush landing page screenshot, SEO visibility / competitive intelligence platform (Semrush)
 
 ### Community 162 - "Community 162"
 Cohesion: 0.22
@@ -995,8 +1000,8 @@ Cohesion: 0.29
 Nodes (7): ⚠️ ACCIONES MANUALES PENDIENTES — bloquean producción al 100%, Auditoría realizada, Contexto, Estado técnico, Fixes aplicados (commit `75ef1ff6`), Intervención: Claude Opus 4.7 — 2026-05-20 (auditoría completa + hardening producción), Pendientes nice-to-have (no bloquean launch)
 
 ### Community 190 - "Community 190"
-Cohesion: 0.31
-Nodes (6): fn: is_admin() (unified), fn: recompute_neighborhood_count(), table: admins (legacy, deprecated), table: neighborhoods, trigger: properties_neighborhood_count, NeighborhoodRow
+Cohesion: 0.33
+Nodes (7): #D(), #G(), prefillSearchWithPlus(), searchSummaryAria(), #t1(), #W(), #X()
 
 ### Community 191 - "Community 191"
 Cohesion: 0.29
@@ -1186,6 +1191,18 @@ Nodes (3): Auditoría de producción (saas-audit full) — 2026-06-03 ✅ Score 
 Cohesion: 0.67
 Nodes (3): Fase 2 (ciudades / multi-país) — PLANIFICADA, no empezada, Gestión de barrios en el admin (Fase 1) — ✅ DESPLEGADO (`8219d357`), Nuevo barrio "Route de Ouarzazate" — 2026-06-03 ✅ EN VIVO (solo datos, sin deploy de código)
 
+### Community 245 - "Community 245"
+Cohesion: 0.33
+Nodes (5): ADR-003 — The CRM pipeline lives on `contact_submissions`, not a new table, Alternatives considered, Consequences, Context, Decision
+
+### Community 246 - "Community 246"
+Cohesion: 0.33
+Nodes (6): Bloqueante: sin tracking, no activar campañas, Estrategia campaña Google Ads captación propietarios (doc), Hallazgo: España sin volumen de búsqueda → canal Meta Ads, no Search, Posicionamiento 'nosotros seríamos los familiares', Hallazgo: sitio sin GA4/Ads/Meta Pixel tracking, Principio rector: vendre ≠ à vendre
+
+### Community 247 - "Community 247"
+Cohesion: 0.40
+Nodes (5): 1. Centro de leads reconstruido (commit `c1e8ab4e`, otra sesión, 01:26), 2. El renombrado a Leads estaba a medias — TERMINADO (commit `c12382a5`), 3. Graph regenerado, CIERRE — 2026-08-05 madrugada (la pantalla de Leads ya existe + se termina el renombrado), Pendiente tras este cierre
+
 ## Ambiguous Edges - Review These
 - `PropertyForm()` → `ProtectedRoute()`  [AMBIGUOUS]
   src/components/admin/PropertyForm.tsx · relation: conceptually_related_to
@@ -1213,9 +1230,9 @@ Nodes (3): Fase 2 (ciudades / multi-país) — PLANIFICADA, no empezada, Gestió
   supabase/seed.sql · relation: conceptually_related_to
 
 ## Knowledge Gaps
-- **1415 isolated node(s):** `name`, `version`, `description`, `private`, `license` (+1410 more)
+- **1434 isolated node(s):** `name`, `version`, `description`, `private`, `license` (+1429 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **22 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **24 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_

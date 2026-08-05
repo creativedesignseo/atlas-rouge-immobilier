@@ -635,8 +635,8 @@
     "semantic_hash": "ee0aa76ac0f057978e254021868f4eb0"
   },
   "src/locales/en/admin.json": {
-    "mtime": 1785886212.067701,
-    "ast_hash": "9283204ff13a4d317ca40a7e73018abd",
+    "mtime": 1785887844.773867,
+    "ast_hash": "1dd4dbb465eedd7fadd025ed5357657f",
     "semantic_hash": ""
   },
   "src/locales/en/amenities.json": {
@@ -715,8 +715,8 @@
     "semantic_hash": "7281967068fab8eb19afb221dcec0e04"
   },
   "src/locales/es/admin.json": {
-    "mtime": 1785886212.067203,
-    "ast_hash": "57780cc411359e4ed9e1dcd7ba1fb95c",
+    "mtime": 1785887844.772704,
+    "ast_hash": "f1520470b737c1d93cdb4b3cf55e8aa6",
     "semantic_hash": ""
   },
   "src/locales/es/amenities.json": {
@@ -795,8 +795,8 @@
     "semantic_hash": "edebc303fb6d07bcdaacbf949a91ad23"
   },
   "src/locales/fr/admin.json": {
-    "mtime": 1785886212.0665436,
-    "ast_hash": "441beb13969f97d07060516e1686e4fb",
+    "mtime": 1785887844.773309,
+    "ast_hash": "f7958610ed357c2f487ba23f2767aee9",
     "semantic_hash": ""
   },
   "src/locales/fr/amenities.json": {
@@ -975,8 +975,8 @@
     "semantic_hash": "30f5505b051de7a911744bc0bb1989ac"
   },
   "src/pages/admin/AdminContacts.tsx": {
-    "mtime": 1785885943.1351526,
-    "ast_hash": "8e2727854fddeba1773774b6cc2ca150",
+    "mtime": 1785887862.3352523,
+    "ast_hash": "b3ce75fc365c05b82ec9bc49cd103157",
     "semantic_hash": ""
   },
   "src/pages/admin/AdminDashboard.tsx": {
@@ -1025,8 +1025,8 @@
     "semantic_hash": "88538dcf70782eff3a903d23051cfb7f"
   },
   "src/services/admin/contactAdmin.service.ts": {
-    "mtime": 1785851568.369287,
-    "ast_hash": "09ff08823a4888e96efa78a920318b34",
+    "mtime": 1785887536.6954463,
+    "ast_hash": "574748e6931ddea41e15c0d5065dedd9",
     "semantic_hash": ""
   },
   "src/services/admin/leadsAdmin.service.ts": {
@@ -1085,8 +1085,8 @@
     "semantic_hash": "767b6f57fd52daaf7350ba2d88dafb4e"
   },
   "src/types/supabase.ts": {
-    "mtime": 1785851548.5040739,
-    "ast_hash": "29cfa74b69e2c9748b5642c9acdf9a76",
+    "mtime": 1785887525.7751195,
+    "ast_hash": "25f2e0796eab9b9ea170b8c63a4a9134",
     "semantic_hash": ""
   },
   "src/vite-env.d.ts": {
@@ -1285,8 +1285,8 @@
     "semantic_hash": "ea71fe20d99a449aeddd9e54a8d1027b"
   },
   "HANDOFF_REPORT.md": {
-    "mtime": 1785886342.5457184,
-    "ast_hash": "43e76e26ce9cde639ab663b08424cb55",
+    "mtime": 1785888075.5451283,
+    "ast_hash": "9c5cdcbe983b63b2aa1a020470e0e6fc",
     "semantic_hash": ""
   },
   "PROJECT_CONTEXT.md": {
@@ -1500,8 +1500,8 @@
     "semantic_hash": ""
   },
   "tasks/current.md": {
-    "mtime": 1785886342.5462732,
-    "ast_hash": "279b9ee8c5734a71629444d8cdf82096",
+    "mtime": 1785888075.5457494,
+    "ast_hash": "81fc64c6d5b6ab3c9f144c01ff9ceefb",
     "semantic_hash": ""
   },
   "public/favicon.svg": {
@@ -2922,6 +2922,61 @@
   "brand/Agente/remotion/public/voice-v2k/voice6.mp3": {
     "mtime": 1784002791.3256233,
     "ast_hash": "f4730ea8feb63f8f1da48560321c2b5d",
+    "semantic_hash": ""
+  },
+  "src/components/admin/crm/LeadCard.tsx": {
+    "mtime": 1785887883.0580974,
+    "ast_hash": "4722810f012d136b2c7f55b9484123cc",
+    "semantic_hash": ""
+  },
+  "src/components/admin/crm/LeadDrawer.tsx": {
+    "mtime": 1785887883.0581758,
+    "ast_hash": "e3cd01cccbf64b96e66ae852aeea2ee6",
+    "semantic_hash": ""
+  },
+  "src/components/admin/crm/LeadStageSelector.tsx": {
+    "mtime": 1785887665.457625,
+    "ast_hash": "a122eaa6d665b852060803bcfeac0876",
+    "semantic_hash": ""
+  },
+  "src/components/admin/crm/PipelineBoard.tsx": {
+    "mtime": 1785887649.0589116,
+    "ast_hash": "c698a76fef4e704df938b0ffd87ed9a4",
+    "semantic_hash": ""
+  },
+  "src/components/admin/crm/PipelineOverview.tsx": {
+    "mtime": 1785887679.747627,
+    "ast_hash": "39eb807e7aeef1b1f0d323dd6935d83e",
+    "semantic_hash": ""
+  },
+  "src/components/admin/crm/stages.ts": {
+    "mtime": 1785887649.0586534,
+    "ast_hash": "aa4ea64d16f8488d2e574e083ba05888",
+    "semantic_hash": ""
+  },
+  "src/services/admin/crm.service.ts": {
+    "mtime": 1785887565.838591,
+    "ast_hash": "002e136c48d0557838b8dec0b4944c45",
+    "semantic_hash": ""
+  },
+  "supabase/migrations/017_crm_pipeline.sql": {
+    "mtime": 1785887496.7863986,
+    "ast_hash": "3a8e283a5d23638af4d9dbe86ec6b194",
+    "semantic_hash": ""
+  },
+  "docs/decisions/ADR-003-crm-pipeline-on-contact-submissions.md": {
+    "mtime": 1785887955.2071378,
+    "ast_hash": "3342d9d9bef1efb2a3c2a6ed782e2f32",
+    "semantic_hash": ""
+  },
+  "progress/2026-08-05-crm-pipeline.md": {
+    "mtime": 1785887974.3394814,
+    "ast_hash": "7016b497de8a73811942f5944e8780ed",
+    "semantic_hash": ""
+  },
+  "references/crm_prototipo_2026_v2.html": {
+    "mtime": 1785887249.0848536,
+    "ast_hash": "8fb953361f5c13b9079e91373fcdf948",
     "semantic_hash": ""
   }
 }
