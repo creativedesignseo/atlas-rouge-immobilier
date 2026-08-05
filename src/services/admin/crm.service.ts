@@ -180,6 +180,23 @@ export async function addLeadNote(
   return created[0]
 }
 
+/**
+ * Removes a note. RLS (migration 017) only lets the author or an admin through;
+ * `return=representation` is what makes a refusal visible — PostgREST answers
+ * 200 with an empty array when the row exists but policy forbids the delete,
+ * which would otherwise show a false "deleted" toast.
+ *
+ * Notes have no UPDATE policy on purpose: a note records what was said, so it
+ * is delete-and-rewrite, never edit-in-place.
+ */
+export async function deleteLeadNote(id: string): Promise<void> {
+  const deleted = await adminRestRequest<{ id: string }[]>(
+    `${NOTES}?id=eq.${encodeURIComponent(id)}&select=id`,
+    { method: 'DELETE', timeoutMs: 10000 },
+  )
+  if (!deleted?.length) throw new Error('Note was not deleted')
+}
+
 export async function getLeadActivity(contactId: string): Promise<LeadActivityRow[]> {
   return adminRestRequest<LeadActivityRow[]>(
     `${ACTIVITY}?contact_id=eq.${encodeURIComponent(contactId)}&select=*&order=created_at.desc&limit=50`,

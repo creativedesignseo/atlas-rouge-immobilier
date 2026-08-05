@@ -77,7 +77,7 @@
     "dashboard": "Dashboard",
     "properties": "Properties",
     "blog": "Blog",
-    "contacts": "Leads",
+    "contacts": "Lead center",
     "profile": "My profile",
     "settings": "Settings",
     "backToSite": "Back to site",
@@ -217,7 +217,7 @@
     "highlightLangPlaceholder": "Add feature..."
   },
   "contacts": {
-    "title": "Leads",
+    "title": "Lead center",
     "noContacts": "No contacts yet",
     "noResults": "No leads found",
     "searchPlaceholder": "Search a lead...",
@@ -484,7 +484,11 @@
       "markLost": "Discard",
       "save": "Save changes",
       "saving": "Saving…",
-      "delete": "Delete lead"
+      "delete": "Delete lead",
+      "deleteNote": "Delete note",
+      "deleteNoteConfirm": "This note will be permanently deleted. This cannot be undone.",
+      "noteDeleted": "Note deleted",
+      "noteDeleteError": "The note could not be deleted"
     },
     "priority": {
       "low": "Low",

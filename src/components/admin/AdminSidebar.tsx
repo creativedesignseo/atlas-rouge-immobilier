@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom'
-import { LayoutDashboard, Home, Mail, ArrowLeft, Menu, X, UserCircle, BookOpen, MapPin, Inbox } from 'lucide-react'
+import { LayoutDashboard, Home, ContactRound, ArrowLeft, Menu, X, UserCircle, BookOpen, MapPin, Inbox } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '@/hooks/useAuth'
@@ -16,7 +16,7 @@ export default function AdminSidebar() {
     // Location management is an admin-only capability (taxonomy editing).
     ...(isAdmin ? [{ path: '/admin/neighborhoods', label: t('sidebar.neighborhoods'), icon: MapPin }] : []),
     { path: '/admin/blog', label: t('sidebar.blog'), icon: BookOpen },
-    { path: '/admin/contacts', label: t('sidebar.contacts'), icon: Mail },
+    { path: '/admin/contacts', label: t('sidebar.contacts'), icon: ContactRound },
     { path: '/admin/leads', label: t('sidebar.leads'), icon: Inbox },
     { path: '/admin/profile', label: t('sidebar.profile'), icon: UserCircle },
   ]
@@ -73,8 +73,13 @@ export default function AdminSidebar() {
                     : 'text-white/70 hover:bg-white/10 hover:text-white'
                 }`}
               >
-                <item.icon size={18} />
-                {item.label}
+                <item.icon size={18} className="flex-shrink-0" />
+                {/* "Centro de clientes potenciales" is longer than the rail is
+                    wide; truncate like Facebook does and keep the full text in
+                    the tooltip rather than letting it wrap to two lines. */}
+                <span className="truncate" title={item.label}>
+                  {item.label}
+                </span>
               </NavLink>
             )
           })}

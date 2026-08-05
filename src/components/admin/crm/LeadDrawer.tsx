@@ -22,6 +22,7 @@ import type { LeadActivityRow, LeadNoteRow, LeadPriority, LeadStage } from '@/ty
 import {
   addLeadNote,
   assignLead,
+  deleteLeadNote,
   getAssignableAgents,
   getLeadActivity,
   getLeadNotes,
@@ -175,6 +176,27 @@ export default function LeadDrawer({
       toast.error(t('crm.toast.noteError'))
     } finally {
       setSavingNote(false)
+    }
+  }
+
+  async function handleDeleteNote(noteId: string) {
+    const ok = await confirm({
+      title: t('crm.drawer.deleteNote'),
+      description: t('crm.drawer.deleteNoteConfirm'),
+      confirmLabel: t('actions.delete'),
+      cancelLabel: t('actions.cancel'),
+      destructive: true,
+    })
+    if (!ok) return
+    // Optimistic: the note disappears now and comes back if the server refuses.
+    const previous = notes
+    setNotes((prev) => prev.filter((n) => n.id !== noteId))
+    try {
+      await deleteLeadNote(noteId)
+      toast.success(t('crm.drawer.noteDeleted'))
+    } catch {
+      setNotes(previous)
+      toast.error(t('crm.drawer.noteDeleteError'))
     }
   }
 
@@ -424,12 +446,28 @@ export default function LeadDrawer({
                 {notes.map((note) => (
                   <li
                     key={note.id}
-                    className="rounded-xl border border-border-subtle bg-cream-warm p-3"
+                    className="rounded-xl border border-border-subtle bg-cream-warm p-3 flex items-start gap-2"
                   >
-                    <p className="text-sm text-ink whitespace-pre-wrap break-words">{note.body}</p>
-                    <p className="mt-1 text-xs text-stone">
-                      {format(new Date(note.created_at), 'PP, HH:mm', { locale: dateLocale })}
-                    </p>
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-sm text-ink whitespace-pre-wrap break-words">
+                        {note.body}
+                      </span>
+                      <span className="block mt-1 text-xs text-stone">
+                        {format(new Date(note.created_at), 'PP, HH:mm', { locale: dateLocale })}
+                      </span>
+                    </span>
+                    {/* Shown only to who RLS would actually let through: the
+                        author or an admin. Anyone else would get a refusal. */}
+                    {(isAdmin || (actor?.id && note.agent_id === actor.id)) && (
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteNote(note.id)}
+                        aria-label={t('crm.drawer.deleteNote')}
+                        className="w-9 h-9 flex-shrink-0 inline-flex items-center justify-center rounded-lg text-stone hover:text-red-700 hover:bg-red-50 transition-colors"
+                      >
+                        <Trash2 size={15} />
+                      </button>
+                    )}
                   </li>
                 ))}
               </ul>

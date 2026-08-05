@@ -77,7 +77,7 @@
     "dashboard": "Panel",
     "properties": "Inmuebles",
     "blog": "Blog",
-    "contacts": "Leads",
+    "contacts": "Centro de clientes potenciales",
     "profile": "Mi perfil",
     "settings": "Configuración",
     "backToSite": "Volver al sitio",
@@ -217,7 +217,7 @@
     "highlightLangPlaceholder": "Añadir característica..."
   },
   "contacts": {
-    "title": "Leads",
+    "title": "Centro de clientes potenciales",
     "noContacts": "Aún no hay contactos",
     "noResults": "Sin leads encontrados",
     "searchPlaceholder": "Buscar un lead...",
@@ -484,7 +484,11 @@
       "markLost": "Descartar",
       "save": "Guardar cambios",
       "saving": "Guardando…",
-      "delete": "Eliminar lead"
+      "delete": "Eliminar lead",
+      "deleteNote": "Eliminar nota",
+      "deleteNoteConfirm": "Esta nota se borrará para siempre. No se puede deshacer.",
+      "noteDeleted": "Nota eliminada",
+      "noteDeleteError": "No se pudo eliminar la nota"
     },
     "priority": {
       "low": "Baja",
