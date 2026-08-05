@@ -1,7 +1,7 @@
 # Graph Report - atlas-rouge-immobilier  (2026-08-05)
 
 ## Corpus Check
-- 381 files · ~1,038,268 words
+- 381 files · ~1,038,357 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `7f857087`
+- Built from commit: `e56f8e9f`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -605,7 +605,7 @@ Nodes (4): Do not, Interpret results, Procedure, verify
 
 ### Community 70 - "RLS hardening + neighborhood count trigger"
 Cohesion: 0.11
-Nodes (23): a0(), #B(), buildMarkup(), c0(), c1(), constructor(), #d1(), #e() (+15 more)
+Nodes (22): #$1(), #B(), constructor(), #D(), #e(), f1(), forEachInstance(), #G() (+14 more)
 
 ### Community 71 - "Blog schema tables"
 Cohesion: 0.31
@@ -712,8 +712,8 @@ Cohesion: 0.67
 Nodes (3): getImageUrl, getPropertyImageUrls, isLocalDev
 
 ### Community 101 - "About i18n (EN/ES)"
-Cohesion: 0.16
-Nodes (24): #$1(), #C(), closeCountrySelector(), destroy(), #i1(), isCountrySelectorOpen(), isLoading(), #l() (+16 more)
+Cohesion: 0.19
+Nodes (21): #C(), closeCountrySelector(), destroy(), isCountrySelectorOpen(), isLoading(), #l(), L0(), #m() (+13 more)
 
 ### Community 102 - "Buyer guide i18n (EN/ES)"
 Cohesion: 0.08
@@ -1000,8 +1000,8 @@ Cohesion: 0.29
 Nodes (7): ⚠️ ACCIONES MANUALES PENDIENTES — bloquean producción al 100%, Auditoría realizada, Contexto, Estado técnico, Fixes aplicados (commit `75ef1ff6`), Intervención: Claude Opus 4.7 — 2026-05-20 (auditoría completa + hardening producción), Pendientes nice-to-have (no bloquean launch)
 
 ### Community 190 - "Community 190"
-Cohesion: 0.33
-Nodes (7): #D(), #G(), prefillSearchWithPlus(), searchSummaryAria(), #t1(), #W(), #X()
+Cohesion: 0.22
+Nodes (11): a0(), buildMarkup(), c0(), c1(), #d1(), #e1(), ensureDropdownWidthSet(), h1() (+3 more)
 
 ### Community 191 - "Community 191"
 Cohesion: 0.29

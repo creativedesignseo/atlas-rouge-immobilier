@@ -635,8 +635,8 @@
     "semantic_hash": "ee0aa76ac0f057978e254021868f4eb0"
   },
   "src/locales/en/admin.json": {
-    "mtime": 1785887844.773867,
-    "ast_hash": "1dd4dbb465eedd7fadd025ed5357657f",
+    "mtime": 1785889057.529993,
+    "ast_hash": "7ded6014f755f69e315e3f4d94fb10fc",
     "semantic_hash": ""
   },
   "src/locales/en/amenities.json": {
@@ -715,8 +715,8 @@
     "semantic_hash": "7281967068fab8eb19afb221dcec0e04"
   },
   "src/locales/es/admin.json": {
-    "mtime": 1785887844.772704,
-    "ast_hash": "f1520470b737c1d93cdb4b3cf55e8aa6",
+    "mtime": 1785889057.528829,
+    "ast_hash": "4186cf11b4343fce2e9e0fed256bf118",
     "semantic_hash": ""
   },
   "src/locales/es/amenities.json": {
@@ -795,8 +795,8 @@
     "semantic_hash": "edebc303fb6d07bcdaacbf949a91ad23"
   },
   "src/locales/fr/admin.json": {
-    "mtime": 1785887844.773309,
-    "ast_hash": "f7958610ed357c2f487ba23f2767aee9",
+    "mtime": 1785889057.5294144,
+    "ast_hash": "f68683fd94afb35f7f583a802d9157dd",
     "semantic_hash": ""
   },
   "src/locales/fr/amenities.json": {
@@ -2925,8 +2925,8 @@
     "semantic_hash": ""
   },
   "src/components/admin/crm/LeadCard.tsx": {
-    "mtime": 1785887883.0580974,
-    "ast_hash": "4722810f012d136b2c7f55b9484123cc",
+    "mtime": 1785889057.5101485,
+    "ast_hash": "63411f49bdc549af27b09def78531526",
     "semantic_hash": ""
   },
   "src/components/admin/crm/LeadDrawer.tsx": {

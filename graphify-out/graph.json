@@ -4802,7 +4802,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "js_intltelinputwithutils_min_searchsummaryaria",
-      "community": 190,
+      "community": 70,
       "norm_label": "searchsummaryaria()"
     },
     {
@@ -4882,7 +4882,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "js_intltelinputwithutils_min_buildmarkup",
-      "community": 70,
+      "community": 190,
       "norm_label": "buildmarkup()"
     },
     {
@@ -4892,7 +4892,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "js_intltelinputwithutils_min_g",
-      "community": 190,
+      "community": 70,
       "norm_label": "#g()"
     },
     {
@@ -4912,7 +4912,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "js_intltelinputwithutils_min_ensuredropdownwidthset",
-      "community": 70,
+      "community": 190,
       "norm_label": "ensuredropdownwidthset()"
     },
     {
@@ -4922,7 +4922,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "js_intltelinputwithutils_min_x",
-      "community": 190,
+      "community": 70,
       "norm_label": "#x()"
     },
     {
@@ -4932,7 +4932,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "js_intltelinputwithutils_min_w",
-      "community": 190,
+      "community": 70,
       "norm_label": "#w()"
     },
     {
@@ -4952,7 +4952,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "js_intltelinputwithutils_min_d1",
-      "community": 70,
+      "community": 190,
       "norm_label": "#d1()"
     },
     {
@@ -4962,7 +4962,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "js_intltelinputwithutils_min_t1",
-      "community": 190,
+      "community": 70,
       "norm_label": "#t1()"
     },
     {
@@ -4982,7 +4982,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "js_intltelinputwithutils_min_e1",
-      "community": 70,
+      "community": 190,
       "norm_label": "#e1()"
     },
     {
@@ -5002,7 +5002,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "js_intltelinputwithutils_min_i1",
-      "community": 101,
+      "community": 70,
       "norm_label": "#i1()"
     },
     {
@@ -5012,7 +5012,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "js_intltelinputwithutils_min_1",
-      "community": 101,
+      "community": 70,
       "norm_label": "#$1()"
     },
     {
@@ -5032,7 +5032,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "js_intltelinputwithutils_min_prefillsearchwithplus",
-      "community": 190,
+      "community": 70,
       "norm_label": "prefillsearchwithplus()"
     },
     {
@@ -5112,7 +5112,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "js_intltelinputwithutils_min_k",
-      "community": 70,
+      "community": 190,
       "norm_label": "#k()"
     },
     {
@@ -5252,7 +5252,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "js_intltelinputwithutils_min_playstrictrejectanimation",
-      "community": 101,
+      "community": 70,
       "norm_label": "playstrictrejectanimation()"
     },
     {
@@ -5322,7 +5322,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "js_intltelinputwithutils_min_s",
-      "community": 70,
+      "community": 190,
       "norm_label": "#s()"
     },
     {
@@ -5342,7 +5342,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "js_intltelinputwithutils_min_d",
-      "community": 190,
+      "community": 70,
       "norm_label": "#d()"
     },
     {
@@ -5572,7 +5572,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "js_intltelinputwithutils_min_c1",
-      "community": 70,
+      "community": 190,
       "norm_label": "c1()"
     },
     {
@@ -5582,7 +5582,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "js_intltelinputwithutils_min_a0",
-      "community": 70,
+      "community": 190,
       "norm_label": "a0()"
     },
     {
@@ -5592,7 +5592,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "js_intltelinputwithutils_min_c0",
-      "community": 70,
+      "community": 190,
       "norm_label": "c0()"
     },
     {
@@ -5632,7 +5632,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "js_intltelinputwithutils_min_h1",
-      "community": 70,
+      "community": 190,
       "norm_label": "h1()"
     },
     {
@@ -5712,7 +5712,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "js_intltelinputwithutils_min_m1",
-      "community": 70,
+      "community": 190,
       "norm_label": "m1()"
     },
     {
@@ -7797,7 +7797,7 @@
       "label": "relativeTime()",
       "file_type": "code",
       "source_file": "src/components/admin/crm/LeadCard.tsx",
-      "source_location": "L137",
+      "source_location": "L150",
       "_origin": "ast",
       "id": "crm_leadcard_relativetime",
       "community": 24,
@@ -47252,9 +47252,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "admin_confirmdialog",
-      "confidence_score": 1.0
+      "target": "admin_confirmdialog"
     },
     {
       "relation": "calls",
@@ -47383,9 +47383,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "admin_confirmdialog_useconfirm",
-      "confidence_score": 1.0
+      "target": "admin_confirmdialog_useconfirm"
     },
     {
       "relation": "calls",
@@ -48316,9 +48316,9 @@
       "source_file": "src/components/admin/crm/LeadCard.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leadcard",
-      "target": "admin_contactadmin_service",
-      "confidence_score": 1.0
+      "target": "admin_contactadmin_service"
     },
     {
       "relation": "imports",
@@ -48327,9 +48327,9 @@
       "source_file": "src/components/admin/crm/LeadCard.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leadcard",
-      "target": "admin_contactadmin_service_contactsubmission",
-      "confidence_score": 1.0
+      "target": "admin_contactadmin_service_contactsubmission"
     },
     {
       "relation": "contains",
@@ -48337,9 +48337,9 @@
       "source_file": "src/components/admin/crm/LeadCard.tsx",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leadcard",
-      "target": "crm_leadcard_leadcard",
-      "confidence_score": 1.0
+      "target": "crm_leadcard_leadcard"
     },
     {
       "relation": "contains",
@@ -48347,9 +48347,9 @@
       "source_file": "src/components/admin/crm/LeadCard.tsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leadcard",
-      "target": "crm_leadcard_props",
-      "confidence_score": 1.0
+      "target": "crm_leadcard_props"
     },
     {
       "relation": "contains",
@@ -48357,9 +48357,9 @@
       "source_file": "src/components/admin/crm/LeadCard.tsx",
       "source_location": "L137",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leadcard",
-      "target": "crm_leadcard_relativetime",
-      "confidence_score": 1.0
+      "target": "crm_leadcard_relativetime"
     },
     {
       "relation": "imports_from",
@@ -48368,9 +48368,9 @@
       "source_file": "src/components/admin/crm/LeadCard.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leadcard",
-      "target": "crm_stages",
-      "confidence_score": 1.0
+      "target": "crm_stages"
     },
     {
       "relation": "imports",
@@ -48379,9 +48379,9 @@
       "source_file": "src/components/admin/crm/LeadCard.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leadcard",
-      "target": "crm_stages_campaignof",
-      "confidence_score": 1.0
+      "target": "crm_stages_campaignof"
     },
     {
       "relation": "imports",
@@ -48390,9 +48390,9 @@
       "source_file": "src/components/admin/crm/LeadCard.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leadcard",
-      "target": "crm_stages_initials",
-      "confidence_score": 1.0
+      "target": "crm_stages_initials"
     },
     {
       "relation": "imports",
@@ -48401,9 +48401,9 @@
       "source_file": "src/components/admin/crm/LeadCard.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leadcard",
-      "target": "crm_stages_sourceof",
-      "confidence_score": 1.0
+      "target": "crm_stages_sourceof"
     },
     {
       "relation": "imports",
@@ -48412,9 +48412,9 @@
       "source_file": "src/components/admin/crm/LeadCard.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leadcard",
-      "target": "crm_stages_tintfor",
-      "confidence_score": 1.0
+      "target": "crm_stages_tintfor"
     },
     {
       "relation": "imports",
@@ -48423,9 +48423,9 @@
       "source_file": "src/components/admin/crm/LeadCard.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leadcard",
-      "target": "crm_stages_whatsappnumber",
-      "confidence_score": 1.0
+      "target": "crm_stages_whatsappnumber"
     },
     {
       "relation": "imports_from",
@@ -48434,9 +48434,9 @@
       "source_file": "src/components/admin/crm/PipelineBoard.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_pipelineboard",
-      "target": "crm_leadcard",
-      "confidence_score": 1.0
+      "target": "crm_leadcard"
     },
     {
       "relation": "references",
@@ -48445,9 +48445,9 @@
       "source_file": "src/components/admin/crm/LeadCard.tsx",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leadcard_props",
-      "target": "admin_contactadmin_service_contactsubmission",
-      "confidence_score": 1.0
+      "target": "admin_contactadmin_service_contactsubmission"
     },
     {
       "relation": "calls",
@@ -48456,9 +48456,9 @@
       "source_file": "src/components/admin/crm/LeadCard.tsx",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leadcard_leadcard",
-      "target": "crm_leadcard_relativetime",
-      "confidence_score": 1.0
+      "target": "crm_leadcard_relativetime"
     },
     {
       "relation": "calls",
@@ -48522,9 +48522,9 @@
       "source_file": "src/pages/admin/AdminContacts.tsx",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_admincontacts",
-      "target": "crm_leaddrawer",
-      "confidence_score": 1.0
+      "target": "crm_leaddrawer"
     },
     {
       "relation": "imports_from",
@@ -48533,9 +48533,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "admin_contactadmin_service",
-      "confidence_score": 1.0
+      "target": "admin_contactadmin_service"
     },
     {
       "relation": "imports",
@@ -48544,9 +48544,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "admin_contactadmin_service_contactsubmission",
-      "confidence_score": 1.0
+      "target": "admin_contactadmin_service_contactsubmission"
     },
     {
       "relation": "imports",
@@ -48555,9 +48555,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "admin_contactadmin_service_deletecontact",
-      "confidence_score": 1.0
+      "target": "admin_contactadmin_service_deletecontact"
     },
     {
       "relation": "imports_from",
@@ -48566,9 +48566,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "admin_crm_service",
-      "confidence_score": 1.0
+      "target": "admin_crm_service"
     },
     {
       "relation": "imports",
@@ -48577,9 +48577,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "admin_crm_service_addleadnote",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_addleadnote"
     },
     {
       "relation": "imports",
@@ -48588,9 +48588,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "admin_crm_service_agentoption",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_agentoption"
     },
     {
       "relation": "imports",
@@ -48599,9 +48599,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "admin_crm_service_assignlead",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_assignlead"
     },
     {
       "relation": "imports",
@@ -48610,9 +48610,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "admin_crm_service_crmactor",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_crmactor"
     },
     {
       "relation": "imports",
@@ -48621,9 +48621,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "admin_crm_service_getassignableagents",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_getassignableagents"
     },
     {
       "relation": "imports",
@@ -48632,9 +48632,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "admin_crm_service_getleadactivity",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_getleadactivity"
     },
     {
       "relation": "imports",
@@ -48643,9 +48643,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "admin_crm_service_getleadnotes",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_getleadnotes"
     },
     {
       "relation": "imports",
@@ -48654,9 +48654,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "admin_crm_service_markleadlost",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_markleadlost"
     },
     {
       "relation": "imports",
@@ -48665,9 +48665,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "admin_crm_service_setfollowup",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_setfollowup"
     },
     {
       "relation": "imports",
@@ -48676,9 +48676,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "admin_crm_service_updateleadpriority",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_updateleadpriority"
     },
     {
       "relation": "imports",
@@ -48687,9 +48687,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "admin_crm_service_updateleadstage",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_updateleadstage"
     },
     {
       "relation": "contains",
@@ -48697,9 +48697,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L37",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "crm_leaddrawer_date_locales",
-      "confidence_score": 1.0
+      "target": "crm_leaddrawer_date_locales"
     },
     {
       "relation": "contains",
@@ -48707,9 +48707,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L521",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "crm_leaddrawer_describeactivity",
-      "confidence_score": 1.0
+      "target": "crm_leaddrawer_describeactivity"
     },
     {
       "relation": "contains",
@@ -48717,9 +48717,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L59",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "crm_leaddrawer_leaddrawer",
-      "confidence_score": 1.0
+      "target": "crm_leaddrawer_leaddrawer"
     },
     {
       "relation": "contains",
@@ -48727,9 +48727,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L39",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "crm_leaddrawer_props",
-      "confidence_score": 1.0
+      "target": "crm_leaddrawer_props"
     },
     {
       "relation": "contains",
@@ -48737,9 +48737,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L513",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "crm_leaddrawer_tolocalinput",
-      "confidence_score": 1.0
+      "target": "crm_leaddrawer_tolocalinput"
     },
     {
       "relation": "imports_from",
@@ -48748,9 +48748,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "crm_stages",
-      "confidence_score": 1.0
+      "target": "crm_stages"
     },
     {
       "relation": "imports",
@@ -48759,9 +48759,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "crm_stages_initials",
-      "confidence_score": 1.0
+      "target": "crm_stages_initials"
     },
     {
       "relation": "imports",
@@ -48770,9 +48770,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "crm_stages_stages",
-      "confidence_score": 1.0
+      "target": "crm_stages_stages"
     },
     {
       "relation": "imports",
@@ -48781,9 +48781,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "crm_stages_tintfor",
-      "confidence_score": 1.0
+      "target": "crm_stages_tintfor"
     },
     {
       "relation": "imports",
@@ -48792,9 +48792,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "crm_stages_whatsappnumber",
-      "confidence_score": 1.0
+      "target": "crm_stages_whatsappnumber"
     },
     {
       "relation": "imports_from",
@@ -48803,9 +48803,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "types_supabase",
-      "confidence_score": 1.0
+      "target": "types_supabase"
     },
     {
       "relation": "imports",
@@ -48814,9 +48814,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "types_supabase_leadactivityrow",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadactivityrow"
     },
     {
       "relation": "imports",
@@ -48825,9 +48825,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "types_supabase_leadnoterow",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadnoterow"
     },
     {
       "relation": "imports",
@@ -48836,9 +48836,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "types_supabase_leadpriority",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadpriority"
     },
     {
       "relation": "imports",
@@ -48847,9 +48847,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer",
-      "target": "types_supabase_leadstage",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadstage"
     },
     {
       "relation": "references",
@@ -48858,9 +48858,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L40",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer_props",
-      "target": "admin_contactadmin_service_contactsubmission",
-      "confidence_score": 1.0
+      "target": "admin_contactadmin_service_contactsubmission"
     },
     {
       "relation": "references",
@@ -48869,9 +48869,9 @@
       "source_file": "src/components/admin/crm/LeadDrawer.tsx",
       "source_location": "L41",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leaddrawer_props",
-      "target": "admin_crm_service_crmactor",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_crmactor"
     },
     {
       "relation": "calls",
@@ -48913,9 +48913,9 @@
       "source_file": "src/pages/admin/AdminContacts.tsx",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_admincontacts",
-      "target": "crm_leadstageselector",
-      "confidence_score": 1.0
+      "target": "crm_leadstageselector"
     },
     {
       "relation": "contains",
@@ -48923,9 +48923,9 @@
       "source_file": "src/components/admin/crm/LeadStageSelector.tsx",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leadstageselector",
-      "target": "crm_leadstageselector_leadstageselector",
-      "confidence_score": 1.0
+      "target": "crm_leadstageselector_leadstageselector"
     },
     {
       "relation": "contains",
@@ -48933,9 +48933,9 @@
       "source_file": "src/components/admin/crm/LeadStageSelector.tsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leadstageselector",
-      "target": "crm_leadstageselector_props",
-      "confidence_score": 1.0
+      "target": "crm_leadstageselector_props"
     },
     {
       "relation": "imports_from",
@@ -48944,9 +48944,9 @@
       "source_file": "src/components/admin/crm/LeadStageSelector.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leadstageselector",
-      "target": "crm_stages",
-      "confidence_score": 1.0
+      "target": "crm_stages"
     },
     {
       "relation": "imports",
@@ -48955,9 +48955,9 @@
       "source_file": "src/components/admin/crm/LeadStageSelector.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leadstageselector",
-      "target": "crm_stages_stages",
-      "confidence_score": 1.0
+      "target": "crm_stages_stages"
     },
     {
       "relation": "imports_from",
@@ -48966,9 +48966,9 @@
       "source_file": "src/components/admin/crm/LeadStageSelector.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leadstageselector",
-      "target": "types_supabase",
-      "confidence_score": 1.0
+      "target": "types_supabase"
     },
     {
       "relation": "imports",
@@ -48977,9 +48977,9 @@
       "source_file": "src/components/admin/crm/LeadStageSelector.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leadstageselector",
-      "target": "types_supabase_leadstage",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadstage"
     },
     {
       "relation": "references",
@@ -48988,9 +48988,9 @@
       "source_file": "src/components/admin/crm/LeadStageSelector.tsx",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_leadstageselector_props",
-      "target": "types_supabase_leadstage",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadstage"
     },
     {
       "relation": "imports_from",
@@ -48999,9 +48999,9 @@
       "source_file": "src/pages/admin/AdminContacts.tsx",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_admincontacts",
-      "target": "crm_pipelineboard",
-      "confidence_score": 1.0
+      "target": "crm_pipelineboard"
     },
     {
       "relation": "imports_from",
@@ -49010,9 +49010,9 @@
       "source_file": "src/components/admin/crm/PipelineBoard.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_pipelineboard",
-      "target": "admin_contactadmin_service",
-      "confidence_score": 1.0
+      "target": "admin_contactadmin_service"
     },
     {
       "relation": "imports",
@@ -49021,9 +49021,9 @@
       "source_file": "src/components/admin/crm/PipelineBoard.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_pipelineboard",
-      "target": "admin_contactadmin_service_contactsubmission",
-      "confidence_score": 1.0
+      "target": "admin_contactadmin_service_contactsubmission"
     },
     {
       "relation": "contains",
@@ -49031,9 +49031,9 @@
       "source_file": "src/components/admin/crm/PipelineBoard.tsx",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_pipelineboard",
-      "target": "crm_pipelineboard_pipelineboard",
-      "confidence_score": 1.0
+      "target": "crm_pipelineboard_pipelineboard"
     },
     {
       "relation": "contains",
@@ -49041,9 +49041,9 @@
       "source_file": "src/components/admin/crm/PipelineBoard.tsx",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_pipelineboard",
-      "target": "crm_pipelineboard_props",
-      "confidence_score": 1.0
+      "target": "crm_pipelineboard_props"
     },
     {
       "relation": "imports_from",
@@ -49052,9 +49052,9 @@
       "source_file": "src/components/admin/crm/PipelineBoard.tsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_pipelineboard",
-      "target": "crm_stages",
-      "confidence_score": 1.0
+      "target": "crm_stages"
     },
     {
       "relation": "imports",
@@ -49063,9 +49063,9 @@
       "source_file": "src/components/admin/crm/PipelineBoard.tsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_pipelineboard",
-      "target": "crm_stages_stages",
-      "confidence_score": 1.0
+      "target": "crm_stages_stages"
     },
     {
       "relation": "imports_from",
@@ -49074,9 +49074,9 @@
       "source_file": "src/components/admin/crm/PipelineBoard.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_pipelineboard",
-      "target": "types_supabase",
-      "confidence_score": 1.0
+      "target": "types_supabase"
     },
     {
       "relation": "imports",
@@ -49085,9 +49085,9 @@
       "source_file": "src/components/admin/crm/PipelineBoard.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_pipelineboard",
-      "target": "types_supabase_leadstage",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadstage"
     },
     {
       "relation": "references",
@@ -49096,9 +49096,9 @@
       "source_file": "src/components/admin/crm/PipelineBoard.tsx",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_pipelineboard_props",
-      "target": "admin_contactadmin_service_contactsubmission",
-      "confidence_score": 1.0
+      "target": "admin_contactadmin_service_contactsubmission"
     },
     {
       "relation": "references",
@@ -49107,9 +49107,9 @@
       "source_file": "src/components/admin/crm/PipelineBoard.tsx",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_pipelineboard_props",
-      "target": "types_supabase_leadstage",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadstage"
     },
     {
       "relation": "imports_from",
@@ -49118,9 +49118,9 @@
       "source_file": "src/pages/admin/AdminContacts.tsx",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_admincontacts",
-      "target": "crm_pipelineoverview",
-      "confidence_score": 1.0
+      "target": "crm_pipelineoverview"
     },
     {
       "relation": "contains",
@@ -49128,9 +49128,9 @@
       "source_file": "src/components/admin/crm/PipelineOverview.tsx",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_pipelineoverview",
-      "target": "crm_pipelineoverview_pipelineoverview",
-      "confidence_score": 1.0
+      "target": "crm_pipelineoverview_pipelineoverview"
     },
     {
       "relation": "contains",
@@ -49138,9 +49138,9 @@
       "source_file": "src/components/admin/crm/PipelineOverview.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_pipelineoverview",
-      "target": "crm_pipelineoverview_props",
-      "confidence_score": 1.0
+      "target": "crm_pipelineoverview_props"
     },
     {
       "relation": "imports_from",
@@ -49149,9 +49149,9 @@
       "source_file": "src/components/admin/crm/PipelineOverview.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_pipelineoverview",
-      "target": "crm_stages",
-      "confidence_score": 1.0
+      "target": "crm_stages"
     },
     {
       "relation": "imports",
@@ -49160,9 +49160,9 @@
       "source_file": "src/components/admin/crm/PipelineOverview.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_pipelineoverview",
-      "target": "crm_stages_stages",
-      "confidence_score": 1.0
+      "target": "crm_stages_stages"
     },
     {
       "relation": "imports_from",
@@ -49171,9 +49171,9 @@
       "source_file": "src/components/admin/crm/PipelineOverview.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_pipelineoverview",
-      "target": "types_supabase",
-      "confidence_score": 1.0
+      "target": "types_supabase"
     },
     {
       "relation": "imports",
@@ -49182,9 +49182,9 @@
       "source_file": "src/components/admin/crm/PipelineOverview.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_pipelineoverview",
-      "target": "types_supabase_leadstage",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadstage"
     },
     {
       "relation": "references",
@@ -49193,9 +49193,9 @@
       "source_file": "src/components/admin/crm/PipelineOverview.tsx",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_pipelineoverview_props",
-      "target": "types_supabase_leadstage",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadstage"
     },
     {
       "relation": "imports_from",
@@ -49204,9 +49204,9 @@
       "source_file": "src/pages/admin/AdminContacts.tsx",
       "source_location": "L16",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_admincontacts",
-      "target": "crm_stages",
-      "confidence_score": 1.0
+      "target": "crm_stages"
     },
     {
       "relation": "contains",
@@ -49214,9 +49214,9 @@
       "source_file": "src/components/admin/crm/stages.ts",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_stages",
-      "target": "crm_stages_active_stages",
-      "confidence_score": 1.0
+      "target": "crm_stages_active_stages"
     },
     {
       "relation": "contains",
@@ -49224,9 +49224,9 @@
       "source_file": "src/components/admin/crm/stages.ts",
       "source_location": "L47",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_stages",
-      "target": "crm_stages_avatar_tints",
-      "confidence_score": 1.0
+      "target": "crm_stages_avatar_tints"
     },
     {
       "relation": "contains",
@@ -49234,9 +49234,9 @@
       "source_file": "src/components/admin/crm/stages.ts",
       "source_location": "L81",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_stages",
-      "target": "crm_stages_campaignof",
-      "confidence_score": 1.0
+      "target": "crm_stages_campaignof"
     },
     {
       "relation": "contains",
@@ -49244,9 +49244,9 @@
       "source_file": "src/components/admin/crm/stages.ts",
       "source_location": "L54",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_stages",
-      "target": "crm_stages_initials",
-      "confidence_score": 1.0
+      "target": "crm_stages_initials"
     },
     {
       "relation": "contains",
@@ -49254,9 +49254,9 @@
       "source_file": "src/components/admin/crm/stages.ts",
       "source_location": "L41",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_stages",
-      "target": "crm_stages_isleadstage",
-      "confidence_score": 1.0
+      "target": "crm_stages_isleadstage"
     },
     {
       "relation": "contains",
@@ -49264,9 +49264,9 @@
       "source_file": "src/components/admin/crm/stages.ts",
       "source_location": "L86",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_stages",
-      "target": "crm_stages_sourceof",
-      "confidence_score": 1.0
+      "target": "crm_stages_sourceof"
     },
     {
       "relation": "contains",
@@ -49274,9 +49274,9 @@
       "source_file": "src/components/admin/crm/stages.ts",
       "source_location": "L37",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_stages",
-      "target": "crm_stages_stagedef",
-      "confidence_score": 1.0
+      "target": "crm_stages_stagedef"
     },
     {
       "relation": "contains",
@@ -49284,9 +49284,9 @@
       "source_file": "src/components/admin/crm/stages.ts",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_stages",
-      "target": "crm_stages_stages",
-      "confidence_score": 1.0
+      "target": "crm_stages_stages"
     },
     {
       "relation": "contains",
@@ -49294,9 +49294,9 @@
       "source_file": "src/components/admin/crm/stages.ts",
       "source_location": "L64",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_stages",
-      "target": "crm_stages_tintfor",
-      "confidence_score": 1.0
+      "target": "crm_stages_tintfor"
     },
     {
       "relation": "contains",
@@ -49304,9 +49304,9 @@
       "source_file": "src/components/admin/crm/stages.ts",
       "source_location": "L71",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_stages",
-      "target": "crm_stages_whatsappnumber",
-      "confidence_score": 1.0
+      "target": "crm_stages_whatsappnumber"
     },
     {
       "relation": "imports_from",
@@ -49315,9 +49315,9 @@
       "source_file": "src/components/admin/crm/stages.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_stages",
-      "target": "types_supabase",
-      "confidence_score": 1.0
+      "target": "types_supabase"
     },
     {
       "relation": "imports",
@@ -49326,9 +49326,9 @@
       "source_file": "src/components/admin/crm/stages.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_stages",
-      "target": "types_supabase_lead_stages",
-      "confidence_score": 1.0
+      "target": "types_supabase_lead_stages"
     },
     {
       "relation": "imports",
@@ -49337,9 +49337,9 @@
       "source_file": "src/components/admin/crm/stages.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_stages",
-      "target": "types_supabase_leadstage",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadstage"
     },
     {
       "relation": "references",
@@ -49348,9 +49348,9 @@
       "source_file": "src/components/admin/crm/stages.ts",
       "source_location": "L16",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "crm_stages_stagedef",
-      "target": "types_supabase_leadstage",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadstage"
     },
     {
       "relation": "imports",
@@ -49359,9 +49359,9 @@
       "source_file": "src/pages/admin/AdminContacts.tsx",
       "source_location": "L16",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_admincontacts",
-      "target": "crm_stages_stages",
-      "confidence_score": 1.0
+      "target": "crm_stages_stages"
     },
     {
       "relation": "imports",
@@ -49370,9 +49370,9 @@
       "source_file": "src/pages/admin/AdminContacts.tsx",
       "source_location": "L16",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_admincontacts",
-      "target": "crm_stages_campaignof",
-      "confidence_score": 1.0
+      "target": "crm_stages_campaignof"
     },
     {
       "relation": "imports_from",
@@ -60644,9 +60644,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service",
-      "target": "lib_adminrest",
-      "confidence_score": 1.0
+      "target": "lib_adminrest"
     },
     {
       "relation": "imports_from",
@@ -60791,9 +60791,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service",
-      "target": "lib_adminrest_adminrestrequest",
-      "confidence_score": 1.0
+      "target": "lib_adminrest_adminrestrequest"
     },
     {
       "relation": "calls",
@@ -60835,9 +60835,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L48",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service_logactivity",
-      "target": "lib_adminrest_adminrestrequest",
-      "confidence_score": 1.0
+      "target": "lib_adminrest_adminrestrequest"
     },
     {
       "relation": "imports",
@@ -61448,9 +61448,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service",
-      "target": "lib_querycache",
-      "confidence_score": 1.0
+      "target": "lib_querycache"
     },
     {
       "relation": "imports_from",
@@ -61865,9 +61865,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service",
-      "target": "lib_querycache_invalidate",
-      "confidence_score": 1.0
+      "target": "lib_querycache_invalidate"
     },
     {
       "relation": "calls",
@@ -65378,9 +65378,9 @@
       "source_file": "src/pages/admin/AdminContacts.tsx",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_admincontacts",
-      "target": "admin_crm_service",
-      "confidence_score": 1.0
+      "target": "admin_crm_service"
     },
     {
       "relation": "imports",
@@ -65389,9 +65389,9 @@
       "source_file": "src/pages/admin/AdminContacts.tsx",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_admincontacts",
-      "target": "admin_crm_service_updateleadstage",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_updateleadstage"
     },
     {
       "relation": "imports_from",
@@ -65400,9 +65400,9 @@
       "source_file": "src/pages/admin/AdminContacts.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_admincontacts",
-      "target": "types_supabase",
-      "confidence_score": 1.0
+      "target": "types_supabase"
     },
     {
       "relation": "imports",
@@ -65411,9 +65411,9 @@
       "source_file": "src/pages/admin/AdminContacts.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_admincontacts",
-      "target": "types_supabase_leadstage",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadstage"
     },
     {
       "relation": "contains",
@@ -65986,9 +65986,9 @@
       "source_file": "src/services/admin/contactAdmin.service.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_contactadmin_service",
-      "target": "types_supabase_leadpriority",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadpriority"
     },
     {
       "relation": "imports",
@@ -65997,9 +65997,9 @@
       "source_file": "src/services/admin/contactAdmin.service.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_contactadmin_service",
-      "target": "types_supabase_leadstage",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadstage"
     },
     {
       "relation": "references",
@@ -66008,9 +66008,9 @@
       "source_file": "src/services/admin/contactAdmin.service.ts",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_contactadmin_service_contactsubmission",
-      "target": "types_supabase_leadpriority",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadpriority"
     },
     {
       "relation": "references",
@@ -66019,9 +66019,9 @@
       "source_file": "src/services/admin/contactAdmin.service.ts",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_contactadmin_service_contactsubmission",
-      "target": "types_supabase_leadstage",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadstage"
     },
     {
       "relation": "contains",
@@ -66029,9 +66029,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L168",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service",
-      "target": "admin_crm_service_addleadnote",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_addleadnote"
     },
     {
       "relation": "contains",
@@ -66039,9 +66039,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service",
-      "target": "admin_crm_service_agentoption",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_agentoption"
     },
     {
       "relation": "contains",
@@ -66049,9 +66049,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L108",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service",
-      "target": "admin_crm_service_assignlead",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_assignlead"
     },
     {
       "relation": "contains",
@@ -66059,9 +66059,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service",
-      "target": "admin_crm_service_crmactor",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_crmactor"
     },
     {
       "relation": "contains",
@@ -66069,9 +66069,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L195",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service",
-      "target": "admin_crm_service_getassignableagents",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_getassignableagents"
     },
     {
       "relation": "contains",
@@ -66079,9 +66079,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L183",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service",
-      "target": "admin_crm_service_getleadactivity",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_getleadactivity"
     },
     {
       "relation": "contains",
@@ -66089,9 +66089,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L161",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service",
-      "target": "admin_crm_service_getleadnotes",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_getleadnotes"
     },
     {
       "relation": "contains",
@@ -66099,9 +66099,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L37",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service",
-      "target": "admin_crm_service_logactivity",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_logactivity"
     },
     {
       "relation": "contains",
@@ -66109,9 +66109,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L137",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service",
-      "target": "admin_crm_service_markleadlost",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_markleadlost"
     },
     {
       "relation": "contains",
@@ -66119,9 +66119,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L123",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service",
-      "target": "admin_crm_service_setfollowup",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_setfollowup"
     },
     {
       "relation": "contains",
@@ -66129,9 +66129,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L94",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service",
-      "target": "admin_crm_service_updateleadpriority",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_updateleadpriority"
     },
     {
       "relation": "contains",
@@ -66139,9 +66139,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L75",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service",
-      "target": "admin_crm_service_updateleadstage",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_updateleadstage"
     },
     {
       "relation": "imports_from",
@@ -66150,9 +66150,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service",
-      "target": "types_supabase",
-      "confidence_score": 1.0
+      "target": "types_supabase"
     },
     {
       "relation": "imports",
@@ -66161,9 +66161,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service",
-      "target": "types_supabase_leadactivityrow",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadactivityrow"
     },
     {
       "relation": "imports",
@@ -66172,9 +66172,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service",
-      "target": "types_supabase_leadactivitytype",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadactivitytype"
     },
     {
       "relation": "imports",
@@ -66183,9 +66183,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service",
-      "target": "types_supabase_leadnoterow",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadnoterow"
     },
     {
       "relation": "imports",
@@ -66194,9 +66194,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service",
-      "target": "types_supabase_leadpriority",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadpriority"
     },
     {
       "relation": "imports",
@@ -66205,9 +66205,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service",
-      "target": "types_supabase_leadstage",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadstage"
     },
     {
       "relation": "calls",
@@ -66216,9 +66216,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L179",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service_addleadnote",
-      "target": "admin_crm_service_logactivity",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_logactivity"
     },
     {
       "relation": "calls",
@@ -66227,9 +66227,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L120",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service_assignlead",
-      "target": "admin_crm_service_logactivity",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_logactivity"
     },
     {
       "relation": "calls",
@@ -66238,9 +66238,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L153",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service_markleadlost",
-      "target": "admin_crm_service_logactivity",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_logactivity"
     },
     {
       "relation": "calls",
@@ -66249,9 +66249,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L134",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service_setfollowup",
-      "target": "admin_crm_service_logactivity",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_logactivity"
     },
     {
       "relation": "calls",
@@ -66260,9 +66260,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L105",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service_updateleadpriority",
-      "target": "admin_crm_service_logactivity",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_logactivity"
     },
     {
       "relation": "calls",
@@ -66271,9 +66271,9 @@
       "source_file": "src/services/admin/crm.service.ts",
       "source_location": "L91",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_crm_service_updateleadstage",
-      "target": "admin_crm_service_logactivity",
-      "confidence_score": 1.0
+      "target": "admin_crm_service_logactivity"
     },
     {
       "relation": "contains",
@@ -68278,9 +68278,9 @@
       "source_file": "src/types/supabase.ts",
       "source_location": "L155",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "types_supabase",
-      "target": "types_supabase_lead_stages",
-      "confidence_score": 1.0
+      "target": "types_supabase_lead_stages"
     },
     {
       "relation": "contains",
@@ -68288,9 +68288,9 @@
       "source_file": "src/types/supabase.ts",
       "source_location": "L169",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "types_supabase",
-      "target": "types_supabase_leadactivityrow",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadactivityrow"
     },
     {
       "relation": "contains",
@@ -68298,9 +68298,9 @@
       "source_file": "src/types/supabase.ts",
       "source_location": "L167",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "types_supabase",
-      "target": "types_supabase_leadactivitytype",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadactivitytype"
     },
     {
       "relation": "contains",
@@ -68308,9 +68308,9 @@
       "source_file": "src/types/supabase.ts",
       "source_location": "L159",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "types_supabase",
-      "target": "types_supabase_leadnoterow",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadnoterow"
     },
     {
       "relation": "contains",
@@ -68318,9 +68318,9 @@
       "source_file": "src/types/supabase.ts",
       "source_location": "L157",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "types_supabase",
-      "target": "types_supabase_leadpriority",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadpriority"
     },
     {
       "relation": "contains",
@@ -68328,9 +68328,9 @@
       "source_file": "src/types/supabase.ts",
       "source_location": "L156",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "types_supabase",
-      "target": "types_supabase_leadstage",
-      "confidence_score": 1.0
+      "target": "types_supabase_leadstage"
     },
     {
       "relation": "contains",
@@ -70938,9 +70938,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L79",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_handoff_report_atlas_rouge_immobilier",
-      "target": "handoff_report_cierre_2026_08_05_madrugada_la_pantalla_de_leads_ya_existe_se_termina_el_renombrado",
-      "confidence_score": 1.0
+      "target": "handoff_report_cierre_2026_08_05_madrugada_la_pantalla_de_leads_ya_existe_se_termina_el_renombrado"
     },
     {
       "relation": "contains",
@@ -70968,9 +70968,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_handoff_report_atlas_rouge_immobilier",
-      "target": "handoff_report_cierre_claude_opus_5_2026_08_05_crm_pipeline_de_leads_en_el_panel",
-      "confidence_score": 1.0
+      "target": "handoff_report_cierre_claude_opus_5_2026_08_05_crm_pipeline_de_leads_en_el_panel"
     },
     {
       "relation": "contains",
@@ -71618,9 +71618,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L84",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_cierre_2026_08_05_madrugada_la_pantalla_de_leads_ya_existe_se_termina_el_renombrado",
-      "target": "handoff_report_1_centro_de_leads_reconstruido_commit_c1e8ab4e_otra_sesi\u00f3n_01_26",
-      "confidence_score": 1.0
+      "target": "handoff_report_1_centro_de_leads_reconstruido_commit_c1e8ab4e_otra_sesi\u00f3n_01_26"
     },
     {
       "relation": "contains",
@@ -71628,9 +71628,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L94",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_cierre_2026_08_05_madrugada_la_pantalla_de_leads_ya_existe_se_termina_el_renombrado",
-      "target": "handoff_report_2_el_renombrado_a_leads_estaba_a_medias_terminado_commit_c12382a5",
-      "confidence_score": 1.0
+      "target": "handoff_report_2_el_renombrado_a_leads_estaba_a_medias_terminado_commit_c12382a5"
     },
     {
       "relation": "contains",
@@ -71638,9 +71638,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L117",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_cierre_2026_08_05_madrugada_la_pantalla_de_leads_ya_existe_se_termina_el_renombrado",
-      "target": "handoff_report_3_graph_regenerado",
-      "confidence_score": 1.0
+      "target": "handoff_report_3_graph_regenerado"
     },
     {
       "relation": "contains",
@@ -71648,9 +71648,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L124",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_cierre_2026_08_05_madrugada_la_pantalla_de_leads_ya_existe_se_termina_el_renombrado",
-      "target": "handoff_report_pendiente_tras_este_cierre",
-      "confidence_score": 1.0
+      "target": "handoff_report_pendiente_tras_este_cierre"
     },
     {
       "relation": "contains",
@@ -71978,9 +71978,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L675",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_cierre_de_sesi\u00f3n_claude_opus_5_2026_08_03_por_qu\u00e9_los_anuncios_no_captaban_apuntaban_a_una_p\u00e1gina_sin_formulario",
-      "target": "handoff_report_verificaci\u00f3n_de_cierre_675",
-      "confidence_score": 1.0
+      "target": "handoff_report_verificaci\u00f3n_de_cierre_675"
     },
     {
       "relation": "contains",
@@ -72048,9 +72048,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L876",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_cierre_de_sesi\u00f3n_claude_opus_5_2026_08_02_landing_vendre_rehecha_menos_texto_formulario_de_3_campos_m\u00f3vil_arreglado",
-      "target": "handoff_report_pendiente_876",
-      "confidence_score": 1.0
+      "target": "handoff_report_pendiente_876"
     },
     {
       "relation": "contains",
@@ -72068,9 +72068,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L863",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_cierre_de_sesi\u00f3n_claude_opus_5_2026_08_02_landing_vendre_rehecha_menos_texto_formulario_de_3_campos_m\u00f3vil_arreglado",
-      "target": "handoff_report_verificaci\u00f3n_de_cierre_hoy_contra_producci\u00f3n_863",
-      "confidence_score": 1.0
+      "target": "handoff_report_verificaci\u00f3n_de_cierre_hoy_contra_producci\u00f3n_863"
     },
     {
       "relation": "contains",
@@ -72338,9 +72338,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L2762",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_intervenci\u00f3n_claude_opus_4_7_2026_05_29_phase_0_stop_the_bleed",
-      "target": "handoff_report_resumen_ejecutivo_2762",
-      "confidence_score": 1.0
+      "target": "handoff_report_resumen_ejecutivo_2762"
     },
     {
       "relation": "contains",
@@ -72348,9 +72348,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L2843",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_intervenci\u00f3n_claude_opus_4_7_2026_05_26_cierre_audit_13_agentes_i18n",
-      "target": "handoff_report_estado_al_cierre_2843",
-      "confidence_score": 1.0
+      "target": "handoff_report_estado_al_cierre_2843"
     },
     {
       "relation": "contains",
@@ -72378,9 +72378,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L2805",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_intervenci\u00f3n_claude_opus_4_7_2026_05_26_cierre_audit_13_agentes_i18n",
-      "target": "handoff_report_resumen_ejecutivo_2805",
-      "confidence_score": 1.0
+      "target": "handoff_report_resumen_ejecutivo_2805"
     },
     {
       "relation": "contains",
@@ -72428,9 +72428,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L2856",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_intervenci\u00f3n_claude_opus_4_7_2026_05_26_noche_harness_incidente_orphan_user",
-      "target": "handoff_report_resumen_ejecutivo_2856",
-      "confidence_score": 1.0
+      "target": "handoff_report_resumen_ejecutivo_2856"
     },
     {
       "relation": "contains",
@@ -72598,9 +72598,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L3117",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_intervenci\u00f3n_claude_opus_4_7_2026_05_20_auditor\u00eda_completa_hardening_producci\u00f3n",
-      "target": "handoff_report_contexto_3117",
-      "confidence_score": 1.0
+      "target": "handoff_report_contexto_3117"
     },
     {
       "relation": "contains",
@@ -72648,9 +72648,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L3197",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_intervenci\u00f3n_claude_opus_4_7_2026_05_20_service_cards_clicables_en_home",
-      "target": "handoff_report_contexto_3197",
-      "confidence_score": 1.0
+      "target": "handoff_report_contexto_3197"
     },
     {
       "relation": "contains",
@@ -72658,9 +72658,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L3227",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_intervenci\u00f3n_claude_opus_4_7_2026_05_20_service_cards_clicables_en_home",
-      "target": "handoff_report_estado_t\u00e9cnico_3227",
-      "confidence_score": 1.0
+      "target": "handoff_report_estado_t\u00e9cnico_3227"
     },
     {
       "relation": "contains",
@@ -72688,9 +72688,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L3246",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_intervenci\u00f3n_claude_sonnet_4_6_2026_05_01_quinta_sesi\u00f3n_ejecuci\u00f3n_plan_i18n_parcial",
-      "target": "handoff_report_contexto_3246",
-      "confidence_score": 1.0
+      "target": "handoff_report_contexto_3246"
     },
     {
       "relation": "contains",
@@ -72758,9 +72758,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L3349",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_intervenci\u00f3n_claude_sonnet_4_6_2026_05_01_cuarta_sesi\u00f3n_auditor\u00eda_i18n_plan",
-      "target": "handoff_report_contexto_3349",
-      "confidence_score": 1.0
+      "target": "handoff_report_contexto_3349"
     },
     {
       "relation": "contains",
@@ -72838,9 +72838,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L3474",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_intervenci\u00f3n_claude_sonnet_4_6_2026_05_01_tercera_sesi\u00f3n_fix_de_chunks_colgados",
-      "target": "handoff_report_pendiente_3474",
-      "confidence_score": 1.0
+      "target": "handoff_report_pendiente_3474"
     },
     {
       "relation": "contains",
@@ -72868,9 +72868,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L3493",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_intervenci\u00f3n_claude_sonnet_4_6_2026_04_30_segunda_sesi\u00f3n_deploy_diagn\u00f3stico",
-      "target": "handoff_report_estado_al_entregar_3493",
-      "confidence_score": 1.0
+      "target": "handoff_report_estado_al_entregar_3493"
     },
     {
       "relation": "contains",
@@ -72878,9 +72878,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L3500",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_intervenci\u00f3n_claude_sonnet_4_6_2026_04_30_segunda_sesi\u00f3n_deploy_diagn\u00f3stico",
-      "target": "handoff_report_pendiente_3500",
-      "confidence_score": 1.0
+      "target": "handoff_report_pendiente_3500"
     },
     {
       "relation": "contains",
@@ -72888,9 +72888,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L3513",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_intervenci\u00f3n_claude_sonnet_4_6_2026_04_30_sesi\u00f3n_completa",
-      "target": "handoff_report_acciones_realizadas_3513",
-      "confidence_score": 1.0
+      "target": "handoff_report_acciones_realizadas_3513"
     },
     {
       "relation": "contains",
@@ -72898,9 +72898,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L3526",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_intervenci\u00f3n_claude_sonnet_4_6_2026_04_30_sesi\u00f3n_completa",
-      "target": "handoff_report_estado_al_entregar_3526",
-      "confidence_score": 1.0
+      "target": "handoff_report_estado_al_entregar_3526"
     },
     {
       "relation": "contains",
@@ -72918,9 +72918,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L3549",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_intervenci\u00f3n_kimi_moonshot_ai_2026_04_30",
-      "target": "handoff_report_acciones_realizadas_3549",
-      "confidence_score": 1.0
+      "target": "handoff_report_acciones_realizadas_3549"
     },
     {
       "relation": "contains",
@@ -72928,9 +72928,9 @@
       "source_file": "HANDOFF_REPORT.md",
       "source_location": "L3563",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_report_intervenci\u00f3n_kimi_moonshot_ai_2026_04_30",
-      "target": "handoff_report_estado_al_entregar_3563",
-      "confidence_score": 1.0
+      "target": "handoff_report_estado_al_entregar_3563"
     },
     {
       "relation": "contains",
@@ -75148,9 +75148,9 @@
       "source_file": "docs/decisions/ADR-003-crm-pipeline-on-contact-submissions.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "decisions_adr_003_crm_pipeline_on_contact_submissions",
-      "target": "decisions_adr_003_crm_pipeline_on_contact_submissions_adr_003_the_crm_pipeline_lives_on_contact_submissions_not_a_new_table",
-      "confidence_score": 1.0
+      "target": "decisions_adr_003_crm_pipeline_on_contact_submissions_adr_003_the_crm_pipeline_lives_on_contact_submissions_not_a_new_table"
     },
     {
       "relation": "contains",
@@ -75158,9 +75158,9 @@
       "source_file": "docs/decisions/ADR-003-crm-pipeline-on-contact-submissions.md",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "decisions_adr_003_crm_pipeline_on_contact_submissions_adr_003_the_crm_pipeline_lives_on_contact_submissions_not_a_new_table",
-      "target": "decisions_adr_003_crm_pipeline_on_contact_submissions_alternatives_considered",
-      "confidence_score": 1.0
+      "target": "decisions_adr_003_crm_pipeline_on_contact_submissions_alternatives_considered"
     },
     {
       "relation": "contains",
@@ -75168,9 +75168,9 @@
       "source_file": "docs/decisions/ADR-003-crm-pipeline-on-contact-submissions.md",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "decisions_adr_003_crm_pipeline_on_contact_submissions_adr_003_the_crm_pipeline_lives_on_contact_submissions_not_a_new_table",
-      "target": "decisions_adr_003_crm_pipeline_on_contact_submissions_consequences",
-      "confidence_score": 1.0
+      "target": "decisions_adr_003_crm_pipeline_on_contact_submissions_consequences"
     },
     {
       "relation": "contains",
@@ -75178,9 +75178,9 @@
       "source_file": "docs/decisions/ADR-003-crm-pipeline-on-contact-submissions.md",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "decisions_adr_003_crm_pipeline_on_contact_submissions_adr_003_the_crm_pipeline_lives_on_contact_submissions_not_a_new_table",
-      "target": "decisions_adr_003_crm_pipeline_on_contact_submissions_context",
-      "confidence_score": 1.0
+      "target": "decisions_adr_003_crm_pipeline_on_contact_submissions_context"
     },
     {
       "relation": "contains",
@@ -75188,9 +75188,9 @@
       "source_file": "docs/decisions/ADR-003-crm-pipeline-on-contact-submissions.md",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "decisions_adr_003_crm_pipeline_on_contact_submissions_adr_003_the_crm_pipeline_lives_on_contact_submissions_not_a_new_table",
-      "target": "decisions_adr_003_crm_pipeline_on_contact_submissions_decision",
-      "confidence_score": 1.0
+      "target": "decisions_adr_003_crm_pipeline_on_contact_submissions_decision"
     },
     {
       "relation": "contains",
@@ -78468,9 +78468,9 @@
       "source_file": "progress/2026-08-05-crm-pipeline.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "progress_2026_08_05_crm_pipeline",
-      "target": "progress_2026_08_05_crm_pipeline_2026_08_05_crm_pipeline_in_the_admin_leads_centre",
-      "confidence_score": 1.0
+      "target": "progress_2026_08_05_crm_pipeline_2026_08_05_crm_pipeline_in_the_admin_leads_centre"
     },
     {
       "relation": "contains",
@@ -78478,9 +78478,9 @@
       "source_file": "progress/2026-08-05-crm-pipeline.md",
       "source_location": "L31",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "progress_2026_08_05_crm_pipeline_2026_08_05_crm_pipeline_in_the_admin_leads_centre",
-      "target": "progress_2026_08_05_crm_pipeline_commands_run",
-      "confidence_score": 1.0
+      "target": "progress_2026_08_05_crm_pipeline_commands_run"
     },
     {
       "relation": "contains",
@@ -78488,9 +78488,9 @@
       "source_file": "progress/2026-08-05-crm-pipeline.md",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "progress_2026_08_05_crm_pipeline_2026_08_05_crm_pipeline_in_the_admin_leads_centre",
-      "target": "progress_2026_08_05_crm_pipeline_files_changed",
-      "confidence_score": 1.0
+      "target": "progress_2026_08_05_crm_pipeline_files_changed"
     },
     {
       "relation": "contains",
@@ -78498,9 +78498,9 @@
       "source_file": "progress/2026-08-05-crm-pipeline.md",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "progress_2026_08_05_crm_pipeline_2026_08_05_crm_pipeline_in_the_admin_leads_centre",
-      "target": "progress_2026_08_05_crm_pipeline_files_inspected",
-      "confidence_score": 1.0
+      "target": "progress_2026_08_05_crm_pipeline_files_inspected"
     },
     {
       "relation": "contains",
@@ -78508,9 +78508,9 @@
       "source_file": "progress/2026-08-05-crm-pipeline.md",
       "source_location": "L63",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "progress_2026_08_05_crm_pipeline_2026_08_05_crm_pipeline_in_the_admin_leads_centre",
-      "target": "progress_2026_08_05_crm_pipeline_next_step",
-      "confidence_score": 1.0
+      "target": "progress_2026_08_05_crm_pipeline_next_step"
     },
     {
       "relation": "contains",
@@ -78518,9 +78518,9 @@
       "source_file": "progress/2026-08-05-crm-pipeline.md",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "progress_2026_08_05_crm_pipeline_2026_08_05_crm_pipeline_in_the_admin_leads_centre",
-      "target": "progress_2026_08_05_crm_pipeline_objective",
-      "confidence_score": 1.0
+      "target": "progress_2026_08_05_crm_pipeline_objective"
     },
     {
       "relation": "contains",
@@ -78528,9 +78528,9 @@
       "source_file": "progress/2026-08-05-crm-pipeline.md",
       "source_location": "L55",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "progress_2026_08_05_crm_pipeline_2026_08_05_crm_pipeline_in_the_admin_leads_centre",
-      "target": "progress_2026_08_05_crm_pipeline_open_risks",
-      "confidence_score": 1.0
+      "target": "progress_2026_08_05_crm_pipeline_open_risks"
     },
     {
       "relation": "contains",
@@ -78538,9 +78538,9 @@
       "source_file": "progress/2026-08-05-crm-pipeline.md",
       "source_location": "L48",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "progress_2026_08_05_crm_pipeline_2026_08_05_crm_pipeline_in_the_admin_leads_centre",
-      "target": "progress_2026_08_05_crm_pipeline_verification_result",
-      "confidence_score": 1.0
+      "target": "progress_2026_08_05_crm_pipeline_verification_result"
     },
     {
       "relation": "contains",
@@ -78778,9 +78778,9 @@
       "source_file": "tasks/current.md",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_current_tasks_current_md_atlas_rouge_active_task_queue",
-      "target": "tasks_current_crm_pipeline_en_vivo_2026_08_05_96ed65b9_falta_verlo_con_sesi\u00f3n",
-      "confidence_score": 1.0
+      "target": "tasks_current_crm_pipeline_en_vivo_2026_08_05_96ed65b9_falta_verlo_con_sesi\u00f3n"
     },
     {
       "relation": "contains",
@@ -79138,9 +79138,9 @@
       "source_file": "tasks/current.md",
       "source_location": "L34",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_current_tasks_current_md_atlas_rouge_active_task_queue",
-      "target": "tasks_current_pantalla_de_leads_reconstruida_y_renombrada_del_todo_2026_08_05",
-      "confidence_score": 1.0
+      "target": "tasks_current_pantalla_de_leads_reconstruida_y_renombrada_del_todo_2026_08_05"
     },
     {
       "relation": "contains",
@@ -79198,9 +79198,9 @@
       "source_file": "tasks/current.md",
       "source_location": "L372",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tasks_current_tasks_current_md_atlas_rouge_active_task_queue",
-      "target": "tasks_current_p\u00edxel_de_tiktok_ads_d9msr03c77u9d4rn76k0_2026_07_31_372",
-      "confidence_score": 1.0
+      "target": "tasks_current_p\u00edxel_de_tiktok_ads_d9msr03c77u9d4rn76k0_2026_07_31_372"
     },
     {
       "relation": "contains",
@@ -83956,5 +83956,5 @@
       "source_file": "supabase/migrations/004_leads.sql"
     }
   ],
-  "built_at_commit": "7f857087bc7fea5f6a2d685d5963458794923465"
+  "built_at_commit": "e56f8e9f7627935cf0c685947aad2505be7cf0ac"
 }

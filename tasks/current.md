@@ -4,7 +4,7 @@
 > Older completed tasks live in `progress/`. Strategic plans live in
 > `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
 
-**Last updated:** 2026-08-05 (CRM pipeline — `96ed65b9`, en vivo)
+**Last updated:** 2026-08-05 (CRM pipeline + tarjetas en acordeón — `e56f8e9f`, en vivo)
 
 ## 🟡 CRM pipeline — EN VIVO 2026-08-05 (`96ed65b9`), falta verlo con sesión
 
@@ -14,6 +14,9 @@ prioridad, asignación, seguimiento, notas e historial. Migración 017 aplicada.
 
 **Acción del owner:** entrar al panel, mover una tarjeta, recargar y confirmar
 que se queda en su fase. Sin credenciales aquí no se pudo probar autenticado.
+
+Tarjetas en acordeón desde `e56f8e9f`: colapsadas a una fila, se abren al pasar
+el cursor en escritorio y van siempre abiertas en móvil.
 
 Pendiente: recordatorios de seguimiento (hoy solo se guarda la fecha) y UI para
 gestionar etapas personalizadas.

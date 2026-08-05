@@ -4,6 +4,31 @@
 
 ---
 
+## CIERRE — Claude Opus 5 — 2026-08-05 noche (tarjetas de lead en acordeón)
+
+Commit **`e56f8e9f`**, en vivo: chunk `assets/AdminContacts-fAm8nc1q.js` y la
+regla `lg:group-hover:grid-rows-[1fr]` presente en el CSS servido
+(`assets/index-CbROTK7I.css`), dentro de su `@media(min-width:1024px)`.
+`verify.sh` verde; `/` y `/admin/contacts` responden 200.
+
+- **Tarjeta colapsada**: avatar + nombre + antigüedad en una sola fila. Donde
+  entraban 4-5 leads por columna ahora entran cerca del doble.
+- **Se abre al pasar el cursor** (o con foco de teclado): email/teléfono, chips
+  de origen y campaña, y la fila de acciones. Anima `grid-template-rows`
+  `0fr → 1fr` — `height: auto` no se puede animar. Respeta
+  `prefers-reduced-motion`.
+- **Por debajo de 1024 px la tarjeta va siempre abierta**: en móvil no hay
+  hover, y esconder contenido tras un gesto inexistente sería una trampa.
+- **Botón «Mover»** arreglado: rompía en dos líneas y descuadraba la fila.
+  Etiqueta de una palabra (Mover / Étape / Move) con `whitespace-nowrap`, y los
+  botones de icono con `flex-shrink-0`.
+
+Sigue sin verificarse con **sesión de admin iniciada** (no hay credenciales del
+panel en este entorno). El colapso y el hover son CSS puro y están comprobados
+en el CSS desplegado, pero el aspecto dentro del tablero real lo juzga el owner.
+
+---
+
 ## CIERRE — Claude Opus 5 — 2026-08-05 (CRM: pipeline de leads en el panel)
 
 Commit **`96ed65b9`**. Desplegado y comprobado en vivo: bundle
