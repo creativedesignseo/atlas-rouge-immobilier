@@ -56,7 +56,7 @@ promesa, y un timeout de 15s. Whatever fires first wins.
 ### Hipótesis 3 (CORRECTA — la causa raíz): usuario huérfano
 
 Tras logear via API REST directamente (`POST /auth/v1/token?grant_type=password`)
-con `Marru.2025`: HTTP 200 + access_token válido. **El password estaba
+con `<REDACTED-see-HANDOFF.md-§Acceso>`: HTTP 200 + access_token válido. **El password estaba
 bien todo el rato.**
 
 Test con Playwright en el browser real: el login a Supabase devolvía
@@ -136,7 +136,7 @@ curl ".../auth/v1/admin/users" -H "Authorization: Bearer $SERVICE_KEY"
 # → 2 usuarios, ambos con last_sign_in_at reciente
 
 # Test de password contra Supabase
-curl -X POST ".../auth/v1/token?grant_type=password" -d '{"email":"…","password":"Marru.2025"}'
+curl -X POST ".../auth/v1/token?grant_type=password" -d '{"email":"…","password":"<REDACTED-see-HANDOFF.md-§Acceso>"}'
 # → 200 OK + access_token (descartó hipótesis "password mal")
 
 # Inspección de agents
@@ -144,7 +144,7 @@ curl ".../rest/v1/agents?select=*" -H "Authorization: Bearer $SERVICE_KEY"
 # → 1 sola fila (admin@atlasrouge.ma). Confirmó user huérfano.
 
 # Hotfix vía Admin API
-curl -X PUT ".../auth/v1/admin/users/$USER_ID" -d '{"password":"Marru.2025"}'
+curl -X PUT ".../auth/v1/admin/users/$USER_ID" -d '{"password":"<REDACTED-see-HANDOFF.md-§Acceso>"}'
 curl -X POST ".../rest/v1/agents" -d '{"user_id":"…","email":"…","role":"admin","is_active":true}'
 
 # Verificación end-to-end con Playwright
@@ -153,7 +153,7 @@ curl -X POST ".../rest/v1/agents" -d '{"user_id":"…","email":"…","role":"adm
 
 ## Verification
 
-- ✅ Login con `creativedesignseo@gmail.com` / `Marru.2025` → entra al admin
+- ✅ Login con `creativedesignseo@gmail.com` / `<REDACTED-see-HANDOFF.md-§Acceso>` → entra al admin
 - ✅ `bash scripts/verify.sh` → all checks passed
 - ✅ Build verde, deploy verde en Netlify
 - ⏳ Trigger SQL pendiente de aplicar en Supabase Studio (paso manual del owner)

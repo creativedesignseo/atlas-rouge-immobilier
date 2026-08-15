@@ -11,13 +11,23 @@
 
 ## Lee primero (paquete de transferencia de contexto)
 
-Para entender el proyecto sin depender de ningún chat previo, lee en este orden:
+Para orientarte sin depender de ningún chat previo, **con esto basta**:
 
-1. **`PROJECT_CONTEXT.md`** — qué es, arquitectura, funcionalidades, decisiones técnicas.
-2. **`HANDOFF.md`** — estado actual, último trabajo, próximos pasos, qué revisar primero.
-3. **`TODO.md`** — tareas pendientes priorizadas con su estado.
-4. **`AUDIT_REPORT.md`** — auditoría de production-readiness (7 P0, roadmap).
-5. **`HANDOFF_REPORT.md`** — historial cronológico detallado (log largo, opcional).
+1. **`HANDOFF.md`** — estado actual, qué está roto, qué bloquea. Una pantalla.
+2. **`tasks/current.md`** — la cola viva. Otra pantalla.
+
+Eso son ~2.500 tokens y cubre el 95% de los casos. **No leas más "por si acaso"**
+— cada archivo que abres se queda en la ventana el resto de la sesión.
+
+Bajo demanda, solo si la tarea lo pide:
+
+| Si necesitas | Abre |
+|---|---|
+| Arquitectura y decisiones técnicas | `PROJECT_CONTEXT.md` |
+| Un detalle histórico concreto | `grep` en `HANDOFF_REPORT.md` — **nunca entero** (~54k tokens) |
+| Tareas ya cerradas | `tasks/archive-2026-08.md`, `progress/` |
+| Estado de production-readiness | `AUDIT_REPORT.md` |
+| Informe para el cliente | `docs/BITACORA.md` (o la skill `/reporte`) |
 
 > ⚠️ `PROJECT_HANDBOOK.md`, `README.md`, `info.md` y `GITHUB_IDE_GUIDE.md`
 > están **desactualizados** (dicen URL `atlas-rouge-immobilier.netlify.app`
@@ -46,8 +56,10 @@ Tras **cualquier cambio verificado**, ejecuta el ritual completo (= la frase
 
 1. Verifica de verdad: `bash scripts/verify.sh` **+** comprobar prod en vivo
    (curl/headless). No supongas.
-2. Actualiza `HANDOFF_REPORT.md` + `tasks/current.md` (+ `progress/` si aplica)
-   con la realidad verificada.
+2. Actualiza **`HANDOFF.md`** (el estado de ahora — reescribe, no acumules) y
+   añade la entrada de cierre a `HANDOFF_REPORT.md` (histórico append-only).
+   Poda `tasks/current.md`: lo cerrado sale de ahí. (+ `progress/` si aplica.)
+   Si `tasks/current.md` pasa de ~120 líneas o `HANDOFF.md` de ~150, archiva.
 3. **Commit enfocado + push a `main`** → Netlify auto-despliega.
 4. Confirma el deploy `ready` y reporta la secuencia.
 

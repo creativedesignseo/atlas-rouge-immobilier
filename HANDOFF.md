@@ -1,170 +1,153 @@
 # HANDOFF.md — Atlas Rouge Immobilier
 
-> Documento de transferencia conciso para retomar el proyecto en otra sesión.
-> **Última actualización:** 2026-05-31
-> **Último commit en `main`:** `28cc33cd` (conmutador de idioma FR|ES|EN en el
-> panel de Traducciones del admin, **desplegado** — ver §1ter). Antes:
-> `cbb235fa` i18n admin + amenities. Antes: `70af4956` Mapbox (§1bis). ⚠️ El trabajo de **Phase 0**
-> sigue en el working tree **sin commitear y sin deploy** (ver §1); requiere SQL
-> 006 + env vars Supabase (non-VITE) en Netlify antes de publicarse, o rompería
-> `translate-property`. El **batch de traducción de contenido** de inmuebles
-> espera la `service_role` key (ver §1ter).
-> Para el **historial cronológico detallado** ver `HANDOFF_REPORT.md`.
-> Para el **contexto completo** ver `PROJECT_CONTEXT.md`. Tareas en `TODO.md`.
+> **Este es EL handoff.** Léelo entero al empezar una sesión: cabe en un vistazo.
+> El historial largo vive en `HANDOFF_REPORT.md` (archivo append-only, **no lo
+> leas entero** — busca dentro con grep). Las tareas vivas, en `tasks/current.md`.
+>
+> **Actualizado:** 2026-08-15 · **`main` = `2fb517bc`** (HEAD == origin, limpio)
 
 ---
 
-## 1ter. i18n panel admin + amenities (2026-05-30) — ✅ DESPLEGADO Y VERIFICADO
+## 1. Qué es
 
-- El formulario de admin tenía labels en francés hardcodeados y las **amenities**
-  se mostraban en francés crudo en TODA la web (admin + público) porque
-  `amenities.json` estaba vacío. Resuelto: commits `7a671e34` + `cbb235fa`.
-- Ahora: `PropertyForm` y `AdminLogin` 100% i18n; nuevo helper
-  `src/lib/amenities.ts` + `amenities.json` poblado (16 amenities reales);
-  `PropertyForm` también **auto-traduce al guardar** si faltan ES/EN.
-- Verificado en prod (Playwright): admin form y `/es/comprar` 100% en castellano.
-- **Conmutador de idioma** (commit `28cc33cd`): el panel de Traducciones del
-  admin pasó de 3 acordeones a un conmutador de pestañas FR|ES|EN (editable) para
-  revisar la traducción de la IA idioma por idioma. Verificado en prod.
-- ⚠️ Sutileza conocida: el "idioma fuente" del admin se decide por el idioma de
-  la UI (no por el idioma real del contenido). Si Sofia edita con la UI en ES un
-  inmueble escrito en FR, la pestaña ES sale vacía hasta traducir. (A revisar.)
-- ⏳ **Pendiente**: el **contenido** de los inmuebles (títulos/descr/highlights)
-  sigue en francés. Se traduce con el batch IA
-  (`scripts/translate-existing-properties.mjs`, listo pero sin commitear), que
-  necesita `SUPABASE_SERVICE_ROLE_KEY` en `.env.local` (el login admin no puede
-  escribir por RLS). Con la key → `npm run translate:properties`.
+Web trilingüe (FR/ES/EN) de una inmobiliaria de lujo en Marrakech, dirigida a
+inversores europeos (sobre todo franceses). Es **captación de leads**, no
+e-commerce: no hay pagos. Cliente final: **Khalid** (Francia).
 
-## 1bis. Migración de mapas a Mapbox (2026-05-30) — ✅ DESPLEGADO Y VERIFICADO
-
-- El motor de mapas se migró de **MapLibre GL → Mapbox GL JS v3** (estilo
-  **Standard, 2D plano**) en `Search.tsx` (MapView) y `LocationMap.tsx`, vía
-  nuevo `src/lib/mapbox.ts`. **Commit `70af4956`, desplegado en
-  https://atlasrouge.com** (deploy Netlify OK, 40s).
-- ✅ **Verificado en vivo**: tiles `api.mapbox.com` → HTTP 200, 0 errores de
-  consola, basemap Mapbox Standard renderiza con los pines. El token
-  `atlasrouge v2` está restringido a `atlasrouge.com` (correcto); por eso en
-  localhost daba 403 (no era tarjeta — hipótesis errónea descartada).
-- `VITE_MAPBOX_TOKEN` está en Netlify env (all contexts), NO en el repo. CSP de
-  `netlify.toml` ampliada para Mapbox (connect-src + worker-src blob).
-- Pendiente menor (no bloquea): para dev local, owner añade `localhost` a las
-  URLs del token (o usa Default public token) + `VITE_MAPBOX_TOKEN` en
-  `.env.local`. Detalle: `progress/2026-05-30-mapbox-migration.md`.
+Stack: React 19 · Vite 7 · TypeScript strict · Tailwind · Supabase (Auth + RLS +
+Storage + Postgres) · i18next · GSAP · Mapbox GL · TipTap · Netlify.
 
 ---
 
-## 1. Estado actual (resumen)
+## 2. Estado ahora mismo
 
-- Sitio **LIVE** en producción: `https://atlasrouge.com` (Netlify).
-- `origin/main`, último commit `34af320b`. `verify.sh` verde.
-- Build OK (React 19 + Vite 7). Lint limpio (3 warnings cosméticos).
-- **Phase 0 (stop-the-bleed) IMPLEMENTADA el 2026-05-29** — código escrito y
-  `verify.sh` verde, pero ⚠️ **el SQL NO está aplicado en Supabase Studio y
-  NO se ha hecho deploy**. Son fixes **implementados, pendientes de aplicar
-  SQL + deploy**, NO resueltos en producción. Cubre: P0-1 escalada de
-  privilegios (migración `006`), P0-4 SEO canonical/hreflang + sitemap
-  dinámico, P0-5 drift de migraciones (`000_base_schema.sql`), cierre de
-  funciones serverless (auth JWT + CORS) y Error Boundary global. Detalle en
-  `progress/2026-05-29-phase0-security-seo.md`.
-- Se ejecutó una **auditoría de production-readiness de 13 agentes**
-  (`AUDIT_REPORT.md`): score 22/100, 7 P0 — 2 resueltos (i18n, 2026-05-26),
-  3 de ingeniería implementados (pendientes apply/deploy), 2 legales abiertos.
+### 🔴 EL DOMINIO ESTÁ CAÍDO (incidente abierto, 2026-08-12)
 
-## 2. Qué estábamos haciendo antes de cambiar de chat
+**El código y el hosting están perfectos.** `atlas-rouge-immobilier.netlify.app`
+responde 200 y sirve la web completa. Lo que falla es la delegación del dominio.
 
-Sesión del 2026-05-29: **implementación de la Phase 0** (seguridad + SEO)
-descrita en §1, dejada en el working tree pendiente de que el owner aplique
-el SQL `006` en Studio, verifique las env vars de Netlify y apruebe el commit
-+ push. La sesión anterior (2026-05-26) cerró auditoría + migración i18n +
-harness + paquete de transferencia de contexto.
-
-## 3. Últimos cambios importantes (commits de hoy)
-
-| Commit | Qué |
+| Capa | Estado |
 |---|---|
-| `205bb1e3` | Cierre harness (tasks/HANDOFF/progress sync) |
-| `8987f624` | `AUDIT_REPORT.md` (auditoría 13 agentes) |
-| `593e47ae` | **i18n** de About/GestionLocative/BuyerGuide (218 claves FR/ES/EN) |
-| `d4d23788` | Leads pipeline verificado (RLS anon INSERT) |
-| `efef427b` `f40cedff` | Migración 005 (trigger orphan-user) aplicada+verificada |
-| `c352f646` | Fix gap auth.users↔agents (3 mensajes de error distintos) |
-| `b21781d6` `3a4fcd77` | Fixes de auth (withTimeout + race USER_UPDATED) |
-| `c9ef0c4f` | Harness de ingeniería instalado |
-| `b6b112d1` | Cierre rotación DEEPSEEK key |
+| Netlify | ✅ sirve bien |
+| Cloudflare (zona `atlasrouge.com`) | ✅ registros correctos, sin tocar desde 25/05 |
+| **Namecheap → registro** | ❌ **no delega a Cloudflare** |
 
-## 4. Problemas abiertos / bugs conocidos
+Al actualizar el contacto del titular (12/08, 12:21 UTC) Namecheap reseteó los
+nameservers. El panel muestra `Custom DNS` con los de Cloudflare, pero el
+registro público sigue diciendo `dns101/dns102.registrar-servers.com`, que
+sirven un lander de aparcamiento. **El cambio nunca llegó al registro.**
 
-**P0 de ingeniería — IMPLEMENTADOS 2026-05-29 (pendientes aplicar SQL + deploy,
-NO resueltos en producción):**
-- 🟡 **Escalada de privilegios** (SEC-001/DB-001/ADM-001): fix escrito en
-  migración `006_fix_agent_update_rls.sql` (`WITH CHECK` que congela
-  `role`/`is_active` + `search_path` en helpers, cubre DB-005) y `updateAgent()`
-  estrechado a `AgentSelfUpdate`. **⚠️ El SQL 006 todavía NO está pegado en
-  Studio** → en producción el agujero sigue abierto hasta aplicarlo.
-- 🟡 **Canonical/hreflang estáticos** (PERF-001): `og-rewrite.ts` ahora los
-  reescribe por ruta en `/fr/* /es/* /en/*`; sitemap dinámico vía
-  `scripts/generate-sitemap.mjs` + `prebuild` (cubre PERF-002). **⚠️ No
-  desplegado.**
-- 🟡 **Drift de migraciones** (DB-002): `000_base_schema.sql` idempotente. **⚠️
-  No re-aplicar sobre prod.**
-- 🟡 **Funciones serverless abiertas** (SEC-002/003): `translate-property`
-  exige sesión de agente activo (JWT) + CORS allowlist + rate-limit;
-  `notify-lead` CORS + origin check. **⚠️ No desplegado; necesita env vars en
-  Netlify.**
-- 🟡 **Sin Error Boundary** (ARCH-002): `ErrorBoundary.tsx` montado en
-  `main.tsx`. **⚠️ No desplegado.**
+- Síntoma: HTTPS falla entero (curl `000`, el handshake TLS ni se completa);
+  HTTP devuelve 200 con la página de aparcamiento.
+- Descartado: no es caducidad (expira 25/05/2027), no es suspensión de ICANN
+  (whois solo muestra `clientTransferProhibited`, no hay `clientHold`), y no hay
+  ningún correo de verificación pendiente.
+- **Acción del owner:** en Namecheap, alternar a *Namecheap BasicDNS*, guardar,
+  volver a *Custom DNS* con `dahlia.ns.cloudflare.com` y `kurt.ns.cloudflare.com`,
+  guardar. Si a los 30 min el whois no cambia → chat en vivo de Namecheap.
+- **Mientras tanto:** si hay campañas de Ads activas, **pararlas** — cada clic se
+  paga contra una página de aparcamiento.
+- Detalle completo en la memoria del proyecto (`project_dns_atlasrouge`).
 
-**P0 legales — abiertos (owner + abogado):**
-- 🛑 **Sin Política de Privacidad ni Mentions Légales** (LEGAL-001/002):
-  bloqueante para audiencia UE/Francia. Requiere abogado + datos de Khalid.
+### 🔴 Contraseña de admin expuesta en un repo PÚBLICO
 
-**Altos (P1) que siguen abiertos:**
-- **Leads sin UI en el admin** (ADM-003) — estimaciones/newsletter invisibles.
-- Sin tests (QA-001), sin scripts typecheck/test.
-- **DB-003 (RLS duplicadas de leads): NO aplica** — `004_leads.sql` ya define
-  las policies limpias; no hay duplicado que limpiar.
+`github.com/creativedesignseo/atlas-rouge-immobilier` es **público** y el
+`HANDOFF.md` anterior contenía la contraseña del panel de producción en texto
+plano, presente desde el commit `34af320b`. Redactada del working tree el
+2026-08-15, **pero sigue en el historial de git, que es público.**
 
-## 5. Próximos pasos recomendados (en orden)
+**Rotar la contraseña es la única mitigación real.** Reescribir el historial no
+sirve: pudo ser clonado, forkeado o indexado. Ver §6.
 
-1. **Cerrar Phase 0 (boundaries del owner):**
-   a. Aplicar `006_fix_agent_update_rls.sql` en Supabase Studio y **verificar
-      que un agente no-admin NO puede auto-promoverse** (`update({role:'admin'})`
-      desde DevTools debe ser rechazado).
-   b. Verificar env vars en Netlify: build/sitemap necesita
-      `SUPABASE_URL`/`SUPABASE_ANON_KEY` (o service key); las funciones
-      necesitan `SUPABASE_URL`/`SUPABASE_ANON_KEY` para validar el JWT.
-   c. Aprobar **commit + push** del working tree (Netlify auto-deploya `main`).
-   Solo tras esto los P0-1/P0-4/P0-5 quedan cerrados en producción.
-2. En paralelo (owner + abogado): páginas legales (P0-2/P0-3), `site_settings`
-   reales, foto/bio Sofia, planes Pro. Ver TODO.md.
-3. P1 de ingeniería: UI de leads en el admin (ADM-003), scripts
-   `typecheck`/`test` en `package.json`.
+*(Escaneado el resto del repo: las claves JWT que aparecen son todas
+`role: anon` — públicas por diseño, viajan en el bundle del navegador. No hay
+`service_role` filtrada. `.env*` no está trackeado.)*
 
-## 6. Archivos que la próxima sesión debe revisar primero
+### 🟢 Lo que sí funciona
 
-1. `CLAUDE.md` — reglas + comandos + qué leer.
-2. `PROJECT_CONTEXT.md` — arquitectura, env vars, decisiones.
-3. `TODO.md` — tareas priorizadas con estado.
-4. `AUDIT_REPORT.md` — los 7 P0 con fixes y SQL listo.
-5. Para tocar auth/RLS: `supabase/migrations/001_agents.sql`,
-   `src/services/auth.service.ts`, `docs/decisions/ADR-001-auth-agents-coupling.md`.
+- Web trilingüe completa, blog, buscador con mapa Mapbox, panel de admin.
+- **Centro de leads / CRM** (`/admin/contacts`): embudo por fases, kanban con
+  drag & drop en escritorio y selector «Mover a etapa» en móvil, ficha lateral
+  con etapa, prioridad, asignación, seguimiento, notas e historial. Tarjetas en
+  acordeón. Acciones de llamar / WhatsApp / copiar.
+- **Dos landings de captación** (`/vendre/`, `/proprietaires/`) con selector de
+  teléfono internacional (intl-tel-input, detección por IP, validación E.164) y
+  botón final a WhatsApp. Confirmado con tráfico real: un lead entró y guardó su
+  número en formato internacional.
+- Formularios públicos escriben vía `supabasePublic` (ver ADR-002).
 
-## 7. Preguntas / decisiones pendientes de confirmar
+---
 
-- **[Khalid]** Datos reales para `site_settings`: teléfono, WhatsApp, email
-  (¿creamos `contact@atlasrouge.com`?), dirección física, horarios, redes,
-  RC/ICE. (Se le envió un cuestionario por WhatsApp; pendiente de respuesta.)
-- **[Editorial]** En la traducción, "pensé pour les Français" se adaptó a
-  "compradores internacionales" en ES/EN. **Confirmar** si Khalid prefiere
-  mantener el enfoque France-specific.
-- **[Producto]** ¿Activar GA/GTM? El CSP ya lo permite pero no está cargado;
-  si se activa, debe ser tras consentimiento (RGPD).
-- **[Pendiente de confirmar]** ¿Khalid ya configuró la Supabase Site URL? (se
-  le dieron instrucciones; verificar en Dashboard).
+## 3. Qué bloquea de verdad (por orden)
 
-## 8. Acceso admin (para pruebas)
+| # | Qué | De quién depende |
+|---|---|---|
+| 1 | **Restaurar la delegación DNS** | Owner (Namecheap) |
+| 2 | **Rotar la contraseña de admin** | Owner |
+| 3 | **Canal de aviso de leads** — `notify-lead` responde `ok:true` pero avisa `skipped: no RESEND_API_KEY` / `no TELEGRAM env`. Código desplegado, faltan las variables. Decidir Telegram o email. | Owner (decisión) |
+| 4 | **Las 10 URLs finales de los anuncios** en Google Ads — hay que editarlas una a una (la edición masiva pone la misma en todas). Bloquea activar campañas. | Owner |
+| 5 | **Páginas legales** (Privacidad / Mentions Légales) — bloqueante para audiencia UE. | Owner + abogado |
+| 6 | **Tipografías Lazzer** (5 `.woff` en `public/vendre/fonts/`) — comerciales, publicadas y en vivo. Riesgo de licencia abierto. Borrarlas necesita OK explícito. | Owner |
+
+---
+
+## 4. Trampas conocidas (te ahorran horas)
+
+- **`supabase-js` se CUELGA (no falla) en rutas acopladas a auth.** Las lecturas
+  públicas van por `supabasePublic`; el cliente con sesión refresca el token
+  antes de cada petición y bloquea la primera carga del usuario logueado.
+  Comprobación: `grep -rn "supabase\.from" src/services` fuera de
+  `src/services/admin/` debe salir vacío. Ver `ADR-002`.
+- Para operaciones de admin autenticadas, usa REST directo (`src/lib/adminRest.ts`)
+  con token explícito y `AbortController`.
+- **Netlify devuelve 200 con el shell de la SPA para CUALQUIER ruta inexistente.**
+  Un 200 no prueba que un archivo exista — comprueba el contenido.
+- **`countLabel` no existe como clave suelta**, solo como `countLabel_one` /
+  `countLabel_other` (plurales de i18next). Buscar la desnuda da falso negativo.
+- **`public/` lo copia Vite tal cual**: sin bundling, sin imports de npm. Las dos
+  landings son HTML estático — sus dependencias van en `public/vendor/`.
+- **Bomba de relojería:** `fetchContactSubmissions` filtra por
+  `assigned_to_agent_id` para los no-admin. Como nadie rellena esa columna, el
+  primer agente no-admin verá **cero leads**. Decidir la política antes de dar
+  de alta a ningún agente.
+
+---
+
+## 5. Verificación
+
+```bash
+bash scripts/verify.sh     # lint + build
+```
+
+**`verify.sh` NO prueba comportamiento.** Ningún arreglo está verificado hasta
+haber reproducido el fallo bajo la condición real y haberlo visto desaparecer
+bajo esa misma condición. Verifica bajo las tres personas: visitante anónimo en
+frío, **admin logueado en frío** (esta es la que escondió un fallo seis semanas)
+y red lenta o bloqueada.
+
+---
+
+## 6. Acceso admin
 
 - URL: `https://atlasrouge.com/admin/login`
-- Email: `creativedesignseo@gmail.com` · Password: `Marru.2025`
-  (Jonatan; provisionado como `admin` activo en la tabla `agents`).
-- Segundo admin existente: `admin@atlasrouge.ma` (Sofia).
+- Cuentas: `creativedesignseo@gmail.com` (Jonatan, admin) y `admin@atlasrouge.ma` (Sofia).
+- **Las contraseñas NO se guardan en este repo** — es público. Gestor de
+  contraseñas del owner. Ver el incidente en §2.
+
+---
+
+## 7. Dónde está cada cosa
+
+| Necesitas | Mira |
+|---|---|
+| Reglas de trabajo del agente | `AGENTS.md` (+ `CLAUDE.md`) |
+| Tareas vivas | `tasks/current.md` |
+| Historial largo | `HANDOFF_REPORT.md` (grep, no leer entero) |
+| Tareas viejas cerradas | `tasks/archive-2026-08.md`, `progress/` |
+| Informe para el cliente | `docs/BITACORA.md` + skill `/reporte` |
+| Decisiones arquitectónicas | `docs/decisions/ADR-*.md` |
+| Soporte / incidencias | `docs/runbooks/*.md` |
+| Auditoría de producción | `AUDIT_REPORT.md` |
+
+⚠️ `PROJECT_HANDBOOK.md`, `README.md` e `info.md` están **desactualizados**
+(hablan de una URL de Netlify y de un "sitio francés"). No son fuente de verdad.

@@ -23,9 +23,10 @@ Hosting: Netlify (site id `7af94674-6d3f-4258-94bf-4776f8a7e9c6`,
 domain `atlasrouge.com`). Supabase project
 `slxlkbrqcjabsfuhlwdf.supabase.co`.
 
-The operational source of truth is **`HANDOFF_REPORT.md`** (not
-`HANDOFF.md`) — same role, different filename for historical reasons.
-Treat it as the `HANDOFF.md` slot wherever this contract refers to it.
+The operational source of truth is **`HANDOFF.md`** — one screen, kept
+current. `HANDOFF_REPORT.md` is the append-only history (~3,900 lines);
+**never read it whole** — grep inside it when you need a past detail.
+Reading it end to end costs about a quarter of the context window.
 
 ---
 
@@ -34,9 +35,10 @@ Treat it as the `HANDOFF.md` slot wherever this contract refers to it.
 When two documents disagree, **the higher-numbered source wins**. If
 the higher source is silent on a question, fall back to the next.
 
-1. **`HANDOFF_REPORT.md`** — current operational state, last commit,
-   what works today in production. Read first on every fresh session.
-   (Filled the `HANDOFF.md` slot; same role, different name.)
+1. **`HANDOFF.md`** — current operational state, last commit, what
+   works today in production. Read first on every fresh session; it is
+   deliberately short. Its history lives in `HANDOFF_REPORT.md`, which
+   you grep rather than read.
 2. **`docs/decisions/ADR-NNN-*.md`** — architectural decisions. Do not
    relitigate without a new ADR.
    - `ADR-001` — acoplamiento `auth.users` ↔ `public.agents` (read

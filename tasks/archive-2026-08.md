@@ -1,0 +1,1584 @@
+# tasks/archive-2026-08.md — cola de tareas archivada
+
+> Snapshot de `tasks/current.md` al 2026-08-15, antes de reducirlo a lo vivo.
+> Histórico: no lo leas entero, busca dentro con grep.
+
+---
+
+# tasks/current.md — Atlas Rouge active task queue
+
+> Single page of what's being worked on **right now**. Keep it short.
+> Older completed tasks live in `progress/`. Strategic plans live in
+> `README.md`. Operational truth lives in `HANDOFF_REPORT.md`.
+
+**Last updated:** 2026-08-05 (CRM pipeline, acordeón y borrado de notas — `97bbc797`, en vivo)
+
+## 🟡 CRM pipeline — EN VIVO 2026-08-05 (`96ed65b9`), falta verlo con sesión
+
+`/admin/contacts` es ahora un CRM: embudo por fases, kanban con drag & drop
+(escritorio) o selector «Mover a etapa» (móvil), y ficha lateral con etapa,
+prioridad, asignación, seguimiento, notas e historial. Migración 017 aplicada.
+
+**Acción del owner:** entrar al panel, mover una tarjeta, recargar y confirmar
+que se queda en su fase. Sin credenciales aquí no se pudo probar autenticado.
+
+Tarjetas en acordeón desde `e56f8e9f`: colapsadas a una fila, se abren al pasar
+el cursor en escritorio y van siempre abiertas en móvil.
+
+Pendiente: recordatorios de seguimiento (hoy solo se guarda la fecha) y UI para
+gestionar etapas personalizadas.
+
+
+## 🟢 Centro de leads rediseñado — EN VIVO 2026-08-05 (`c1e8ab4e`)
+
+`/admin/contacts` pasa de filas de texto densas a un centro de leads orientado
+a la acción: tiles de cifras, búsqueda pegajosa con chips de rango, tarjetas
+con avatar de iniciales y botones grandes de Llamar / WhatsApp / Email / Ver
+propiedad. Solo presentación — datos y RLS intactos. Falta pasar el ojo del
+owner con sesión iniciada (no se pudo verificar autenticado desde aquí).
+
+Pendiente relacionado: el estado del lead (`new`/asignado) sigue sin UI — ese
+es el trabajo de CRM fase 1, más abajo.
+
+
+## 🟢 Pantalla de Leads — reconstruida y renombrada del todo (2026-08-05)
+
+- ✅ `c1e8ab4e` (otra sesión) — centro de leads reconstruido: contadores,
+  filtros por rango, barra fija en móvil, avatares, y acciones de **llamar /
+  WhatsApp / copiar**.
+- ✅ `c12382a5` — terminado el renombrado: las etiquetas de DENTRO seguían
+  diciendo "contacto". 8 por idioma. FR usa `prospect`, ES/EN `lead`.
+  Verificado en el bundle de producción.
+
+⚠️ **`countLabel` no existe como clave suelta**, solo como `countLabel_one` /
+`countLabel_other` (plurales de i18next). Un chequeo de claves que busque la
+desnuda da un falso negativo.
+
+🔴 **Falta lo que cambia el trabajo diario**: cambiar el estado del lead y
+asignarlo a un agente. Las columnas existen desde el origen y las traducciones
+también; los 13 leads siguen en `new` y sin asignar.
+
+## 🟢 Verificado el 2026-08-05 — nada nuevo que arreglar
+
+`HEAD == origin/main == a4796db1`, `verify.sh` verde, Graph sin desfase.
+Las dos landings, el panel y los formularios del sitio responden 200.
+**El selector de teléfono confirmado con tráfico real**: un lead entrado tras
+el despliegue guardó su número en formato internacional.
+
+Tabla de leads: **13 registros, los 13 en estado `new` y sin asignar** — el
+seguimiento sigue sin existir (ver CRM fase 1, abajo). Cero entradas el 5/08.
+
+
+## 🟢 Landings — EN VIVO y verificado 2026-08-04 noche
+
+- ✅ `cadfe641` — selector de teléfono internacional (intl-tel-input v29.1.3,
+  servido desde `public/vendor/`, no CDN). Guarda en E.164: un `06 12 34 56 78`
+  francés entra como `+33612345678`. Rechaza números imposibles antes del
+  insert. Detección de país por IP (ipapi.co, en la CSP), con caída a `fr` si
+  falla o tarda >1,5 s.
+- ✅ `cadfe641` — botón post-envío abre WhatsApp con mensaje pre-escrito
+  (nombre + intención). Evento `whatsapp_after_lead`.
+- ✅ `cadfe641` — "Gratuit" eliminado de las dos landings.
+- ✅ `4afe64dd` — arreglado el solapamiento lupa/texto en el buscador del
+  desplegable ("Qearch"), reportado por el owner con captura.
+
+⚠️ **Trampas de intl-tel-input v29** (las docs que circulan son de v21-25):
+no existen `geoIpLookup` ni `utilsScript`; son `initialCountryLookup` +
+`intlTelInputWithUtils`. `initialCountry` DEBE quedar vacío o el lookup no se
+ejecuta (`intlTelInput.js:3789`). El contenedor del menú es
+`.iti__country-selector`, no `.iti__dropdown-content`. Y el buscador del menú
+hereda `.field input`, que le gana en especificidad al plugin.
+
+## 🔴 Tipografías Lazzer publicadas — requiere OK del owner
+
+`public/vendre/fonts/Lazzer-*.woff` (5 archivos) están **trackeados en git y
+en producción**: `atlasrouge.com/vendre/fonts/Lazzer-Regular.woff` → 200,
+`application/font-woff`. Es tipografía comercial ajena servida desde el dominio
+del cliente. Retirarla es borrar archivos → autorización expresa.
+(`.gitignore` NO sirve aquí: no aplica a archivos ya trackeados.)
+`public/prueba/` sí es inocuo: untracked, nunca llegó al servidor.
+
+## 🟡 Dos etiquetas sin renombrar en la pantalla Leads
+
+Dentro de `/admin/contacts` siguen "N contactos en total" y
+"Buscar un contacto…". El menú y el título ya dicen Leads (`a801dce6`).
+
+
+## 🟢 Panel de admin — arreglado y verificado en prod 2026-08-04
+
+- ✅ `a09d9798` — buscador de contactos ya no revienta con leads sin email
+  (4 de 16 filas). Reproducido y re-verificado en prod. Busca además por
+  teléfono y `message` → `fr-diaspora` devuelve los leads de esa campaña.
+- ✅ `a09d9798` — borrado por `adminRest` (1 viaje, timeout 10 s) + optimista.
+  ⚠️ **No ejecutado en vivo**: borrar necesita OK del owner.
+- ✅ `10575705` — formularios públicos con `supabasePublic`. Verificado con un
+  envío real anónimo en prod (fila `ZZTEST anon client check`).
+
+## 🔴 CRM de leads — diseñado, sin implementar
+
+Detalle del diagnóstico en `HANDOFF_REPORT.md` (cierre 2026-08-04).
+
+**Fase 1 (imprescindible), en este orden:**
+
+1. **Aviso de lead nuevo.** 15 min, mayor retorno del paquete. `notify-lead`
+   responde 200 y no envía nada: faltan las variables de entorno.
+   🔴 **Bloqueado: el owner elige Telegram o email.**
+2. **Migración aditiva** sobre `contact_submissions`: 6 etapas, nota interna,
+   próxima acción, archivado, `utm_campaign`, `gclid`, formulario de origen.
+   Nada obligatorio, nada destructivo, sin tocar permisos de inserción anónima.
+   Mantener permitidos los valores viejos (`in_progress`, `closed`).
+3. **Migrar la lectura de contactos a `adminRest`** antes de construir encima.
+4. **La pantalla:** lista ordenada por urgencia (no kanban), chip de etapa,
+   teléfono clicable + WhatsApp, panel lateral con nota y próxima acción,
+   archivar en vez de borrar.
+
+**Nomenclatura acordada** (los 3 idiomas a la vez, mismo set de claves):
+`Contacts` → **`Prospects`** (FR) / **Prospectos** (ES) · Newsletter sale a su
+propia entrada · la pantalla actual de estimaciones pasa a pestaña secundaria.
+
+**Etapas (FR en pantalla, códigos en inglés en BD):** Nouveau · Sans réponse ·
+En discussion · Estimation · Mandat · Écarté.
+`Sans réponse` es la clave: se llama a franceses y diáspora, la mayoría no coge
+a la primera. `Mandat` es la única conversión que merece devolverse a Ads.
+
+**Descartado a propósito del ejemplo de Meta** (reabrir con >100 leads limpios
+o una 3ª persona en el equipo): kanban, % de conversión, "asignado a",
+etiquetas libres, etapas personalizables, edición masiva, recordatorios sin
+canal de aviso.
+
+**Fase 2:** guardar `utm_*`/`gclid` en columnas desde las landings — **una
+landing cada vez, con envío real y 24 h de observación**; exportación CSV con
+`gclid` para conversiones offline de Ads; deduplicar por teléfono.
+
+## 🔴 Bomba de relojería — antes de dar de alta a ningún agente
+
+`fetchContactSubmissions` filtra por `assigned_to_agent_id` si el usuario no es
+admin. Ninguna landing rellena ese campo → **el primer agente no-admin verá
+cero leads** y parecerá que el panel está roto. Decidir bandeja común vs
+asignación automática antes, no después.
+
+## 🔴 Mismo defecto de borrado en otras dos pantallas
+
+`AdminProperties` y `AdminBlog` siguen borrando con supabase-js sin timeout.
+Blog además recarga la lista entera tras borrar (3 viajes en vez de 1).
+
+## 🔴 URLs de los anuncios — EN CURSO, 1 de 10 hecha 2026-08-03
+
+✅ **Causa confirmada en producción.** El anuncio `A - Vendre / FR-Diaspora`
+apuntaba a `https://atlasrouge.com/fr/vendre?...` → medido con Playwright:
+**`forms: 0`, `inputs: []`**. Es la sección informativa del SPA, no la landing.
+El clic se paga y no hay dónde dejar datos; la conversión tampoco dispara.
+
+⚠️ **`/fr/vendre` ≠ `/vendre/`.** Nombres casi idénticos, páginas distintas.
+La de captación es la que **no** lleva `/fr` y **sí** lleva barra final.
+
+✅ Las dos landings buenas verificadas en vivo con parámetros reales:
+`/vendre/?service=vendre` → `forms:1`, `project=vendre` ·
+`/proprietaires/?service=airbnb` → `forms:1`, `project=airbnb`.
+
+📌 **El owner las edita a mano en la UI de Ads**, una por grupo (la edición
+masiva no vale: unos van a `/vendre/`, otros a `/proprietaires/`).
+
+**Estado `fr-diaspora`: 5 de 5 asignadas, 1 A CORREGIR.** ✅ A - Vendre ·
+✅ B1 - Gestion locative · ✅ B2 - Gestion Airbnb · ✅ C - Estimation ·
+🔴 **D - Agence lleva `?service=agence`, que NO EXISTE** — ver abajo.
+
+## 🔴 `?service=agence` no existe — corregir D - Agence
+
+Error de Claude en la tabla original, **ya propagado a producción de Ads**.
+Medido en vivo: `/vendre/?service=agence` → `forms:1` pero `project:""` (vacío).
+`public/vendre/index.html:853` solo acepta `estimation` | `vendre` | `hesite`.
+El lead NO se pierde, pero entra como `"Vendeur — Landing ()"` sin intención.
+
+URL correcta para D - Agence:
+```
+https://atlasrouge.com/vendre/?service=vendre&utm_source=google&utm_medium=cpc&utm_campaign=fr-diaspora&utm_content=agence
+```
+
+**Regla:** `?service=` solo admite valores del contrato de cada landing;
+`utm_content` es texto libre. Valores válidos verificados en vivo:
+`/vendre/` → `estimation`, `vendre`, `hesite` · `/proprietaires/` → `location`,
+`airbnb`. **Medir toda URL nueva en prod y comprobar que `project` sale relleno.**
+
+📌 **RSA de D - Agence optimizado por el Ask Advisor de Google** (no verificado
+aquí): 15/15 títulos, título 1 desfijado, eficacia *Media* → *Excelente*.
+Anuncio ID `815830933607`. **Dejado sin guardar** por el asistente. Al guardar,
+el RSA reinicia aprendizaje: no juzgar rendimiento ~1-2 semanas.
+Faltan además las campañas `maroc` + la tercera (mismas URLs, otro
+`utm_campaign`). Tabla completa más abajo.
+
+⚠️ **Fallo más fácil de cometer: cruzar el grupo con el `?service=`.** Ya pasó
+una vez (se pegó `service=location` en B2 - Gestion Airbnb, corregido antes de
+guardar). Al revisar, comprobar SIEMPRE que el nombre del grupo cuadra con el
+`?service=`. Un cruce mezcla los dos servicios en los informes y hace que
+Khalid llame con el guion equivocado.
+
+ℹ️ "Ruta visible" mostrando `www.example.com` es el **placeholder de Google**,
+no un valor guardado. No requiere acción.
+
+📌 **Títulos de B1 reescritos por el "Ask Advisor" de Google Ads** (no por
+Claude): 3 huecos rellenados + 6 reescrituras, eficacia *Baja* → *Excelente*.
+**NO verificado aquí** — no hay acceso de API a Google Ads en este entorno.
+Además el propio asistente dijo *"todavía no he guardado nada"*: **confirmar en
+la UI que los títulos se guardaron**.
+
+📌 Abiertos en el anuncio de B1: **Nombre de empresa** vacío (0/25) y **sin
+imágenes**. Mejoran el rendimiento real aunque el medidor marque el máximo.
+
+📌 **UTM sin columnas propias.** `public/vendre/index.html:864-867` mete los UTM
+como texto dentro de `message`. Se leen, pero no se puede filtrar ni agregar por
+campaña con una query. Promoverlos a columnas es cambio pequeño — **requiere OK**.
+
+📌 **Los UTM los generó Claude**, no el owner (venían de la tabla de este mismo
+archivo). El owner los pegó sin que nadie le explicara qué significaban. Regla:
+`utm_campaign` = campaña, `utm_content` = grupo de anuncios; `utm_source=google`
+y `utm_medium=cpc` son fijos.
+
+## 🔴 Bug de pérdida de leads — ARREGLADO 2026-08-02
+
+✅ `contact_submissions.email` era NOT NULL mientras las landings lo ofrecían
+como opcional → todo lead con solo teléfono se perdía en silencio (400/23502).
+Migración `016` aplicada y verificada (201 con solo teléfono; 400 si no hay
+ninguna vía de contacto). Detalle completo en `HANDOFF_REPORT.md`.
+
+📌 Pendientes menores, requieren OK del owner (destructivos):
+- Borrar la fila de prueba `ZZTEST Claude BORRAR` (creada al verificar).
+- Borrar la fila basura del 31/07 (`subject:'buy'`, sin ningún dato). Si se
+  borra, se puede promover la constraint con `VALIDATE CONSTRAINT`.
+
+## 🔴 Avisos de lead — FUNCIÓN ARREGLADA, FALTA ELEGIR CANAL 2026-08-02
+
+✅ **Bug crítico corregido** (`eaf8b1d5`): las 3 Netlify Functions estaban en
+CommonJS con `"type": "module"` en package.json → fallaban al arrancar **desde
+el commit inicial**. `notify-lead` devolvía 502. Nunca se envió un solo aviso.
+Ahora devuelve **HTTP 200**.
+
+📌 **DECISIÓN DEL OWNER PENDIENTE — qué canal usar.** La función responde
+`skipped: no RESEND_API_KEY` y `skipped: no TELEGRAM env`. Opciones:
+- **Telegram** — ya programado, no requiere código. Solo `TELEGRAM_BOT_TOKEN`
+  + `TELEGRAM_CHAT_ID` en Netlify. (Recomendado: llega al móvil al instante.)
+- **Resend** — ya programado. Solo `RESEND_API_KEY`. *(Nota: Resend lo
+  introdujo el commit `75ef1ff6` del 2026-05-20, no es propuesta nueva.)*
+- **Zoho Mail** — ya se paga para atlasrouge.com; requiere cambio de código.
+- **Ninguno** — los leads no se pierden, se ven en `/admin/contacts`.
+
+## 🟢 Medición de las 2 landings — VERIFICADA 2026-08-03
+
+Disparado `generate_lead` en producción en ambas: GTM `GTM-TW5NLSKR` ✅,
+GA4 `G-DW0QTJH33V` ✅ (`g/collect` enviado), Ads `AW-17958357718` ✅ (se
+instancia con el evento, no antes — correcto).
+
+⚠️ **TikTok `ttq: undefined` en las DOS landings.** El píxel vive en el SPA, no
+aquí. Da igual mientras no se anuncie en TikTok; bloqueante si se hace.
+
+Destino del dato (idéntico en las dos): `POST` a `rest/v1/contact_submissions`
+→ `notify-lead` (200, sin canal) → `generate_lead`. Panel `/admin/contacts`.
+
+## 🟡 Agentes: la columna existe, nadie la usa
+
+Consultado en vivo: `agents` = **1 fila** (`Jonatan`, admin, activo).
+`contact_submissions` = **13 filas, 0 con `assigned_to_agent_id`**.
+
+Las landings no rellenan ese campo y nadie asigna a mano. **Hoy no molesta**:
+`contactAdmin.service.ts:42` solo filtra por agente si el usuario NO es admin.
+🔴 **Se rompe el día que entre un comercial no admin: no vería ni un lead.**
+Decidir entonces: asignación automática en el insert o reparto desde el panel.
+
+## ❓ Lead `Juan` sin identificar (2026-08-03)
+
+Contacto `Juan`, `status='new'`, más reciente que las `ZZTEST`. **No es prueba
+de Claude.** Pendiente de que el owner confirme si lo creó él; si no, es un lead
+real esperando.
+
+## 📋 Inventario real de leads (2026-08-02, consultado)
+
+`contact_submissions` 12 filas (5 son pruebas mías) · `estimation_requests` 3 ·
+`newsletter_subscribers` 0. Reales probables: **Jormen** y **Pierre**
+(24/07, desde `/proprietaires/`), **Bormio** y **Nor** (24/04). Todos con
+`status = 'new'` — nadie los ha trabajado, coherente con que el aviso nunca
+funcionó. Panel: `atlasrouge.com/admin/contacts`.
+
+## 🟢 Landing `/proprietaires/` — REHECHA 2026-08-02
+
+✅ Mismo tratamiento que `/vendre/` (`5ede67a5`): 1 paso, 3 campos, sin
+preguntas, micro-etiquetas fuera, sección de contexto en letra grande.
+51.1 KB → 42.9 KB. Intent por `?service=`. Los dos fallos de móvil de
+`/vendre/` se aplicaron por adelantado, nunca llegaron a producción aquí.
+
+## 🟢 Landing `/vendre/` — REHECHA 2026-08-02
+
+✅ Formulario de 2 pasos con preguntas → **1 paso, 3 campos** (nombre, teléfono,
+e-mail opcional). La intención se lee de `?service=` en la URL, no se pregunta.
+✅ Fuera micro-etiquetas (eyebrow + 3 chips). Entra sección **"Trois champs, un
+appel, une estimation."** en letra grande (h2 41px, cuerpo 17.6px).
+✅ Móvil arreglado (medido a 375×812): h1 35.2px → **43.2px** (faltaba el
+breakpoint ≤380px); botón de enviar de y=837 → **y=782, visible sin scroll**.
+Altura 2518 → 2395px.
+
+📌 **`/proprietaires/` sigue con el formato viejo** (paso de preguntas +
+secciones largas). Aplicarle lo mismo para que las dos landings sean coherentes.
+
+📌 **Filas de prueba pendientes de borrar**: 3 `ZZTEST` + 1 basura de bot
+(10 filas totales, 6 leads reales). El owner lo autorizó pero **el clasificador
+de seguridad bloquea el DELETE desde Claude** — el SQL con los IDs exactos está
+en el chat, hay que ejecutarlo en Supabase SQL Editor.
+
+## 🟢 Medición de conversiones — MONTADA Y VERIFICADA 2026-08-02
+
+✅ CSP corregida (el pixel de TikTok llevaba desde su instalación sin disparar,
+bloqueado; reproducido con `transferSize=0`). Commit `55a10a54`.
+✅ GA4 `546727602` vinculada a la cuenta de Ads.
+✅ Conversión creada: **"Atlas Rouge - Lead formulario (web)"**, ID
+`17958357718`, label `KUABCKCQrdocENaVm_NC`, **Secundaria** (cuenta compartida
+con freecoche, que tiene campaña activa).
+✅ GTM v5 publicado: `[9]` conversión Ads + `[10]` evento GA4 `generate_lead`
++ `[11]` Conversion Linker, todos sobre el trigger `generate_lead` existente.
+✅ Probado end-to-end en producción: salen las peticiones reales a
+googleadservices, GA4 y TikTok.
+
+## 🔴 LO ÚNICO QUE BLOQUEA ACTIVAR — las 10 URLs de los anuncios
+
+Siguen apuntando al SPA. **8 de 10 van a páginas sin formulario.** Hay que
+editarlas UNA A UNA en la UI de Ads (la edición masiva pone la misma URL a
+todos y aquí cada grupo necesita la suya). Aplica igual a FR-Diaspora y Maroc,
+cambiando `utm_campaign` a `fr-diaspora` o `maroc`:
+
+| Grupo | URL final |
+|---|---|
+| A - Vendre | `https://atlasrouge.com/vendre/?service=vendre&utm_source=google&utm_medium=cpc&utm_campaign=<c>&utm_content=vendre` |
+| B1 - Gestion locative | `https://atlasrouge.com/proprietaires/?service=location&utm_source=google&utm_medium=cpc&utm_campaign=<c>&utm_content=gestion-locative` |
+| B2 - Gestion Airbnb | `https://atlasrouge.com/proprietaires/?service=airbnb&utm_source=google&utm_medium=cpc&utm_campaign=<c>&utm_content=gestion-airbnb` |
+| C - Estimation | `https://atlasrouge.com/vendre/?service=estimation&utm_source=google&utm_medium=cpc&utm_campaign=<c>&utm_content=estimation` |
+| D - Agence | `https://atlasrouge.com/vendre/?utm_source=google&utm_medium=cpc&utm_campaign=<c>&utm_content=agence` |
+
+El parámetro `?service=` YA funciona en producción: preselecciona el paso 1 del
+formulario. No hay que programar nada.
+
+## 🟠 Otros bloqueantes de la activación — 2026-08-02
+
+Auditoría de 6 agentes previa a activar. **No se puede activar todavía.**
+Campañas dentro de la cuenta Ads `freecoche / Amsip MCC (407-193-7268)`.
+
+Bloqueantes vivos, ninguno arreglado aún:
+1. **Método de pago bloqueado** en la cuenta Ads → nada se sirve. (Solo owner.)
+2. **Cero señal de conversión**: no hay acción de conversión de Atlas Rouge en
+   la cuenta (las 2 que hay son de FreeCoche) ni etiqueta `AW-` en GTM
+   (0 coincidencias de `AW-`/`__awct`/`__gclidw` en los 346 KB del gtm.js vivo).
+3. **8 de 10 grupos aterrizan en páginas sin formulario** (`/fr/vendre`,
+   `/fr/gestion-locative`). Deben ir a `/proprietaires/` y `/vendre/`.
+4. **`generate_lead` no llega a GA4**: el trigger solo alimenta el píxel de
+   TikTok. 0 eventos `generate_lead` en los 90 días de vida de la propiedad
+   GA4 546727602 (G-DW0QTJH33V), con 115 page_views registrados.
+5. **CSP de producción no incluye `googleadservices.com`** (ni
+   `analytics.tiktok.com`) → puede bloquear las etiquetas. Verificar antes.
+
+Mapeo correcto grupo → landing (los 5 grupos son idénticos en ambas campañas):
+`A - Vendre` → `/vendre/` · `B1 - Gestion locative` → `/proprietaires/` ·
+`B2 - Gestion Airbnb` → `/proprietaires/` · `C - Estimation` → `/vendre/` ·
+`D - Agence` → `/vendre/` (mantiene la intención original del CSV).
+
+## Píxel de TikTok Ads (D9MSR03C77U9D4RN76K0) — 2026-07-31
+
+## Píxel de TikTok Ads (D9MSR03C77U9D4RN76K0) — 2026-07-31
+
+✅ Instalado vía GTM (contenedor `GTM-TW5NLSKR`, cuenta `adspubli`), no
+hardcodeado en el código — dispara en `index.html` (SPA) y en las 2 landings
+estáticas (`/proprietaires/`, `/vendre/`), respetando el banner de cookies.
+Evento de conversión `SubmitForm` enganchado al `generate_lead` ya existente.
+Verificado en vivo con tráfico real a `analytics.tiktok.com`. Detalle completo
+en `HANDOFF_REPORT.md`.
+
+✅ **Corregido:** el ID inicial (`D6AA6N3C77U2SG09BQN0`) no pertenecía a la
+cuenta de anuncios del owner (Sanz0217) — nunca se había creado un pixel ahí.
+Se creó uno nuevo, real, dentro de esa cuenta ("Atlas Rouge Immobilier -
+Web") y se corrigió en GTM. **ID vigente: `D9MSR03C77U9D4RN76K0`**, visible
+en el Events Manager del owner.
+
+📌 **Mejora futura:** TikTok Events API (server-side, vía `notify-lead.js`)
+para mejorar el match rate — no se hizo esta sesión.
+
+## Páginas legales (Aviso Legal / Privacidad / Términos) — 2026-07-31
+
+✅ Creadas y publicadas en FR/ES/EN, enlazadas desde el footer. Ver detalle
+verificado en `HANDOFF_REPORT.md`. Pendiente **solo si Khalid lo aporta**:
+número de registro de empresa (RC/ICE/IF) — hoy el aviso legal usa únicamente
+nombre comercial + dirección, sin inventar una forma jurídica o número que no
+se confirmó.
+
+## Separación de públicos: `/proprietaires` = gestión, `/vendre` = venta — 2026-07-27
+
+Decisión del owner (revierte la recomendación del 24-07 de usar `?service=`):
+**dos landings separadas**, porque quien vende y quien quiere que le gestionen
+no tienen el mismo problema y un solo hero no convence a los dos.
+
+### `/proprietaires` — ahora solo GESTIÓN
+- ✅ **Eliminada la franja de cifras** `0% / 8-12% / 24-48h`. Motivo real: `0%`
+  junto a `8-12%` se leía como contradicción, y el owner no quiere comunicar
+  comisiones. Se fue también su CSS (`.big-numbers`, `.stat-num`, `.stat-label`).
+- ✅ **H1 de ~93px → 60px máx** (`clamp(2.5rem, 3.9vw, 3.75rem)`); h2 en proporción.
+- ✅ **Hueco bajo el header**: la causa era `min-height: 860px` + centrado
+  vertical, no el padding. Hero a `660px` → el formulario entero entra ya en el
+  primer pantallazo.
+- ✅ **Quitada la rayita decorativa** del eyebrow (`.eyebrow::before` y la
+  gemela `.section-head.center .eyebrow::after`).
+- ✅ Vía "vente" retirada del formulario; la tarjeta 03 es ahora una pasarela
+  hacia `/vendre/`. `projectLabel` y `?service=` actualizados en consecuencia.
+- ✅ **Las 6 tarjetas de servicio reescritas de características a beneficios**
+  (pilar 2 del artículo Semrush de copywriting).
+
+### `/vendre` — landing de venta NUEVA
+- Sustituye la maqueta de junio, que era una **réplica de la LP de Semrush** con
+  su tipografía **Lazzer auto-alojada** y un formulario `onsubmit="return false"`
+  (no enviaba nada: agujero de leads).
+- Clonada de `/proprietaires` para heredar la fontanería probada: GTM +
+  Consent Mode, form de 3 pasos → `contact_submissions` + `notify-lead`,
+  responsive validado. Leads con subject `Vendeur — Landing (…)` para que se
+  distingan de los de gestión.
+- Paso 1 cualifica la temperatura: `estimation` / `vendre` / `hesite`.
+- Escrita **solo con lo confirmado por el owner**: estimación gratuita, sin
+  exclusividad, equipo local francófono. Sin comisiones, sin plazos, sin cifras.
+
+### Pendiente — bloqueado por Khalid
+- [ ] **¿Quién enseña el bien** cuando el propietario vive en Francia? Es la
+      objeción #1 elegida por el owner, pero el servicio confirmado es solo la
+      estimación. Sin esa respuesta no se puede escribir "vendez sans vous
+      déplacer" y falta la sección "vendre à distance".
+- [ ] **2-3 testimonios reales** (nombre + ciudad + una frase). Hueco ya
+      reservado en el HTML de `/vendre`. Pilar 3 de Semrush: sin esto la
+      prueba social sigue a cero en ambas landings. **No inventar.**
+- [ ] **Riesgo de licencia**: `public/vendre/fonts/Lazzer-*.woff` (fuente
+      comercial de la identidad de Semrush) sigue servida en producción —
+      `atlasrouge.com/vendre/fonts/Lazzer-Bold.woff` → HTTP 200. Y
+      `atlasrouge.com/prueba/` publica una réplica de la LP de Semrush.
+      Ambas cosas deberían retirarse (requiere OK del owner para borrar).
+- [ ] Foto del hero de `/vendre`: hoy es la misma que `/proprietaires`.
+
+---
+
+## Análisis de competencia + decisión pendiente sobre landing "vendre" — 2026-07-24
+
+- ✅ **Guardado** `marketing/competencia-barnes-marrakech.md`: análisis (en
+  palabras propias, no copia) de la página de captación de vendedores de
+  BARNES Marrakech y su listado de venta con precios reales por barrio.
+  Indexado en `marketing/README.md`.
+- 📌 **Recomendación dada, pendiente de decisión del owner**: en vez de crear
+  una landing separada para "vendre" al estilo BARNES (multipágina, texto
+  largo), ajustar dinámicamente el titular de `/proprietaires` según el
+  parámetro de campaña (`?service=vente|location|airbnb`) — reutiliza la
+  landing ya construida y pulida esta sesión, evita duplicar mantenimiento.
+  Sin implementar todavía, a la espera de que el owner elija.
+- ⚠️ **Petición rechazada explícitamente** (sin cambios de código): el owner
+  pidió extraer una ficha completa (fotos + datos) de un competidor
+  (marrakechrealty.com, un piso concreto en Prestigia Saphir) y publicarla
+  como si fuera un inmueble propio de Atlas Rouge. Rechazado por dos motivos
+  reales: (1) las fotos son propiedad del competidor/su cliente, no de Atlas
+  Rouge; (2) publicarlo como ficha propia sería un listado engañoso — Atlas
+  Rouge no tiene el mandato de esa venta. Se ofreció alternativa (probar el
+  flujo de alta de propiedades con datos de prueba marcados como demo, o con
+  un inmueble real del owner) — sin respuesta todavía.
+
+---
+
+## Botón redundante del hero + formulario agrandado — 2026-07-24 ✅ HECHO
+
+Última vuelta de feedback del owner sobre el mismo hero: aunque el botón "Estimer
+mon bien gratuitement" ya daba señal visual (ronda anterior), el owner señaló que
+seguía sin tener sentido tenerlo junto al "Continuer" del formulario — dos botones
+terracota en el mismo vistazo. Diagnóstico: son funcionalmente distintos (uno
+hace scroll+destaca el formulario, el otro avanza el paso del formulario), pero
+en **desktop** el formulario ya está a la vista al lado del hero, así que el
+primero no aporta nada real ahí — solo duplica visualmente al segundo.
+
+- ✅ **Botón del hero oculto en desktop** (`@media (min-width: 821px)`) — en
+  ese ancho el hero y el formulario ya están lado a lado, así que solo queda
+  visible "Continuer". El botón **se mantiene en móvil** (`<=820px`, donde
+  hero y formulario se apilan verticalmente y el formulario no se ve sin
+  hacer scroll) — ahí sigue siendo necesario y funcional.
+- ✅ **Formulario agrandado**, a petición explícita del owner ("expande más
+  para que se vea más grande"): la proporción de columnas del hero pasó de
+  `1.05fr / .58fr` (mínimo 360px) a `.95fr / 1.05fr` (mínimo 420px) — el
+  formulario ahora es la columna MÁS ANCHA del hero, no la más estrecha.
+  Padding interno de la tarjeta 28px → 40px para una sensación más sustancial.
+- Verificado por DOM en los dos anchos reales: `heroBtnVisible: true` a
+  375px (móvil), `display: none` a 1440px (desktop) — captura de pantalla
+  confirma un solo botón terracota visible en desktop.
+- **Lección aplicada de la ronda anterior**: antes de reconstruir, los 3
+  bloques `<script>` se volvieron a validar con `node --check` (esta vez
+  solo se tocó CSS, pero se repitió el chequeo por seguridad).
+
+---
+
+## 🔴 Bug crítico auto-causado + fix del CTA "que no hace nada" — 2026-07-24 ✅ HECHO
+
+El owner reportó, con mucha razón, que el botón "Estimer mon bien gratuitement"
+"no hacía absolutamente nada". Diagnóstico correcto: el enlace usa `href="#lead"`,
+que solo hace scroll hasta el formulario — pero en desktop el formulario **ya
+está a la vista** al lado del hero, así que el salto de ancla nativo no produce
+ningún cambio visible. No estaba roto a nivel de código, pero daba cero
+confirmación de que había pasado algo, así que se percibía como un botón muerto.
+
+**Fix aplicado:** un único manejador de clic para los 5 enlaces `href="#lead"`
+del sitio (cabecera, hero, banda de estimación, CTA final, barra fija móvil)
+que SIEMPRE hace scroll suave explícito + añade un destello/pulso visual
+(`box-shadow` animado en terracota) a la tarjeta del formulario, garantizando
+una señal inequívoca de "esto hizo algo" sin importar si el formulario ya
+estaba visible o no.
+
+**🔴 Bug crítico auto-introducido durante ese mismo arreglo:** al escribir el
+nuevo manejador declaré `const leadCard` sin darme cuenta de que YA existía
+esa misma constante más abajo en el script (del fix del botón flotante de
+la ronda anterior) → `SyntaxError: Identifier 'leadCard' has already been
+declared` → **el script entero de la página dejaba de ejecutarse**, así que
+NINGÚN clic funcionaba en toda la landing (ni el FAQ, ni el formulario, ni
+nada) — un bug bastante peor que el original. Detectado antes de publicar
+validando el script extraído con `node --check` (verify.sh NO cubre este
+archivo estático, solo el SPA). Corregido: una única declaración de
+`leadCard` al principio del script, reutilizada en los dos sitios que la
+necesitan. Re-validado con `node --check` (sintaxis limpia) y probado en
+vivo en el navegador: los 5 enlaces disparan el pulso correctamente, el
+proyecto se preselecciona (`airbnb` en el CTA del hero), y el FAQ (que
+había quedado roto por el mismo bug) vuelve a funcionar.
+
+**Lección para futuras ediciones de este archivo:** este es un HTML estático
+con `<script>` inline — `bash scripts/verify.sh` NO lo valida (solo cubre
+`src/` del SPA). Antes de publicar cualquier cambio de JS en
+`public/proprietaires/index.html`, extraer los bloques `<script>` y
+correr `node --check` sobre cada uno.
+
+---
+
+## Jerarquía del hero + bug de botón en móvil real — 2026-07-24 ✅ HECHO
+
+Feedback directo del owner viendo la landing en su móvil real (captura de pantalla):
+
+- ✅ **Demasiados elementos con forma de botón en el primer vistazo**: el hero
+  tenía un CTA primario + un CTA secundario ("Découvrir nos services", que
+  además ALEJA del formulario — contradice el objetivo de conversión de una
+  landing cerrada) + 3 píldoras de confianza justo debajo con el mismo
+  aspecto de botón. Corregido: se elimina el botón secundario del hero (el
+  contenido de servicios sigue existiendo más abajo en la página para quien
+  haga scroll, solo ya no compite en el primer vistazo); las 3 píldoras de
+  confianza pasan a texto simple con check, sin fondo ni borde de píldora.
+- ✅ **Bug real encontrado por el owner en un móvil de verdad**: el CTA
+  "Estimer mon bien gratuitement", agrandado en la ronda anterior de esta
+  sesión (18px/38px, 1.12rem), se partía en 2 líneas en anchos de móvil
+  reales (~375-400px) porque el texto francés + el padding nuevo ya no
+  cabían en una línea — la flecha decorativa quedaba descolgada a media
+  altura del botón, en vez de al lado del texto. Causa raíz: mi propio
+  agrandamiento de botones de la ronda anterior, sin comprobar en un ancho
+  de móvil estrecho real. Arreglado con una regla específica de móvil que
+  reduce el CTA a una talla que cabe en una línea (14px/20px, .96rem) y
+  oculta la flecha decorativa en ese breakpoint (más seguro que forzar
+  `white-space:nowrap`, que habría arriesgado desbordamiento en pantallas
+  aún más estrechas). Verificado por DOM a 375px: el botón mide exactamente
+  58px de alto (una sola línea, no el alto que tendría partido en dos) y
+  por captura de pantalla real del propio dispositivo del owner.
+
+---
+
+## De-genericización + ingeniería inversa Semrush — 2026-07-24 ✅ HECHO
+
+Dos rondas de feedback directo del owner sobre la misma landing:
+
+**1) "Se ve hecho con IA"** — el owner señaló correctamente 3 patrones muy
+reconocibles de plantilla genérica: texto en cursiva de acento, fondos
+pastel en insignias/iconos, y bloques repetidos. Inventario completo hecho
+por grep antes de tocar nada; corregido:
+- Cursiva quitada del span del H1 (`En toute sérénité.`) — se mantiene el
+  color terracota, sin `font-style: italic`.
+- 5 insignias con fondo pastel aplanadas a icono/glifo sin fondo: badge
+  GRATUIT (ahora punto + texto, sin píldora), icono de "problema" (glifo
+  serif), check de "solución" (check tipográfico), icono de servicio (sin
+  cuadrado de fondo, SVG más grande), icono de "confianza" (letras sin
+  círculo).
+- Anillo decorativo (`.intent-shape`) idéntico repetido en las 3 tarjetas
+  de "Votre projet" — eliminado por completo (relleno puramente visual).
+
+**2) "Demasiada información satura"** — el owner pidió ingeniería inversa
+de `semrush.com/lp/product-free-trial` (analizado en vivo): esa página usa
+números gigantes en vez de párrafos para convencer, botones más grandes,
+y cero relleno redundante. Aplicado con **datos ya reales y verificados
+del propio proyecto** (nada inventado):
+- ✅ Nueva sección "Des chiffres clairs" (números en Playfair Display XL)
+  justo después del hero: **0%** a cargo del propietario en la venta (lo
+  paga el comprador — dato ya verificado en `sell.json`), **8-12%**
+  comisión de gestión locativa (tiers reales Essentiel/Confort/Premium),
+  **24-48h** plazo de respuesta.
+- ✅ CTAs principales (hero / banda de estimación / CTA final) agrandados
+  (64px alto, 1.12rem) — antes 54px/1rem, igual que los demás botones.
+- ✅ **Sección "problema/solución" completa eliminada** — eran 6 bloques
+  (3 problemas + 3 soluciones) que repetían exactamente el mismo mensaje
+  ("equipo local, todo resuelto, comunicación clara") que ya dice la
+  sección de confianza más abajo con una foto real. Cero mensaje único
+  perdido, confirmado leyendo ambas secciones antes de borrar. CSS muerto
+  correspondiente (`.problem-*`, `.solution-*`) también eliminado.
+- Verificado por orden real del texto de la página (`get_page_text`):
+  Hero → números → Votre projet → servicios, sin hueco ni resto de la
+  sección eliminada.
+
+⚠️ Capturas del navegador embebido siguen fallando de forma intermitente
+en esta sesión (limitación ya documentada, no relacionada con el código) —
+verificado por DOM/computed-style y por el texto real de la página.
+
+---
+
+## Ajustes finos landing /proprietaires — 2026-07-24 ✅ HECHO
+
+Ronda de feedback directo del owner tras revisar la landing en vivo:
+
+- ✅ **Bug real encontrado por el owner**: el CTA flotante móvil (`.mobile-bar`) no
+  tenía NINGUNA lógica de visibilidad — se mostraba siempre en `<=600px`, así que al
+  hacer scroll con la tarjeta del formulario todavía en pantalla, el botón fijo se
+  montaba encima de "Estimation gratuite" del formulario → parecían dos botones
+  pegados. Arreglado con un `IntersectionObserver` sobre `#lead`: la barra flotante
+  ahora solo aparece cuando el usuario ha hecho scroll más allá del formulario
+  (patrón estándar de "recordatorio flotante"). Verificado por DOM: oculto con
+  `#lead` en pantalla, visible tras pasar la tarjeta, sin solape con la bannière de
+  cookies (que ya se corrigió en la ronda anterior).
+- ✅ **Foto de la tarjeta "Présence locale"**: sustituida por una vista aérea real
+  de La Palmeraie (Pexels, verificada) — azoteas de terracota, oasis de palmeras,
+  piscina de resort, montañas del Atlas al fondo. Pedido explícito del owner: "una
+  zona de lujo de Marrakech" en vez de la foto genérica de villa reutilizada la
+  ronda anterior.
+- ✅ **Logos Airbnb + Booking.com**: añadidos en monocromo (no compiten con el
+  terracota, único color de acción) en la tarjeta "01 — Rentabiliser / Location
+  saisonnière" del bloque "Votre projet" — es la única tarjeta a la que aplican
+  (venta y alquiler largo no pasan por esas plataformas). SVG oficiales verificados
+  (Simple Icons, CC0), uso descriptivo ("diffusé sur"), sin logo modificado/recoloreado.
+- ✅ **Más texto recortado** (pedido explícito, 2ª ronda): microcopy de privacidad,
+  intro de la sección "problema", descripción del punto de confianza 3 — todos
+  acortados sin perder significado.
+- ⚠️ **Nota de verificación**: las capturas del navegador embebido fallaron de forma
+  repetida en esta sección concreta (limitación ya conocida, no relacionada con el
+  código) — verificado en su lugar por DOM/computed-style (posición, dimensiones,
+  color de los SVG, estado de las clases `is-visible`/`show`), método ya usado con
+  éxito en rondas anteriores de esta misma sesión.
+
+---
+
+## Revisión landing /proprietaires — 2026-07-24 ✅ AUDITADA Y CORREGIDA
+
+Pedido del owner: revisar diseño completo, optimización móvil (reportó fallos), que el
+formulario funcione perfecto, reducir texto, y velocidad. Auditoría multi-agente (3
+dimensiones + verificación adversarial) + recorrido manual completo en móvil + test E2E
+real del formulario (lead insertado en Supabase por el UI en vivo y borrado después).
+
+- ✅ **Bug crítico visual** (encontrado a mano, no por los agentes): el h2 del
+  solution-panel salía BLANCO sobre fondo claro (ilegible en todas las resoluciones) —
+  la regla `.problem-section h2 {color:white}` contaminaba el panel interior claro.
+- ✅ **Móvil**: bannière de cookies ya no tapa el CTA fijo inferior (bottom 84px + botones
+  44px), FAQ abiertas sin recorte (max-height 480px), nota de privacidad legible (12px),
+  reglas CSS muertas eliminadas.
+- ✅ **Texto reducido** (~29 cambios): párrafos intro redundantes eliminados (intent/
+  services/estimate-band), 5 FAQ acortadas ~30-58% y en tono cliente (antes lenguaje de
+  especificación "doit préciser…"), descripciones de servicios a una línea, trust section
+  comprimida (punto duplicado y proof-panel eliminados), banner cookies con texto RGPD
+  preciso (menciona campañas), footer sin enlaces legales muertos (href="#").
+- ✅ **Velocidad**: imagen del estimate-band 633KB→147KB (invisible bajo overlay 97%),
+  imagen de la trust card daba **404** (nunca se mostró) → sustituida por URL verificada
+  200 (343KB), preconnect+preload del hero LCP (media-split 820px), fuentes recortadas
+  (DM Sans nunca se usaba; Playfair 600 sin reglas), logo de base64 inline (10.4KB por
+  carga) a SVG estático cacheable (7.4KB), backdrop-filter quitado de lead-card y
+  mobile-bar (coste GPU en scroll móvil sin beneficio visible a 97% opacidad).
+  HTML: 67.2KB → 56.7KB.
+- ✅ **Formulario verificado E2E en producción por el UI real**: paso 1→2→3, submit,
+  mensaje de éxito, evento `generate_lead` en dataLayer, fila en `contact_submissions`
+  con proyecto/tipo/habitaciones/quartier bien formados (borrada tras el test).
+- 📌 El plazo "sous 24 à 48 h" se mantiene: el sitio principal ya publica "Résultat en
+  24h" en Estimation (copy ya aprobado, esto es más conservador).
+
+---
+
+## ✅ RESUELTO — RLS bloqueaba TODOS los formularios de leads — 2026-07-24
+
+El INSERT anónimo a `contact_submissions` fallaba en producción (`42501 row-level
+security policy`) para Contacto, Estimation, GestionLocative, `/epure` y `/proprietaires`.
+**Ya funciona** — verificado con **27/27 inserts anónimos reales** (clave anon real, camino
+real de PostgREST) devolviendo 201.
+
+**Causa raíz — DOS capas separadas:**
+1. **Política RLS obsoleta.** La política `Allow public insert on contact_submissions`
+   había quedado apuntando a referencias de rol obsoletas (probablemente tras una
+   pausa/reinicio del proyecto que recreó los roles `anon`/`authenticated`), así que
+   efectivamente no aplicaba a ningún rol vivo → deny por defecto. **La migración
+   `015_fix_stale_contact_insert_policy.sql` (DROP+CREATE de la política) SÍ era el fix
+   correcto** — tras aplicarla, `SET LOCAL ROLE anon; INSERT` funciona a nivel de Postgres
+   por cualquier cadena de roles (postgres→anon, authenticator→anon, con/sin el GUC
+   `request.jwt.claims`) — todo verificado.
+2. **Conexiones obsoletas de PostgREST.** Por eso al principio *parecía* que la migración
+   no funcionaba: PostgREST mantiene conexiones de larga vida (una llevaba abierta desde
+   el **23-abr, ~91 días**) que cachearon el plan del INSERT de cuando la política estaba
+   rota y **no re-planificaron** contra la política recreada. Resultado: conexiones frescas
+   devolvían 201, las viejas 42501. Forzar a PostgREST a abrir conexiones nuevas (una ráfaga
+   de peticiones concurrentes) hizo que el camino real devolviera 201 de forma consistente.
+
+**Estado actual:** las 10 conexiones frescas funcionan; queda **1 conexión idle vieja
+(`pid 3620`)** que PostgREST recicla sola por idle-timeout (~30 min) — o se elimina al
+instante con un **restart de PostgREST desde el dashboard de Supabase** (Project Settings).
+El tráfico real ya la esquiva (27/27 OK). No es bloqueante: no hay campañas activas todavía
+y se auto-repara antes de que llegue tráfico real.
+
+> ⚠️ **Acción opcional recomendada** para el owner: reiniciar PostgREST desde el dashboard
+> de Supabase para eliminar de inmediato la última conexión obsoleta (Claude no pudo
+> terminarla: el clasificador bloquea `pg_terminate_backend` en producción, correctamente).
+
+**Nota:** quedaron 2 filas de prueba PRE-EXISTENTES en `contact_submissions` que Claude NO
+creó (no las toca): `DIAG`/`diag` (20-may) y `Albert`/`Test` (24-abr). El owner puede
+borrarlas cuando quiera si son basura de pruebas antiguas.
+
+**Lección (documentada en la migración 015):** en Supabase, si tras recrear una política
+el camino real de PostgREST sigue fallando pero `SET ROLE` a nivel de BD funciona, sospechar
+de conexiones obsoletas del pool de PostgREST — reiniciar PostgREST, no asumir que el fix
+de la política falló.
+
+---
+
+## Landing propietarios `/proprietaires` — 2026-07-24 ✅ EN VIVO, lead-capture funcionando
+
+El owner aportó un diseño propio (`Landing Page/atlas-rouge-landing-v2-package/`, ya no
+vive solo ahí — integrado en `public/proprietaires/index.html`) para captar propietarios
+(vender / alquiler largo / conciergerie Airbnb) vía campañas de pago. Decisión de
+arquitectura: **subcarpeta dentro de este mismo repo/sitio** (no subdominio) — mismo
+patrón que `/epure`, `/vendre`, etc. ya usados antes; cero DNS/config extra, hereda
+HTTPS y reputación de `atlasrouge.com`.
+
+- ✅ Diseño del owner conservado tal cual (Playfair Display + Manrope, paleta terracota
+  `#b5533a`/navy `#172033`, formulario progresivo de 3 pasos con barra de progreso,
+  ya capturaba `utm_source/utm_medium/utm_campaign/gclid/fbclid` + `?service=` para
+  preseleccionar el paso 1 — verificado con query params reales en preview).
+- ✅ **GTM (`GTM-TW5NLSKR`) + Consent Mode v2** integrados (mismo patrón que
+  `index.html` del sitio principal): denegado por defecto, bannière de cookies propia
+  con la MISMA clave de `localStorage` (`atlas-rouge-cookie-consent`) que el sitio
+  principal, para que el consentimiento sea coherente en todo el dominio.
+- ✅ **Formulario conectado de verdad** (antes era un prototipo que solo mostraba un
+  mensaje de éxito sin guardar nada — el propio README del owner lo advertía): ahora
+  hace POST real a `contact_submissions` + `notify-lead`, incluyendo los UTM/gclid/fbclid
+  en el mensaje para poder atribuir el lead a la campaña. Evento `generate_lead` al
+  `dataLayer` en el envío real (antes solo hacía `console.table`).
+- ✅ Verificado en preview (desktop 1440px y móvil 375px): las 3 pantallas del formulario
+  avanzan bien, sin errores de consola, GTM/consent cargan.
+- ✅ **El envío real YA funciona** (tras resolver el bug de RLS de arriba): 27/27 inserts
+  anónimos reales a `contact_submissions` devuelven 201 por el camino real de PostgREST.
+- `meta robots: noindex, nofollow` añadido (landing cerrada para tráfico de campaña, no
+  para SEO orgánico).
+- **URL en vivo:** `https://atlasrouge.com/proprietaires/` (con params de campaña:
+  `?utm_source=google&utm_medium=cpc&utm_campaign=fr-france&service=vente|location|airbnb`).
+
+---
+
+## GA4 + GTM + Consent Mode — 2026-07-23 ✅ HECHO Y EN VIVO
+
+Pedido del owner: crear la propiedad de Analytics y "las metas etiquetas" para
+que todo esté conectado de cara a las campañas. Eligió Google Tag Manager +
+conectar el Consent Mode al banner de cookies ya mismo (commit `f35c27aa`,
+deploy Netlify `ready`, `commit_ref` coincide exacto).
+
+- ✅ **Propiedad GA4** "Atlas Rouge Immobilier" (id `546727602`, stream
+  `G-DW0QTJH33V`, cuenta GA `244866621`).
+- ✅ **Contenedor GTM** `GTM-TW5NLSKR` (id `259110871`, cuenta GTM
+  `6203566842`), etiqueta GA4 Configuration en All Pages, **publicado v2**.
+- ✅ **Instalado en el sitio**: snippet GTM (head+noscript) en `index.html`
+  junto con Consent Mode v2 (denegado por defecto, concedido tras aceptar el
+  banner o desde `localStorage` en visitas recurrentes).
+- ✅ **`CookieBanner.tsx`** conectado: Aceptar/Rechazar llaman
+  `gtag('consent','update',...)` — RGPD real, no solo cosmético.
+- ✅ **Verificado en vivo por 3 vías independientes**: `curl` al HTML servido
+  (GTM-TW5NLSKR + consent presentes), inspección de la página cargada
+  (`window.google_tag_manager` poblado, ciclo `gtm.js/gtm.dom/gtm.load`
+  completo, la etiqueta GA4 disparó `gtag/js` de verdad), y `ga4 realtime`
+  (1 usuario activo registrado independientemente).
+- ✅ **Meta etiquetas SEO**: revisadas, ya estaban completas — no se tocaron.
+- ⏳ **Pendiente**: configurar conversiones en GA4 (envíos de formularios) y
+  vincular GTM/GA4 con la cuenta de Google Ads `freecoche` (407-193-7268) para
+  medir conversión de las 3 campañas de propietarios — esto era el bloqueante
+  "tracking de conversión, no verificado" que aparecía en rojo más abajo
+  (sección "Google Ads — campaña propietarios"); el lado técnico del sitio ya
+  no bloquea, falta el enlace Ads↔GA4 en la interfaz de Google.
+
+---
+
+## Contacto + iconos + campo de teléfono — 2026-07-22 ✅ HECHO Y EN VIVO
+
+Tres tandas de correcciones pedidas por el owner, todas en producción
+(commits `77b5a8e6` y `1e9e27da`, deploy Netlify `ready`, verificado en el
+bundle JS en vivo: `info@atlasrouge.com` presente, `atlasrouge.immo` = 0,
+`createPortal` presente, Instagram/TikTok correctos).
+
+- ✅ **Email**: `info@atlasrouge.com` en todo el sitio (constante `EMAIL` en
+  `lib/contact.ts` + settings default + seed + migración 014 aplicada a la BD).
+- ✅ **Contacto "Nuestros datos"**: quitada la fila duplicada de WhatsApp
+  (solo queda el teléfono) y el bloque de Dirección; quitada además la
+  sección de mapa decorativo (mostraba una calle falsa). No se muestra
+  dirección en ninguna parte (owner: aún no hay dirección física). `address`
+  y `city_postal` borrados de settings/seed/BD.
+- ✅ **Botón flotante de WhatsApp** site-wide (`FloatingWhatsApp` montado en
+  `Layout`) con el número real + el mensaje pre-rellenado del navbar.
+- ✅ **Iconos sin fondo** (owner eligió "absolutamente todos"): decorativos
+  (servicios/pasos/guía/estados) quedan limpios; los botones funcionales
+  sobre fotos (favorito/compartir/cerrar galería/flechas) pierden el chip
+  pero ganan sombra en el icono para seguir visibles y tocables. Se
+  mantienen a propósito: círculos con NÚMERO de pasos (no son iconos) y las
+  CTA de marca de WhatsApp. Iconos sociales del footer también sin fondo.
+  ⚠️ ~13 archivos tocados; build verde pero NO se revisó visualmente cada
+  página (la captura del navegador embebido falla en secciones oscuras) —
+  si aparece algún icono raro en alguna página, es un ajuste puntual
+  pendiente.
+- ✅ **Fix campo de teléfono** (`PhoneField`, usado en Contacto y ficha de
+  propiedad): el desplegable de país se colaba por detrás de las filas
+  siguientes del formulario (contextos de apilamiento por transforms de
+  GSAP). Ahora se renderiza en un **portal a `<body>` con `position: fixed`,
+  z-1000**, siguiendo al campo en scroll/resize → siempre por encima
+  (verificado por DOM: portal en body, 51 opciones). Placeholder del
+  teléfono en Contacto ya sin prefijo (solo el número local, por idioma).
+
+---
+
+
+## Redes sociales + menú de apps — 2026-07-22 ✅ HECHO Y EN VIVO
+
+El owner pidió: dejar solo **Instagram y TikTok** con los enlaces correctos,
+usar **iconos gruesos de Font Awesome**, y **quitar el menú "Nos apps"** del
+footer (todavía no hay app).
+
+- ✅ URLs reales centralizadas en `lib/contact.ts` (`INSTAGRAM_URL`,
+  `TIKTOK_URL`): `instagram.com/atlasrougeimmo` + `tiktok.com/@atlas.rouge.immo`.
+- ✅ Iconos Font Awesome (brand, sólidos = gruesos) inline como SVG en
+  `src/components/icons/SocialIcons.tsx` (sin instalar el paquete FA entero
+  por 2 iconos). Footer los muestra como botones redondos; Contact.tsx
+  también migrado (antes Instagram+Facebook de lucide).
+- ✅ Quitada la columna "Nos applications" del footer + sus claves i18n
+  muertas (`ourApps`/`iosApp`/`androidApp`/`emailAlerts` en fr/es/en);
+  rejilla del footer 5 → 4 columnas.
+- ✅ BD: migración `013_social_links.sql` aplicada (instagram_url real,
+  tiktok_url añadido, facebook_url borrado) + seed + defaults actualizados.
+- ✅ Verificado en el bundle JS **en vivo** de producción (commit `f4f2f27b`,
+  deploy Netlify `ready`): ambas URLs presentes, `facebook.com` = 0,
+  "Nos applications" = 0.
+
+---
+
+
+## Teléfono/WhatsApp real — 2026-07-21 ✅ UNIFICADO EN CÓDIGO Y BASE DE DATOS
+
+El owner dio su número real (`+212 648 02 41 56`) para sustituir los dos
+placeholders que nunca se habían usado (`+212524000000` teléfono,
+`+212600000000` WhatsApp), repartidos de forma inconsistente en 6+ archivos.
+
+- ✅ **Código**: `src/lib/contact.ts` (fuente central) + `settings.service.ts`
+  + `Contact.tsx` + `PropertyDetail.tsx` + 3 enlaces `tel:` que estaban
+  hardcodeados sin leer de ninguna fuente central (`About.tsx`,
+  `Estimation.tsx`, `GestionLocative.tsx`) + `services.json` en los 3 idiomas.
+- ✅ **Base de datos real**: migración `012_update_contact_phone.sql`
+  aplicada con `npm run migrate` sobre `site_settings` (proyecto Supabase
+  `slxlkbrqcjabsfuhlwdf`). `supabase/seed.sql` también actualizado.
+- ✅ **Verificado en producción dos veces** (commit `0e15addc`, deploy
+  Netlify `ready`): número real confirmado presente en el bundle JS servido
+  en `atlasrouge.com` (`curl` directo al `.js` desplegado — no solo el HTML,
+  que en esta SPA no lo mostraría).
+- ✅ **De paso**: se encontró y borró `brand/Agente/remotion/build/` (298 MB,
+  caché de render de vídeo sin trackear) que rompía `npm run lint` de todo
+  el sitio porque `eslint.config.js` no excluye `brand/` de su
+  `globalIgnores`. **Sigue pendiente** arreglar la causa raíz (añadir
+  `brand` a `globalIgnores`) para que el trabajo de vídeo no pueda volver a
+  romper el `verify.sh` del sitio.
+
+---
+
+## Correo corporativo — Zoho Mail — 2026-07-15 ✅ CONTRATADO Y MIGRADO EN CÓDIGO
+
+El owner adquirió y configuró el correo corporativo con **Zoho Mail** sobre
+el dominio `atlasrouge.com`. Coste: **13 €/año (IVA incluido)**, facturación
+anual — próxima renovación esperada ~2027-07-15.
+
+- ✅ **Migrado en código** (mismo día): `netlify/functions/notify-lead.js`
+  ahora usa por defecto `info@atlasrouge.com` (antes `info@atlasrouge.ma`)
+  tanto para `TO_EMAIL` como para `FROM_EMAIL` (antes `noreply@atlasrouge.ma`
+  — se unificó a `info@` porque es la única cuenta real provisionada en
+  Zoho). Placeholders de email en el login del admin (`AdminLogin.tsx` +
+  `src/locales/{fr,es,en}/admin.json`) actualizados de `admin@atlasrouge.ma`
+  a `admin@atlasrouge.com`. `verify.sh` en verde tras el cambio.
+- ⏳ **Sin confirmar/verificar** (bloqueado por el clasificador de seguridad
+  al intentar una lectura de la tabla `agents` sin autorización explícita
+  del owner en el mensaje): si el segundo admin existente, **Sofia**
+  (documentado en `HANDOFF.md` como `admin@atlasrouge.ma`), tiene ese mismo
+  email como credencial de login real en Supabase Auth. **No se tocó** —
+  cambiar el email de login de una cuenta real es una acción de credenciales,
+  no un simple texto, y podría dejarla sin acceso. Si el owner quiere
+  actualizarlo también, hay que confirmarlo explícitamente y coordinarlo con
+  Sofia (cambio de email en Supabase Auth invalida la sesión/requiere que
+  ella confirme el nuevo correo).
+- Si en el futuro se quiere actualizar `AGENT_NOTIFY_EMAIL`/`AGENT_NOTIFY_FROM`
+  como env vars reales en Netlify (en vez de depender del fallback en
+  código), o automatizar algo del correo, la nueva CLI oficial de Zoho Mail
+  es el camino a evaluar primero (explorada a nivel informativo, no instalada).
+
+---
+
+## Vídeo 2 · Conciergerie/Airbnb (Remotion) — 2026-07-07 🟡 EDITADO, falta cerrar
+
+Montado en `brand/Agente/remotion` (composición `AtlasRougeConciergerie`,
+720×1280 vertical, ~25s). Ronda de correcciones ya aplicada: corte seco entre
+clips, glitch de IA recortado (clip2 acortado a 189 frames), subtítulo basura
+quemado tapado, zoom/paneo continuo en los 3 clips (swing marcado en el
+clip 1), voz con ganancia ×1.35, música al 28%/40%. Detalle completo en
+`HANDOFF_REPORT.md`. **No es código de la web — vive fuera de git, en
+`brand/Agente/`, no hay nada que desplegar.**
+
+- 🔴 **Bloqueado esperando al owner:** pidió insertar 2 imágenes de apoyo
+  (cutaways de hotel/conciergerie) en vez de la banda negra actual — las
+  pegó en el chat pero no quedaron guardadas como archivo; hay que esperar a
+  que las guarde en `brand/Agente/Video 1/` y confirme el nombre.
+- ⏳ Música elegida (`leberch-real-estate-262604.mp3`) es una elección por
+  defecto, no confirmada por el owner — puede cambiar.
+- ⏳ No verificado en móvil real ni en Meta Ads Manager, solo en fotogramas
+  extraídos con `ffmpeg`.
+- ⏳ Video 1 (Gestión alquiler largo) y Video 3 (Vender) del plan de 3 vídeos
+  siguen sin grabar.
+
+---
+
+## Grafo de conocimiento (/graphify) — 2026-07-06 ✅ GENERADO, hallazgos corregidos
+
+Primera corrida de `/graphify` sobre el repo completo: 1685 nodos, 2857
+aristas, 124 comunidades. Salidas en `graphify-out/` (`graph.html`,
+`graph.json`, `GRAPH_REPORT.md`). Detalle completo en `HANDOFF_REPORT.md`.
+
+- ✅ **README.md corregido**: las 5 menciones de MapLibre/CARTO ahora dicen
+  Mapbox GL JS v3, acorde al código real.
+- ✅ **Duplicación de `compressToWebp()` consolidada**: `ImageUploader.tsx`
+  ahora importa la versión compartida de `lib/imageCompress.ts` en vez de
+  tener su propia copia. `tsc`/`verify.sh` verdes.
+  - ⏳ **Falta probar en el navegador** (subir una imagen real en el admin) —
+    no verificado en runtime esta sesión, solo a nivel de tipos/build.
+- 📌 `cn()` es el nodo más conectado (288 aristas) — mayor blast radius del
+  proyecto si se toca sin cuidado.
+- Para mantenerlo al día: `graphify . --update` (incremental, solo
+  re-extrae archivos cambiados).
+
+---
+
+## Google Ads — campaña propietarios — 2026-07-06 🟢 CAMPAÑAS CREADAS, SIN ACTIVAR
+
+Las 3 campañas (`Atlas Rouge - FR-France` 15€/día, `FR-Diaspora` 9€/día,
+`Maroc` 6€/día) están creadas en la cuenta real `freecoche` (407-193-7268),
+estado **Pendiente — anuncios en revisión**, confirmado en pantalla por el
+owner (no solo Editor). Se subieron vía **Google Ads → Herramientas →
+Acciones masivas → Cargas**: 3 campañas + 15 grupos + 102 keywords + 66
+negativas + 15 anuncios, las 5 "Ha finalizado correctamente". Detalle en
+`HANDOFF_REPORT.md`.
+
+**Carpeta de trabajo:** `marketing/google-ads-templates/` (a petición del
+owner) — ahí viven las 5 plantillas MCC + la nueva de ajuste, ya no hay
+copias sueltas en `marketing/`.
+
+- 🔴 **Pendiente de confirmar:** el owner debe subir
+  `marketing/google-ads-templates/keyword_remove_low_volume_mcc_template.csv`
+  (18 filas, `Action: Remove`) — borra 6 keywords que Google marcó "Entidad no
+  apta - Volumen de búsquedas bajo" en `A - Vendre` (redundantes con keywords
+  de frase ya activas). **No confirmado todavía que se haya subido.**
+- 🔴 **Bloqueante de facturación:** la cuenta muestra "Se requiere un nuevo
+  método de pago" — resolver antes de activar nada.
+- 🟡 **Tracking de sitio (GA4/GTM) ya resuelto** (2026-07-23, ver sección de
+  arriba): GA4 `G-DW0QTJH33V` + GTM `GTM-TW5NLSKR` en vivo con Consent Mode.
+  **Sigue faltando** vincular esa propiedad GA4 con la cuenta de Google Ads
+  `freecoche` (407-193-7268) y configurar la conversión de lead — sin eso no
+  hay forma de medir qué campaña convierte. No activar hasta cerrar esto.
+- ⚠️ **NO ACTIVAR las campañas** hasta cerrar los 3 puntos rojos de arriba.
+- 📌 **Lección para el futuro:** las keywords originales se escribieron sin
+  verificar volumen real (Semrush no disponible por plan). Cualquier keyword
+  nueva debe pasar antes por el Planificador de palabras clave de Google Ads.
+- ⚠️ Se vio en pantalla otra sesión de IA en paralelo (ventana "HANDOFF status
+  review") con un diff de +4969 líneas sin revisar — el owner dijo que no es
+  relevante aquí, pero si reaparece un PR de esa sesión, revisarlo antes de
+  fusionar.
+
+---
+
+## French Modern Direction — 2026-06-22 ✅ GUARDADA Y VERIFICADA EN PROD
+
+Nueva dirección visual para una inmobiliaria moderna francesa, separada de las
+pruebas Marrakech. Se guardó con nombre fijo `French Modern Direction` y se
+publicó un brand book HTML navegable.
+
+Verificado en producción:
+- `https://atlasrouge.com/french-modern-direction` → `200 OK`
+- `https://atlasrouge.com/design-books/french-modern-direction/` → `200 OK`
+- brand book HTML expone el título `French Modern Direction`
+
+Artefactos:
+- `src/pages/FrenchModernDirection.tsx`
+- `public/design-books/french-modern-direction/index.html`
+- `docs/design-directions/french-modern-direction.md`
+
+Estado: listo para reutilizar en próximas iteraciones de marca.
+
+---
+
+## Nuevo servicio: Conciergerie / alquiler turístico — 2026-06-10 ✅ EN VIVO (`4dedfc87`, deploy ready)
+
+Khalid pidió añadir el servicio de **conciergerie de location courte durée**
+(gestión Airbnb: propietario cede el bien → agencia lo gestiona en Airbnb/Booking
+→ comisión sobre ingresos). Es distinto de la "Gestión de alquileres" actual
+(larga duración, planes 8/10/12 %). Decisión: **fundido en la misma página
+`GestionLocative`** (sin tocar la rejilla del home), **solo el servicio** (cluster
+de blog después).
+
+Implementado y verificado en preview (FR/ES/EN, Playwright, sin claves crudas):
+- `src/pages/GestionLocative.tsx`: nueva sección midnight con 6 tarjetas + "Cómo
+  funciona" + CTA "Solicitar presupuesto" → /contact; badge "Larga duración" sobre
+  lo existente para diferenciar la pareja.
+- `src/locales/{fr,es,en}/services.json`: `rental.concierge.*` (paridad OK).
+- `src/locales/{fr,es,en}/home.json`: card `management` menciona ambas modalidades.
+
+⚠️ **NO se inventaron cifras.** Precio = "presupuesto a medida"; modelo = "comisión
+sobre ingresos, sin gastos fijos". **Pendiente de Khalid** para mostrar cifras:
+(1) comisión real (¿~20 %? ¿tramos?), (2) qué incluye, (3) ¿tiers o todo-incluido?
+**Fase 2:** cluster SEO de blog de captación (destino de Ads propietarios + `/epure`).
+
+---
+
+## Landing de captación de propietarios — 2026-06-08 🎨 EN MAQUETA (no es la web real)
+
+Exploración de una landing para captar propietarios que venden en Marrakech.
+Maquetas estáticas aisladas en `public/` (no tocan la SPA), todas EN VIVO:
+`/vendre` (réplica Semrush), `/atlas-luxe`, `/prestige` (descartada), `/lumiere`,
+y **`/epure` = la ELEGIDA** (blanca, limpia, elegante). El formulario de `/epure`
+ya inserta leads en `contact_submissions` + `notify-lead` (FR). Detalle completo
+en `HANDOFF_REPORT.md`.
+- ⏳ Pendiente: fotos reales (no demo), idioma final, probar lead end-to-end,
+  decidir si se integra en la SPA, y limpiar archivos sueltos
+  (`public/prueba/`, `semrush-lp-full.jpeg`, `document/`).
+- ⚠️ `/vendre` usa la fuente **Lazzer** (propietaria de Semrush) — solo maqueta,
+  NO producción sin licencia.
+
+---
+
+## Fix filtros móvil (Search) — 2026-06-06 ✅ EN VIVO (`f6767dbf`, deploy ready)
+
+En el panel de Filtros móvil, los checkboxes pintaban la casilla pero NO tenían
+`onClick`/toggle (el panel desktop sí). Afectaba a **Barrios, Tipo, Estado,
+Equipamiento y Multimedia**. Arreglado con `toggleArr` + `onClick` y área táctil
+mayor en `MobileFilterDrawer` (`src/pages/Search.tsx`). **Confirmado EN VIVO** en
+`atlasrouge.com` con Playwright (390×844): las 5 secciones marcan/desmarcan y el
+contador "Ver N resultados" se actualiza. Commits: `407f2dd4` (barrios/tipo) +
+`f6767dbf` (estado/equipamiento/multimedia).
+
+## Causa raíz "no carga a la primera" — 2026-06-06 ✅ EN VIVO (`13687e8a`)
+ADR-002 (cliente anónimo `supabasePublic` para lecturas públicas) + invariante y
+matriz de 3 personas + regla "reproduce-primero" en `AGENTS.md`.
+
+## Filtros que no filtraban — 2026-06-06 ✅ (cablear + limpiar)
+Los filtros del panel se marcaban pero NO afectaban a los resultados: la query
+solo usaba 8 campos y `const filtered = allProperties` no filtraba más. Añadido
+`applyClientFilters` (Search.tsx) que filtra sobre la lista ya cargada por
+**Equipamientos** (amenities, AND), **Habitaciones**, **Sup. terreno**,
+**Multimedia** (video/3D) y **Estado** (exclusivité / recientes ≤90d). Verificado
+con datos reales: marcar "Piscina" → 14→8. Eliminados **Vista** y **Estilo** (no
+existen esos campos en la BD; eran controles muertos) y recortado **Estado** a las
+opciones con datos. Detalle de qué filtros existen: ver ADR/HANDOFF.
+
+## ⏳ Pendiente (verificado, no resuelto)
+- **UX desktop:** en los checkboxes del panel desktop (barrios/tipo/estado/
+  equipamiento/multimedia) el clic solo responde en la casilla, no en el texto
+  (móvil ya es fila completa). Mejora menor pendiente.
+- Filtro **Radio (km)** sigue siendo decorativo (sin lógica de geo-radio).
+- **2 errores de consola** en `/es/comprar` (no rompen nada; sin investigar).
+- Landing "Regalitos" (`/bold-type-landing`) sin empezar.
+
+---
+
+## Resiliencia de primera carga — 2026-06-05 ✅ IMPLEMENTADO + VERIFICADO (sin commitear, sin deploy)
+
+Fix del bug "la web no carga a la primera, hay que recargar". Tres causas
+cerradas: (1) guard de stale-chunk que se atascaba → ahora por timestamp con
+cooldown; (2) sin reintentos ni timeout en datos → nuevo `withRetry`/`withTimeout`
+en `src/lib/retry.ts`, agujero de timeout de `neighborhood.service` cerrado;
+(3) `Home` sin estado de error → spinner→error+retry por sección; LangDetector
+síncrono (sin blanco en `/`). Añadido beacon de auto-reporte de errores
+(`src/lib/reportError.ts` + `netlify/functions/report-error.js`, sin BD ni PII).
+Verificado con preview prod + Playwright: retry transitorio auto-cura sin mostrar
+error, fallo total muestra retry, recuperación OK, GSAP sin regresión, beacon
+dispara. `verify.sh` verde. Detalle: `progress/2026-06-05-first-load-resilience.md`.
+- ⏳ Pendiente: commit + push (Netlify auto-deploya). Tras deploy, vigilar
+  function logs (`[client-error]`); opcional `TELEGRAM_BOT_TOKEN`/`_CHAT_ID` en
+  Netlify env para ping a Telegram.
+
+---
+
+## Logo de marca v1 — 2026-06-04 ✅ IMPLEMENTADO (sin commitear, sin deploy)
+
+El owner entregó el vector final `logo-atlasrouge-v1.svg` (lockup apilado:
+isotipo de montañas terracota sobre wordmark `ATLAS ROUGE` navy; colores =
+tokens de marca exactos `#B5533A` / `#172033`). Implementado en la web:
+- `public/logo.svg` (color, navbar) + `public/logo-reverse.svg` (wordmark cream
+  para footer sobre midnight).
+- `Navbar.tsx` y `Footer.tsx` ahora usan `<img>` del logo en vez del texto.
+- Favicon sin tocar (montaña demasiado apaisada para 16px; el `AR` actual ya es
+  de marca). `verify.sh` verde, verificado visualmente en headless Chrome.
+- ⏳ Pendiente: commit + push (Netlify auto-deploya). Detalle:
+  `progress/2026-06-04-logo-vectorization.md`.
+
+---
+
+## Auditoría de producción (saas-audit full) — 2026-06-03 ✅ Score 40/100 🔴 NOT READY
+
+13 agentes. Informe en `AUDIT_REPORT.md` (anterior 22/100 en
+`AUDIT_REPORT.2026-05-26.md`). Matiz: +20 "gratis" de Pagos (N/A lead-gen) y el
+cap por área aplasta a 0 áreas que están bien; sobre áreas aplicables ≈ 24/80.
+**3 P0:** DB-001 (drift de migraciones), LEGAL-001 (sin Política de Privacidad),
+LEGAL-002 (sin Mentions Légales). ~26 P1.
+
+### Fase 0 — quick wins ✅ DESPLEGADO (`847ff042`)
+6 fixes en código, `verify.sh` verde: UX-001 (CTA móvil cableado), TECH-001
+(plugin Vite fuera de prod), PERF-008 (mapbox chunk), LEGAL-004 (eliminada fuga
+de IP a ipapi.co), QA-002 (`subject:'buy'`), QA-003 (estado de error en Search +
+empty state i18n), PERF-002 (favicon).
+
+### Batch 2 — 13 hallazgos (2 agentes paralelos) ✅ DESPLEGADO
+Admin/negocio: ADM-001 (pantalla de leads estimación+newsletter + CSV),
+ADM-004 (gate borrado), ADM-006 (link), ARCH-001 (Favoritos contra BD).
+Público: UX-002 (Search i18n), SEC-001 (XSS popup mapa cerrado), UX-005/006/007
+(footer/Lightbox/Share), PERF-004/005 (JSON-LD), PERF-006 (fuentes a <link>),
+ARCH-002 (sin datos demo en prod). tsc+verify verdes, paridad i18n OK.
+
+⏳ **Pendientes de Fase 0:**
+- `og-image.jpg` 1200×630 real (necesita foto del owner; no IA).
+- **Legal (P0):** páginas Política de Privacidad + Mentions Légales (abogado + datos Khalid).
+- **DB-001 baseline:** `pg_dump` de prod → `000_baseline_prod.sql`, limpiar SQL
+  divergentes (operación delicada, requiere OK explícito).
+Roadmap completo (Fases 1-3) en `AUDIT_REPORT.md`.
+
+---
+
+## Nuevo barrio "Route de Ouarzazate" — 2026-06-03 ✅ EN VIVO (solo datos, sin deploy de código)
+
+Alta de un barrio nuevo. **Sin cambios de código**: la tabla `neighborhoods`
+de Supabase es la fuente de verdad y alimenta a la vez el home (rejilla de
+barrios), el desplegable de Barrio del admin y el buscador. Pasos:
+
+- Foto (Aït Benhaddou, aportada por el owner, 720×480 → baja resolución)
+  optimizada a JPG 1200×800 (mismo ratio 3:2, sin crop) y subida al bucket
+  `property-images/neighborhood-route-ouarzazate.jpg` (render 200). Original
+  archivado como WebP en `source-images/neighborhoods/route-ouarzazate/`
+  (gitignored).
+- Fila insertada (`id e51f7b8d`, slug `route-ouarzazate`, `property_count 0`,
+  textos FR factuales). Detalle: `progress/2026-06-03-add-route-de-ouarzazate.md`.
+
+⚠️ **Decisión técnica a recordar:** la inserción se hizo vía Management API
+(PAT, que salta RLS) porque `neighborhoods` **solo tiene policy SELECT pública,
+ningún INSERT/UPDATE/DELETE** → hoy ni un admin puede crear/borrar barrios
+desde la web. Esto motiva la siguiente tarea.
+
+### Gestión de barrios en el admin (Fase 1) — ✅ DESPLEGADO (`8219d357`)
+CRUD de barrios en el admin (crear/editar/soft-delete/borrar) hecho como los
+pros. **`verify.sh` verde.** Migración `011` **aplicada en prod y verificada**
+(4 políticas RLS, trigger activo, drift corregido: Médina 2→3). Pusheado a
+`main` → Netlify auto-deploy. ⏳ Pendiente: smoke-test del UI admin en vivo +
+verificar que un agente no-admin no puede escribir (falta agente de prueba).
+
+Implementado:
+- `supabase/migrations/011_neighborhood_admin.sql`: `is_active` (soft-delete),
+  RLS INSERT/UPDATE/DELETE solo admin (`is_admin()`), SELECT público solo
+  activos (o admin), **trigger** que mantiene `property_count` desde
+  `properties` + backfill que corrige el drift (Médina 2→3).
+- Servicio `src/services/admin/neighborhoodAdmin.service.ts` + helper REST
+  `src/lib/adminRest.ts` + util `src/lib/imageCompress.ts`.
+- UI: `src/pages/admin/AdminNeighborhoods.tsx` +
+  `src/components/admin/NeighborhoodForm.tsx` (subida de foto única → WebP).
+- Ruta `/admin/neighborhoods` (App.tsx) + item de menú **solo admins**
+  (AdminSidebar). i18n FR/ES/EN (`admin.json` → `neighborhoods.*`).
+- `neighborhoods.service.ts` filtra `is_active`; tipo `NeighborhoodRow` +
+  interfaz `Neighborhood` con `is_active`/`isActive`.
+
+Detalle: `progress/2026-06-03-neighborhood-admin-crud.md`.
+
+### Fase 2 (ciudades / multi-país) — PLANIFICADA, no empezada
+Subir `city` a entidad (`cities`), cascada Ciudad→Barrio, `UNIQUE(parent_id,
+slug)`, CRUD de ciudades. Modelo **clon por agencia** (single-tenant). NO
+multi-tenant ni PostGIS (sobre-ingeniería). Pendiente de confirmar alcance.
+
+---
+
+## Precio opcionalmente oculto ("Prix Nous Consulter") — 2026-06-02 ✅ DESPLEGADO Y VERIFICADO (`16dae844`)
+
+Nueva perilla (Switch) junto al precio en el form admin: al activarla, el
+inmueble se marca `price_on_request`. El precio se sigue guardando (el agente
+lo ve), pero el sitio público muestra "Prix Nous Consulter" / "Precio a
+consultar" / "Price on request" en vez del número. Flag booleano end-to-end
+(imita `is_featured`): migración `010`, tipos, servicios, form y los 6 puntos
+de render (PropertyCard, Search ×4 incl. mapa, PropertyDetail). Lógica de
+display centralizada en `src/hooks/usePropertyPrice.ts`.
+
+**Verificado en runtime (Claude, vía Management API + Playwright, SIN tocar la
+sesión del owner):** puse el flag a una propiedad de prueba → la ficha muestra
+"Precio a consultar" en el precio principal, y su card en `/comprar` también
+("villa850: false"). Flag revertido tras la prueba. El número `850.000` que
+apareció en la sección "similares" del preview era **fallback a datos mock**
+(`getSimilarProperties` cae a `mockProperties` cuando la query falla/timeout),
+no una fuga de la feature. `verify.sh` verde; migración `010` aplicada.
+Detalle: `progress/2026-06-02-price-on-request.md`.
+
+> ⚠️ Observación (separada, pre-existente): `getSimilarProperties` hace
+> fallback a inmuebles MOCK si su query falla. En el preview local cayó a mock.
+> Conviene comprobar que en PROD no muestre inmuebles falsos en "similares".
+
+---
+
+## Rediseño tabla de specs (ficha) estilo BARNES — 2026-06-02 ✅ DESPLEGADO Y VERIFICADO
+
+En `PropertyDetail`, las specs pasaron de tarjetas con icono a **tabla
+label/valor a 2 columnas con líneas finas, sin iconos** (`InfoRow`); los
+equipamientos usan un **check uniforme** (sin los iconos variados), a 4
+columnas. Eliminado código muerto (`amenityIconMap` + 13 SVG + imports lucide).
+Filas sin valor se ocultan (barrio vacío no deja etiqueta colgando). Verificado
+con Playwright (2 fichas). Shipeado dentro de `16dae844` (junto al precio).
+
+---
+
+## Modal de borrado nativo → AlertDialog del sistema de diseño — 2026-06-01 ✅ DESPLEGADO
+
+Las 3 acciones de borrar (inmueble, artículo, contacto) usaban
+`window.confirm()` nativo. Ahora usan un `useConfirm()` (promesa) + `ConfirmProvider`
+montado en `AdminLayout`, sobre el `AlertDialog` shadcn/Radix existente, con
+botón "Eliminar" en rojo. Añadido `actions.cancel` en fr/es/en. Commit `87735bec`.
+Verificado: tsc + verify.sh verdes. NOTA: solo saca del modal nativo; el rediseño
+visual del sistema de diseño es trabajo aparte (el owner ya dijo que no le gusta).
+
+---
+
+## Retraso al cargar el panel admin — 2026-06-01 ✅ RESUELTO Y DESPLEGADO
+
+`checkAuth` hacía `await validateSession()` (un `getUser()` al servidor,
+añadido en el fix de sesión zombi `d0e6e695`) **antes** de bajar `isLoading`,
+así que el spinner de `ProtectedRoute` bloqueaba CADA carga con ese round-trip
+extra. El caso zombi es raro → mala compensación. Fix (`3698de76`):
+`validateSession()` pasa a segundo plano (`.then`), el panel se pinta en cuanto
+responde `getAgent()`. Las 7 consultas del dashboard ya iban en paralelo (OK).
+Verificado: tsc + verify.sh verdes.
+
+---
+
+## Crear inmueble desde el admin — 2026-06-01 ✅ RESUELTO Y DESPLEGADO (cadena completa)
+
+Toda la cadena de bugs que bloqueaba crear inmuebles está cerrada y en `main`
+(= desplegada). `HEAD == origin/main == 92fe90e1`, `verify.sh` verde, función
+en prod confirmada nueva (`reason: "missing_authorization"` sin token).
+
+| # | Bug | Commit | Por |
+|---|-----|--------|-----|
+| 1 | 400 al guardar (`neighborhood_id` slug→uuid) | `701f8821` | Claude |
+| 2 | Sesión zombi → 401 (validar contra servidor) | `d0e6e695` | Claude |
+| 3 | **`translate-property` 401** (anon key runtime desalineado con el proyecto del JWT) | `d0bc223c` | Codex |
+| 4 | Imágenes colgadas → REST directo Storage | `d521c7d6` | Codex |
+| 5 | Guardar colgado → REST directo PostgREST | `5110413c` | Codex |
+| 6 | Listado colgado → REST directo PostgREST | `92fe90e1` | Codex |
+
+Detalle, causa raíz y lecciones: `HANDOFF_REPORT.md` (cierre 2026-06-01
+post-Codex) + entradas de Codex. `CODEX_HANDOFF_401.md` queda como histórico.
+
+Pendiente menor (no bloquea):
+- [ ] Owner confirma el flujo real end-to-end tras el deploy.
+- [ ] Crear **agente de prueba** dedicado (verificar sin tocar la cuenta del owner).
+- [ ] CSP: `ipapi.co/json` bloqueado (geo-lookup) — añadir a `connect-src` o quitar. Cosmético.
+
+---
+
+## `translate-property` 401 con sesión admin fresca — 2026-06-01 ✅ DESPLEGADO
+
+Síntoma reportado: `/.netlify/functions/translate-property` devolvía
+401 `Active agent session required` incluso con login fresco en incógnito, y
+bloquea crear inmuebles. Contexto completo en `CODEX_HANDOFF_401.md`.
+
+Fix implementado por Codex y desplegado en `main` commit `d0bc223c`:
+- `netlify/functions/translate-property.js`: auth de agente activo ya no es una
+  caja negra; devuelve `reason`, loguea intentos sin tokens, usa timeout y
+  mantiene sesión válida + fila `agents` activa vía RLS. Añadido fallback seguro
+  para validar con el access token como `apikey` si el anon key runtime está
+  desalineado.
+- `src/services/translation.service.ts`: nunca llama la función sin Bearer
+  (fallback a `localStorage` si `getSession()` no responde) y solo redirige a
+  login cuando el 401 indica sesión muerta, no por fallos de verificación de
+  agente/config.
+
+Verificación: `npx tsc -b --noEmit` verde; `node --check
+netlify/functions/translate-property.js` verde; `bash scripts/verify.sh`
+verde (3 warnings Fast Refresh preexistentes, build OK). Producción verificada:
+sin token devuelve 401 con `reason: "missing_authorization"`, confirmando que
+la función nueva está viva.
+
+---
+
+## Sesión zombi → 401 en traducir/subir — 2026-06-01 ✅ RESUELTO Y DESPLEGADO
+
+El navegador guardaba un token en localStorage de una sesión ya borrada en
+el servidor (revocada por un signOut global previo). `checkAuth` solo leía
+localStorage → UI "logueada" pero 401 en cada llamada autenticada. Fix:
+`validateSession()` pregunta al servidor (`getUser()`) al cargar y purga el
+token zombi → login limpio. Verificado vía Management API (auth.sessions
+vacío para el user). Desbloqueo del owner: cerrar sesión + entrar de nuevo.
+Detalle: `HANDOFF_REPORT.md` (cierre 2026-06-01 noche 2ª parte).
+
+⚠️ **REGLA:** verificar SIEMPRE con un AGENTE DE PRUEBA dedicado, NUNCA con
+la cuenta del owner (un signOut global le deja sesión zombi). Pendiente:
+crear ese agente de prueba.
+
+---
+
+## Crear inmueble — HTTP 400 — 2026-06-01 ✅ RESUELTO Y DESPLEGADO
+
+El formulario de admin nunca pudo crear inmuebles: el `<select>` de Barrio
+mandaba el **slug** pero `properties.neighborhood_id` es `uuid` (FK) →
+`invalid input syntax for type uuid` → 400. Fix en 4 archivos (select usa
+`n.id`, `''`→`null` en `toDbInsert`, tipo `Neighborhood.id`, mapper). Arregla
+también la edición. Verificado vía Management API (insert con null y uuid →
+OK, rollback). Detalle en `HANDOFF_REPORT.md` (cierre 2026-06-01 noche) y
+`progress/2026-06-01-fix-property-create-400.md`.
+
+---
+
+## i18n panel admin + amenities — 2026-05-30 ✅ DESPLEGADO Y VERIFICADO
+
+Commits `7a671e34` + `cbb235fa` en `main`. Detalle:
+`progress/2026-05-30-i18n-admin-amenities.md`.
+
+- [x] `PropertyForm` labels FR → i18n + auto-traducir al guardar (Parte B).
+- [x] `AdminLogin` → claves `login.*`.
+- [x] **Amenities** traducidas en TODA la web (admin + cards + filtros + ficha):
+      `amenities.json` poblado (16 de BD), helper `src/lib/amenities.ts`.
+- [x] Verificado en prod (Playwright): admin form y público 100% en ES,
+      `stillFrench: []`.
+- [x] **Conmutador de idioma FR|ES|EN** en el panel de Traducciones de
+      `PropertyForm` (commit `28cc33cd`, desplegado): pestañas en vez de
+      acordeones, editable, badge `fuente` + punto verde si rellenado.
+      Verificado en prod (pestaña FR muestra el contenido francés).
+
+### Pendiente relacionado
+- [ ] **Batch de CONTENIDO** (títulos/descr/highlights de inmuebles) — sigue
+      bloqueado esperando `SUPABASE_SERVICE_ROLE_KEY` en `.env.local` (RLS
+      bloquea UPDATE con login admin). Script listo:
+      `scripts/translate-existing-properties.mjs` (sin commitear aún, con
+      `package.json` translate:properties). Owner pone la key → corro
+      `npm run translate:properties`.
+
+---
+
+## Mapbox migration — 2026-05-30 ✅ DESPLEGADO Y VERIFICADO EN PROD
+
+Map engine migrado MapLibre GL → **Mapbox GL JS v3** (estilo **Standard 2D
+plano**) en `Search.tsx` (MapView) y `LocationMap.tsx`, vía `src/lib/mapbox.ts`.
+Commit `70af4956`, desplegado en https://atlasrouge.com. Detalle:
+`progress/2026-05-30-mapbox-migration.md`.
+
+- [x] Código: `maplibre-gl` → `mapbox-gl@3.24`, `src/lib/mapbox.ts`,
+      `src/vite-env.d.ts`, `.env.example`, guard `hasMapboxToken` + fallback,
+      `canUseWebGL` exige WebGL2.
+- [x] CSP en `netlify.toml`: `connect-src` + api/events.mapbox.com,
+      `worker-src 'self' blob:`.
+- [x] `VITE_MAPBOX_TOKEN` en Netlify (all contexts). Token restringido a
+      atlasrouge.com (correcto). NO commiteado en el repo.
+- [x] Deploy + verificación en vivo: tiles HTTP 200, 0 errores, basemap OK.
+- [ ] (Opcional, solo dev local) owner añade `localhost` a las URLs del token o
+      usa el Default public token + `VITE_MAPBOX_TOKEN` en `.env.local`.
+
+---
+
+## Current state
+
+Site is **live in production** on Netlify (`atlasrouge.com`).
+`origin/main` last commit `34af320b`. verify.sh green.
+
+⚠️ **There is unmerged, uncommitted Phase 0 work in the working tree**
+(2026-05-29). The code is written and verify.sh is green, but **the SQL
+has NOT been applied in Supabase Studio and NOTHING has been deployed**.
+These are fixes **implemented, pending SQL apply + deploy** — not yet
+live in production. See the section below.
+
+A **13-agent production-readiness audit** ran 2026-05-26 →
+`AUDIT_REPORT.md` at repo root. **Score 22/100 🛑** (mechanically
+harsh: 19.5 pts come from the N/A Payments area; the engineering
+foundation is strong — TS strict, 0 npm vulns, real service layer).
+**7 P0s** identified; 2 fixed 2026-05-26 (i18n), 3 engineering P0s
+implemented 2026-05-29 (pending apply/deploy), 2 legal P0s still owner-
+side. See the lists below and `AUDIT_REPORT.md` for the full roadmap.
+
+---
+
+## Phase 0 — implemented 2026-05-29 (pending SQL apply + deploy)
+
+These are **code-complete and verify.sh-green**, but **not live**: the
+SQL must be pasted by the owner in Supabase Studio and the branch must
+be committed + pushed (Netlify auto-deploys `main`). Until then,
+production still has the original holes.
+
+- [x] **P0-1 · Privilege escalation (SEC-001/DB-001/ADM-001)** —
+      **APPLIED IN PRODUCTION 2026-06-01.** Migration
+      `supabase/migrations/006_fix_agent_update_rls.sql` applied via SQL
+      Editor (project `slxlkbrqcjabsfuhlwdf`). ⚠️ Real policy name in prod
+      is `agents_update_own` (NOT "Agent can update own row" — the prod DB
+      wasn't built from these numbered migrations; names differ). Verified
+      live with `pg_policies`: `agents_update_own` now has a `WITH CHECK`
+      that freezes `role`/`is_active` via subquery (was NULL → escalation
+      open). Hardening block sets `search_path` on all `public.is_*`
+      helpers (tolerant DO block; the literal `ALTER FUNCTION public.is_agent()`
+      failed because those exact names don't exist in prod). Client side:
+      `updateAgent()` in `src/services/auth.service.ts` narrowed to
+      `AgentSelfUpdate` (`Pick` name/phone/bio/photo_url) — still
+      uncommitted in working tree.
+- [~] **P0-4 · Canonical/hreflang dynamic** — implemented.
+      `netlify/edge-functions/og-rewrite.ts` now rewrites canonical +
+      hreflang per route on all pages (`config.path` widened to
+      `/fr/*`, `/es/*`, `/en/*`). New `scripts/generate-sitemap.mjs` +
+      `prebuild` in `package.json` generate a dynamic trilingual sitemap
+      (posts/properties/neighborhoods, domain `atlasrouge.com`, fault-
+      tolerant). `public/sitemap.xml` is now build output (gitignored,
+      no longer tracked). Closes PERF-002 too. **⚠️ Not deployed.**
+- [~] **P0-5 · Migration drift** — implemented. New
+      `supabase/migrations/000_base_schema.sql` (idempotent
+      `CREATE TABLE IF NOT EXISTS` for neighborhoods / properties /
+      contact_submissions / favorites / site_settings). Rebuilding from
+      `migrations/` no longer fails on 001. **Do not re-apply over prod.**
+- [~] **Close open serverless functions (SEC-002/003, P1 pulled
+      forward)** — implemented. `translate-property.js` now requires an
+      active-agent session (JWT validated against `/auth/v1/user` +
+      agents check) + CORS allowlist + best-effort rate-limit;
+      `notify-lead.js` gets CORS + OPTIONS + origin check;
+      `translation.service.ts` attaches the Bearer token. **⚠️ Not
+      deployed; needs Netlify env vars (see owner boundaries).**
+- [~] **Error Boundary (ARCH-002, P1 pulled forward)** — implemented.
+      New `src/components/ErrorBoundary.tsx` mounted in `main.tsx`, i18n
+      fallback (new keys in `src/locales/{fr,es,en}/errors.json`).
+
+### Owner boundaries to close this Phase 0 (next steps)
+- [ ] **Apply `supabase/migrations/006_fix_agent_update_rls.sql`** in
+      Supabase Studio, then **verify a non-admin agent cannot self-
+      promote** (`update({role:'admin'})` from DevTools must be rejected).
+- [ ] **Verify Netlify env vars**: the build/sitemap needs
+      `SUPABASE_URL` + `SUPABASE_ANON_KEY` (or service key); the
+      functions need `SUPABASE_URL` + `SUPABASE_ANON_KEY` to validate
+      the JWT. Without them the prebuild sitemap and the function auth
+      degrade.
+- [ ] **Approve commit + push** of the working-tree changes (Netlify
+      auto-deploys `main`).
+
+---
+
+## P0 — still open (owner / legal — needs Khalid + lawyer)
+- [ ] **P0-2 · Privacy Policy (RGPD)** — none exists. Lawyer.
+- [ ] **P0-3 · Mentions Légales** — mandatory in France. Lawyer + RC/ICE.
+
+### Already fixed 2026-05-26
+- [x] ~~**UX-001/UX-002 — i18n of GestionLocative, BuyerGuide, About**~~
+      DONE 2026-05-26 (commit `593e47ae`). 218 keys translated FR/ES/EN
+      by 3 parallel subagents. Key parity verified, build green.
+
+---
+
+## P0 — owner config (Khalid) — pre-launch
+
+- [x] ~~**Rotate `DEEPSEEK_API_KEY`**~~ — DONE 2026-05-26. Old key
+      `sk-d047f...8752` deleted on platform.deepseek.com. New key
+      configured in Netlify env vars as `DEEPSEEK_API_KEY` 🔒
+      (Specific scopes: Builds, Functions, Runtime · 4 deploy
+      contexts). `VITE_DEEPSEEK_API_KEY` also removed from Netlify.
+      Verified live: `POST /.netlify/functions/translate-property`
+      → HTTP 200 with correct FR→EN+ES translation. Fallback
+      `process.env.VITE_DEEPSEEK_API_KEY` removed from the function
+      code.
+
+- [x] ~~**Supabase Site URL + Redirect URLs**~~ — DONE 2026-05-26.
+      Site URL set to `https://atlasrouge.com`. Redirect URLs
+      whitelist contains atlasrouge.com, www.atlasrouge.com,
+      localhost:3000, localhost:5173, atlasrouge.com/auth/callback.
+      `freecoche.com` removed.
+
+- [x] ~~**Apply migration `005_agents_auto_provisioning.sql`**~~ —
+      DONE 2026-05-26. Trigger `on_auth_user_created` applied and
+      verified end-to-end: created test user via Admin API → trigger
+      auto-inserted agents row (role='agent', is_active=false) →
+      DELETE cascaded correctly. Orphan-user gap permanently closed.
+      Hotfix during apply: initial migration used role='viewer' which
+      violated the CHECK constraint defined in migration 001; patched
+      to 'agent' (commit `f40cedff`).
+
+- [x] ~~**Leads pipeline (`estimation_requests` + `newsletter_subscribers`)**~~
+      — DONE 2026-05-26. Tables already existed from migration 004
+      (applied previously). Missing RLS policies added: anon can
+      INSERT, only active agents can SELECT/UPDATE. Verified
+      end-to-end via curl with the anon key:
+        POST /rest/v1/estimation_requests → HTTP 201 ✅
+        POST /rest/v1/newsletter_subscribers → HTTP 201 ✅
+      Frontend code (`leads.service.ts`) uses `.insert()` without
+      `.select()` so it does not trigger the RETURNING/SELECT
+      policy check that would fail for anon users. Form submissions
+      now reach the DB.
+- [ ] **Apply migration `004_leads.sql`** in Supabase Studio.
+- [ ] **Update `site_settings`** with real phone, WhatsApp, email,
+      physical address.
+- [ ] **Configure custom SMTP** for transactional email branding
+      (currently using Supabase default).
+- [ ] **Upload Sofia's professional photo + bio** (`agents` table,
+      id `08f2006c-0d47-464b-9fd4-518b214c1a6b`).
+- [ ] **Contract Supabase Pro (~€25/mo)** + Netlify Pro (~€20/mo)
+      before traffic ramp.
+
+---
+
+## P1 — important, not blocking
+
+- [n/a] **DB-003 · Duplicate leads RLS policies** — **does NOT apply.**
+      `004_leads.sql` already defines the leads policies cleanly; there
+      is no duplicate set to drop. The earlier worry (from the audit)
+      was based on a stale read. No migration needed for this.
+- [x] ~~**i18n P0-6/P0-7 (GestionLocative/BuyerGuide/About in French)**~~
+      Resolved in commit `593e47ae` (2026-05-26). Listed here for the
+      record; it is the same as UX-001/UX-002 above.
+- [ ] **Add `typecheck` and `test` scripts to `package.json`** so
+      `scripts/verify.sh` actually validates types and tests, not
+      just lint+build.
+- [ ] **Bundle split for `maplibre` and `AdminBlogForm`** (>500 kB
+      chunks). Both already lazy-loaded; manualChunks would polish.
+- [ ] **Rename `HANDOFF_REPORT.md` → `HANDOFF.md`** to align with
+      the harness convention. Or keep both with a symlink.
+
+---
+
+## Blocked
+
+*(none right now — all blockers are owner-side P0 items above)*
+
+---
+
+## Next recommended action
+
+**Close out Phase 0 (owner boundaries):** apply
+`006_fix_agent_update_rls.sql` in Supabase Studio and verify a non-admin
+agent cannot self-promote; confirm the Netlify env vars
+(`SUPABASE_URL`/`SUPABASE_ANON_KEY`) so the prebuild sitemap and the
+function JWT checks work; then approve the commit + push so Netlify
+deploys the working-tree changes. Only after that are P0-1/P0-4/P0-5
+actually closed in production. In parallel, Khalid + lawyer on the legal
+P0s (P0-2/P0-3).
+
+---
+
+## Known pre-existing failures (not blockers, but on the floor)
+
+- `npm run lint`: 3 `react-refresh/only-export-components` warnings
+  (RichTextRenderer.tsx, useFavorites.tsx). Not errors. Triggered by
+  exporting helper constants/types alongside the component. Cosmetic
+  — fixable by splitting into separate files but no functional
+  impact.
+- Build warns "chunks larger than 500 kB" for `maplibre` (1 MB) and
+  `AdminBlogForm` (404 kB). Both are lazy-loaded; not on the main
+  bundle path.
+
+---
+
+## Out of scope right now
+
+- **Sofia AI agent backend** — already shipped (dynamic from DB);
+  no changes planned this sprint.
+- **B2B / wholesale features** — not in scope for Atlas Rouge; that
+  pattern lives in the Piro project.
+- **Server-side rendering** — Vite SPA is the chosen stack
+  (decision lives in commit history).

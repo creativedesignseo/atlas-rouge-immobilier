@@ -1,6 +1,20 @@
 # Handoff Report - Atlas Rouge Immobilier
 
-> **Nota de continuidad:** Este documento se actualiza cada vez que una IA interviene. Leerlo completo antes de tocar código.
+> ## ⚠️ ARCHIVO HISTÓRICO — NO LO LEAS ENTERO
+>
+> Este documento son ~3.900 líneas (~54.000 tokens). Leerlo completo se come
+> una cuarta parte de la ventana de contexto antes de empezar a trabajar.
+>
+> **El handoff que debes leer es `HANDOFF.md`** (una pantalla, actualizado).
+> Este archivo es el registro append-only: se le añaden entradas de cierre, y
+> se consulta **buscando dentro**, nunca de principio a fin:
+>
+> ```bash
+> grep -n "lo-que-busques" HANDOFF_REPORT.md
+> ```
+
+
+> **Nota de continuidad:** cada intervención añade una entrada de CIERRE al principio. Para el estado actual, `HANDOFF.md`.
 
 ---
 
@@ -2888,7 +2902,7 @@ Autor: Claude Opus 4.7 (1M context).
 ### Estado al cierre
 
 - `origin/main` sync · último commit `8987f624` · verify.sh verde.
-- Tu acceso admin: `creativedesignseo@gmail.com` / `Marru.2025`.
+- Tu acceso admin: `creativedesignseo@gmail.com` / `<REDACTED-see-HANDOFF.md-§Acceso>`.
 - Decisión editorial a validar con Khalid: "pensé pour les Français"
   → adaptado a "compradores internacionales" en ES/EN.
 
@@ -2983,7 +2997,7 @@ role:      admin
 is_active: true
 ```
 
-Y el password está en `Marru.2025`. Si Jonatan lo cambia, el del repo
+Y el password está en `<REDACTED-see-HANDOFF.md-§Acceso>`. Si Jonatan lo cambia, el del repo
 queda desactualizado — actualizar este HANDOFF cuando ocurra.
 
 ---
